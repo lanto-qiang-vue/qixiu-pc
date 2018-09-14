@@ -1,0 +1,333 @@
+.container_zcbg {
+	background: url(../images/zc-bg.png) no-repeat center fixed;
+	background-size: cover;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon>input {
+    padding-left: 6px;
+    padding-right: 24px;
+}
+
+.input-icon> .sel {
+    padding-left: 24px;
+    padding-right: 6px;
+}
+
+.input-icon>[class*="fa"] {
+    padding: 0 3px;
+    z-index: 2;
+    position: absolute;
+    top: 1px;
+    bottom: 1px;
+    right: 3px;
+    line-height: 28px;
+    display: inline-block;
+    color: #909090;
+    font-size: 16px;
+}
+
+.btn-orange {
+  color: #fff;
+  background-color: #ff6600;
+  border-color: #eea236;
+}
+.btn-orange:focus,
+.btn-orange.focus {
+  color: #fff;
+  background-color: #E33300;
+  border-color: #985f0d;
+}
+.btn-orange:hover {
+  color: #fff;
+  background-color: #E33300;
+  border-color: #d58512;
+}
+.btn-orange:active,
+.btn-orange.active,
+.open > .dropdown-toggle.btn-orange {
+  color: #fff;
+  background-color: #E33300;
+  border-color: #d58512;
+}
+.btn-orange:active:hover,
+.btn-orange.active:hover,
+.open > .dropdown-toggle.btn-orange:hover,
+.btn-orange:active:focus,
+.btn-orange.active:focus,
+.open > .dropdown-toggle.btn-orange:focus,
+.btn-orange:active.focus,
+.btn-orange.active.focus,
+.open > .dropdown-toggle.btn-orange.focus {
+  color: #fff;
+  background-color: #E33300;
+  border-color: #985f0d;
+}
+.btn-orange:active,
+.btn-orange.active,
+.open > .dropdown-toggle.btn-orange {
+  background-image: none;
+}
+.btn-orange.disabled,
+.btn-orange[disabled],
+fieldset[disabled] .btn-orange,
+.btn-orange.disabled:hover,
+.btn-orange[disabled]:hover,
+fieldset[disabled] .btn-orange:hover,
+.btn-orange.disabled:focus,
+.btn-orange[disabled]:focus,
+fieldset[disabled] .btn-orange:focus,
+.btn-orange.disabled.focus,
+.btn-orange[disabled].focus,
+fieldset[disabled] .btn-orange.focus,
+.btn-orange.disabled:active,
+.btn-orange[disabled]:active,
+fieldset[disabled] .btn-orange:active,
+.btn-orange.disabled.active,
+.btn-orange[disabled].active,
+fieldset[disabled] .btn-orange.active {
+  background-color: #ff6600;
+  border-color: #eea236;
+}
+.btn-orange .badge {
+  color: #ff6600;
+  background-color: #fff;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.dark {
+	color: #333 !important
+}
+
+.white {
+	color: #fff !important
+}
+
+.red {
+	color: #dd5a43 !important
+}
+
+.light-red {
+	color: #f77 !important
+}
+
+.blue {
+	color: #478fca !important
+}
+
+.light-blue {
+	color: #93cbf9 !important
+}
+
+.green {
+	color: #69aa46 !important
+}
+
+.light-green {
+	color: #b0d877 !important
+}
+
+.orange {
+	color: #ff892a !important
+}
+
+.light-orange {
+	color: #fcac6f !important
+}
+
+.orange2 {
+	color: #feb902 !important
+}
+
+.purple {
+	color: #a069c3 !important
+}
+
+.pink {
+	color: #c6699f !important
+}
+
+.pink2 {
+	color: #d6487e !important
+}
+
+.brown {
+	color: #a52a2a !important
+}
+
+.grey {
+	color: #777 !important
+}
+
+.light-grey {
+	color: #bbb !important
+}
+
+.bigger-110 {
+	font-size: 110%
+}
+
+.bigger-120 {
+	font-size: 120%
+}
+
+.bigger-130 {
+	font-size: 130%
+}
+
+.bigger-140 {
+	font-size: 140%
+}
+
+.bigger-150 {
+	font-size: 150%
+}
+
+.bigger-160 {
+	font-size: 160%
+}
+
+.bigger-170 {
+	font-size: 170%
+}
+
+.bigger-180 {
+	font-size: 180%
+}
+
+.bigger-190 {
+	font-size: 190%
+}
+
+.bigger-200 {
+	font-size: 200%
+}
+
+.bigger-210 {
+	font-size: 210%
+}
+
+.bigger-220 {
+	font-size: 220%
+}
+
+.bigger-230 {
+	font-size: 230%
+}
+
+.bigger-240 {
+	font-size: 240%
+}
+
+.bigger-250 {
+	font-size: 250%
+}
+
+.bigger-260 {
+	font-size: 260%
+}
+
+.bigger-270 {
+	font-size: 270%
+}
+
+.bigger-280 {
+	font-size: 280%
+}
+
+.bigger-290 {
+	font-size: 290%
+}
+
+.bigger-300 {
+	font-size: 300%
+}
+
+.bigger-125 {
+	font-size: 125%
+}
+
+.bigger-175 {
+	font-size: 175%
+}
+
+.bigger-225 {
+	font-size: 225%
+}
+
+.bigger-275 {
+	font-size: 275%
+}
+
+.smaller-90 {
+	font-size: 90%
+}
+
+.smaller-80 {
+	font-size: 80%
+}
+
+.smaller-70 {
+	font-size: 70%
+}
+
+.smaller-60 {
+	font-size: 60%
+}
+
+.smaller-50 {
+	font-size: 50%
+}
+
+.smaller-40 {
+	font-size: 40%
+}
+
+.smaller-30 {
+	font-size: 30%
+}
+
+.smaller-20 {
+	font-size: 20%
+}
+
+.smaller-75 {
+	font-size: 75%
+}
+
+.tooltip-warning+.popover .popover-title {
+    background-color: #f4eee3;
+    border-bottom-color: #e4dcd3;
+    color: #d67e31;
+    text-shadow: none;
+}
+.tooltip-warning+.tooltip .tooltip-inner {
+    background-color: #f4eee3;
+    border-bottom-color: #e4dcd3;
+    color: #d67e31;
+}
+.tooltip-warning+.tooltip .tooltip-arrow {
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #d67e31;
+}
+
+.corph1{
+	font-style: normal;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: "Î¢ÈíÑÅºÚ";
+    color: #333333;
+    list-style: none;
+    border: none;
+	margin-top:5px;
+}

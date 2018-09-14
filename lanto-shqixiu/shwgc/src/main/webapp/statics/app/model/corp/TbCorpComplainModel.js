@@ -1,0 +1,31 @@
+Ext.define('app.model.corp.TbCorpComplainModel',{
+	extend:'jsf.data.VO',
+	fields:[
+		{name:'COMPLAIN_ID' , type:'int', label:'ID'},
+		{name:'COMPLAIN_OPER' , type:'string', label:'投诉人',req:true},
+		{name:'COMPLAIN_DATE' , type:'date', label:'投诉日期',dateFormat:'Y-m-d H:i:s',query:'rg'},
+		{name:'CORP_ID' , type:'string', label:'被投诉企业ID'},
+		{name:'CORP_NAME' , type:'string', label:'被投诉企业名称'},
+		{name:'AREA_CODE' , type:'string', label:'所属辖区'},
+		{name:'ID_CARD' , type:'string', label:'身份证号码'},
+		{name:'CONTACT_TEL' , type:'string', label:'联系电话'},
+		{name:'CONTACT_TYPE' , type:'string', label:'投诉方式'},
+		{name:'COMPLAIN_CONTENT' , type:'string', label:'投诉内容'},
+		{name:'HAPPEN_DATE' , type:'date', label:'事发时间',dateFormat:'Y-m-d H:i:s'},
+		{name:'IS_ACCEPT' , type:'string', label:'是否受理',val:'dict|dict.'+app.utils.SysCodes.YESNO},
+		{name:'ACCEPT_REMARK' , type:'string', label:'受理说明'},
+		{name:'ACCEPT_OPER' , type:'string', label:'受理人'},
+		{name:'ACCEPT_DATE' , type:'date', label:'受理日期',dateFormat:'Y-m-d H:i:s'},
+		{name:'IS_CORP_DEAL' , type:'string', label:'企业是否处理',val:'dict|dict.'+app.utils.SysCodes.YESNO},
+		{name:'CORP_DEAL_REMARK' , type:'string', label:'企业处理内容'},
+		{name:'CORP_DEAL_OPER' , type:'string', label:'企业处理人'},
+		{name:'CORP_DEAL_DATE' , type:'date', label:'处理时间',dateFormat:'Y-m-d H:i:s'},
+		{name:'CORP_CONTACT_TEL' , type:'string', label:'处理人联系电话'},
+		{name:'IS_COMPLETE' , type:'string', label:'是否办结',val:'dict|dict.'+app.utils.SysCodes.YESNO},
+		{name:'COMPLETE_REMARK' , type:'string', label:'办结备注'},
+		{name:'COMPLETE_OPER' , type:'string', label:'办结人'},
+		{name:'COMPLETE_DATE' , type:'date', label:'办结日期',dateFormat:'Y-m-d H:i:s'},
+		{name:'ORDER_ID' , type:'string', label:'ORDER_ID'},
+		{name:'ORDER_NO' , type:'string', label:'业务编号'}
+	]
+});

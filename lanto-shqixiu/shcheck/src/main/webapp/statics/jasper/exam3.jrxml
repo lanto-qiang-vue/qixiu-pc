@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exam3" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b91d975b-11f8-4a00-93dc-a0ca6ba4d3ee">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="corpName" class="java.lang.String" isForPrompting="false"/>
+	<field name="typeId" class="java.lang.String"/>
+	<field name="itemId" class="java.lang.String"/>
+	<field name="firstScore" class="java.lang.Float"/>
+	<field name="secScore" class="java.lang.Float"/>
+	<field name="selfScore" class="java.lang.Float"/>
+	<field name="fileId" class="java.lang.String"/>
+	<field name="itemName" class="java.lang.String"/>
+	<field name="itemScore" class="java.lang.Integer"/>
+	<field name="itemDetail" class="java.lang.String"/>
+	<field name="typeName" class="java.lang.String"/>
+	<field name="typeScore" class="java.lang.Integer"/>
+	<group name="examGroup">
+		<groupExpression><![CDATA[$F{typeName}]]></groupExpression>
+		<groupHeader>
+			<band height="16" splitType="Stretch">
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="19" y="0" width="85" height="15" uuid="43155e51-66fa-467b-b5c1-fcf7b5653caf"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{typeName}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement key="line-23" x="12" y="-1" width="1" height="16" uuid="854e4f63-5782-40c5-a19e-e7536b68e233"/>
+				</line>
+				<line>
+					<reportElement key="line-24" x="809" y="-1" width="1" height="16" uuid="fdfaa8b1-2b45-47b0-b0cd-df10625576c4"/>
+				</line>
+				<line>
+					<reportElement key="line-25" x="13" y="15" width="796" height="1" uuid="d04d6851-4d37-4d85-abe9-b95976a4a500"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="94" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="236" y="21" width="331" height="38" uuid="7bbc1e11-1ccd-452f-a1eb-58e44c59a41a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="18" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[机动车维修企业质量信誉考核评分表]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-9" x="20" y="70" width="87" height="17" uuid="183e8d7b-dc4d-492f-87f0-65b157ab0f0f"/>
+				<textElement textAlignment="Left">
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[企业名称：]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="79" y="70" width="381" height="18" forecolor="#0033FF" uuid="1be7ec63-fb8b-49c0-8509-1abea21d984a"/>
+				<textElement textAlignment="Left">
+					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" x="20" y="8" width="70" height="23" uuid="602c39a0-e706-40e7-a11a-eba32c69e247"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[考核项目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="117" y="8" width="45" height="23" uuid="f8bbf49f-9c05-438c-bbe0-580e503f0dd0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[分值]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="250" y="8" width="275" height="23" uuid="6f0c8ac6-04ef-4e9a-8c77-c32ca952d6ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[评分标准]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="666" y="0" width="41" height="35" uuid="1da4b007-125f-47ac-b889-371347efba19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[企业自评（分）]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-7" x="714" y="0" width="41" height="38" uuid="eb776e39-4c0e-4d96-9139-273b3779a2eb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[考核组初评（分）]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-8" x="766" y="0" width="38" height="37" uuid="ff8fab26-c085-429a-bbfa-0d4db03f17d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[主管部门复评（分）]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="116" y="0" width="1" height="38" uuid="f4d785c7-5f40-4797-8818-ad098fac4cb2"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="165" y="0" width="1" height="38" uuid="aa535598-af1b-4295-bb5e-3c90ce3f5ce9"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="663" y="0" width="1" height="38" uuid="a53f60f2-6b70-44bf-86ae-5a3ae47d479d"/>
+			</line>
+			<line>
+				<reportElement key="line-4" x="712" y="0" width="1" height="38" uuid="1fbfb46e-6206-4bc5-aa42-f5edb236359d"/>
+			</line>
+			<line>
+				<reportElement key="line-5" x="760" y="0" width="1" height="38" uuid="221493aa-0f5f-474d-b8f3-fb6653a2a4db"/>
+			</line>
+			<line>
+				<reportElement key="line-6" x="809" y="0" width="1" height="38" uuid="ecdddf07-59bc-4089-8ea2-5b42d72d3ca8"/>
+			</line>
+			<line>
+				<reportElement key="line-7" x="12" y="0" width="1" height="38" uuid="89f6c4ae-56af-4aea-bb40-aceec9dacbeb"/>
+			</line>
+			<line>
+				<reportElement key="line-8" x="12" y="37" width="797" height="1" uuid="2646fbaf-9d54-413b-978b-2b1cfb05d1b7"/>
+			</line>
+			<line>
+				<reportElement key="line-9" x="12" y="0" width="797" height="1" uuid="f5f17aa1-f85d-47c9-b824-62e534aae49c"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<line>
+				<reportElement key="line-10" x="116" y="-1" width="1" height="50" uuid="b0273b70-7112-4d29-b6e6-0b9abd57d923"/>
+			</line>
+			<line>
+				<reportElement key="line-11" x="165" y="-1" width="1" height="50" uuid="e769ecf7-ef83-4925-9a19-decfc032f904"/>
+			</line>
+			<line>
+				<reportElement key="line-12" x="663" y="-1" width="1" height="50" uuid="04dee772-bfc8-4205-9cb3-1a5e328f2d20"/>
+			</line>
+			<line>
+				<reportElement key="line-13" x="714" y="-1" width="1" height="50" uuid="1bfd0bc6-91f3-478e-a586-152bde4b39fd"/>
+			</line>
+			<line>
+				<reportElement key="line-14" x="760" y="-1" width="1" height="50" uuid="728f196c-0506-4ec9-8c38-6c8a182527bc"/>
+			</line>
+			<line>
+				<reportElement key="line-15" x="809" y="0" width="1" height="50" uuid="0c22f14e-5025-4e8b-86cc-186b87f976c3"/>
+			</line>
+			<line>
+				<reportElement key="line-16" x="12" y="-1" width="1" height="50" uuid="fb87f2dd-ccd4-4f6c-bc2c-c35b53300b75"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="663" y="-1" width="52" height="50" forecolor="#000000" uuid="911a5486-47cd-4927-8cec-e6dda0e0e5e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{selfScore}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="12" y="0" width="105" height="49" uuid="4800a043-3a2d-4e2b-8443-b5e472bf7822"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="116" y="0" width="47" height="49" uuid="01f2b597-4cc0-4fa2-a247-e23cf72e6a55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemScore}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="165" y="-1" width="498" height="50" uuid="25a7bfee-be5f-4738-bc9f-8711ad524cc6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="宋体" size="10" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemDetail}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-26" x="12" y="49" width="797" height="1" uuid="bb1a26ed-62ca-4af0-b3cb-4cdeac971c8c"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50" splitType="Stretch"/>
+	</lastPageFooter>
+	<summary>
+		<band height="50" splitType="Stretch"/>
+	</summary>
+</jasperReport>

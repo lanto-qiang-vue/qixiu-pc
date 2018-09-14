@@ -1,0 +1,1011 @@
+
+/*说明：body与content均有以页面名称命名的类，以作区分。 body为全称(白背景则无) content为缩写！*/
+
+/*头尾及重置样式公共部分*/
+
+*{
+	margin:0;
+	padding:0;
+	font-style:normal;
+	text-decoration: none;
+	font-weight:normal;
+	font-size:14px;
+	font-family:"微软雅黑";
+	color:#333333;
+	list-style: none;
+	border:none;	
+}
+
+
+
+.header{
+	width:100%;
+	background:#ff6600;
+	height:54px;
+	position: fixed;
+	top:0;
+	z-index:99;
+}
+.header .back{
+	width:16px;
+	height:28px;
+	background:url(../images/back-arrow.png) no-repeat 0 0;	
+	position: absolute;
+	left:13px;
+	top:13px;
+}
+.header h1{
+	text-align:center;
+	font-size:18px;
+	color:white;
+	line-height:54px;
+	margin:0px;
+}
+.content{
+	padding-top:54px; /*拉开绝对定位浮动层的差距 */
+}
+
+
+.title-header{
+	width:100%;
+	background:#fff;
+	
+}
+.title-header h1{
+	text-align:center;
+	font-size:18px;
+	line-height:22px;
+	padding:5px 10px 10px 10px;
+	margin:10px;
+	border-bottom: 2px solid #4ba7f5;
+}
+.content{
+	padding:10px;
+	padding-top:15px; /*拉开绝对定位浮动层的差距 */
+}
+
+
+/*报名前置注册*/
+
+.zc form.zhuceForm{
+	padding:0 30px;
+	position: absolute;
+	left:0;top:0;
+}
+.zc .bgimg{
+	position: relative;
+	padding:0px;
+}
+.zc .bgimg img{
+	width:100%;
+}
+.zc form.zhuceForm input{
+	width:100%;
+	padding-left:3%;
+	border:1px solid #dedede;
+	background: white;
+	height:38px;
+	line-height: 38px;
+	margin-top:26px;	
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.zhece .inputBox{
+	overflow: hidden;
+}
+.zc form.zhuceForm input.zcm{
+	width:60%;
+	float:left;
+
+}
+.zc form.zhuceForm span{
+	display: block;
+	width:37%;
+	color:red;
+	margin-top:26px;
+	line-height: 48px;
+	text-align:center;
+	float:left;
+}
+.zc form.zhuceForm span:hover{
+	text-decoration: underline;
+}
+
+form.zhuceForm input[type="button"]{
+	background: #ff6600;
+	border:none;
+	color:white;
+	border-radius: 4px;
+	font-size:20px;
+}
+.company{	
+	margin-bottom:20px;
+}
+.company h1{
+	font-size:18px;
+	text-align: center;
+	color:#666666;
+}
+.company p{	
+	font-size:12px;
+	text-align: center;
+	color:#666666;
+}
+
+/*注册成功*/
+
+.suc .bgimg{
+	position: relative;
+}
+.suc .bgimg .container{
+	width:100%;
+	position: absolute;
+	left:0;top:0;
+}
+.suc .bgimg img{
+	width:100%;
+}
+.suc .text{
+	padding-top:40px;
+}
+.suc .text p{
+	text-align:center;
+	color:#666666;
+	line-height:32px;
+
+}
+.suc .text p:first-child{
+	font-size:18px;
+}
+.suc .text p span{
+	color:#e95e02;
+	font-size:18px;
+}
+.suc .icon{
+	width:64px;
+	height:64px;
+	margin:40px auto;
+	background: url(../images/success-icon.png) no-repeat 0 0
+}
+.suc .btn a{
+	display:block;
+	width:110px;
+	padding:9px 16px;
+	background: #e9432b;
+	font-size:18px;
+	margin:0 auto;
+	color:white;
+	border-radius:4px;
+	text-align: center;
+}
+
+/*帮助说明*/
+
+
+.htx .title{
+	font-size:18px;
+	text-align: center;
+	padding:16px 0;
+	border-bottom:1px solid #ddd;	
+}
+.htx p{
+	margin:20px 10px;
+	color:#666666;
+	line-height:24px;
+}
+
+
+/*科目二*/
+body.kemu2{
+	background: #f5f5f5
+}
+.km2 ul{
+	padding:0 10px;
+	background: white;
+	border-top:1px solid #ddd;	
+}
+.km2 .setion1{
+	margin:8px 0;	
+	border-bottom:1px solid #ddd;
+}
+.km2 ul li{
+	overflow: hidden;
+	padding:9px 0;
+}
+.km2 ul li .left{
+	float:left;
+	text-align: left;
+}
+.km2 ul li .right{
+	float:right;
+	text-align:right;
+}
+.km2 ul li .right span{
+	color:#ff6600;
+}
+.km2 ul .fg{
+	border-bottom:1px solid #eee;
+}
+.km2 ul li:last-child{
+	border-bottom:none;
+}
+.km2  .tongji{
+	background:#ffedc7;
+	height:46px;
+	line-height:46px;
+	text-align: center;
+	border-bottom:1px solid #ddd;
+}
+.km2 p{
+	background:white;
+	padding:10px 10px;
+}
+.km2 .btnGro{
+	background: white;
+	padding:10px;	
+}
+.km2 .btnGro a{
+	display: inline-block;
+	width:43%;
+	background:#ff3b3b;
+	padding:10px 0;
+	margin:0 2%;
+	text-align: center;
+	border-radius:4px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	color:white;
+}
+
+/*学员投诉*/
+body.complaint{
+	background: #f5f5f5
+}
+.cpt img{
+	width:100%;
+	display:block;
+}
+.cpt ul{
+	border-top:1px solid #eee;
+	border-bottom:1px solid #eee;
+	background:white;
+}
+.cpt ul li{
+	padding:14px 10px;
+}
+
+/*学员中心*/
+body.personal{
+	background: #f5f5f5;
+}
+.content.pnl{
+	padding:0;
+}
+.pnl .headerBox{
+	height:68px;
+	overflow:hidden;
+	background: url(../images/per-head.png) no-repeat right top;
+	background-color:#FF6600;
+}
+.pnl .touxiang{
+	width:70px;
+	height:70px;
+	overflow: hidden;
+	border-radius: 50%;
+	margin-left:10px;
+	margin-top:13px;
+	float:left;
+}
+.pnl .touxiang img{
+	width:100%;
+	height:80px;
+}
+.pnl  .name{
+	float:left;
+	line-height:68px;
+	margin-left:14px;
+	color:white;
+	font-size:16px;
+}
+.pnl .btn{
+	float:right;
+	line-height:58px;	
+	margin-right:10px;
+}
+.pnl .btn a{
+	padding:6px 20px;
+	background:white;
+	border-radius: 20px
+}
+
+.pnl .tips{
+	height:63px;
+	background:#fffadc;
+	overflow: hidden;	
+}
+.pnl .tips .title{
+	width:100px;
+	padding-right:2px;
+	height:63px;
+	float:left;
+	background: url(../images/tit-bg.png) no-repeat left 0;
+	text-align: center;
+	color:white;
+	font-size:18px;
+	line-height:63px;
+}
+.pnl .tips .sm{	
+	float:left;
+	margin-top:8px;
+
+}
+.pnl .tips .sm p{	
+	font-size:12px;
+	line-height:16px;
+	margin-left:4px;
+}
+.pnl ul{
+	border-top:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	background: white;
+	padding:10px;
+	margin-bottom:10px;
+}
+.pnl .wz li{
+	text-align: center;
+}
+.pnl .info li{
+	overflow: hidden;
+}
+.pnl .info li:first-child{
+	padding-bottom:10px;
+	border-bottom:1px solid #eee;
+
+}
+.pnl .info li>div .imgBox{
+	height:30px;
+	vertical-align: middle
+}
+.pnl .info li>div .imgBox img{
+	vertical-align: middle
+}
+.pnl .info li>div{
+	width:20%;
+	text-align: center;
+	margin-top:10px;
+	float:left;
+}
+.pnl .info p{
+	font-size:12px;
+	color:#666666;
+	margin-top:6px;
+}
+.pnl .list{
+	overflow:hidden;
+}
+.pnl .list li{
+	overflow: hidden;
+	position: relative;
+}
+.pnl .list li span{
+	float:left;
+	line-height:23px;
+	margin-left:10px;
+	font-size:16px;
+}
+.pnl .list li img{
+	float:left;
+	display: inline-block;
+}
+.pnl .list li span:last-child{
+	position: absolute;
+	width:7px;
+	height:14px;
+	right:0;
+	top:50%;
+	margin-top:-7px;
+	background: url(../images/r-arrow.png) no-repeat 0 center;
+}
+
+/*选择驾校*/
+body.chooseSchool{
+	background: #f5f5f5;
+}
+.chshl .inputBox{
+	padding:10px;
+	position: relative;
+	border-bottom:1px solid #ddd;
+}
+.chshl .search{	
+	width:100%;
+	padding-left:10px;	
+	background-color: white;
+	height:40px;
+	line-height: 40px;
+	border-radius:20px;
+	border:1px solid #ddd;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+}
+.chshl .inputBox .icon{
+	width:28px;
+	height:28px;
+	position: absolute;
+	right:20px;
+	top:16px;
+	background: url(../images/search-icon.png) no-repeat 0 0;
+}
+.chshl .decration{
+	padding:10px;
+	border-bottom:1px solid #ddd;
+}
+.chshl .list{
+	background: white
+}
+.chshl .list .sx{
+	padding:10px;
+	overflow: hidden;
+	border-bottom:1px solid #ddd;
+}
+.chshl .list .sx div{
+	width:50%;
+	text-align: center;
+	float:left;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+
+}
+.chshl .list .sx .area{
+	border-right:1px solid #ddd;
+}
+.chshl .list .sx div a{
+	color:#adadad;
+	padding-right:18px;
+	background: url(../images/solid-arrow.png) no-repeat right center;
+}
+.chshl .list ul li{
+	padding:12px 10px 3px 10px;
+	position: relative;
+	border-bottom:1px solid #ddd;
+}
+.chshl .list ul li h1{
+	margin-bottom:5px;
+}
+.chshl .list .xx{
+	overflow: hidden;
+}
+.chshl .list .xx p{
+	float:left;
+	font-size:12px;
+	margin-right:18px;
+	line-height:20px;
+}
+.chshl .list .xx p:last-child{
+	margin-right:0;
+}
+.chshl .list .xx p span{
+	color:#ff6600;
+	font-size:12px;
+}
+.chshl .list .listIcon{
+	width:7px;
+	height:14px;
+	position: absolute;
+	right:10px;
+	top:50%;
+	margin-top:-7px;
+	background:url(../images/r-arrow.png) no-repeat 0 0;
+}
+
+/*选择驾校详细页面*/
+.chshl-xx .baseInfo{
+	border-bottom:1px solid #ddd;
+	padding:0 10px;
+}
+.chshl-xx .baseInfo li{
+	border-bottom:1px solid #ddd;
+	overflow: hidden;
+	padding:10px 0;
+}
+.chshl-xx .baseInfo li:last-child{
+	border-bottom:none;
+}
+.chshl-xx .baseInfo li h1{
+	margin-top:10px;	
+	font-size:16px;
+
+}
+.chshl-xx .baseInfo .pos{
+	position: relative;
+}
+.chshl-xx .baseInfo .pos .submit{
+	padding:8px 10px;
+	background:#ff6600; 
+	position: absolute;
+	right:0px;
+	top:10px;
+	border-radius: 4px;
+	color:white;
+
+}
+.chshl-xx .baseInfo p{
+	padding-left:18px;
+	line-height:22px;
+	margin:0px;	
+}
+
+
+.chshl-xx .baseInfo .pingfen p:first-child{	
+	background: url(../images/pingfen-icon.png) no-repeat left center;
+}
+.chshl-xx .baseInfo .pos p:first-child{	
+	background: url(../images/pos-icon.png) no-repeat left center;
+}
+
+.chshl-xx .title{
+	padding:10px;
+	padding-left:28px;
+	background: url(../images/pos-icon.png) no-repeat 10px center;
+	background-color:#f7f7f7;
+	border-bottom:1px solid #ddd;
+}
+.chshl-xx .cd li{
+	padding:10px;
+	border-bottom:1px solid #ddd;
+}
+.chshl-xx .cd li p{
+	line-height: 22px;
+	margin:0px;
+}
+
+.chshl-xx .zz{
+	width:100%;
+	height:100%;
+	position: fixed;
+	left:0;
+	top:0;
+	z-index:999;	
+	background:#848484;
+	opacity:0.7;
+}
+.chshl-xx .popUp{
+	width:100%;
+	position: fixed;
+	top:10%;	
+	z-index:1001;		
+	padding:10px;
+	-webkit-box-sizing:border-box;
+
+}
+.chshl-xx .popUp .textBox{
+	background:white;
+	padding:10px;
+	border-radius:10px;
+}
+.chshl-xx .popUp .textBox li{
+	vertical-align: top;
+}
+.chshl-xx .popUp .textBox li,.chshl-xx .popUp .textBox span{
+	font-size:12px;
+}
+.chshl-xx .popUp .textBox li{
+	padding:10px 0px;
+	border-bottom:1px solid #eee;
+}
+.chshl-xx .popUp .textBox li .left{
+	font-size:12px;
+	display: inline;
+}
+.chshl-xx .popUp .textBox span{
+	margin-left:20px;
+}
+.chshl-xx .popUp .textBox select{
+	margin-left:16px;
+	font-size:12px;
+}
+.chshl-xx .popUp .textBox textarea{	
+	border:1px solid #eee;
+	margin-left:20px;
+	vertical-align: top;
+	padding:4px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	font-size:12px;
+}
+.chshl-xx .popUp .textBox select option{
+	font-size:12px;
+}
+.chshl-xx .popUp .textBox li:last-child{
+	border:none;
+}
+.chshl-xx .btn {
+	margin:10px 0;
+}
+.chshl-xx .btn a{
+	display: block;
+	padding:8px 0;
+	text-align: center;
+	color:white;
+	background: #fd4e4e;
+}
+
+/*选择辖区*/
+.content.ar{
+	padding:0;
+}
+.ar  .sx{
+	padding:0px 10px 5px 10px;
+	overflow: hidden;
+	border-bottom:1px solid #ddd;
+}
+.ar  .sx div{
+	width:50%;
+	text-align: center;
+	float:left;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+
+}
+.ar  .sx .area{
+	border-right:1px solid #ddd;
+}
+.ar  .sx div a{
+	padding-right:18px;
+	background: url(../images/solid-arrow.png) no-repeat right center;
+}
+.ar .sx .active a{
+	color:#eb4f38!important;
+	background: url(../images/active-arrow.png) no-repeat right center!important;
+}
+.ar ul li{
+	padding:6px 0px;
+	padding-left:0;
+	border-bottom:1px solid #ddd;
+}
+.ar ul li span{
+	padding-left:10px;
+}
+.ar ul li.current{
+	background: #f3f3f3
+}
+.ar>ul{
+	position: relative;
+}
+.ar ul li.current>span{	
+	border-left:2px solid #eb4f38;
+}
+.ar .subList {
+	width:100%;
+	float:right;
+	top:0;
+	right:0;
+	background: white;
+	margin-right:0px;
+	border-left:1px solid #ddd;
+	border-right:1px solid #ddd;
+	border-top:1px solid #ddd;
+}
+.ar .subList .current span{
+	border-left:2px solid #eb4f38;
+}
+
+/*学时查询*/
+body.checkTime{
+	background: #f5f5f5
+}
+.cht .tabCard{	
+	display:box;
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-box;
+	padding:0;
+	box-sizing:border-box;
+}
+.cht .tabCard li{	
+	box-flex:1;
+	-webkit-box-flex:1;
+	-ms-box-flex:1;
+	-moz-box-flex:1;
+	text-align: center;
+	
+}
+.cht .tabCard .active{
+	border-bottom:2px solid #eb4f38;
+}
+.cht ul{
+	padding:0 10px;
+	background: white;
+	border-top:1px solid #ddd;	
+}
+
+.cht ul li{
+	overflow: hidden;
+	padding:9px 0;
+}
+.cht ul li .left{
+	float:left;
+	text-align: left;
+}
+.cht ul li .right{
+	float:right;
+	text-align:right;
+}
+.cht ul li .right span{
+	color:#ff6600;
+}
+.cht ul .fg{
+	border-bottom:1px solid #eee;
+}
+.cht ul li:last-child{
+	border-bottom:none;
+}
+.cht  .tongji{
+	background:#ffedc7;
+	height:46px;
+	line-height:46px;
+	text-align: center;
+	border-bottom:1px solid #ddd;
+}
+
+
+/*报名意向*/
+body.baoming{
+	background: #f5f5f5
+}
+
+.bm ul{
+	padding:10px;
+	background: white;
+	border-top:1px solid #ddd;	
+	border-bottom:1px solid #ddd;
+	margin-top:10px;
+}
+
+.bm ul li{
+	overflow: hidden;
+	padding:4px 0;
+}
+.bm ul li div{
+	float:left;	
+}
+
+/*学员资料*/
+body.userInfo{
+	background: #f5f5f5
+}
+
+.user ul{
+	padding:10px;
+	background: white;
+	border-top:1px solid #ddd;	
+	border-bottom:1px solid #ddd;
+	margin-top:10px;
+	position: relative;
+}
+.user ul h1{
+	padding-bottom:10px;
+	font-size:14px;
+	margin-top:5px;
+	border-bottom:1px solid #eee;
+}
+
+.user ul li{
+	overflow: hidden;
+	line-height:24px;
+	padding-left:6px;
+}
+.user ul .first{
+	margin-top:10px;
+}
+.user ul li div{
+	float:left;	
+	font-size:12px;
+
+}
+.user .touxiang{
+	width:80px;
+	height:110px;
+	position: absolute;
+	right:10px;
+	top:85px;
+	overflow: hidden;
+	border:1px solid #ccc;
+}
+.user .touxiang img{
+	display: block;
+	width:78px;
+	height:108px;
+	margin-top:1px ;
+	margin-left:1px;
+}
+
+/*对驾校及教练评价*/
+body.jiaxiao{
+	background: #f5f5f5;
+}
+.jx .text{
+	padding:10px;
+}
+.jx .text span{
+	color:#ff6600;
+}
+.jx .pj {
+	padding:10px;
+	margin:0px;
+	background: white;
+	border-top:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+	overflow: hidden;
+}
+.jx .pj div{
+	float:left;
+}
+.jx .pj form{
+	float:left;
+	margin-left:10px;
+}
+.jx .pj form .inputGro{
+	vertical-align: middle;
+	margin-right:16px;
+}
+.jx .pj form .inputGro:last-child{
+	margin-right:0;
+}
+.jx .pj form label{
+	display: inline-block;
+	width:22px;
+	height:22px;
+	border:1px solid #ccc;
+	border-radius: 4px;
+	vertical-align: middle;
+	margin-right:6px;
+	opacity:0.3;
+}
+.jx .pj form label.toggle{
+	border-color:white;
+	background:url(../images/gou.png) no-repeat center center; 
+	background-color:#eb4f38;
+	opacity:1.0;
+	transition:opacity 1s;
+	-webkit-transition:opacity 1s;
+	-o-transition:opacity 1s;
+	-moz-transition:opacity 1s;
+	
+}
+.jx .pj form  input{
+	display: none;
+}
+.jx .pj span{
+	font-size:18px;
+	color:#eb4f38;
+}
+.jx .pf{
+	padding:0px 10px;
+	background: white;
+	margin:10px 0;
+	border-top:1px solid #ddd;
+	border-bottom:1px solid #ddd;
+}
+.jx .pf h1{
+	font-size:16px;
+	padding-bottom:10px;
+	border-bottom:1px solid #eee;
+}
+.jx .pf .pfGro{
+	margin-top:10px;
+}
+.jx .pf .pfGro>li{
+	overflow:hidden;
+	padding-left:14px;
+	margin:10px 0;
+}
+.jx .pf .pfGro div{
+	float:left;
+	line-height:25px;
+}
+.jx .star{
+	float:left;
+	margin-right:8px;
+	margin-left:8px;
+}
+.jx .star li{
+	width:24px;
+	height:23px;
+	margin:0 2px;
+	float:left;
+	background: url(../images/star-gray.png) no-repeat center center;
+}
+.jx .star li.active{
+	background: url(../images/star-yellow.png) no-repeat center center;
+	transition:background 1s;
+	-webkit-transition:background 1s;
+	-o-transition:background 1s;
+	-moz-transition:background 1s;
+}
+.jx .server textarea{
+	width:100%;
+	height:100px;
+	border:1px solid #eee;
+	margin-top:10px;
+	padding:4px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-ms-box-sizing:border-box;
+}
+.jx .btn{	
+	padding:0 10px;
+	margin-bottom:20px;
+}
+.jx .btn a{
+	display: block;
+	padding:8px 0;
+	background: #ff3300;
+	text-align: center;
+	color:white;
+	border-radius: 4px;
+
+}
+.jx select{
+	border:1px solid #ddd;
+	margin:0 4px;
+}
+
+/*信息查询 /信息公布 */
+body.checkInfo{
+	background: #454a57;
+}
+.chi ul{
+	padding:10px;	
+	font-size:16px ;
+	color:white;
+}
+.chi ul li{
+	padding-left:20px;
+	margin:2px 0;
+	background: url(../images/point.png) no-repeat left center;
+	line-height:24px;
+	color:#ffddac;	
+	font-size:12px;
+}
+
+.chi ul li a{
+	color:#ffddac;	
+	font-size:12px;
+	
+}
+
+/* /学车流程*/
+
+body.liucheng{
+	background: #454a57;
+}
+.lc ul{
+	padding:10px;	
+	font-size:16px ;
+	color:white;
+}
+.lc ul li{
+	padding-left:20px;
+	margin:2px 0;
+	background: url(../images/point.png) no-repeat left center;
+	line-height:24px;
+	color:#ffddac;	
+	font-size:12px;
+}
+.lc ul li:first-child{
+	margin-top:10px;
+}
+

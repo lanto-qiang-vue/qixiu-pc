@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
+
+
+    <import resource="classpath*:applicationContext-util.xml"/>
+    <!-- <import resource="classpath*:applicationContext-email.xml"/> -->
+    <import resource="classpath*:applicationContext-dao.xml"/>
+    <import resource="classpath*:applicationContext-service.xml"/>
+    <import resource="classpath*:applicationContext-biz.xml"/>
+    <import resource="classpath*:applicationContext-integration.xml"/>
+    <import resource="classpath*:applicationContext-virgo.xml"/>
+    <import resource="classpath*:applicationContext-cache.xml"/>
+    <import resource="classpath*:applicationContext-codeList.xml"/>
+    <import resource="classpath*:applicationContext-session.xml"/>
+    <import resource="classpath*:applicationContext-activemq-container.xml"/>
+    <import resource="classpath*:applicationContext-activemq.xml"/>
+    <!--webservice cxf服务端-->
+    <import resource="classpath*:applicationContext-ws-server.xml"/>
+    <!--pegasus 服务端-->
+    <import resource="classpath*:applicationContext-pegasus-provider.xml"/>
+    <import resource="classpath*:applicationContext-resources-j*.xml"/>
+    <!-- <import resource="spring-security.xml"/> -->
+	<context:component-scan base-package="com.huifu.npay.provider">
+    	<context:include-filter type="annotation" expression="com.huifu.npay.provider.common.annotation.RequestBeans"/> 
+    </context:component-scan>  
+
+    <bean class="com.huifu.pyxis.client.PyxisPlaceholderConfigurer"/>
+    <bean class="com.huifu.saturn.common.menumanager.MenuManager"/>
+</beans>

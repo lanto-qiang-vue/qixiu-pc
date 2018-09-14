@@ -1,0 +1,327 @@
+.header_manage {
+	border-bottom: 1px solid #dbdee1;
+	height: 60px;
+	background-color: #FFF;
+	font-family: 宋体;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.header_wrap_manage {
+	padding: 0 0 0 10px;
+	max-width: 1404px;
+	word-wrap: none
+}
+
+.bindNumber-btns {
+	font-size: 14px
+}
+
+.header_manage .h2-spec,.header_manage h2 {
+	font-family: 'Microsoft Yahei', Tahoma, Arial;
+	font-size: 28px;
+	float: left;
+	color: #157fcc;
+	font-weight: bold;
+	font-family: 宋体;
+	line-height: 60px
+}
+
+.header_manage h2 {
+	color: #555;
+	display: inline-block;
+	font-weight: 400
+}
+
+.header_manage .h2-spec {
+	margin-left: 7px
+}
+
+.header_manage .options {
+	float: right
+}
+
+.header_manage .options>li {
+	float: left;
+	height: 60px;
+	padding: 0 16px 0 44px;
+	line-height: 64px;
+	position: relative;
+	cursor: pointer;
+	color: #787878
+}
+
+.header_manage .options>li:hover {
+	background-color: #e8e8e8
+}
+
+.header_manage .options>li.try-new {
+	padding: 0 16px;
+	cursor: default
+}
+
+.header_manage .options>li.try-new a {
+	display: block;
+	width: 100px;
+	height: 0;
+	margin-top: 18px;
+	padding-top: 24px;
+	overflow: hidden;
+	opacity: .9;
+	background: url(../images/try-new.png) no-repeat
+}
+
+.header_manage .options>li.try-new a:hover {
+	opacity: 1
+}
+
+.header_manage .options>li.try-new:hover {
+	background-color: inherit
+}
+
+.header_manage .options a:hover {
+	text-decoration: none;
+	color: inherit
+}
+
+.header_manage .options .infoNum {
+	height: 15px;
+	display: block;
+	background-color: #fa552b;
+	color: #fff;
+	border-radius: 7px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	position: absolute;
+	top: 13px;
+	left: 25px;
+	line-height: 15px;
+	text-align: center;
+	padding: 0 3px;
+	min-width: 13px
+}
+
+.header_manage .options .hide {
+	display: none
+}
+
+.header_manage .options li i {
+	width: 19px;
+	height: 18px;
+	display: block;
+	position: absolute;
+	top: 20px;
+	left: 16px
+}
+
+.header_manage .options .app-center i {
+	background: url(../images/headerv2.1.png) -101px -101px no-repeat;
+	top: 22px
+}
+
+.header_manage .options .info i {
+	background: url(../images/headerv2.1.png) -1px -101px no-repeat;
+	top: 22px
+}
+
+.header_manage .options .cart i {
+	background: url(../images/headerv2.1.png) -81px -101px no-repeat;
+	top: 21px
+}
+
+.header_manage .options .user i {
+	background: url(../images/headerv2.1.png) -21px -101px no-repeat;
+	top: 21px
+}
+
+.header_manage .options .user .bindMobile,.header_manage .options .user .renewal
+	{
+	position: absolute;
+	left: 25px;
+	top: 40px
+}
+
+.header_manage .options .setting i {
+	background: url(../images/headerv2.1.png) -41px -101px no-repeat;
+	top: 22px
+}
+
+.header_manage .options .headerService i {
+	background: url(../images/headerv2.1.png) -61px -101px no-repeat;
+	top: 21px
+}
+
+.header_manage .options>li:hover .container {
+	display: block
+}
+
+.header_manage .options .container {
+	width: 120px;
+	position: absolute;
+	top: 60px;
+	z-index: 999;
+	font-family: "å®‹ä½“";
+	font-size: 12px;
+	background-color: #fff;
+	box-shadow: 1px 1px 10px #adadad;
+	-moz-box-shadow: 1px 1px 10px #adadad;
+	-webkit-box-shadow: 1px 1px 10px #adadad;
+	display: none
+}
+
+.header_manage .options .info .container,.header_manage .options .setting .container,.header_manage .options .user .container
+	{
+	left: 0
+}
+
+.header_manage .options .headerService .container {
+	right: 0
+}
+
+.header_manage .options .headerService .container .tel {
+	cursor: default;
+    height: 114px;
+    line-height: 25px;
+    padding: 5px 0px;
+    background-color: #00a7e4;
+    color: #fff;
+    text-align: center;
+}
+
+.header_manage .options .container li {
+	height: 37px;
+	line-height: 37px;
+	padding-left: 20px;
+	color: #555
+}
+
+.header_manage .options a {
+	display: inline-block;
+	text-decoration: none;
+    cursor: pointer;
+}
+
+.header_manage .options .info .container a {
+	color: #555;
+	text-decoration: none
+}
+
+.header_manage .menu2 {
+	position: relative
+}
+
+.header_manage .options .container a .busnessMessageNum,.header_manage .options .container a .systemMessageNum,.header_manage .options .container a .updateMessageNum
+	{
+	position: absolute;
+	left: 50px;
+	top: 0
+}
+
+.header_manage .options .container a .ui-new-func {
+	right: -10px;
+	top: 5px
+}
+
+.header_manage .options .container li:hover {
+	background-color: #e8e8e8
+}
+
+.header_manage .options .new-con-p .ui-new-func {
+	top: 18px;
+	right: -5px
+}
+
+.header_manage .options .cart .new-con-p,.header_manage .options .user .new-con-p
+	{
+	position: absolute;
+	right: 10px;
+	top: 0
+}
+
+.header_manage .options .user .userName {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	min-width: 24px;
+	max-width: 108px;
+	color: #157fcc;
+	display: inline-block
+}
+
+.header_manage .options .info .container {
+	width: 125px
+}
+
+.header_manage .options .info a {
+	float: left;
+	font-size: 12px;
+	height: 37px
+}
+
+.header_manage .options .info a em {
+	font-style: normal
+}
+
+.header_manage .options .info .system-notice a:nth-child(1) {
+	width: 256px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden
+}
+
+.header_manage .options .info .system-notice a:nth-child(2) {
+	width: 40px;
+	color: #999;
+	float: right
+}
+
+.header_manage .options .setting .container,.header_manage .options .user .container
+	{
+	width: 131px
+}
+
+.header_wrap_manage .options .entry {
+	margin: 20px 18px 20px 5px;
+	border-radius: 2px;
+	background-color: #f9633e !important;
+	padding: 0 7px;
+	height: 20px;
+	line-height: 20px;
+	cursor: default
+}
+
+.print-table-wrap tbody td,.print-table-wrap th {
+	border: 1px solid #5c5c5c;
+	table-layout: fixed;
+	vertical-align: middle
+}
+
+.header_wrap_manage .options .entry a {
+	color: #fff
+}
+.new-con, .new-con-p {
+    position: relative;
+    display: inline-block;
+    color: #555;
+}
+.header_manage .options .info a em {
+    font-style: normal;
+}
+.red, a.red:hover {
+    color: red!important;
+}
+
+.x-tab-bar-default {
+    background-color: #e2eff8;
+}
+.x-tab-bar-body-default-top {
+    padding-bottom: 0px;
+}
+.x-panel-header-default-horizontal {
+    padding: 5px;
+}
+.x-window-default{
+    z-index: 19200 !important;
+}
+.x-window.x-message-box{
+	z-index: 19210 !important;
+}

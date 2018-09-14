@@ -1,0 +1,855 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.lanto.shqixiu</groupId>
+	<artifactId>lanto-shqixiu</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<inceptionYear>2017</inceptionYear>
+	<name>${project.artifactId} - ${project.version}</name>
+	<url>https://www.shanghaiqixiu.org</url>
+
+	<properties>
+		<!-- ============== skip test failure ignore ======================== -->
+		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+
+		<!-- ============== Generic properties ============================== -->
+		<java.version>1.8</java.version>
+		<self.version>0.0.1-SNAPSHOT</self.version>
+		<runtime.version>0.0.1-SNAPSHOT</runtime.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jarExpandPath>../lib</jarExpandPath>
+
+		<!-- ============== Normal dependency ============================== -->
+		<junit.version>4.12</junit.version>
+		<jetty.version>9.2.19.v20160908</jetty.version>
+		<activemq.version>5.14.0</activemq.version>
+		<jackson.version>2.8.5</jackson.version>
+		<spring.version>4.3.3.RELEASE</spring.version>
+		<spring-session.version>1.3.0.RELEASE</spring-session.version>
+		<cxf.version>3.1.9</cxf.version>
+		<mybatis.version>3.4.1</mybatis.version>
+		<mybatis-spring.version>1.3.0</mybatis-spring.version>
+		<mybatis-ehcache.version>1.0.0</mybatis-ehcache.version>
+		<h2.version>1.4.192</h2.version>
+		<commons-io.version>2.5</commons-io.version>
+		<commons-lang3.version>3.5</commons-lang3.version>
+		<commons2.version>2.1.1</commons2.version>
+		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<commons-fileupload.version>1.3.2</commons-fileupload.version>
+		<httpclient.version>4.5.2</httpclient.version>
+		<slf4j.version>1.7.22</slf4j.version>
+		<logback.version>1.1.8</logback.version>
+		<mysql.version>6.0.4</mysql.version>
+		<snakerflow.version>2.5.1</snakerflow.version>
+		<gson.version>2.7</gson.version>
+		<aspectjweaver.version>1.8.10</aspectjweaver.version>
+		<fastjson.version>1.2.17</fastjson.version>
+		<itextpdf.version>5.2.0</itextpdf.version>
+		<servlet-api.version>2.5</servlet-api.version>
+		<jsoup.version>1.10.1</jsoup.version>
+		<htmlunit.version>2.27</htmlunit.version>
+		<htmlunit-driver.version>2.27</htmlunit-driver.version>
+		<selenium-support.version>3.4.0</selenium-support.version>
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+		<poi.version>3.15</poi.version>
+		<mail.version>1.6.0</mail.version>
+		<springfox-version>2.6.1</springfox-version>
+	</properties>
+
+	<!-- ============== maven本地仓库配置 ===================================== -->
+	<distributionManagement>
+		<repository>
+			<id>repo.release</id>
+			<name>Releases</name>
+			<url>
+                http://maven.sveil.com/content/repositories/releases
+            </url>
+		</repository>
+		<snapshotRepository>
+			<id>repo.snapshots</id>
+			<name>Snapshots</name>
+			<url>
+                http://maven.sveil.com/content/repositories/snapshots
+            </url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- ============== Self dependency ============================= -->
+			<dependency>
+				<groupId>com.lanto.shqixiu.biz</groupId>
+				<artifactId>lanto-shqixiu-biz</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.dal</groupId>
+				<artifactId>lanto-shqixiu-dal</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.provider</groupId>
+				<artifactId>lanto-shqixiu-provider</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.shcheck</groupId>
+				<artifactId>lanto-shqixiu-shcheck</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.shwgc</groupId>
+				<artifactId>lanto-shqixiu-shwgc</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.shwgm</groupId>
+				<artifactId>lanto-shqixiu-shwgm</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.shwgweb</groupId>
+				<artifactId>lanto-shqixiu-shwgweb</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lanto.shqixiu.util</groupId>
+				<artifactId>lanto-shqixiu-util</artifactId>
+				<version>${self.version}</version>
+			</dependency>
+
+			<!-- ==================== WebService cxf ================================= -->
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+			<dependency>
+				<groupId>javax.activation</groupId>
+				<artifactId>activation</artifactId>
+				<version>1.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/antlr/antlr -->
+			<dependency>
+				<groupId>antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>2.7.7</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/aopalliance/aopalliance -->
+			<dependency>
+				<groupId>aopalliance</groupId>
+				<artifactId>aopalliance</artifactId>
+				<version>1.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>4.0_RC1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjweaver</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.atomikos/atomikos-util -->
+			<dependency>
+				<groupId>com.atomikos</groupId>
+				<artifactId>atomikos-util</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>batik</groupId>
+				<artifactId>batik-all</artifactId>
+				<version>1.7</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-transcoder -->
+			<dependency>
+				<groupId>org.apache.xmlgraphics</groupId>
+				<artifactId>batik-transcoder</artifactId>
+				<version>1.8</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/cglib/cglib-nodep -->
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>2.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.8.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
+			<dependency>
+				<groupId>commons-collections</groupId>
+				<artifactId>commons-collections</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-dbcp/commons-dbcp -->
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils -->
+			<dependency>
+				<groupId>commons-dbutils</groupId>
+				<artifactId>commons-dbutils</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-digester/commons-digester -->
+			<dependency>
+				<groupId>commons-digester</groupId>
+				<artifactId>commons-digester</artifactId>
+				<version>2.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-logging/commons-logging -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/commons-pool/commons-pool -->
+			<dependency>
+				<groupId>commons-pool</groupId>
+				<artifactId>commons-pool</artifactId>
+				<version>1.5.4</version>
+			</dependency>
+
+			<!-- commons-shwgpt-softbase-dev.jar -->
+			<dependency>
+				<groupId>com.github.shcheck</groupId>
+				<artifactId>commons-shwgpt-softbase-dev</artifactId>
+				<version>0.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.shwgc</groupId>
+				<artifactId>commons-shwgpt-softbase-dev</artifactId>
+				<version>0.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.shwgm</groupId>
+				<artifactId>commons-shwgpt-softbase-dev</artifactId>
+				<version>0.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.shwgweb</groupId>
+				<artifactId>commons-shwgpt-softbase-dev</artifactId>
+				<version>0.0.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/dom4j/dom4j -->
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>1.0.29</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/net.sf.ezmorph/ezmorph -->
+			<dependency>
+				<groupId>net.sf.ezmorph</groupId>
+				<artifactId>ezmorph</artifactId>
+				<version>1.0.6</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.1.9</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.19</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>2.0.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.htmlparser/htmlparser -->
+			<dependency>
+				<groupId>org.htmlparser</groupId>
+				<artifactId>htmlparser</artifactId>
+				<version>1.6</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.lowagie.text</groupId>
+				<artifactId>iTextAsian</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-core-asl</artifactId>
+				<version>1.9.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+			<dependency>
+				<groupId>org.codehaus.jackson</groupId>
+				<artifactId>jackson-mapper-asl</artifactId>
+				<version>1.9.4</version>
+			</dependency>
+
+			<dependency>
+				<groupId>net.sf.jacob-project</groupId>
+				<artifactId>jacob</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports -->
+			<dependency>
+				<groupId>net.sf.jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>5.1.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.15.0-GA</version>
+			</dependency>
+
+			<dependency>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>1.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/jaxen/jaxen -->
+			<dependency>
+				<groupId>jaxen</groupId>
+				<artifactId>jaxen</artifactId>
+				<version>1.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.icu</groupId>
+						<artifactId>icu4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/cn.jpush.api/jiguang-common -->
+			<dependency>
+				<groupId>cn.jpush.api</groupId>
+				<artifactId>jiguang-common</artifactId>
+				<version>1.0.7</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>2.3</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/cn.jpush.api/jpush-client -->
+			<dependency>
+				<groupId>cn.jpush.api</groupId>
+				<artifactId>jpush-client</artifactId>
+				<version>3.3.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jstl</artifactId>
+				<version>1.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/junit/junit -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.1</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.17</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.38</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>3.12-beta1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>3.12-beta1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml-schemas</artifactId>
+				<version>3.12-beta1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-scratchpad</artifactId>
+				<version>3.12-beta1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.esms</groupId>
+				<artifactId>postmsg-ump</artifactId>
+				<version>2.4</version>
+			</dependency>
+
+			<!-- PrettySQLFormatter.jar -->
+			<dependency>
+				<groupId>com.github</groupId>
+				<artifactId>prettysqlformatter</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>2.4.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.w3c.css/sac -->
+			<dependency>
+				<groupId>org.w3c.css</groupId>
+				<artifactId>sac</artifactId>
+				<version>1.3</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.2</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.7.2</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.github.snakerflow/snaker-core -->
+			<dependency>
+				<groupId>com.github.snakerflow</groupId>
+				<artifactId>snaker-core</artifactId>
+				<version>2.5.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>4.0.0.Release</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-expression -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-expression</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-messaging</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>4.0.1.RELEASE</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-websocket</artifactId>
+				<version>4.0.0.RELEASE</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.atomikos/transactions -->
+			<dependency>
+				<groupId>com.atomikos</groupId>
+				<artifactId>transactions</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.atomikos/transactions-api -->
+			<dependency>
+				<groupId>com.atomikos</groupId>
+				<artifactId>transactions-api</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.atomikos/transactions-jdbc -->
+			<dependency>
+				<groupId>com.atomikos</groupId>
+				<artifactId>transactions-jdbc</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.atomikos/transactions-jta -->
+			<dependency>
+				<groupId>com.atomikos</groupId>
+				<artifactId>transactions-jta</artifactId>
+				<version>4.0.4</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/xml-apis/xml-apis-ext -->
+			<dependency>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis-ext</artifactId>
+				<version>1.3.04</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.3.1</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+			<dependency>
+				<groupId>com.google.zxing</groupId>
+				<artifactId>core</artifactId>
+				<version>3.2.1</version>
+			</dependency>
+
+			<!-- ============== Javax ======================================= -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+			</dependency>
+
+			<!-- ============== Slf4j ======================================= -->
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jcl-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>jul-to-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/.svn/</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/.svn/</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.10</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.19.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.10</version>
+					<configuration>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>false</downloadJavadocs>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-maven-plugin</artifactId>
+					<version>${jetty.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<jdk>${java.version}</jdk>
+			</activation>
+			<properties>
+				<maven.compiler.source>${java.version}</maven.compiler.source>
+				<maven.compiler.target>${java.version}</maven.compiler.target>
+				<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<jdk>${java.version}</jdk>
+			</activation>
+			<properties>
+				<maven.compiler.source>${java.version}</maven.compiler.source>
+				<maven.compiler.target>${java.version}</maven.compiler.target>
+				<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+			</properties>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<jdk>${java.version}</jdk>
+			</activation>
+			<properties>
+				<maven.compiler.source>${java.version}</maven.compiler.source>
+				<maven.compiler.target>${java.version}</maven.compiler.target>
+				<maven.compiler.compilerVersion>${java.version}</maven.compiler.compilerVersion>
+			</properties>
+		</profile>
+	</profiles>
+
+	<modules>
+		<module>biz</module>
+		<module>dal</module>
+		<module>provider</module>
+		<module>shcheck</module>
+		<module>shwgc</module>
+		<module>shwgm</module>
+		<module>shwgweb</module>
+		<module>util</module>
+	</modules>
+</project>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="exam1" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="98efa568-795a-4421-ba72-41762290cc69">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="corpName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="uploadDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="examYear" class="java.lang.Integer" isForPrompting="false"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="555" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-1" x="82" y="86" width="632" height="76" uuid="cefe6b32-8214-4ab4-86ef-b0814e551303"/>
+				<textElement textAlignment="Center">
+					<font fontName="宋体" size="36" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[上海市机动车维修企业质量信誉考核]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="259" y="169" width="223" height="69" uuid="c8f800b4-212f-41da-9c86-010750e40038"/>
+				<textElement textAlignment="Center">
+					<font fontName="宋体" size="36" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申请表]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="154" y="268" width="128" height="32" uuid="c7a1bfcd-d60e-4839-a73e-5e96ad52262a"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申请单位：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="145" y="430" width="446" height="43" uuid="7b9d35fe-2df8-4f5f-9616-276bec2313f3"/>
+				<textElement textAlignment="Center">
+					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[上海市机动车维修与驾驶员培训行业管理处编制]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="154" y="314" width="128" height="34" uuid="b15bfa70-56ca-44d1-8c1d-0853f03e4934"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="18" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[考核年度：
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="154" y="365" width="128" height="31" uuid="7cb01115-fd9a-4c27-ab95-a4844c67e5eb"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="宋体" size="18" isBold="true" isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[申请时间：
+]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="245" y="300" width="300" height="1" uuid="bf4dda67-bf7d-4dca-9102-f09470b1eacb"/>
+			</line>
+			<line>
+				<reportElement key="line-2" x="250" y="348" width="300" height="1" uuid="cb5c7e5c-2303-414a-89d1-2533a0308162"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="250" y="396" width="300" height="1" uuid="006a3f99-ae1d-46b3-bc79-23074bb30065"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="245" y="280" width="300" height="18" uuid="2eea28a9-a3fc-4d08-88e1-6cde9f4ffdba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{corpName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="250" y="377" width="300" height="18" uuid="92158f92-be1b-480c-8eaa-bb88f13758c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format($P{uploadDate})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="250" y="329" width="300" height="18" uuid="9031ffa0-d70f-40ac-ab49-e1082ef84468"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{examYear}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

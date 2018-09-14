@@ -1,0 +1,213 @@
+.top{
+    width: 100%;
+    height: 90px;
+    border-bottom: 1px solid #f1f1f1;
+    text-align: center;
+    padding: 10px;
+    /*overflow: hidden;*/
+    background-color: white;
+    position: relative;
+}
+.top .title{
+    float: left;
+    /*width: 100%;*/
+}
+.top .title img{
+    width: 70px;
+    float: left;
+}
+.top .title div{
+    float: left;
+    color: #333333;
+}
+.top .title div h1{
+    font-weight: 400;
+    height: 45px;
+    line-height: 45px;
+}
+.top .login{
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    height: 40px;
+    line-height: 40px;
+    color: #4285f4;
+}
+.top .login a{
+    padding: 0 10px;
+    color: #4285f4;
+}
+
+.top .login .switch{
+    display: inline-block;
+    position: relative;
+}
+.top .login .switch a{
+    display: none;
+    position: absolute;
+    top: 38px;
+    background-color: #f5f5f5;
+    color: #6091b7;
+    z-index: 1;
+    width: 100px;
+    text-align: center;
+}
+.top .login .switch a.show{
+    position: static;
+    display: block;
+    color: white;
+    background-color: #6091b7;
+}
+.top .login .switch a:hover{
+    background-color: #0c6dbe;
+    color: white;
+}
+.top .login .switch:hover a{
+    display: block;
+}
+
+.nav_top .menu{
+    /*width: 100%;*/
+    height: 40px;
+    overflow: hidden;
+    /*border-bottom: 1px solid #4285f4;*/
+    cursor: pointer;
+    /*margin: 0 5px;*/
+}
+.nav_top .menu li{
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    padding: 0 20px;
+    float: left;
+}
+.nav_top .menu .service{
+    background-color: #4ba7f5;
+    color: white;
+    position: relative;
+    padding-right: 25px;
+}
+.nav_top .menu .service::after{
+    content:"";
+    width: 0;
+    height: 0;
+    border-top: 5px solid white;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    position: absolute;
+    top: 18px;
+    right: 10px;
+}
+.nav_top .parentmenu{
+    position: absolute;
+    top: 39px;
+    left: 71px;
+    padding: 10px 0 10px 10px;
+    background-color: white;
+    overflow: hidden;
+    border: 1px solid #4285f4;
+    z-index: 99999;
+    border-top: 0;
+    display: none;
+    float: left;
+}
+.nav_top .parentmenu li{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 30px;
+    padding-right: 10px;
+}
+.nav_top .parentmenu  li:nth-child(1){
+    background: url(../img/owner_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(1).active{
+    background: url(../img/owner_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(2){
+    background: url(../img/com_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(2).active{
+    background: url(../img/com_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(3){
+    background: url(../img/government_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(4){
+    background: url(../img/association_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(5){
+    background: url(../img/record_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(5).active{
+    background: url(../img/record_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(6){
+    background: url(../img/talents_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(6).active{
+    background: url(../img/talents_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(7){
+    background: url(../img/related_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(7).active{
+    background: url(../img/related_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(8){
+    background: url(../img/business_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(8).active{
+    background: url(../img/business_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(9){
+    background: url(../img/supervise_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(9).active{
+    background: url(../img/supervise_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(10){
+    background: url(../img/data_default.png) no-repeat left center;
+}
+.nav_top .parentmenu  li:nth-child(10).active{
+    background: url(../img/data_selected.png) no-repeat left center;
+}
+.nav_top .parentmenu li a{
+    font-size: 14px;
+    color: #333333;
+    white-space: nowrap
+}
+.nav_top .parentmenu li.active a{
+    color: #8ab2f4;
+}
+.nav_top .submenu{
+    background-color: white;
+    position: absolute;
+    width: 400px;
+    min-height: 420px;
+    left: 262px;
+    box-shadow: 0 0 3px #f3f3f3;
+    border-left: 1px solid #f3f3f3;
+    padding: 20px;
+    display: none;
+    z-index: 99999;
+    float: left;
+}
+.nav_top .submenu.active{
+    display: block;
+}
+.nav_top .submenu a{
+    display: block;
+    width: 33%;
+    height: 70px;
+    text-align: center;
+    float: left;
+    margin-bottom: 30px;
+}
+.nav_top .submenu a p{
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333333;
+}
+.nav_top .submenu a:hover p{
+    color: #4285f4;
+}
