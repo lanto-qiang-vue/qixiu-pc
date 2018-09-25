@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'universal',
@@ -27,12 +28,15 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    'iview/dist/styles/iview.css',
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~plugins/iview',
+    '~/plugins/axios'
   ],
 
   /*
@@ -47,8 +51,19 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    // baseURL: '/proxy/',
+    prefix: '/proxy/',
+    proxy: true,
+    // headers:{'Content-Type': "application/json; charset=utf-8"}
+    // headers:{'Content-Type': "application/x-www-form-urlencoded"}
   },
-
+  proxy: {
+    '/proxy': {
+      target: 'http://api.test.shanghaiqixiu.org/',
+      pathRewrite: {'^/proxy': ''},
+      secure: false
+    }
+  },
   /*
   ** Build configuration
   */
@@ -57,7 +72,13 @@ module.exports = {
     ** You can extend webpack config here
     */
     extend(config, ctx) {
-      
-    }
+
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        '$': 'jquery',
+      })
+    ],
+    vendor: ['iview']
   }
 }
