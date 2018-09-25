@@ -79,6 +79,8 @@ dist
 
 # IDE
 .idea
+.vscode
 
 # mac
 .DS_Store
+

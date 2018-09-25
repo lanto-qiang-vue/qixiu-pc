@@ -1,6 +1,6 @@
 # qixiu-frontend
 
-> My cat&#39;s meow Nuxt.js project
+> My riveting Nuxt.js project
 
 ## Build Setup
 

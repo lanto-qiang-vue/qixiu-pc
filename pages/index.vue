@@ -6,7 +6,7 @@
         qixiu-frontend
       </h1>
       <h2 class="subtitle">
-        My cat&#39;s meow Nuxt.js project
+        My riveting Nuxt.js project
       </h2>
       <div class="links">
         <a
@@ -33,7 +33,6 @@ export default {
 </script>
 
 <style>
-
 .container
 {
   min-height: 100vh;

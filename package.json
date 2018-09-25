@@ -1,8 +1,8 @@
 {
   "name": "qixiu-frontend",
   "version": "1.0.0",
-  "description": "My cat&#39;s meow Nuxt.js project",
-  "author": "",
+  "description": "My riveting Nuxt.js project",
+  "author": "lanto",
   "private": true,
   "scripts": {
     "dev": "nuxt",
