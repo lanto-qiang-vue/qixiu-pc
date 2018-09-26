@@ -60,7 +60,8 @@ module.exports = {
   },
   proxy: {
     '/proxy': {
-      target: 'http://api.test.shanghaiqixiu.org/',
+      // target: 'http://api.test.shanghaiqixiu.org/',
+      target: 'http://118.25.48.253:8888/',
       pathRewrite: {'^/proxy': ''},
       secure: false
     }
