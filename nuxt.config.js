@@ -29,6 +29,7 @@ module.exports = {
   */
   css: [
     'iview/dist/styles/iview.css',
+    { src: '~assets/css/common.less', lang: 'less' },
   ],
 
   /*
