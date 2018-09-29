@@ -5,7 +5,10 @@
         <div class="login-wrap">
           <div class="login-con">
 			  
-			<Card icon="log-in">
+			<Card>
+				<!--<p slot="title">
+
+        </p>-->
 				<Tabs value="name1">
 					<TabPane label="手机验证登录" name="name1">
 						<div class="login-con-in">
@@ -40,7 +43,7 @@
 								</FormItem>
 
 								<FormItem>
-									<Button type="primary" long @click="handleSubmit">验证并登录</Button>
+									<Button type="primary" long >验证并登录</Button>
 								</FormItem>
 
 								
@@ -81,7 +84,7 @@
 									</div>
 								</FormItem>
 								<FormItem>
-									<Button type="primary" long>登录</Button>
+									<Button type="primary" long @click="handleSubmit">登录</Button>
 								</FormItem>
 								
 
@@ -92,9 +95,10 @@
 				</Tabs>
 				<div>
 					<span>其他方式登录:</span>
-					<img src="../assets/img/qq_logo.png" style="width: 20px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/wx_logo.png" style="width: 28px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/zhifu_logo.png" style="width: 25px;margin-right: 10px;cursor: pointer;">
+					
+					<img src="../assets/img/login_img/qq_logo.png" style="width: 20px;margin-right: 10px;cursor: pointer;">
+					<img src="../assets/img/login_img/wx_logo.png" style="width: 28px;margin-right: 10px;cursor: pointer;">
+					<img src="../assets/img/login_img/zhifu_logo.png" style="width: 25px;margin-right: 10px;cursor: pointer;">
 				</div>
             </Card>
 			  
@@ -126,9 +130,9 @@
 				// 	url: '/user/useraccount/login',
 				// 	method: 'post',
 				// 	data: {
-				// 		"code": "string",
+				// 		"code": "",
 				// 		"loginaccount": "18100000001",
-				// 		"systemToken": "string",
+				// 		"systemToken": "",
 				// 		"userpassword": "123456"
 				// 	}
 				// }).then(res => {
@@ -210,6 +214,11 @@
     .ivu-tabs-nav {
       float: none;
       display: inline-block;
+    }
+	.ivu-card{
+      
+      font-size: 16px; 
+      
     }
   }
 </style>

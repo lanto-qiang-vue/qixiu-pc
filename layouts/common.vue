@@ -5,7 +5,7 @@
 
       <div class="top center">
         <a class="title" href="javascript:void(0);">
-            <img src="../assets/img/logo.png">
+            <img src="../assets/img/login_img/logo.png">
             <div style="text-align: left;">
                 <h1 style="font-size: 32px">上海市机动车维修公共服务平台</h1>
                 <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
