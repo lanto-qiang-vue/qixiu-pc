@@ -146,9 +146,10 @@
 						"loginaccount": "18100000001",
 						"systemToken": "",
 						"userpassword": "123456"
+
 				})
 				.then(function (response) {
-					console.log(response);
+					console.log('登录请求的数据',response);
 				})
 			},
 		}
