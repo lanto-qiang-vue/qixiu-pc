@@ -26,9 +26,9 @@
 
   </header>
   <!--导航菜单-->
-  <div class="nav_top">
-      <div class="nav_in_top">
-          <Menu mode="horizontal" :theme="theme1" active-name="1">
+  <!--<div class="nav_top">-->
+      <!--<div class="nav_in_top">-->
+          <Menu mode="horizontal" theme="primary" active-name="1">
             <MenuItem name="1">
                 首页
             </MenuItem>
@@ -36,15 +36,15 @@
                 <template slot="title">
                     服务中心
                 </template>
-                <MenuGroup title="使用">
+                <!--<MenuGroup title="使用">-->
                     <MenuItem name="3-1">新增和启动</MenuItem>
                     <MenuItem name="3-2">活跃分析</MenuItem>
                     <MenuItem name="3-3">时段分析</MenuItem>
-                </MenuGroup>
-                <MenuGroup title="留存">
+                <!--</MenuGroup>-->
+                <!--<MenuGroup title="留存">-->
                     <MenuItem name="3-4">用户留存</MenuItem>
                     <MenuItem name="3-5">流失用户</MenuItem>
-                </MenuGroup>
+                <!--</MenuGroup>-->
             </Submenu>
             <MenuItem name="3">
                 电子健康档案系统
@@ -62,10 +62,9 @@
                 维修反馈
             </MenuItem>
           </Menu>
-      </div>
-      
-    
-  </div>
+      <!--</div>-->
+  <!--</div>-->
+
      <nuxt />
     <!--页脚-->
     <div class="footer">
@@ -98,7 +97,7 @@
 		name: "common",
     data () {
       return {
-        theme1: 'light',
+
       }
     },
 	}
@@ -176,38 +175,54 @@
     display: block;
 }
 
-.nav_top {
+/*.nav_top {*/
 
-    width: 100%;
-    overflow: initial;
-    min-width: 800px;
-    text-align: center;
-    
+    /*width: 100%;*/
+    /*overflow: initial;*/
+    /*min-width: 800px;*/
+    /*text-align: center;*/
+
+/*}*/
+
+/*.nav_in_top {*/
+    /*margin: 0 auto;*/
+    /*overflow: initial;*/
+    /*max-width: 1200px;*/
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*text-align: left;*/
+/*}*/
+.ivu-menu{
+  min-width: 800px;
+  height: 40px;
+  display: -webkit-flex;
+  display: flex;
+  justify-content: center;
 }
-
-.nav_in_top {
-    margin: 0 auto;
-    overflow: initial;
-    max-width: 1200px;
-    position: relative;
-    display: inline-block;
-    text-align: left;
+.ivu-menu li{
+  height: 40px;
+  line-height: 40px;
+  padding: 0 18px;
+}
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-selected{
+  color: #fff;
+  background-color: #2b85e4;
 }
 
 .footer{
 	width: 100%;
 	border-top: 2px solid #4ba7f5;
 	padding: 20px 0;
-	text-align: center;	
+	text-align: center;
 	color: #666666;
 	min-width: 800px;
 }
 
 .footer_in{
-	
+
 	margin: 0 auto;
 	position: relative;
-	
+
 }
 
 

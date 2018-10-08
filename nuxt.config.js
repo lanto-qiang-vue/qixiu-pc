@@ -1,5 +1,6 @@
 const pkg = require('./package')
 const webpack = require('webpack')
+import router from './static/router'
 
 module.exports = {
   mode: 'universal',
@@ -82,5 +83,13 @@ module.exports = {
       })
     ],
     vendor: ['iview']
+  },
+
+  router:{
+    extendRoutes (routes,resolve) {
+      // routes.splice(0,routes.length, ...routers)
+      routes.push(...router)
+      console.log(routes)
+    }
   }
 }
