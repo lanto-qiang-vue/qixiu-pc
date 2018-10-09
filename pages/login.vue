@@ -4,7 +4,7 @@
     <div class="login-content">
         <div class="login-wrap">
           <div class="login-con">
-			  
+
 			<Card>
 				<!--<p slot="title">
 
@@ -13,7 +13,7 @@
 					<TabPane label="手机验证登录" name="name1">
 						<div class="login-con-in">
 
-						
+
 						<div class="form-con">
 							<Form ref="loginForm" :model="form">
 
@@ -22,7 +22,7 @@
 									<span slot="prepend">
 										<Icon :size="16" type="ios-person"></Icon>
 									</span>
-									
+
 									</Input>
 								</FormItem>
 
@@ -46,7 +46,7 @@
 									<Button type="primary" long >验证并登录</Button>
 								</FormItem>
 
-								
+
 
 							</Form>
 						</div>
@@ -69,7 +69,7 @@
 										<Icon :size="14" type="md-lock"></Icon>
 									</span>
 									</Input>
-									
+
 
 								</FormItem>
 								<FormItem>
@@ -86,7 +86,7 @@
 								<FormItem>
 									<Button type="primary" long @click="handleSubmit">登录</Button>
 								</FormItem>
-								
+
 
 								</Form>
 							</div>
@@ -95,18 +95,18 @@
 				</Tabs>
 				<div>
 					<span>其他方式登录:</span>
-					
+
 					<img src="../assets/img/login_img/qq_logo.png" style="width: 20px;margin-right: 10px;cursor: pointer;">
 					<img src="../assets/img/login_img/wx_logo.png" style="width: 28px;margin-right: 10px;cursor: pointer;">
 					<img src="../assets/img/login_img/zhifu_logo.png" style="width: 25px;margin-right: 10px;cursor: pointer;">
 				</div>
             </Card>
-			  
+
           </div>
       </div>
     </div>
   </div>
-	
+
 
 </template>
 
@@ -117,8 +117,8 @@
 		data () {
 			return {
 				form: {
-					userName: '',
-					password: ''
+					userName: '18100000001',
+					password: '123456'
 				},
 				single: false
 
@@ -138,18 +138,24 @@
 				// }).then(res => {
 				// 	console.log(res);
 				// 	if (res.success === true) {
-						
+
 				// 	}
 				// })
 				this.$axios.post('/user/useraccount/login', {
-						"code": "",
-						"loginaccount": "18100000001",
-						"systemToken": "",
-						"userpassword": "123456"
+          "system":"pcqixiu",
+          "loginaccount": this.form.userName,
+          "userpassword": this.form.password
 
-				})
-				.then(function (response) {
-					console.log('登录请求的数据',response);
+				}).then( (res) => {
+					console.log(res)
+          if(res.data.code==='0'){
+            localStorage.setItem('ACCESSTOKEN', res.data.accessToken)
+            localStorage.setItem('ACCESSMENU', res.data.menus)
+            localStorage.setItem('USERINFO', res.data)
+            this.$store.commit('user/setToken', res.data.accessToken)
+            this.$store.commit('user/setMenu', res.data.menus)
+            this.$store.commit('user/setUser', res.data)
+          }
 				})
 			},
 		}
@@ -172,7 +178,7 @@
 			top: 50%;
 			transform: translateY(-50%);
 			width: 350px;
-			
+
 			.login-con-in{
 				width: 300px;
 				margin:0 auto;
@@ -187,7 +193,7 @@
 				.login-rember{
 					width: 100%;
 					overflow: hidden;
-					
+
 
 					.login-rember-left{
 						float: left;
@@ -200,7 +206,7 @@
 		}
 	}
 
-	
+
 }
 
 
@@ -217,9 +223,9 @@
       display: inline-block;
     }
 	.ivu-card{
-      
-      font-size: 16px; 
-      
+
+      font-size: 16px;
+
     }
   }
 </style>
