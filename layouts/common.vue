@@ -95,11 +95,11 @@
 <script>
 	export default {
 		name: "common",
-    data () {
-      return {
+        data () {
+            return {
 
-      }
-    },
+            }
+        },
 	}
 </script>
 
