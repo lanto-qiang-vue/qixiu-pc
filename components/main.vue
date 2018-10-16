@@ -1,9 +1,9 @@
 <template>
   <Layout>
     <Sider hide-trigger class="common-sider">
-      <side-menu v-show="showMenu" accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+      <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <div class="logo-con">
-          <p  style="font-size: 24px">管理中心</p>
+          <p>管理中心</p>
         </div>
       </side-menu>
     </Sider>
@@ -15,21 +15,17 @@
 
 <script>
 import SideMenu from './menu/side-menu.vue'
-import { setToken, getToken, setUser, getUser, setMenu, getMenu, getMenuByRouter } from '@/static/util'
+import {  getMenuByRouter2 } from '@/static/util'
 import router from '@/static/router'
+
 export default {
   name: "common-main",
   layout: 'common',
   components: {
     SideMenu,
   },
-  fetch ({ store, params }) {
-    return new Promise(function(resolve, reject) {
-      store.commit('user/setToken', getToken()|| '')
-      store.commit('user/setMenu', getMenu()|| '')
-      store.commit('user/setUser', getUser()|| '')
-      resolve();
-    })
+  fetch ({ store ,isClient}) {
+
   },
   data () {
     return {
@@ -39,9 +35,12 @@ export default {
   },
   computed: {
     menuList () {
-      return getMenuByRouter(router, this.$store.state.user.accessMenu)
+      console.log('$route', this.$route)
+      console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
+      return getMenuByRouter2(router, this.$store.state.user.accessMenu)
     },
   },
+
   methods: {
     turnToPage (name) {
       if (name.indexOf('isTurnByHref_') > -1) {
@@ -49,7 +48,8 @@ export default {
         return
       }
       this.$router.push({
-        name: name
+        // name: name
+        path: name
       })
     },
   }
@@ -59,8 +59,39 @@ export default {
 <style scoped lang="less">
 .common-sider{
   background-color: white;
+  .logo-con{
+    margin-top: 10px;
+    padding: 0 10px;
+    p{
+      background: url(../assets/img/center/menu-bg.png) no-repeat center center;
+      background-size: 100% auto;
+      position: relative;
+      color: #FFF;
+      font-size: 16px;
+      padding-left: 40px;
+      height: 45px;
+      line-height: 40px;
+    }
+    p::after {
+      content: "";
+      background: url(../assets/img/center/menu-head-icon.png) no-repeat left center;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      left: 10px;
+      top: 8px;
+    }
+  }
+
 }
   .common-content{
-    min-height: 500px;
+    min-height: 70vh;
+  }
+</style>
+<style lang="less">
+  .common-sider{
+    .ivu-menu-item:hover, .ivu-menu-submenu-title:hover{
+      background-color: #f1f1f1;
+    }
   }
 </style>

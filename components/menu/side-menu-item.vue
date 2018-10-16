@@ -7,15 +7,15 @@
     </template>
     <template v-for="item in children">
       <template v-if="item.children && item.children.length === 1">
-        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
-        <menu-item v-else :name="getNameOrHref(item, true)" :key="`menu-${item.children[0].name}`">
+        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.meta.accessId}`" :parent-item="item"></side-menu-item>
+        <menu-item v-else :name="getNameOrHref(item, true)" :key="`menu-${item.children[0].meta.accessId}`">
           <!--<common-icon :type="item.children[0].icon || ''" :custom="item.children[0].custom"/>-->
           <Icon :type="item.children[0].icon || ''" :custom="item.children[0].custom"/>
           <span>{{ showTitle(item.children[0]) }}</span></menu-item>
       </template>
       <template v-else>
-        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
-        <menu-item v-else :name="getNameOrHref(item)" :key="`menu-${item.name}`">
+        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.meta.accessId}`" :parent-item="item"></side-menu-item>
+        <menu-item v-else :name="getNameOrHref(item)" :key="`menu-${item.meta.accessId}`">
           <!--<common-icon :type="item.icon || ''" :custom="item.custom"/>-->
           <Icon :type="item.icon || ''" :custom="item.custom"/>
           <span>{{ showTitle(item) }}</span></menu-item>

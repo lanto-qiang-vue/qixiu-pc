@@ -104,28 +104,109 @@ export const getIcon = (item, access) => {
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
  */
-export const getMenuByRouter = (list, access) => {
+export const getMenuByRouter = (router, accessMenu) => {
   let res = []
-  forEach(list, item => {
+  forEach(router, item => {
     if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
       let obj = {
         icon: (item.meta && item.meta.icon) || '',
         name: item.name,
         meta: item.meta
       }
-      let accessShow= showThisMenuEle(item, access)
+      let accessShow= showThisMenuEle(item, accessMenu)
       if ((hasChild(item) || (item.meta && item.meta.showAlways)) && accessShow) {
-        obj.children = getMenuByRouter(item.children, access)
+        obj.children = getMenuByRouter(item.children, accessMenu)
       }
       if (item.meta && item.meta.href) obj.href = item.meta.href
       if (accessShow) {
-        obj.custom= getIcon(item, access)
+        obj.custom= getIcon(item, accessMenu)
         // console.log('custom',obj.custom)
         res.push(obj)
       }
     }
   })
   return res
+}
+export const getMenuByRouter2 = (  routers, accessMenu) => {
+  let res = []
+  for(let i in accessMenu)  {
+    let menuItem = accessMenu[i];
+
+    if( menuItem.uri && menuItem.uri.indexOf('http')>=0){
+      res.push({
+        meta: {
+          title: menuItem.name
+        },
+        path: menuItem.uri
+      })
+    }
+
+    for(let j in routers)  {
+      let route = routers[j]
+      if(menuItem.parentId== 0 && !menuItem.children.length && route.meta.accessId== 0){
+        res= res.concat(matchItem(route.children, menuItem, route.alias))
+      }
+
+      if(menuItem.parentId== 0 && route.meta.accessId== menuItem.id){
+        let item={}
+        item.meta= route.meta
+        item.meta.title= menuItem.name
+        item.children= matchList(route.children, menuItem.children, route.alias)
+        res.push(item)
+      }
+
+    }
+
+  }
+  // console.log(res)
+  return res
+}
+
+export const matchItem = ( routers, menuItem, path) => {
+  let arr= []
+  for(let i in routers)  {
+    let route= routers[i], item={}
+    if(route.meta.accessId== menuItem.id){
+      item.meta= route.meta
+      item.meta.title= menuItem.name
+      item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
+      arr.push(item)
+    }
+  }
+  if(!arr.length && menuItem.uri && menuItem.uri.indexOf('http')>=0){
+    arr.push({
+      meta: {
+        title: menuItem.name
+      },
+      path: menuItem.uri
+    })
+  }
+  return arr
+}
+
+export const matchList = ( routers, accessMenu, path) => {
+  let arr= []
+  for(let i in accessMenu) {
+    let menuItem = accessMenu[i];
+    if (menuItem.uri && menuItem.uri.indexOf('http') >= 0) {
+      arr.push({
+        meta: {
+          title: menuItem.name
+        },
+        path: menuItem.uri
+      })
+    }
+    for (let j in routers) {
+      let route = routers[j], item={}
+      if(route.meta.accessId== menuItem.id){
+        item.meta= route.meta
+        item.meta.title= menuItem.name
+        item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
+        arr.push(item)
+      }
+    }
+  }
+  return arr
 }
 
 /**
@@ -456,7 +537,7 @@ export const deepClone = (data) => {
  * @returns {base64, filename}
  * @description 图片压缩并转base64
  */
-export const imgToBase64 = (thisfile, callBack,document) => {
+export const imgToBase64 = (thisfile, callBack) => {
   // var file= $(domName).get(0).files[0]
   var file= thisfile
   var reader = new FileReader();
@@ -471,45 +552,43 @@ export const imgToBase64 = (thisfile, callBack,document) => {
       _compress(self.result,
         {width: width, height:height, quality: 0.6, type: file.type} ,
         file.name,
-        callBack,
-        document
+        callBack
       )
     };
   }
 }
-export const _compress = (path, obj, name, callBack, document) => {
-    var img = new Image();
-    img.src = path;
-    img.onload = function () {
-      var that = this;
-      // 默认按比例压缩
-      var w = that.width,
-        h = that.height,
-        scale = w / h;
-      w = obj.width || w;
-      h = obj.height || (w / scale);
-      var quality = 0.7;  // 默认图片质量为0.7
-      //生成canvas
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      // 创建属性节点
-      var anw = document.createAttribute("width");
-      anw.nodeValue = w;
-      var anh = document.createAttribute("height");
-      anh.nodeValue = h;
-      canvas.setAttributeNode(anw);
-      canvas.setAttributeNode(anh);
-      ctx.drawImage(that, 0, 0, w, h);
-      // 图像质量
-      if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
-        quality = obj.quality;
-      }
-      // quality值越小，所绘制出的图像越模糊
-      var base64 = canvas.toDataURL(obj.type|| 'image/png', quality);
-      // console.log(base64)
-      // 返回base64的值
-      callBack(base64, name )
+export const _compress = (path, obj, name, callBack) => {
+  var img = new Image();
+  img.src = path;
+  img.onload = function () {
+    var that = this;
+    // 默认按比例压缩
+    var w = that.width,
+      h = that.height,
+      scale = w / h;
+    w = obj.width || w;
+    h = obj.height || (w / scale);
+    var quality = 0.7;  // 默认图片质量为0.7
+    //生成canvas
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    // 创建属性节点
+    var anw = document.createAttribute("width");
+    anw.nodeValue = w;
+    var anh = document.createAttribute("height");
+    anh.nodeValue = h;
+    canvas.setAttributeNode(anw);
+    canvas.setAttributeNode(anh);
+    ctx.drawImage(that, 0, 0, w, h);
+    // 图像质量
+    if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
+      quality = obj.quality;
     }
-
+    // quality值越小，所绘制出的图像越模糊
+    var base64 = canvas.toDataURL(obj.type|| 'image/png', quality);
+    // console.log(base64)
+    // 返回base64的值
+    callBack(base64, name )
+  }
 
 }

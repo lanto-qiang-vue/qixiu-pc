@@ -3,21 +3,21 @@ const resolve = require('path').resolve
 
 export default [
   {
-    path: '/user',
-    redirect: '/user/home',
+    path: '/menu0',
+    alias: '/center',
     meta: {
-      icon: 'logo-buffer',
-      title: '维修服务',
-      id: '0',
+      icon: '',
+      title: '0级',
+      accessId: 0,
     },
     component: resolve('components/main.vue'),
     children: [
       {
-        path: 'home',
+        path: 'my-car-record',
         meta: {
           icon: 'md-funnel',
-          title: '爱车档案',
-          id: '1',
+          title: '爱车档案1',
+          accessId: 1,
         },
         component: resolve('center/index.vue'),
       },
@@ -25,8 +25,17 @@ export default [
         path: 'my-questions',
         meta: {
           icon: 'md-funnel',
-          title: '我的咨询',
-          id: '2',
+          title: '我的咨询1',
+          accessId: 2,
+        },
+        component: resolve('center/index.vue'),
+      },
+      {
+        path: 'my-visit',
+        meta: {
+          icon: 'md-funnel',
+          title: '我的上门服务',
+          accessId: 3,
         },
         component: resolve('center/index.vue'),
       },
@@ -35,28 +44,30 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '无权限',
-          id: '999',
+          accessId: 999,
         },
         component: resolve('center/index.vue'),
       },
+
+
     ]
   },
   {
-    path: '/user',
-    redirect: '/user/home',
+    path: '/menu8',
+    alias: '/center',
     meta: {
       icon: 'logo-buffer',
       title: '账号管理',
-      id: '8',
+      accessId: 8,
     },
     component: resolve('components/main.vue'),
     children: [
       {
-        path: 'info',
+        path: 'account-info',
         meta: {
           icon: 'md-funnel',
           title: '账号信息',
-          id: '9',
+          accessId: 9,
         },
         component: resolve('center/index.vue'),
       },
@@ -65,7 +76,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '更换手机号码',
-          id: '9',
+          accessId: 10,
         },
         component: resolve('center/index.vue'),
       },

@@ -5,14 +5,14 @@ export default {
   // },
   methods: {
     showTitle (item) {
-      return this.$config.useI18n ? this.$t(item.name) : ((item.meta && item.meta.title) || item.name)
+      return ((item.meta && item.meta.title) || item.meta.accessId)
     },
     showChildren (item) {
       // return item.children && (item.children.length > 1 || (item.meta && item.meta.showAlways))
       return item.children && (item.children.length > 0 || (item.meta && item.meta.showAlways))
     },
     getNameOrHref (item, children0) {
-      return item.href ? `isTurnByHref_${item.href}` : (children0 ? item.children[0].name : item.name)
+      return item.href ? `isTurnByHref_${item.href}` : (children0 ? item.children[0].path : item.path)
     }
   }
 }

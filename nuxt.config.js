@@ -38,7 +38,8 @@ module.exports = {
   */
   plugins: [
     '~plugins/iview',
-    '~/plugins/axios'
+    '~/plugins/axios',
+    { src: '~/plugins/browser-util.js', ssr: false },
   ],
 
   /*
@@ -86,6 +87,7 @@ module.exports = {
   },
 
   router:{
+    middleware: ['set-store'],
     extendRoutes (routes,resolve) {
       // routes.splice(0,routes.length, ...routers)
       routes.push(...router)

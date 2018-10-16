@@ -3,8 +3,8 @@
 
 export const state = () => ({
   token:  '',
+  accessMenu:  '',
   userInfo:  '',
-  accessMenu:  ''
 })
 
 // export const getters = {

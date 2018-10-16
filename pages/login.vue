@@ -150,11 +150,12 @@
 					console.log(res)
           if(res.data.code==='0'){
             localStorage.setItem('ACCESSTOKEN', res.data.accessToken)
-            localStorage.setItem('ACCESSMENU', res.data.menus)
-            localStorage.setItem('USERINFO', res.data)
+            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.menus))
+            localStorage.setItem('USERINFO', JSON.stringify(res.data))
             this.$store.commit('user/setToken', res.data.accessToken)
             this.$store.commit('user/setMenu', res.data.menus)
             this.$store.commit('user/setUser', res.data)
+            this.$router.push('/center/my-car-record')
           }
 				})
 			},

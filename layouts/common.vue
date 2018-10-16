@@ -28,7 +28,7 @@
   <!--导航菜单-->
   <!--<div class="nav_top">-->
       <!--<div class="nav_in_top">-->
-          <Menu mode="horizontal" theme="primary" active-name="1">
+          <Menu mode="horizontal" theme="primary" active-name="1" style="z-index: 1000">
             <MenuItem name="1">
                 首页
             </MenuItem>
@@ -98,6 +98,14 @@
     data () {
       return {
 
+      }
+    },
+    beforeMount(){
+      let token = localStorage.getItem('ACCESSTOKEN')
+      if(!this.$store.state.user.token && token){
+        this.$store.commit('user/setToken', token)
+        this.$store.commit('user/setMenu', JSON.parse(localStorage.getItem('ACCESSMENU')))
+        this.$store.commit('user/setUser', JSON.parse(localStorage.getItem('USERINFO')))
       }
     },
 	}

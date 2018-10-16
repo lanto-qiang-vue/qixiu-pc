@@ -9,7 +9,7 @@ export default {
   },
   computed: {
     parentName () {
-      return this.parentItem.name
+      return this.parentItem.meta.accessId
     },
     children () {
       return this.parentItem.children
