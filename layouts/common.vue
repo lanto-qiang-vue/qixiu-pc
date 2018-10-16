@@ -95,9 +95,8 @@
 <script>
 	export default {
 		name: "common",
-    data () {
-      return {
-
+        data () {
+            return {
       }
     },
     beforeMount(){
@@ -108,6 +107,7 @@
         this.$store.commit('user/setUser', JSON.parse(localStorage.getItem('USERINFO')))
       }
     },
+
 	}
 </script>
 
