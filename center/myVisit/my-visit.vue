@@ -29,7 +29,7 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
 	export default {
-		name: "menu-manage",
+		name: "my-visit",
     components: {
       CommonTable,
     },
@@ -53,7 +53,7 @@
           input: '',
           select: '',
         },
-        page: 1,
+        page: 0,
         limit: 10,
         total: 0,
         showTable:false,
@@ -81,7 +81,7 @@
                     "cartype": "",
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    // "status": 0,
+                    "status": 0,
                     "vehicleplatenumber": "",
                     "vin": ""
 

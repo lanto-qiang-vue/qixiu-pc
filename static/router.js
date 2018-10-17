@@ -19,7 +19,7 @@ export default [
           title: '爱车档案1',
           accessId: 1,
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/system/menu-manage.vue'),
       },
       {
         path: 'my-questions',
@@ -28,7 +28,7 @@ export default [
           title: '我的咨询1',
           accessId: 2,
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/myQuestion/my-questions.vue'),
       },
       {
         path: 'my-visit',
@@ -37,8 +37,26 @@ export default [
           title: '我的上门服务',
           accessId: 3,
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/myVisit/my-visit.vue'),
       },
+      // {
+      //   path: 'my-order',
+      //   meta: {
+      //     icon: 'md-funnel',
+      //     title: '我的预约服务',
+      //     accessId: 3,
+      //   },
+      //   component: resolve('center/myOrder/my-order.vue'),
+      // },
+      // {
+      //   path: 'my-review',
+      //   meta: {
+      //     icon: 'md-funnel',
+      //     title: '我的点评',
+      //     accessId: 3,
+      //   },
+      //   component: resolve('center/myReview/my-review.vue'),
+      // },
       {
         path: 'unaccess',
         meta: {
@@ -69,7 +87,7 @@ export default [
           title: '账号信息',
           accessId: 9,
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/account/account-info.vue'),
       },
       {
         path: 'change-phone',
@@ -78,7 +96,7 @@ export default [
           title: '更换手机号码',
           accessId: 10,
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/account/change-phone.vue'),
       },
     ]
   },

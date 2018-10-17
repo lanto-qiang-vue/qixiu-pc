@@ -15,39 +15,32 @@
 
 
 						<div class="form-con">
-							<Form ref="loginForm" :model="form">
-
-								<FormItem prop="userName">
-									<Input v-model="form.userName" placeholder="请输入手机号">
+							<Form ref="formMobile" :rules="ruleValidate"  :model="formMobile">
+								<FormItem prop="userMobile">
+									<Input v-model="formMobile.userMobile" :maxlength="11" placeholder="请输入手机号">
 									<span slot="prepend">
 										<Icon :size="16" type="ios-person"></Icon>
 									</span>
 
 									</Input>
 								</FormItem>
-
-								<FormItem prop="password">
-											<Input v-model="form.password" placeholder="请输入验证码">
+								<FormItem prop="captcha">
+											<Input v-model="formMobile.captcha" placeholder="请输入验证码">
 												<span slot="prepend">
 													<Icon :size="14" type="md-lock"></Icon>
 												</span>
-												<span slot="append"><Button type="primary">获取验证码</Button></span>
+												<span slot="append"><Button  type="primary" @click='getCaptcha'>{{description}}</Button></span>
 											</Input>
 								</FormItem>
-
 								<FormItem>
 									<div class="login-rember">
 										<span style="font-weight: 400">新用户完成注册，代表同意</span>
 										<a href="/phone/agreement" target="_blank" style="color: #1E9FFF">《上海汽修平台用户协议》</a>
 									</div>
 								</FormItem>
-
 								<FormItem>
-									<Button type="primary" long >验证并登录</Button>
+									<Button type="primary" long @click="handleCaptcha('formMobile')">验证并登录</Button>
 								</FormItem>
-
-
-
 							</Form>
 						</div>
 						</div>
@@ -115,50 +108,141 @@
 		name: "login",
     	layout: 'common',
 		data () {
+			// 联系电话验证
+            const validatePass = (rule, value, callback) => {
+                var p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+                var p2=/0\d{2,3}-\d{7,8}/;
+                if (p2.test(value)||p1.test(value)||!value) {
+					
+                    callback();
+                }else{
+                	
+                    callback(new Error('请输入正确的号码'));
+                }
+            };
 			return {
 				form: {
 					userName: '18100000001',
 					password: '123456'
 				},
-				single: false
+				formMobile:{
+					userMobile:'',
+					captcha:'',
+				},
+				ruleValidate: {
+					userMobile:[
+						{ required: true, message: '请输入正确的号码', },
+						{ validator: validatePass, trigger: 'blur'},
+					],
+					captcha: [
+						{ required: true,  message: '请填写验证码',}
+					],
+					
+				},//规则验证
+
+				single: false,
+				mobileFlag:true,//定时开关
+				description:'获取验证码',
+				time: 60,
+				timing: null,
 
 			}
 		},
 		methods: {
+			//账号密码登录--------
 			handleSubmit(){
-				// this.$axios.request({
-				// 	url: '/user/useraccount/login',
-				// 	method: 'post',
-				// 	data: {
-				// 		"code": "",
-				// 		"loginaccount": "18100000001",
-				// 		"systemToken": "",
-				// 		"userpassword": "123456"
-				// 	}
-				// }).then(res => {
-				// 	console.log(res);
-				// 	if (res.success === true) {
-
-				// 	}
-				// })
 				this.$axios.post('/user/useraccount/login', {
-          "system":"pcqixiu",
-          "loginaccount": this.form.userName,
-          "userpassword": this.form.password
+					"system":"pcqixiu",
+					"loginaccount": this.form.userName,
+					"userpassword": this.form.password,
+					"mobile":'',
 
 				}).then( (res) => {
 					console.log(res)
-          if(res.data.code==='0'){
-            localStorage.setItem('ACCESSTOKEN', res.data.accessToken)
-            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.menus))
-            localStorage.setItem('USERINFO', JSON.stringify(res.data))
-            this.$store.commit('user/setToken', res.data.accessToken)
-            this.$store.commit('user/setMenu', res.data.menus)
-            this.$store.commit('user/setUser', res.data)
-            this.$router.push('/center/my-car-record')
-          }
+					if(res.data.code==='0'){
+						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
+						localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
+						this.$store.commit('user/setToken', res.data.item.accessToken)
+						this.$store.commit('user/setMenu', res.data.item.menus)
+						this.$store.commit('user/setUser', res.data.item)
+						this.$router.push('/center/my-car-record')
+					}
+
+					// this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
+					// .then(function (response) {
+					// 	console.log(response);
+					// })
+					
 				})
 			},
+			//获取短信验证码----
+			getCaptcha(){
+				this.$refs['formMobile'].validateField('userMobile');
+				var pattern = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+				if (!pattern.test(this.formMobile.userMobile)) {
+					return false;
+				}
+				if(this.mobileFlag){
+					this.$axios.post('/message/sms/sendsmscaptcha', {
+						"businessType":"10",
+						"mobileNo": this.formMobile.userMobile,
+						"captcha": this.formMobile.captcha
+						
+					}).then( (res) => {
+						console.log(res)
+						if(res.data.code==='0'){
+							this.timing = setInterval(this.decrTime, 1000);
+							this.mobileFlag = false;
+							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
+						}
+						
+					})
+				}else{
+
+				}
+				
+			},
+			handleCaptcha(name){
+				this.$refs[name].validate((valid) => {
+					if (valid) {
+						this.$axios.post('/user/useraccount/login', {
+							"system": "pcqixiu",
+							"loginaccount": '',
+							"userpassword": '',
+							"loginMethod":'手机',
+							"captureCode": this.formMobile.captcha,
+							"ip": "",
+							"mobile": this.formMobile.userMobile,
+							"openid": "",
+						}).then( (res) => {
+							console.log(res)
+							if(res.data.code==='0'){
+								localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
+								localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+								localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
+								this.$store.commit('user/setToken', res.data.item.accessToken)
+								this.$store.commit('user/setMenu', res.data.item.menus)
+								this.$store.commit('user/setUser', res.data.item)
+								this.$router.push('/center/my-car-record')
+							}
+						})
+					}
+				});
+			},
+			//短信倒计时
+			decrTime() {
+				if (this.time > 0) {
+					this.description = this.time - 1 + "s";
+					this.time--;
+				} else {
+					clearInterval(this.timing);
+					this.description = "获取验证码";
+					this.time = 60;
+					this.mobileFlag = true;
+				}
+			},
+
 		}
 	}
 </script>

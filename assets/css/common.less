@@ -5,3 +5,29 @@ body{
 .ivu-menu-vertical.ivu-menu-light:after{
   background: none;
 }
+
+.common-form {
+  .ivu-form-item{
+    display: inline-block;
+    vertical-align: top;
+    width: 350px;
+    margin: 0 20px 20px 0;
+    position: relative;
+    .ivu-form-item-label{
+      float: none;
+      padding: 0 15px 0 0;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .ivu-form-item-content{
+      .ivu-input-number{
+        width: 100%;
+      }
+      .ivu-form-item-error-tip{
+        padding: 0;
+      }
+    }
+  }
+}
