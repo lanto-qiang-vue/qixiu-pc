@@ -81,5 +81,27 @@ export default [
         component: resolve('center/index.vue'),
       },
     ]
+  },
+  {
+    path: '/menu15',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '系统管理',
+      accessId: 15,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'menu-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '菜单管理',
+          accessId: 16,
+        },
+        component: resolve('center/system/menu-manage.vue'),
+      },
+
+    ]
   }
 ]

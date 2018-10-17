@@ -8,6 +8,12 @@
       </side-menu>
     </Sider>
     <Content class="common-content">
+      <div class="sub-title">
+        <Breadcrumb>
+          <BreadcrumbItem to="/">Home</BreadcrumbItem>
+          <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+        </Breadcrumb>
+      </div>
       <nuxt-child/>
     </Content>
   </Layout>
@@ -86,6 +92,18 @@ export default {
 }
   .common-content{
     min-height: 70vh;
+    padding: 10px;
+    .sub-title{
+      line-height: 38px;
+      padding: 0 10px;
+      background-color: white;
+      border-bottom: 2px solid #4ba7f5;
+    }
+    >div:not(.sub-title){
+      min-height: calc(100% - 40px);
+      overflow: hidden;
+      background-color: white;
+    }
   }
 </style>
 <style lang="less">

@@ -62,8 +62,8 @@ module.exports = {
   },
   proxy: {
     '/proxy': {
-      // target: 'http://api.test.shanghaiqixiu.org/',
-      target: 'http://api.qixiu.hoxiuxiu.com/',
+      target: 'http://192.168.169.190:8888/',
+      // target: 'http://api.qixiu.hoxiuxiu.com/',
       pathRewrite: {'^/proxy': ''},
       secure: false
     }
@@ -91,7 +91,7 @@ module.exports = {
     extendRoutes (routes,resolve) {
       // routes.splice(0,routes.length, ...routers)
       routes.push(...router)
-      console.log(routes)
+      // console.log(routes)
     }
   }
 }

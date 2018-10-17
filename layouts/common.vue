@@ -12,7 +12,7 @@
             </div>
         </a>
         <div class="login unLogin" style="font-size: 16px">
-            <span style="color: black;">您好，欢迎光临本站！</span><a href="javascript:void(0);">登录</a>|<a href="javascript:void(0);">注册</a>
+            <span style="color: black;">您好，欢迎光临本站！</span><router-link tag="a" to="/login">登录</router-link>|<a href="javascript:void(0);">注册</a>
         </div>
         <div class="login isLogin" style="display: none;font-size: 16px">
             <span class="nickName" style="color: black;"></span>
