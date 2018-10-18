@@ -5,12 +5,14 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                 @onRowDblclick="onRowDblclick" :show="showTable" :page="page">
     <div  slot="search"  >
-      <Form :label-width="120" class="common-form">
-            <FormItem label="车牌号:">
-                <Input type="text" v-model="search.input" placeholder="请输入车牌号"></Input>
+      <Form :label-width="80" class="common-form">
+            <FormItem label="反馈类型:">
+                <Select v-model="model1">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="车架号:">
-                <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
+            <FormItem label="时间:" style="width: 80px;" :label-width="0">
+                <Button type="primary" v-if="" @click="searchFun">查询</Button>
             </FormItem>
         </Form>
     </div>
@@ -36,15 +38,13 @@
     data(){
 		  return{
         columns: [
-          {title: '序号',  minWidth: 80,
-            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-          },
-          {title: '车牌号码', key: 'ORDER_TYPE', sortable: true, minWidth: 120,
+          {title: '反馈企业', key: 'ORDER_TYPE', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '车牌品牌', key: 'ORDER_PERSON', sortable: true, minWidth: 120},
-          {title: '车架号', key: 'TELPHONE', sortable: true, minWidth: 135},
-          {title: '发动机', key: 'PLATE_NUM', sortable: true, minWidth: 120},
+          {title: '反馈原因', key: 'ORDER_PERSON', sortable: true, minWidth: 120},
+          {title: '反馈日期', key: 'TELPHONE', sortable: true, minWidth: 135},
+          {title: '车牌号', key: 'PLATE_NUM', sortable: true, minWidth: 120},
+          {title: '凭据', key: 'PLATE_NUM', sortable: true, minWidth: 120},
         ],
         tableData: [],
         searchSelectOption:[],
@@ -61,6 +61,13 @@
         detailData: null,
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
+        cityList: [
+            {
+                value: 'New York',
+                label: 'New York'
+            },
+        ],
+        model1:'',
         
       }
     },
@@ -118,10 +125,9 @@
           this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
         },
-        //只有保存数据和提交数据的时候更新界面列表，
-        closeGetList(){
-          this.getList();
-        },
+        searchFun(){
+
+        }
     },
 	}
 </script>

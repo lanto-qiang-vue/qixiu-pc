@@ -5,17 +5,19 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
     <div  slot="search"  >
-      <Form :label-width="120" class="common-form">
+      <Form :label-width="80" class="common-form">
             <FormItem label="车牌号:">
                 <Input type="text" v-model="search.input" placeholder="请输入车牌号"></Input>
             </FormItem>
             <FormItem label="车架号:">
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
+            <FormItem :label-width="0" style="width: 100px;">
+                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="searchFun">搜索</Button>
       <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
       <Button type="error" v-if=""  @click="removeBindFun" :disabled="!detailData">解绑</Button>
       <Button type="error" v-if=""  @click="" disabled>绑定本人车辆</Button>
@@ -123,7 +125,7 @@
         },
         removeBind(){
             this.$axios.post('/vehicle/carfile/remove-bind/'+this.detailData.id,{
-                
+
             } ).then( (res) => {
                 if(res.data.code=='0'){
                     this.getList();
