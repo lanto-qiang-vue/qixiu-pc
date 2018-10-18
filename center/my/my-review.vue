@@ -66,7 +66,7 @@
     },
     mounted () {
       this.showTable= Math.random();
-      this.getList();
+    //   this.getList();
     
     },
     // beforeMount(){

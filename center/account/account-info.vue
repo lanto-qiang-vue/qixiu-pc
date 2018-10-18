@@ -18,15 +18,14 @@
             </Form>
         </div>
         <Form  :label-width="120">
+            <FormItem label="上传头像:">
+                <Upload action="//jsonplaceholder.typicode.com/posts/">
+                    <Button icon="ios-cloud-upload-outline">添加图片</Button>
+                        <span>(仅支持jpg、png、bmp)</span>
+                </Upload>
                 
-                <FormItem label="上传头像：">
-                    <Upload action="//jsonplaceholder.typicode.com/posts/">
-                        <Button icon="ios-cloud-upload-outline">添加图片</Button>
-                            <span>（仅支持jpg、png、bmp）</span>
-                    </Upload>
-                    
-                </FormItem>
-            </Form>
+            </FormItem>
+        </Form>
 
     </div>
 </template>

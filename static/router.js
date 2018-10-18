@@ -19,7 +19,7 @@ export default [
           title: '爱车档案1',
           accessId: 1,
         },
-        component: resolve('center/system/menu-manage.vue'),
+        component: resolve('center/repairInfo/repair-info.vue'),
       },
       {
         path: 'my-questions',
@@ -28,7 +28,7 @@ export default [
           title: '我的咨询1',
           accessId: 2,
         },
-        component: resolve('center/myQuestion/my-questions.vue'),
+        component: resolve('center/my/my-questions.vue'),
       },
       {
         path: 'my-visit',
@@ -37,26 +37,44 @@ export default [
           title: '我的上门服务',
           accessId: 3,
         },
-        component: resolve('center/myVisit/my-visit.vue'),
+        component: resolve('center/my/my-visit.vue'),
       },
-      // {
-      //   path: 'my-order',
-      //   meta: {
-      //     icon: 'md-funnel',
-      //     title: '我的预约服务',
-      //     accessId: 3,
-      //   },
-      //   component: resolve('center/myOrder/my-order.vue'),
-      // },
-      // {
-      //   path: 'my-review',
-      //   meta: {
-      //     icon: 'md-funnel',
-      //     title: '我的点评',
-      //     accessId: 3,
-      //   },
-      //   component: resolve('center/myReview/my-review.vue'),
-      // },
+      {
+        path: 'my-order',
+        meta: {
+          icon: 'md-funnel',
+          title: '我的预约服务',
+          accessId: 4,
+        },
+        component: resolve('center/my/my-order.vue'),
+      },
+      {
+        path: 'my-review',
+        meta: {
+          icon: 'md-funnel',
+          title: '我的点评',
+          accessId: 5,
+        },
+        component: resolve('center/my/my-review.vue'),
+      },
+      {
+        path: 'my-complaint',
+        meta: {
+          icon: 'md-funnel',
+          title: '我的反馈',
+          accessId: 6,
+        },
+        component: resolve('center/my/my-complaint.vue'),
+      },
+      {
+        path: 'my-notes',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知管理',
+          accessId: 7,
+        },
+        component: resolve('center/my/my-notes.vue'),
+      },
       {
         path: 'unaccess',
         meta: {
