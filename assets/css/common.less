@@ -31,3 +31,55 @@ body{
     }
   }
 }
+
+.table-modal-detail{
+  max-height: 100%;
+  .ivu-modal-mask{
+    position: absolute;
+  }
+  .ivu-modal-wrap{
+    position: absolute;
+    height: 100%;
+    .ivu-modal{
+      height: 90%;
+      overflow: hidden;
+      top: 50%;
+      transform: translateY(-50%);
+      .ivu-modal-content{
+        overflow: hidden;
+        height: 100%;
+        .ivu-modal-close{
+          z-index: 6;
+        }
+        .ivu-modal-header{
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          background-color: white;
+          z-index: 5;
+        }
+        .ivu-modal-body{
+          height: 100%;
+          overflow: auto;
+          padding-top: 60px;
+          padding-bottom: 60px;
+          position: relative;
+        }
+        // .ivu-modal-body:after {
+        //   content: "";
+        //   height: 60px;
+        //   display: block;
+        // }
+        .ivu-modal-footer{
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          background-color: white;
+          z-index: 5;
+        }
+      }
+    }
+  }
+}

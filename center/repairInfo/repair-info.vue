@@ -20,20 +20,24 @@
     <div slot="operate">
       <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
       <Button type="error" v-if=""  @click="removeBindFun" :disabled="!detailData">解绑</Button>
-      <Button type="error" v-if=""  @click="" disabled>绑定本人车辆</Button>
-      <Button type="error" v-if=""  @click="" disabled>绑定他人车辆</Button>
-      
+      <Button type="primary" v-if=""  @click="showDetail=Math.random()" >绑定本人车辆</Button>
+      <Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>
     </div>
-  </common-table>
+    
+</common-table>
+<bind-my-car :showDetail='showDetail' ></bind-my-car>
+<bind-other-car :showDetail='showOtherDetail' @closeDetail="closeDetail"></bind-other-car>
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import bindMyCar from './bind-my-car.vue'
+  import bindOtherCar from './bind-other-car.vue'
 	export default {
 		name: "repair-info",
     components: {
-      CommonTable,
+      CommonTable,bindMyCar,bindOtherCar
     },
     data(){
 		  return{
@@ -61,6 +65,7 @@
         total: 0,
         showTable:false,
         showDetail: false,
+        showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
         
@@ -83,15 +88,15 @@
                     "pageNo": this.page,
                     "pageSize": this.limit,
                     // "status": 0,
-                    "vehicleplatenumber": this.search.input,
+                    "vehiclePlateNumber": this.search.input,
                     "vin": this.search.select,
-                }).then( (res) => {
-					if(res.data.code=='0'){
-                        this.tableData=res.data.items;
-                        this.total=res.data.total;
-                        this.loading=false;
-                    }
-				})
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    this.tableData=res.data.items;
+                    this.total=res.data.total;
+                    this.loading=false;
+                }
+           })
         },
         changePage(page){
           this.page= page
@@ -132,7 +137,13 @@
                     this.closeDetail();
                 }
             })
-        }
+        },
+        closeDetail(){
+          this.detailData= null
+          this.clearTableSelect= Math.random()
+          this.getList();
+        },
+
         
     },
 	}

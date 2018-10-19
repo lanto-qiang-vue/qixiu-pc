@@ -25,13 +25,17 @@
     data(){
 		  return{
         columns: [
-          {title: '服务内容', key: 'servicecontent', sortable: true, minWidth: 120,
+          {title: '服务内容', key: 'serviceContent', sortable: true, minWidth: 120,
           },
-          {title: '预约公司', key: 'companyName', sortable: true, minWidth: 120},
-          {title: '联系人', key: 'ownername', sortable: true, minWidth: 135},
-          {title: '联系方式', key: 'contactmobile', sortable: true, minWidth: 120},
-          {title: '预约时间', key: 'onServiceTime', sortable: true, minWidth: 120},
-          {title: '状态', key: 'status', sortable: true, minWidth: 120},
+          {title: '预约公司', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.name)
+          },
+          {title: '联系人', key: 'ownerName', sortable: true, minWidth: 135},
+          {title: '联系方式', key: 'contactMobile', sortable: true, minWidth: 120},
+          {title: '预约时间', key: 'arrivalTime', sortable: true, minWidth: 120},
+          {title: '状态', key: 'handleStatus', sortable: true, minWidth: 120,
+            // render: (h, params) => h('span', params.row.handleStatus.name)
+          },
         ],
         tableData: [],
         searchSelectOption:[],
@@ -64,20 +68,14 @@
     // },
     methods:{
         getList(){
-            this.$axios.post('/maintain/getMyOnsiteOrderlist', {
-                    "companyId": '',
-                    "contactMobile": "",
-                    "ownerName": "",
+            this.$axios.post('/service/order/list', {
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    "statusArray": [
-                      ""
-                    ]
 
             }).then( (res) => {
               if(res.data.code=='0'){
-                this.tableData=res.data.data;
-                this.total=res.data.count;
+                this.tableData=res.data.items;
+                this.total=res.data.total;
               }
               
             })

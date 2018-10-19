@@ -3,7 +3,7 @@
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page" :showSearch=false>
+                :show="showTable" :page="page" :showSearch=false :loading="loading">
     <div slot="operate">
       <Button type="info" v-if="" :disabled="!detailData" @click="">查看</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="delquestion">删除</Button>
@@ -21,6 +21,7 @@
     },
     data(){
 		  return{
+        loading:true,
         columns: [
           {title: '问题分类', key: 'categoryName', sortable: true, minWidth: 120,
           },
@@ -60,6 +61,7 @@
     // },
     methods:{
         getList(){
+          this.loading=true;
           this.$axios.post('/cdf/myQuestion', {
               "category": "",
               "content": "",
@@ -70,6 +72,7 @@
             if(res.data.code=='0'){
               this.tableData=res.data.items;
               this.total=res.data.total;
+              this.loading=false;
             }
             
           })
@@ -103,6 +106,7 @@
             this.$axios.post('/cdf/delquestion/'+this.detailData.id,{
             }).then( (res) => {
                   if(res.data.code=='0'){
+                      
                       this.getList();
                       this.closeDetail();
                   }

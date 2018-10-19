@@ -4,7 +4,7 @@
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                 :show="showTable" :page="page" :showSearch=false>
+                 :show="showTable" :page="page" :showSearch=false :loading="loading">
     <div  slot="search"  >
      
     </div>
@@ -26,6 +26,7 @@
     },
     data(){
 		  return{
+        loading:true,
         columns: [
           {title: '服务内容', key: 'serviceType', sortable: true, minWidth: 120,
           },
@@ -67,6 +68,7 @@
     // },
     methods:{
         getList(){
+          this.loading=true;
             this.$axios.post('/service/list', {
                      
                       "pageNo": this.page,
@@ -76,6 +78,7 @@
 					      if(res.data.code=='0'){
                   this.tableData=res.data.items;
                   this.total=res.data.total;
+                  this.loading=false;
                 }
 					
 				    })
