@@ -137,7 +137,15 @@ export default [
         },
         component: resolve('center/system/menu-manage.vue'),
       },
-
+      {
+        path: 'function-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '功能管理',
+          accessId: 17,
+        },
+        component: resolve('center/system/function-manage.vue'),
+      },
     ]
   },
   //维修企业
