@@ -139,5 +139,57 @@ export default [
       },
 
     ]
+  },
+  //维修企业
+  {
+    path: '/menu16',
+    alias: '/center',
+    meta: {
+      icon: '',
+      title: '0级',
+      accessId: 0,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'company-index',
+        meta: {
+          icon: 'md-funnel',
+          title: '首页',
+          accessId: 101,
+        },
+        component: resolve('center/company/company-index.vue'),
+      },
+]
+  },
+  {
+    path: '/menu17',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '信息管理',
+      accessId: 107,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'repored',
+        meta: {
+          icon: 'md-funnel',
+          title: '维修数据上报查询',
+          accessId: 108,
+        },
+        component: resolve('center/company/repored.vue'),
+      },
+      {
+        path: 'change-phone',
+        meta: {
+          icon: 'md-funnel',
+          title: '更换手机号码',
+          accessId: 10,
+        },
+        component: resolve('center/account/change-phone.vue'),
+      },
+    ]
   }
 ]
