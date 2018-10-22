@@ -8,7 +8,7 @@
       <Button type="primary" v-if="" @click="detailData=null,showDetail=Math.random()">根据车牌号评价</Button>
       <Button type="primary" v-if="" @click="showDetail=Math.random()">根据维修记录评价</Button>
 
-      
+
     </div>
   </common-table>
 </div>
@@ -32,7 +32,7 @@
           {title: '门店名称', key: 'PLATE_NUM', sortable: true, minWidth: 120},
           {title: '门店地址', key: 'PLATE_NUM', sortable: true, minWidth: 120},
           {title: '维修车牌', key: 'PLATE_NUM', sortable: true, minWidth: 120},
-          
+
         ],
         tableData: [],
         searchSelectOption:[],
@@ -56,13 +56,13 @@
             },
         ],
         model1:'',
-        
+
       }
     },
     mounted () {
       this.showTable= Math.random();
     //   this.getList();
-    
+
     },
     // beforeMount(){
     //   this.$axios.post('/menu/list', {
@@ -82,7 +82,7 @@
 
                 }).then( (res) => {
 					console.log(res)
-					
+
 				})
         },
         changePage(page){
