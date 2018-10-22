@@ -1,5 +1,5 @@
-// import Main from '../components/main.vue'
 const resolve = require('path').resolve
+const Main= resolve('components/main.vue')
 
 export default [
   {
@@ -10,7 +10,7 @@ export default [
       title: '0级',
       accessId: 0,
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
       {
         path: 'my-car-record',
@@ -96,7 +96,7 @@ export default [
       title: '账号管理',
       accessId: 8,
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
       {
         path: 'account-info',
@@ -126,7 +126,7 @@ export default [
       title: '系统管理',
       accessId: 15,
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
       {
         path: 'menu-manage',
@@ -146,6 +146,55 @@ export default [
         },
         component: resolve('center/system/function-manage.vue'),
       },
+      {
+        path: 'role-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '角色管理',
+          accessId: 18,
+        },
+        component: resolve('center/system/role-manage.vue'),
+      },
+      {
+        path: 'system-type-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '业务系统管理',
+          accessId: 24,
+        },
+        component: resolve('center/system/system-type-manage.vue'),
+      },
+    ]
+  },
+  {
+    path: '/menu16',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '文章管理',
+      accessId: 15,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'article-type',
+        meta: {
+          icon: 'md-funnel',
+          title: '文章类别',
+          accessId: 16,
+        },
+        component: resolve('center/articles/article-type-list.vue'),
+      },
+      {
+        path: 'article-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '文章列表',
+          accessId: 17,
+        },
+        component: resolve('center/articles/article-list.vue'),
+      },
+
     ]
   }
 ]
