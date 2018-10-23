@@ -1,16 +1,25 @@
 <template>
-<div class="menu-manage">
+<div class="menu-manage" style="padding-top: 30px;">
+  <div style="margin:0 10px;">
+      <Tabs type="card" value="name1" >
+          <TabPane label="根据车牌号评价" name="name1">
+                
+          </TabPane>
+          <TabPane label="根据维修记录评价" name="name2">
+                
+          </TabPane>
+          
+      </Tabs>
+  </div>
 
-<common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
+  <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page">
-    <div slot="operate">
-      <Button type="primary" v-if="" @click="detailData=null,showDetail=Math.random()">根据车牌号评价</Button>
-      <Button type="primary" v-if="" @click="showDetail=Math.random()">根据维修记录评价</Button>
-
-      
-    </div>
-  </common-table>
+                          :show="showTable" :page="page" :showSearch=false :showOperate=false>
+              <!--<div slot="operate">
+                <Button type="primary" v-if="" @click="detailData=null,showDetail=Math.random()">根据车牌号评价</Button>
+                <Button type="primary" v-if="" @click="showDetail=Math.random()">根据维修记录评价</Button>
+              </div>-->
+            </common-table>
 </div>
 </template>
 
@@ -41,7 +50,7 @@
           input: '',
           select: '',
         },
-        page: 0,
+        page: 1,
         limit: 10,
         total: 0,
         showTable:false,
@@ -61,24 +70,25 @@
     },
     mounted () {
       this.showTable= Math.random();
-    //   this.getList();
-    
+      this.getList();
+      this.getRepairList();
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
+
     methods:{
         getList(){
-            this.$axios.post('/vehicle/owner/queryVehicelist', {
-                    "cartype": "",
+            this.$axios.post('/comment/getComments', {
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    "status": 0,
-                    "vehicleplatenumber": "",
-                    "vin": ""
+
+                }).then( (res) => {
+					console.log(res)
+					
+				})
+        },
+        getRepairList(){
+          this.$axios.post('/comment/list', {
+                    "pageNo": this.page,
+                    "pageSize": this.limit,
 
                 }).then( (res) => {
 					console.log(res)

@@ -38,9 +38,9 @@
         data () {
             return {
                 formData: {
-                    userAccount: '18100000001',
-                    userName: '周华健',
-                    userEmail:'tony@163.com'
+                    userAccount: '',
+                    userName: '',
+                    userEmail:''
                 },
                 userInfo:null,
             }
