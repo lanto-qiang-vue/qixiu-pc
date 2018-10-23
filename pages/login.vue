@@ -257,6 +257,8 @@
 							this.timing = setInterval(this.decrTime, 1000);
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
+						}else{
+							this.$Message.info(res.data.status)
 						}
 						
 					})
@@ -287,6 +289,8 @@
 								this.$store.commit('user/setMenu', res.data.item.menus)
 								this.$store.commit('user/setUser', res.data.item)
 								this.$router.push('/center/my-car-record')
+							}else{
+								this.$Message.info(res.data.status)
 							}
 						})
 					}

@@ -46,7 +46,9 @@ export default {
       return getMenuByRouter2(router, this.$store.state.user.accessMenu)
     },
   },
-
+  mounted(){
+    console.log('main-mounted')
+  },
   methods: {
     turnToPage (name) {
       if (name.indexOf('isTurnByHref_') > -1) {

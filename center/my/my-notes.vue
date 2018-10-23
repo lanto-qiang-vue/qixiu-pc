@@ -51,7 +51,7 @@
           input: '',
           select: '',
         },
-        page: 0,
+        page: 1,
         limit: 10,
         total: 0,
         showTable:false,
@@ -64,7 +64,7 @@
     },
     mounted () {
       this.showTable= Math.random();
-    //   this.getList();
+      this.getList();
     
     },
     // beforeMount(){
@@ -77,13 +77,13 @@
         getList(){
             let startTime=formatDate(this.search.select[0]);
             let endTime=formatDate(this.search.select[1]);
-            this.$axios.post('/vehicle/owner/queryVehicelist', {
-                    "cartype": "",
+            this.$axios.post('/message/notify/getReceiveNotify', {
+                    
+                    
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    "status": 0,
-                    "vehicleplatenumber": "",
-                    "vin": ""
+                    
+                    "title": ""
 
                 }).then( (res) => {
 					console.log(res)

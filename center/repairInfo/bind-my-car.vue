@@ -14,88 +14,201 @@
         
         <Form :label-width="80">
             <FormItem label="绑定类型:" style="width: 300px;">
-                <Select v-model="model1" >
-                    <Option v-for="item in searchSelectOption" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                <Select v-model="infoData.property" >
+                    <Option v-for="item in bindTypeArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="上传行驶证:">
+            <FormItem label="上传行驶证:" style="margin-bottom: 12px;">
                 <div class="pic-card">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
-                            <Button type="primary">上传图片</Button>
-                            <input type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
-                                    @change="getImg('TENANT_FILE_PATH', $event)"/>
+                            <Button type="primary" :loading="loadImg">上传图片</Button>
+                            <input class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
+                                    @change="getDriverImg('imageUrl', $event)"/>
                             
                             </div>
                             <span>仅支持PNG、JPG、JPEG、BMP</span>
                         </div>
                         
                     </div>
-                    
                 </div>
-                
-                
             </FormItem>
-            <FormItem label="">
+            <FormItem label="" v-show="infoDriverData.imageUrl">
                 <div class="pic-card">
                     <div class="pic-body">
-                        <img v-show="!info.TENANT_FILE_PATH" class="no-pic" src="../../assets/img/no_img.png"/>
-                        <img v-show="info.TENANT_FILE_PATH" class="pic" :src="info.TENANT_FILE_PATH"
-                            @click="showImg(info.TENANT_FILE_PATH)"/>
+                        <img  class="pic" :src="infoDriverData.imageUrl"
+                            @click="showImg(infoDriverData.imageUrl)"/>
                         
                     </div>
                 </div>
             </FormItem>
-            <FormItem label="上传身份证（头像面）">
-                <div class="pic-card">
-                    <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
-                            <div class="up-img">
-                            <Button type="primary">上传图片</Button>
-                            <input type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
-                                    @change="getImg('TENANT_FILE_PATH', $event)"/>
-                            
-                            </div>
-                            <span>仅支持PNG、JPG、JPEG、BMP</span>
-                        </div>
-                        
-                    </div>
-                    
-                </div>
+            <FormItem  label="所有人:" style="width: 28%;margin-bottom: 12px;" v-show="infoDriverData.imageUrl">
+                <Input type="text" v-model="infoDriverData.ownerName" placeholder="" disabled>
+                </Input>
             </FormItem>
-            <FormItem label="">
-                <div class="pic-card">
-                    <div class="pic-body">
-                        <img v-show="!info.TENANT_FILE_PATH" class="no-pic" src="../../assets/img/no_img.png"/>
-                        <img v-show="info.TENANT_FILE_PATH" class="pic" :src="info.TENANT_FILE_PATH"
-                            @click="showImg(info.TENANT_FILE_PATH)"/>
-                        
-                    </div>
+            <FormItem  label="车牌号码:" style="width: 28%;margin-bottom: 12px;" v-show="infoDriverData.imageUrl">
+                <Input type="text" v-model="infoDriverData.vehiclePlateNumber" placeholder="" disabled>
                     
+                </Input>
+            </FormItem>
+            <FormItem  label="车架号:" style="width: 28%;margin-bottom: 12px;" v-show="infoDriverData.imageUrl">
+                <Input type="text" v-model="infoDriverData.vin" placeholder="" disabled>
                     
+                </Input>
+            </FormItem>
+            <FormItem  label="发动机号:" style="width: 28%;margin-bottom: 12px;" v-show="infoDriverData.imageUrl">
+                <Input type="text" v-model="infoDriverData.engineNo" placeholder="" disabled>
                     
-                                
-                        
+                </Input>
+            </FormItem>
+            <FormItem style="width: 28%;margin-bottom: 12px;" v-show="infoDriverData.imageUrl">
+                <Button type="primary" @click="updateDriver">修改信息</Button>
+            </FormItem>
 
+            <FormItem label="上传身份证（头像面）" style="margin-bottom: 12px;" v-show="upIdButton">
+                <div class="pic-card">
+                    <div class="pic-body" style="height: 40px;">
+                        <div class="button" v-show="editAble" style="text-align: left;">
+                            <div class="up-img">
+                            <Button type="primary" :loading="loading">上传图片</Button>
+                            <input id="getImg" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
+                                    @change="getImg('imageUrl', $event)"/>
+                            </div>
+                            <span>仅支持PNG、JPG、JPEG、BMP</span>
+                        </div>
+                    </div>
                 </div>
-                
             </FormItem>
+            <FormItem label="" v-show="infoData.imageUrl">
+                <div class="pic-card">
+                    <div class="pic-body">
+                        <img  class="pic" :src="infoData.imageUrl"
+                            @click="showImg(infoData.imageUrl)"/>
+                    </div>
+                    
+                </div>
+            </FormItem>
+            <FormItem  label="姓名:" style="width: 28%;margin-bottom: 12px;" v-show="infoData.imageUrl">
+                <Input type="text" v-model="infoData.ownerName" placeholder="" disabled>
+                </Input>
+            </FormItem>
+            <FormItem  label="身份证号:" style="width: 28%;margin-bottom: 12px;" v-show="infoData.imageUrl">
+                <Input type="text" v-model="infoData.idCardNo" placeholder="" disabled>
+                    
+                </Input>
+            </FormItem>
+            <FormItem style="width: 28%;margin-bottom: 12px;" v-show="editIDCard" >
+                <Button type="primary" @click="updateIdFun">修改信息</Button>
+            </FormItem>
+
+            <FormItem label="上传营业执照" style="margin-bottom: 12px;" v-show="upIdButton">
+                <div class="pic-card">
+                    <div class="pic-body" style="height: 40px;">
+                        <div class="button" v-show="editAble" style="text-align: left;">
+                            <div class="up-img">
+                            <Button type="primary" :loading="loading">上传图片</Button>
+                            <input  class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
+                                    @change="getBusineImg('imageUrl', $event)"/>
+                            </div>
+                            <span>仅支持PNG、JPG、JPEG、BMP</span>
+                        </div>
+                    </div>
+                </div>
+            </FormItem>
+            <FormItem label="" v-show="infoBusine.imageUrl">
+                <div class="pic-card">
+                    <div class="pic-body">
+                        <img  class="pic" :src="infoBusine.imageUrl"
+                            @click="showImg(infoBusine.imageUrl)"/>
+                    </div>
+                    
+                </div>
+            </FormItem>
+            <FormItem  label="企业名称:" style="width: 28%;margin-bottom: 12px;" v-show="infoBusine.imageUrl">
+                <Input type="text" v-model="infoBusine.corpName" placeholder="" disabled>
+                </Input>
+            </FormItem>
+            <FormItem  label="法定代表人:" style="width: 28%;margin-bottom: 12px;" v-show="infoBusine.imageUrl">
+                <Input type="text" v-model="infoBusine.legalPerson" placeholder="" disabled>
+                    
+                </Input>
+            </FormItem>
+            <FormItem style="width: 28%;margin-bottom: 12px;" v-show="editIDCard" >
+                <Button type="primary" @click="updateIdFun">修改信息</Button>
+            </FormItem>
+
+              
         </Form>
-<Input v-model="model1" placeholder="Enter something..."  />
-                                <span slot="prepend">姓名：</span>
-                                    
-                                </Input>
-                        
-                                <Input v-model="model1" placeholder="Enter something..."  />   
-                        
-                                <Button  @click="" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+
         
         </div>
         <div slot="footer">
             <Button  @click="" size="large" type="success"  style="margin-right: 10px;">提交</Button>
             <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
         </div>
+        <!--修改身份信息-->
+        <Modal title="修改身份信息"
+            width="30"
+            v-model="showCard"
+            :mask-closable="false">
+                <Form :label-width="80" ref="infoData" :rules="ruleCard"  :model="infoData">
+                    <FormItem label="姓名:" style="width: 300px;" prop="name">
+                        <Input type="text" v-model="infoData.ownerName" placeholder=""></Input>
+                    </FormItem>
+                    <FormItem label="身份证号:" style="width: 300px;" prop="card">
+                        <Input type="text" v-model="infoData.idCardNo" placeholder=""></Input>
+                    </FormItem>
+                    
+                </Form>
+                <div slot="footer">
+                    <Button  @click="updateCard" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button  size="large" type="default" style="margin-right: 10px;" @click="showCard=false;">返回</Button>
+                </div>
+        </Modal>
+        <!--修改营业执照-->
+        <Modal title="修改营业执照信息"
+            width="30"
+            v-model="showCard"
+            :mask-closable="false">
+                <Form :label-width="80" ref="infoBusine" :rules="ruleBusine"  :model="infoBusine">
+                    <FormItem label="企业名称:" style="width: 300px;" prop="corpName">
+                        <Input type="text" v-model="infoBusine.corpName" placeholder=""></Input>
+                    </FormItem>
+                    <FormItem label="法人代表:" style="width: 300px;" prop="legalPerson">
+                        <Input type="text" v-model="infoBusine.legalPerson" placeholder=""></Input>
+                    </FormItem>
+                    
+                </Form>
+                <div slot="footer">
+                    <Button  @click="updateBusine" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button  size="large" type="default" style="margin-right: 10px;" @click="showCard=false;">返回</Button>
+                </div>
+        </Modal>
+        <!--修改身份信息-->
+        <Modal title="修改驾驶证信息"
+            width="30"
+            v-model="showDriver"
+            :mask-closable="false">
+                <Form :label-width="120" ref="infoDriverData" :rules="ruleDriver"  :model="infoDriverData">
+                    <FormItem label="所有人:" style="width: 300px;" prop="name">
+                        <Input type="text" v-model="infoDriverData.ownerName" placeholder=""></Input>
+                    </FormItem>
+                    <FormItem label="车牌号码:" style="width: 300px;" prop="card">
+                        <Input type="text" v-model="infoDriverData.vehiclePlateNumber" placeholder=""></Input>
+                    </FormItem>
+                    <FormItem label="车架号(VIN):" style="width: 300px;" prop="name">
+                        <Input type="text" v-model="infoDriverData.vin" placeholder=""></Input>
+                    </FormItem>
+                    <FormItem label="发动机号:" style="width: 300px;" prop="card">
+                        <Input type="text" v-model="infoDriverData.engineNo" placeholder=""></Input>
+                    </FormItem>
+                </Form>
+                <div slot="footer">
+                    <Button  @click="updateDriverFun" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button  size="large" type="default" style="margin-right: 10px;" @click="showDriver=false;">返回</Button>
+                </div>
+        </Modal>
   </Modal>
 </template>
 
@@ -106,86 +219,94 @@ export default {
 	name: "bind-my-car",
     props:['showDetail', 'detailData'],
     data(){
-		  return{
-              loading:true,
-        columns: [
-          {title: '序号',  minWidth: 80,
-            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-          },
-          {title: '车牌号码', key: 'vehicleplatenumber', sortable: true, minWidth: 120,
-            
-          },
-          {title: '车牌品牌', key: 'brand', sortable: true, minWidth: 120},
-          {title: '车架号', key: 'vin', sortable: true, minWidth: 135},
-          {title: '发动机', key: 'engineno', sortable: true, minWidth: 120},
-        ],
-        tableData: [],
-        searchSelectOption:[
-            {
-                value: '个人车辆',
-                label: '个人车辆'
-            },
-            {
-                value: '企业车辆',
-                label: '企业车辆'
-            },
-        ],
-        model1:'',
-        searchSelectOption1:[],//重新赋值--
-        search:{
-          input: '',
-          select: '',
-        },
-        page: 1,
-        limit: 10,
-        total: 0,
-        showTable:false,
-        showDetail: false,
-        detailData: null,
-        clearTableSelect: null,
+	return{
+        loading:false,//身份证上传----
+        loadImg:false,//图片上传------
+
         showModal:false,
-        info:{
-          "TENANT_ID":"",
-          "TENANT_AREA_CODE":"",
-          "TENANT_NAME":"",
-          "TENANT_AREA_DISPLAY":"",
-          "TENANT_ADD":"",
-          "BUSINESS_TYPE":"",
-          "COMPANY_BUSINESS_SCOPE":"",
-          "ORG_NUMBER":"",
-          "ROAD_LICENSE":"",
-          "LICENSE_START_DATE":"",
-          "LICENSE_END_DATE":"",
-          "LEGAL_NAME":"",
-          "LEGAL_TEL":"",
-          "LINK_MAN":"",
-          "LINK_TEL":"",
-          "EMAIL":"",
-          "STATUS":"",
-          "LINK_ZIP":"",
-          "TENANT_NUM":"",
-          "ROAD_FILE_PATH":"",
-          "BUS_FILE_PATH":"",
-          "TENANT_FILE_PATH":"",
-          "REMARK":"",
+        
+        infoData:{
+            idCardNo:'',
+            ownerName:'',
+            imageUrl:'',
+            imageData:'',
+            "property":1,
+            id:'',
         },
-        editAble: true
+        bindTypeArr:[
+            {code:1,name:'个人车辆'},
+            {code:2,name:'企业车辆'},
+        ],
+        editAble: true,
+        infoDriverData:{
+            address:"",
+            brandModel:"",
+            engineNo:"",
+            id:'',
+            issueDate:"",
+            ownerName:"",
+            useNature:"",
+            vehiclePlateNumber:"",
+            vehicleType:"",
+            vin:"",
+            imageUrl:'',
+            imageData:'',
+        },
+        editIDCard:false,//是否修改身份按钮
+        upIdButton:true,//是否显示上传按钮
+        showCard:false,//是否显示修改身份信息框
+        ruleCard:{
+            ownerName:[
+                { required: true, message: '请填写信息', },
+            ],
+            idCardNo: [
+                { required: true,  message: '请填写信息',}
+            ],
+        },
+        showDriver:false,//修改驾驶证界面-----
+        ruleDriver:{
+            ownerName:[
+                { required: true, message: '请填写信息', },
+            ],
+            vehiclePlateNumber: [
+                { required: true,  message: '请填写信息',}
+            ],
+            vin: [
+                { required: true,  message: '请填写信息',}
+            ],
+            engineNo: [
+                { required: true,  message: '请填写信息',}
+            ],
+        },
+        infoBusine:{
+            id:'',
+            corpName:'',
+            legalPerson:'',
+            imageUrl:'',
+            imageData:'',
+        },
+        ruleBusine:{
+            corpName:[
+                { required: true, message: '请填写信息', },
+            ],
+            legalPerson: [
+                { required: true,  message: '请填写信息',}
+            ],
+        }
+            
+        
+
       }
     },
     watch:{
         showDetail(){
             this.showModal=true;
+            this.getCard();
         },
     },
     mounted () {
         
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         showImg(img){
             this.$Modal.info({
@@ -195,12 +316,191 @@ export default {
             content: '<img src="'+img+'" style="width: 100%"/>'
             })
         },
-        getImg( name, e){
+        getImg(name, e){
             imgToBase64(e.target.files[0], (base64, fileName)=> {
-            this.info[name]= base64
-            console.log(this.info[name]);
+                let newBase=base64.split(',');
+                this.infoData['imageData']= newBase[1];
+                console.log(base64);
+                this.newUpload();
             })
         },
+        //上传图片----------
+        newUpload(){
+            this.loading=true;
+            this.$axios.post('/scan/newUpload', {
+                "accuracy": "",
+                "detect_direction": true,
+                "detect_risk": false,
+                "id_card_side": "front",
+                "image": this.infoData['imageData'],
+                "property": this.infoData.property,
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    this.editIDCard=true;
+                    this.loading=false;
+                    this.infoData['idCardNo']=res.data.item['idCardNo'];
+                    this.infoData['ownerName']=res.data.item['ownerName'];
+                    this.infoData.id=res.data.item['creditId'];
+                    this.infoData['imageUrl']= 'data:image/png;base64,'+this.infoData['imageData'];
+                }else{
+                    this.$Message.info(res.data.status);
+                }
+           })
+        },
+        getDriverImg( name, e){
+            imgToBase64(e.target.files[0], (base64, fileName)=> {
+                let newBase=base64.split(',');
+                // this.infoDriver[name]= base64;
+                this.infoDriverData['imageData']= newBase[1];
+                this.newDriverLicense();
+            })
+        },
+        newDriverLicense(){
+            this.loadImg=true;
+            this.$axios.post('/scan/newDriverLicense', {
+                "accuracy": "",
+                "detect_direction": true,
+                "image": this.infoDriverData.imageData,
+            }).then( (res) => {
+                this.loadImg=false;
+                if(res.data.code=='0'){
+                    
+                   this.infoDriverData.ownerName=res.data.item.ownerName;
+                   this.infoDriverData.vehiclePlateNumber=res.data.item.vehiclePlateNumber;
+                   this.infoDriverData.vin=res.data.item.vin;
+                   this.infoDriverData.engineNo=res.data.item.engineNo;
+                   this.infoDriverData.imageUrl='data:image/png;base64,'+this.infoDriverData['imageData'];
+                   this.infoDriverData.id=res.data.item.id;
+                }else{
+                    this.$Message.info(res.data.status)
+                }
+           })
+        },
+        //获取身份信息---------------
+        getCard(){
+            this.$axios.get('/scan/getCard', {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    if(res.data.item&&res.data.item.creditId){
+                        this.upIdButton=false;
+                        this.infoData['idCardNo']=res.data.item.reviseIdCardNo;
+                        this.infoData['ownerName']=res.data.item.reviseOwnerName;
+                        this.infoData['imageUrl']='data:image/png;base64,'+res.data.item.frontImage;
+                    }
+                }else{
+                    this.$Message.info(res.data.status)
+                }
+           })
+        },
+        //修改身份信息----------------
+        updateIdFun(){
+            this.showCard=true;
+
+        },
+        updateCard(){
+            
+           this.$refs[name].validate((valid) => {
+                if (valid) {
+                    this.$axios.post('/scan/update', {
+                        idcardId:this.infoData.id,
+                        new_id_card_no:this.infoData['idCardNo'],
+                        new_owner_name:this.infoData['ownerName'],
+                        property:'1',
+                    }).then( (res) => {
+                        if(res.data.code=='0'){
+                            this.showCard=false;
+                        }else{
+                            this.$Message.info(res.data.status)
+                        }
+                    })
+                }
+            });
+        },
+        //修改驾驶证信息-----------
+        updateDriver(){
+            this.showDriver=true;
+        },
+        updateDriverFun(){
+            this.$axios.post('/scan/update', {
+                licenseId:this.infoDriverData.id,
+                new_engine_no:this.infoDriverData.engineNo,
+                new_license_owner_name:this.infoDriverData.ownerName,
+                new_vehicle_plate_number:this.infoDriverData.vehiclePlateNumber,
+                new_vin:this.infoDriverData.vin,
+                property:'2',
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                   
+                   this.showDriver=false;
+                }else{
+                    this.$Message.info(res.data.status)
+                }
+           })
+        },
+        //提交绑定按钮-----------
+        bindFun(){
+            this.$axios.post('/scan/update', {
+                "businessId": 0,
+                "idCardId": this.infoData.id,
+                "licenseId": this.infoDriverData.id,
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                   this.infoData['idCardNo']=this.editCardArr.card;
+                   this.infoData['ownerName']=this.editCardArr.name;
+                   this.showCard=false;
+                }else{
+                    this.$Message.info(res.data.status)
+                }
+           })
+        },
+        //营业执照上传-----------
+        getBusineImg( name, e){
+            imgToBase64(e.target.files[0], (base64, fileName)=> {
+                let newBase=base64.split(',');
+                // this.infoDriver[name]= base64;
+                this.infoBusine['imageData']= newBase[1];
+                this.uploadBusine();
+            })
+        },
+        uploadBusine(){
+            this.loading=true;
+            this.$axios.post('/scan/newUpload', {
+                "accuracy": "",
+                "detect_direction": true,
+                "detect_risk": false,
+                "id_card_side": "front",
+                "image": this.infoBusine['imageData'],
+                "property": this.infoData.property,
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    this.editIDCard=true;
+                    this.loading=false;
+                    this.infoBusine['legalPerson']=res.data.item['legalPerson'];
+                    this.infoBusine['corpName']=res.data.item['corpName'];
+                    this.infoBusine.id=res.data.item['businessId'];
+                    this.infoBusine['imageUrl']= 'data:image/png;base64,'+this.infoData['imageData'];
+                }else{
+                    this.$Message.info(res.data.status);
+                }
+           })
+        },
+        updateBusine(){
+            this.$axios.post('/scan/update', {
+                businessId:this.infoBusine.id,
+                new_corp_name:this.infoBusine['corpName'],
+                new_legal_person:this.infoBusine['legalPerson'],
+                property:"3",
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                   
+                   this.showDriver=false;
+                }else{
+                    this.$Message.info(res.data.status)
+                }
+           })
+        },
+
+
         
     },
 }
@@ -218,7 +518,7 @@ export default {
 .pic-card{
       display: inline-block;
       margin: 0 10px 10px 0;
-      width: 28%;
+      width: 32%;
       min-width: 250px;
       .red{
         color: red;
@@ -257,7 +557,7 @@ export default {
             display: inline-block;
             overflow: hidden;
             position: relative;
-            input{
+            .input{
               width: 100%;
               height: 100%;
               position: absolute;

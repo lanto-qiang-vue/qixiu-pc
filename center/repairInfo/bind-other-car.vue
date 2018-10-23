@@ -8,6 +8,7 @@
     :transfer= "false"
     :footer-hide="false"
     :mask-closable="false"
+    @on-visible-change="visibleChange"
     class="table-modal-detail"
     :transition-names="['', '']">
         <div style="height: 100%;overflow: auto;">
@@ -117,6 +118,17 @@ export default {
     //   })
     // },
     methods:{
+        //监听界面变化--------
+        visibleChange(status){
+            if(status === false){
+                this.handleReset("search");
+                this.handleReset("searchArr");
+            }
+        },
+        //清除规则验证-------------
+        handleReset (name) {
+            this.$refs[name].resetFields();
+        },
         authorize(name){
             this.$refs[name].validate((valid) => {
               if (valid) {

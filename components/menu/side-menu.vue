@@ -78,7 +78,7 @@ export default {
   },
   data () {
     return {
-      openedNames: []
+      openedNames: ['15','8']
     }
   },
   methods: {
@@ -91,6 +91,15 @@ export default {
     updateOpenName (name) {
       if (name === 'home') this.openedNames = []
       else this.openedNames = this.getOpenedNamesByActiveName(name)
+    },
+    setOpenedNames(list){
+      let arr=[]
+      for (let i in list){
+        if(list[i].children){
+          arr.push(list[i].meta.accessId.toString())
+        }
+      }
+      this.openedNames= arr
     }
   },
   computed: {
@@ -99,21 +108,26 @@ export default {
     }
   },
   watch: {
-    activeName (name) {
-      if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
-      else this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
-    },
-    openNames (newNames) {
-      this.openedNames = newNames
-    },
-    openedNames () {
-      this.$nextTick(() => {
-        this.$refs.menu.updateOpened()
-      })
+    // activeName (name) {
+    //   if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
+    //   else this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
+    // },
+    // openNames (newNames) {
+    //   this.openedNames = newNames
+    // },
+    // openedNames () {
+    //   this.$nextTick(() => {
+    //     this.$refs.menu.updateOpened()
+    //   })
+    // }
+    menuList(list){
+      this.setOpenedNames(list)
     }
   },
   mounted () {
-    this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
+
+    // this.openedNames = getUnion(this.openedNames, this.getOpenedNamesByActiveName(name))
+    this.setOpenedNames(this.menuList)
   }
 }
 </script>
