@@ -199,5 +199,36 @@ export default [
         component: resolve('center/account/change-phone.vue'),
       },
     ]
+  },
+  //运营中心--运输管理
+  {
+    path: '/menu18',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '运输管理',
+      accessId: 401,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'transportationCompany-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '运输企业信息管理',
+          accessId: 402,
+        },
+        component: resolve('center/operate/transportationCompany-manage.vue'),
+      },
+      {
+        path: 'transportationCompany-record',
+        meta: {
+          icon: 'md-funnel',
+          title: '运输车辆技术档案',
+          accessId: 403,
+        },
+        component: resolve('center/operate/transportationCompany-record.vue'),
+      },
+    ]
   }
 ]
