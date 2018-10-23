@@ -161,206 +161,72 @@
 					console.log(res)
 					if(res.data.code==='0'){
 						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-						localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
-            // localStorage.setItem('ACCESSMENU',JSON.stringify([{
-            //   "id": 101,
-            //   "name": "首页",
-            //   "uri": "/center/myQuestions",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 101
-            // }, {
-            //   "id": 102,
-            //   "name": "我的上门服务",
-            //   "uri": "/center/myOnsites",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 102
-            // }, {
-            //   "id": 103,
-            //   "name": "我的预约服务",
-            //   "uri": "/center/myOrders",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 103
-            // }, {
-            //   "id": 104,
-            //   "name": "我的点评",
-            //   "uri": "/center/myComment",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 104
-            // }, {
-            //   "id": 105,
-            //   "name": "我的反馈",
-            //   "uri": "/center/myComplaint",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 105
-            // }, {
-            //   "id": 106,
-            //   "name": "通知管理",
-            //   "uri": "/center/myNotes",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 106
-            // }, {
-            //   "id": 107,
-            //   "name": "信息管理",
-            //   "uri": null,
-            //   "leaf": false,
-            //   "extInfo": null,
-            //   "children": [{
-            //     "id": 108,
-            //     "name": "维修数据上报查询",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [{
-            //       "id": 109,
-            //       "menu": null,
-            //       "name": "修改用户信息",
-            //       "uri": "/changeUser/updateUser",
-            //       "extInfo": null,
-            //       "btnId": "edit"
-            //     }],
-            //     "parentId": 0,
-            //     "sortValue": 1
-            //   }, {
-            //     "id": 110,
-            //     "name": "更换手机号码",
-            //     "uri": "/center/changePhone",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 2
-            //   }],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 8
-            // }]))
+						// localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            localStorage.setItem('ACCESSMENU',JSON.stringify([{
+              "id": 401,
+              "name": "运输管理",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 402,
+                "name": "运输企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }, {
+                "id": 403,
+                "name": "运输车辆技术档案",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]))
 						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
 						this.$store.commit('user/setToken', res.data.item.accessToken)
-						this.$store.commit('user/setMenu', res.data.item.menus)
-            // this.$store.commit('user/setToken',[{
-            //   "id": 101,
-            //   "name": "首页",
-            //   "uri": "/center/myQuestions",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 101
-            // }, {
-            //   "id": 102,
-            //   "name": "我的上门服务",
-            //   "uri": "/center/myOnsites",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 102
-            // }, {
-            //   "id": 103,
-            //   "name": "我的预约服务",
-            //   "uri": "/center/myOrders",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 103
-            // }, {
-            //   "id": 104,
-            //   "name": "我的点评",
-            //   "uri": "/center/myComment",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 104
-            // }, {
-            //   "id": 105,
-            //   "name": "我的反馈",
-            //   "uri": "/center/myComplaint",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 105
-            // }, {
-            //   "id": 106,
-            //   "name": "通知管理",
-            //   "uri": "/center/myNotes",
-            //   "leaf": true,
-            //   "extInfo": null,
-            //   "children": [],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 106
-            // }, {
-            //   "id": 107,
-            //   "name": "信息管理",
-            //   "uri": null,
-            //   "leaf": false,
-            //   "extInfo": null,
-            //   "children": [{
-            //     "id": 108,
-            //     "name": "员工管理",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [{
-            //       "id": 109,
-            //       "menu": null,
-            //       "name": "修改用户信息",
-            //       "uri": "/changeUser/updateUser",
-            //       "extInfo": null,
-            //       "btnId": "edit"
-            //     }],
-            //     "parentId": 0,
-            //     "sortValue": 1
-            //   }, {
-            //     "id": 110,
-            //     "name": "更换手机号码",
-            //     "uri": "/center/changePhone",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 2
-            //   }],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 8
-            // }]);
+						// this.$store.commit('user/setMenu', res.data.item.menus)
+            this.$store.commit('user/setToken',[{
+              "id": 401,
+              "name": "运输管理",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 402,
+                "name": "运输企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }, {
+                "id": 403,
+                "name": "运输车辆技术档案",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/my-car-record')
 					}
@@ -391,6 +257,8 @@
 							this.timing = setInterval(this.decrTime, 1000);
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
+						}else{
+							this.$Message.info(res.data.status)
 						}
 						
 					})
@@ -421,6 +289,8 @@
 								this.$store.commit('user/setMenu', res.data.item.menus)
 								this.$store.commit('user/setUser', res.data.item)
 								this.$router.push('/center/my-car-record')
+							}else{
+								this.$Message.info(res.data.status)
 							}
 						})
 					}

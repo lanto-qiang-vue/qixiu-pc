@@ -34,7 +34,7 @@
           {title: '联系方式', key: 'contactMobile', sortable: true, minWidth: 120},
           {title: '预约时间', key: 'arrivalTime', sortable: true, minWidth: 120},
           {title: '状态', key: 'handleStatus', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span', params.row.handleStatus.name)
+            render: (h, params) => h('span', params.row.handleStatus.name)
           },
         ],
         tableData: [],
@@ -44,7 +44,7 @@
           input: '',
           select: '',
         },
-        page: 0,
+        page: 1,
         limit: 10,
         total: 0,
         showTable:false,
