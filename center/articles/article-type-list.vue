@@ -25,19 +25,19 @@
       <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
     </div>
   </common-table>
-  <system-manage-detail :data="selectRow" :show="showDetail" :total="total"
-                      @refresh="selectRow={};getList()"></system-manage-detail>
+  <!--<system-manage-detail :data="selectRow" :show="showDetail" :total="total"-->
+                      <!--@refresh="selectRow={};getList()"></system-manage-detail>-->
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-  import SystemManageDetail from './system-type-manage-detail'
+  // import SystemManageDetail from './system-type-manage-detail'
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
-      SystemManageDetail
+      // SystemManageDetail
     },
     data(){
 		  return{
