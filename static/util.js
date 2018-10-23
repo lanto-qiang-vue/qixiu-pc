@@ -497,9 +497,9 @@ export const getType = (obj) => {
     '[object Null]'     : 'null',
     '[object Object]'   : 'object'
   };
-  if(obj instanceof Element) {
-    return 'element';
-  }
+  // if(obj instanceof Element) {
+  //   return 'element';
+  // }
   return map[toString.call(obj)];
 }
 

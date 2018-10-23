@@ -6,14 +6,11 @@
                 @onRowDblclick="onRowDblclick" :show="showTable" :page="page">
     <div  slot="search"  >
       <Form :label-width="110" class="common-form">
-        <FormItem label="菜单名:">
+        <FormItem label="系统类型名:">
             <Input type="text" v-model="search.name" ></Input>
         </FormItem>
-        <FormItem label="父菜单ID:">
-            <Input type="text" v-model="search.parentId" ></Input>
-        </FormItem>
-        <FormItem label="菜单uri:">
-          <Input type="text" v-model="search.uri" ></Input>
+        <FormItem label="系统类型代号:">
+            <Input type="text" v-model="search.code" ></Input>
         </FormItem>
         <FormItem >
           <ButtonGroup size="small">
@@ -28,41 +25,31 @@
       <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
     </div>
   </common-table>
-  <menu-manage-detail :data="selectRow" :show="showDetail" :total="total"
-                      @refresh="selectRow={};getList()"></menu-manage-detail>
+  <!--<system-manage-detail :data="selectRow" :show="showDetail" :total="total"-->
+                      <!--@refresh="selectRow={};getList()"></system-manage-detail>-->
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-  import MenuManageDetail from './menu-manage-detail.vue'
+  // import SystemManageDetail from './system-type-manage-detail'
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
-      MenuManageDetail
+      // SystemManageDetail
     },
     data(){
 		  return{
         columns: [
-          {title: '菜单名', key: 'name',  minWidth: 100,},
-          {title: '菜单ID', key: 'id',  minWidth: 100},
-          {title: '父菜单名', key: 'parentName',  minWidth: 100,
-            render: (h, params) => h('span', params.row.parent.name)
-          },
-          {title: '父菜单ID', key: 'parentId',  minWidth: 100,
-            render: (h, params) => h('span', params.row.parent.id)
-          },
-          {title: '链接地址', key: 'uri',  minWidth: 100},
-          {title: '是否叶子菜单', key: 'leaf',  minWidth: 120},
-          {title: '扩展属性', key: 'extInfo',  minWidth: 100},
-          {title: '排序值', key: 'sortValue',  minWidth: 100},
+          {title: '系统类型ID', key: 'id',  minWidth: 100},
+          {title: '系统类型名', key: 'name',  minWidth: 100,},
+          {title: '系统类型代号', key: 'code',  minWidth: 100,},
         ],
         tableData: [],
         search:{
           name: '',
-          parentId: '',
-          uri: '',
+          code: '',
         },
         page: 1,
         limit: 10,
@@ -82,7 +69,7 @@
     },
     methods:{
         getList(){
-          this.$axios.$post('/menu/list', {
+          this.$axios.$post('/system/list', {
             "pageNo": this.page,
             "pageSize": this.limit,
             ...this.search

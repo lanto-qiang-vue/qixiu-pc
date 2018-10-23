@@ -41,12 +41,14 @@ export default {
   },
   computed: {
     menuList () {
-      console.log('$route', this.$route)
-      console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
+      // console.log('$route', this.$route)
+      // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       return getMenuByRouter2(router, this.$store.state.user.accessMenu)
     },
   },
-
+  mounted(){
+    console.log('main-mounted')
+  },
   methods: {
     turnToPage (name) {
       if (name.indexOf('isTurnByHref_') > -1) {
