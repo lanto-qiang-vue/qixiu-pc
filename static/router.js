@@ -172,7 +172,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '文章管理',
-      accessId: 15,
+      accessId: 17,
     },
     component: Main,
     children: [
@@ -194,7 +194,15 @@ export default [
         },
         component: resolve('center/articles/article-list.vue'),
       },
-
+      {
+        path: 'article-detail',
+        meta: {
+          icon: 'md-funnel',
+          title: '文章详情',
+          // accessId: 17,
+        },
+        component: resolve('center/articles/article-detail.vue'),
+      },
     ]
   },
   //维修企业
