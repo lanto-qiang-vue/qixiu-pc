@@ -172,7 +172,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '文章管理',
-      accessId: 15,
+      accessId: 17,
     },
     component: Main,
     children: [
@@ -194,7 +194,15 @@ export default [
         },
         component: resolve('center/articles/article-list.vue'),
       },
-
+      {
+        path: 'article-detail',
+        meta: {
+          icon: 'md-funnel',
+          title: '文章详情',
+          // accessId: 17,
+        },
+        component: resolve('center/articles/article-detail.vue'),
+      },
     ]
   },
   //维修企业
@@ -246,6 +254,37 @@ export default [
           accessId: 10,
         },
         component: resolve('center/account/change-phone.vue'),
+      },
+    ]
+  },
+  //运营中心--运输管理
+  {
+    path: '/menu18',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '运输管理',
+      accessId: 401,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'transportationCompany-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '运输企业信息管理',
+          accessId: 402,
+        },
+        component: resolve('center/operate/transportationCompany-manage.vue'),
+      },
+      {
+        path: 'transportationCompany-record',
+        meta: {
+          icon: 'md-funnel',
+          title: '运输车辆技术档案',
+          accessId: 403,
+        },
+        component: resolve('center/operate/transportationCompany-record.vue'),
       },
     ]
   }
