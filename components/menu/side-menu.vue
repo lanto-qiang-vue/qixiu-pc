@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-wrapper">
     <slot></slot>
-    <Menu ref="menu" v-show="!collapsed" :active-name="activeName" :open-names="openedNames" :accordion="accordion" :theme="theme" width="auto" @on-select="handleSelect">
+    <Menu ref="menu" v-show="!collapsed" :active-name="activeName" :open-names="openNames" :accordion="accordion" :theme="theme" width="200" @on-select="handleSelect">
       <template v-for="item in menuList">
         <!--<template v-if="item.children && item.children.length === 1">-->
           <!--<side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>-->
@@ -78,7 +78,8 @@ export default {
   },
   data () {
     return {
-      openedNames: ['15','8']
+      // openedNames: ['15','8']
+      openedNames: []
     }
   },
   methods: {

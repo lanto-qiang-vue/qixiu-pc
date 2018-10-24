@@ -1,7 +1,7 @@
 <template>
-  <Layout>
+  <Layout style="flex-direction: row;">
     <Sider hide-trigger class="common-sider">
-      <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+      <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
         <div class="logo-con">
           <p>管理中心</p>
         </div>
@@ -45,6 +45,17 @@ export default {
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       return getMenuByRouter2(router, this.$store.state.user.accessMenu)
     },
+    setOpenedNames(){
+      let list= this.menuList
+      let arr=[]
+      for (let i in list){
+        if(list[i].children){
+          arr.push(list[i].meta.accessId.toString())
+        }
+      }
+      // this.openedNames= arr
+      return arr
+    }
   },
   mounted(){
     console.log('main-mounted')
