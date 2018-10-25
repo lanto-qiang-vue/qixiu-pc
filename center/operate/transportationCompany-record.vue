@@ -52,6 +52,7 @@
       :title="title"
       width="90"
       :scrollable="true"
+      @on-visible-change="visibleChange"
       :transfer="false"
       :mask-closable="false"
       :footer-hide="false"
@@ -59,102 +60,102 @@
       <Tabs type="card" v-model="indexName">
         <!--车辆基本情况-->
         <TabPane name="m1" label="车辆基本情况">
-          <Form :model="formData" ref="formData" :label-width="120" class="common-form">
-            <FormItem label="所属企业:">
-              <Input v-model="formData.CORP_NAME" type="text"> </Input>
+          <Form v-show="indexName == 'm1'"  :model="formData" ref="formData" :rules="rule1" :label-width="120" class="common-form">
+            <FormItem label="所属企业:" prop="corp_name">
+              <Input v-model="formData.corp_name" :readonly="true" type="text" @on-focus="showType=Math.random()"> </Input>
             </FormItem>
-            <FormItem label="车牌号码:" prop="corp_name">
-              <Input v-model="formData.PLATE_NUM" type="text"> </Input>
+            <FormItem label="车牌号码:" prop="plateNum">
+              <Input v-model="formData.plateNum" type="text"> </Input>
             </FormItem>
-            <FormItem label="车牌颜色:">
-              <Select v-model="formData.PLATE_COLOR">
+            <FormItem label="车牌颜色:" prop="plateColor">
+              <Select v-model="formData.plateColor">
                 <Option v-for="item in colorList2" :value="item.code" :key="item.code">{{ item.name }}
                 </Option>
               </Select>
             </FormItem>
-            <FormItem label="车辆类型:" prop="corp_area">
-              <Select v-model="formData.VEHICLE_TYPE">
+            <FormItem label="车辆类型:" prop="vehicleType">
+              <Select v-model="formData.vehicleType">
                 <Option v-for="item in cartList2" :value="item.code" :key="item.code">{{ item.name }}
                 </Option>
               </Select>
             </FormItem>
-            <FormItem label="发证日期:">
-              <DatePicker type="date" v-model="formData.CERT_DATE"></DatePicker>
+            <FormItem label="发证日期:" prop="certDate">
+              <DatePicker type="date" v-model="formData.certDate"></DatePicker>
             </FormItem>
             <FormItem label="厂家:">
-              <Input v-model="formData.VENDER" type="text"> </Input>
+              <Input v-model="formData.vender" type="text"> </Input>
             </FormItem>
             <FormItem label="品牌:" prop="cert_date">
-              <Input v-model="formData.BRAND" type="text"> </Input>
+              <Input v-model="formData.brand" type="text"> </Input>
             </FormItem>
             <FormItem label="车型:">
-              <Input type="text" v-model="formData.XM"></Input>
+              <Input type="text" v-model="formData.xm"></Input>
             </FormItem>
             <FormItem label="道路运输许可证号:">
-              <Input type="text" v-model="formData.LOAD_CERT_NUM"></Input>
+              <Input type="text" v-model="formData.loadCertNum"></Input>
             </FormItem>
             <FormItem label="营运状态:">
-              <Select v-model="formData.STATUS">
+              <Select v-model="formData.status">
                 <Option v-for="item in manageList2" :value="item.code" :key="item.code">{{ item.name }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="所属辖区:" prop="contacts">
-              <Select v-model="formData.COUNTY">
+              <Select v-model="formData.county">
                 <Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="燃料类型:" prop="contacts_tel">
-              <Select v-model="formData.FUEL_TYPE">
+              <Select v-model="formData.fuelType">
                 <Option v-for="item in fuelList" :value="item.code" :key="item.code">{{ item.name }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="车架号:">
-              <Input v-model="formData.CHASSIS_NUM" type="text"> </Input>
+              <Input v-model="formData.chassisNum" type="text"> </Input>
             </FormItem>
             <FormItem label="发动机号:">
-              <Input v-model="formData.ENGINE_NUM" type="text"> </Input>
+              <Input v-model="formData.engineNum" type="text"> </Input>
             </FormItem>
             <FormItem label="使用类别:">
-              <Input v-model="formData.USE_TYPE" type="text"> </Input>
+              <Input v-model="formData.useType" type="text"> </Input>
             </FormItem>
             <FormItem label="车辆吨位:">
-              <Input v-model="formData.TONNAGE" type="text"> </Input>
+              <Input v-model="formData.tonnage" type="text"> </Input>
             </FormItem>
             <FormItem label="座位:">
-              <Input v-model="formData.SEAT" type="text"> </Input>
+              <Input v-model="formData.seat" type="text"> </Input>
             </FormItem>
             <FormItem label="建档里程:">
-              <Input v-model="formData.FIRST_MILEAGE" type="text"> </Input>
+              <InputNumber :min="0" v-model="formData.firstMileage"> </InputNumber>
             </FormItem>
             <FormItem label="年检日期:">
-              <DatePicker type="date" v-model="formData.CHECK_DATE"></DatePicker>
+              <DatePicker type="date" v-model="formData.checkDate"></DatePicker>
             </FormItem>
             <FormItem label="上次维修日期:">
-              <DatePicker type="date" v-model="formData.LAST_REPAIR_DATE"></DatePicker>
+              <DatePicker type="date" v-model="formData.lastRepairDate"></DatePicker>
             </FormItem>
             <FormItem label="上次评定日期:">
-              <DatePicker type="date" v-model="formData.LAST_CHECK_DATE"></DatePicker>
+              <DatePicker type="date" v-model="formData.lastCheckDate"></DatePicker>
             </FormItem>
             <FormItem label="注册日期:">
-              <DatePicker type="date" v-model="formData.REG_DATE"></DatePicker>
+              <DatePicker type="date" v-model="formData.regDate"></DatePicker>
             </FormItem>
             <FormItem label="驾驶员:">
-              <Input v-model="formData.UNIT_NAME" type="text"> </Input>
+              <Input v-model="formData.unitName" type="text"> </Input>
             </FormItem>
             <FormItem label="是否个体户:">
-              <Select v-model="formData.IS_SINGLE">
+              <Select v-model="formData.isSingle">
                 <Option v-for="item in unitList2" :value="item.code" :key="item.code">{{ item.name }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="车主姓名:">
-              <Input v-model="formData.OWNER_NAME" type="text"> </Input>
+              <Input v-model="formData.ownerName" type="text"> </Input>
             </FormItem>
             <FormItem label="车主电话:">
-              <Input v-model="formData.OWNER_PHONE" type="text"> </Input>
+              <Input v-model="formData.ownerPhone" type="text"> </Input>
             </FormItem>
             <div style="clear: both;"></div>
             <FormItem :label-width="0">
@@ -172,33 +173,140 @@
           </Form>
         </TabPane>
         <!--车辆技术参数-->
-        <TabPane name="m2" label="车辆技术参数">标签二的内容</TabPane>
-        <TabPane name="m3" label="车辆变更登记">标签三的内容</TabPane>
-        <TabPane name="m4" label="车辆使用登记">标签四的内容</TabPane>
-        <TabPane name="m5" label="车辆交通事故登记">标签五的内容</TabPane>
-        <TabPane name="m6" label="车辆驾驶员登记">标签六的内容</TabPane>
+        <TabPane name="m2" :disabled="canEdit" label="车辆技术参数">
+          <Form :model="formData2" ref="formData2" :label-width="120" class="common-form">
+            <FormItem label="出厂日期:" prop="productionDate">
+              <DatePicker type="date" v-model="formData2.productionDate"></DatePicker>
+            </FormItem>
+            <FormItem label="出厂场地:" prop="plateNum">
+              <Input v-model="formData2.productionPlace" type="text"> </Input>
+            </FormItem>
+            <FormItem label="底盘厂牌型号:" prop="plateColor">
+              <Input v-model="formData2.engineBrand" type="text"> </Input>
+            </FormItem>
+            <FormItem label="客车类型等级:" prop="vehicleType">
+              <Input v-model="formData2.busLevel" type="text"> </Input>
+            </FormItem>
+            <FormItem label="车辆外廓尺寸:" prop="certDate">
+              <Input v-model="formData2.vehicleDimensions"></Input>
+            </FormItem>
+            <FormItem label="总质量:">
+              <Input v-model="formData2.totalMass" type="text"> </Input>
+            </FormItem>
+            <FormItem label="作为排列:" prop="cert_date">
+              <!--<Input v-model="formData2.seatArrangement" type="text"> </Input>-->
+              <Select v-model="formData2.seatArrangement">
+                <Option v-for="item in arrangeList" :value="item.code" :key="item.code">{{ item.name }}
+                </Option>
+              </Select>
+            </FormItem>
+            <FormItem label="核定乘员数:">
+              <Input type="text" v-model="formData2.occupantNumber"></Input>
+            </FormItem>
+            <FormItem label="核定牵引总质量:">
+              <Input type="text" v-model="formData2.tractionMass"></Input>
+            </FormItem>
+            <FormItem label="车轴数/驱动轴数:">
+              <Input type="text" v-model="formData2.axleNumber"></Input>
+            </FormItem>
+            <FormItem label="发动机厂牌型号:" prop="contacts">
+              <Input type="text" v-model="formData2.engineBrand"></Input>
+            </FormItem>
+            <FormItem label="发动机功率:" prop="contacts_tel">
+              <Input type="text" v-model="formData2.enginePower"></Input>
+            </FormItem>
+            <FormItem label="发动机排量:">
+              <Input v-model="formData2.engineDisplacement" type="text"> </Input>
+            </FormItem>
+            <FormItem label="排放标准:">
+              <!--<Input v-model="formData2.emissionStandard" type="text"> </Input>-->
+              <Select v-model="formData2.emissionStandard">
+                <Option v-for="item in letList" :value="item.code" :key="item.code">{{ item.name }}
+                </Option>
+              </Select>
+            </FormItem>
+            <FormItem label="驱动形式:">
+              <Input v-model="formData2.driveType" type="text"> </Input>
+            </FormItem>
+            <FormItem label="轮胎数/规格:">
+              <Input v-model="formData2.tyreNumber" type="text"> </Input>
+            </FormItem>
+            <FormItem label="前照灯制式:">
+              <Input v-model="formData2.headlightType" type="text"> </Input>
+            </FormItem>
+            <FormItem label="变速器形式:">
+              <Input v-model="formData2.transmissionType" :min="0"> </Input>
+            </FormItem>
+            <FormItem label="缓速器:">
+              <Input v-model="formData2.retarder"> </Input>
+            </FormItem>
+            <FormItem label="转向器:">
+              <Input  v-model="formData2.steeringGear"></Input>
+            </FormItem>
+            <FormItem label="行车制动形式:">
+              <Input v-model="formData2.brakeType"></Input>
+            </FormItem>
+            <FormItem label="悬挂形式:">
+              <Input v-model="formData2.suspensionType"></Input>
+            </FormItem>
+            <FormItem label="其他配置:">
+              <Input v-model="formData2.qtpz" type="text"> </Input>
+            </FormItem>
+          </Form>
+        </TabPane>
+        <TabPane name="m3" :disabled="canEdit" label="车辆变更登记">标签三的内容</TabPane>
+        <TabPane name="m4" :disabled="canEdit" label="车辆使用登记">标签四的内容</TabPane>
+        <TabPane name="m5" :disabled="canEdit" label="车辆交通事故登记">标签五的内容</TabPane>
+        <TabPane name="m6" :disabled="canEdit" label="车辆驾驶员登记">标签六的内容</TabPane>
       </Tabs>
       <div slot="footer">
-        <Button type="success">提交</Button>
+        <Button type="success" v-show="indexName == 'm1'" @click="addPost('formData',1)">提交</Button>
         <Button @click="showModal=false">返回</Button>
       </div>
     </Modal>
+    <select-company :showType="showType" @changeOk="changeOk"></select-company>
   </common-table>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
   import uploadImg from '~/components/uploadImg.vue'
-
+  import SelectCompany from '~/components/select-company.vue'
+  import { deepClone } from '../../static/util'
   export default {
     name: 'transportationCompany-record',
-    components: { CommonTable, uploadImg },
+    components: { CommonTable, uploadImg,SelectCompany},
     data() {
+      const validateColor = (rule, value, callback) => {
+        if (this.formData.plateColor == 0) {
+          callback(new Error('请选择'))
+        } else {
+          callback()
+        }
+      }
+      const validateType = (rule, value, callback) => {
+        if (this.formData.vehicleType == 0) {
+          callback(new Error('请选择'))
+        } else {
+          callback()
+        }
+      }
       return {
+        showType:false,
+        rule1: {
+          corp_name: [{ required: true, message: '请选择维修企业' }],
+          plateNum: [{ required: true, message: '必填项不能为空' }],
+          plateColor: [{ required: true, message: '必填项不能为空' },
+            { validator: validateColor, trigger: 'blur' }
+          ],
+          vehicleType: [{ required: true, message: '必填项不能为空' },
+            { validator: validateType, trigger: 'blur' }],
+          certDate: [{ required: true, message: '必填项不能为空' }]
+        },
         loading: false,
         showTable: false,
-        showModal: false,
-        indexName: 'm1',
+        showModal: true,
+        indexName: 'm2',
         title: '新增技术档案',
         page: 1,
         limit: 10,
@@ -310,61 +418,177 @@
           { code: '10111004', name: '电力' },
           { code: '10111005', name: '混合动力' }
         ],
-        formData: {
-          'CORP_NAME': '12345678901234567890123456789012345678901234567890',
-          'TRANS_CORP_ID': '6',
-          'PLATE_NUM': '车牌号码',
-          'PLATE_COLOR': '10061001',
-          'VEHICLE_TYPE': '10071001',
-          'VENDER': '厂家',
-          'BRAND': '品牌',
-          'XM': '车型',
-          'LOAD_CERT_NUM': '道路运输许可证号',
-          'CERT_DATE': '2018-10-01',
-          'STATUS': '10081001',
-          'COUNTY': '310116',
-          'FUEL_TYPE': '10111002',
-          'CHASSIS_NUM': '车架号',
-          'ENGINE_NUM': '发动机号',
-          'USE_TYPE': '使用类别',
-          'TONNAGE': '车辆吨位',
-          'SEAT': '座位',
-          'CHECK_DATE': '2018-10-02',
-          'FIRST_MILEAGE': '简单里程',
-          'LAST_REPAIR_DATE': '2018-10-03',
-          'LAST_CHECK_DATE': '2018-10-04',
-          'UNIT_NAME': '驾驶员',
-          'REG_DATE': '2018-10-05',
-          'IS_SINGLE': '10041001',
-          'OWNER_NAME': '车主姓名',
-          'OWNER_PHONE': '车主电话',
-          'DRIVING_LICENSE_PIC': '',
-          'TRADING_CARD_PIC': '',
-          'TRAFFIC_PERMIT_PIC': '',
-          'GUARANTEE_SLIP_PIC': '',
-          'VEHICLE_ID': ''
+        arrangeList:[
+          {code:'0',name:'请选择'},
+          {code:'2+2',name:'2+2'},
+          {code:'2+1',name:'2+1'},
+          {code:'1+1+1',name:'1+1+1'},
+          {code:'1+1',name:'1+1'},
+        ],
+        letList:[
+          {code:'0',name:'请选择'},
+          {code:'国II',name:'国II'},
+          {code:'国III',name:'国III'},
+        ],
+        //变速器选项...
+        shiftingList:[
+          {code:'0',name:'请选择'},
+          {code:'自动',name:'自动'},
+          {code:'手动',name:'手动'},
+          {code:'手自动一体化',name:'手自动一体化'},
+        ],
+        //缓速器...
+        slowList:[
+          {code:'0',name:'请选择'},
+          {code:'自动',name:'电磁式'},
+          {code:'手动',name:'液力式'},
+        ],
+        //转向器...
+        turnList:[
+          {code:'0',name:'请选择'},
+          {code:'动力转向',name:'动力转向'},
+          {code:'非动力转向',name:'非动力转向'},
+        ],
+        //车辆基本信息...
+        formData:{},
+        storeData: {
+          'corp_name': '',
+          'transCorpId': '',
+          'plateNum': '',
+          'plateColor': '0',
+          'vehicleType': '0',
+          'vender': '',
+          'brand': '',
+          'xm': '',
+          'loadCertNum': '',
+          'certDate': '',
+          'status': '0',
+          'county': '0',
+          'fuelType': '0',
+          'chassisNum': '',
+          'engineNum': '',
+          'useType': '',
+          'tonnage': '',
+          'seat': '',
+          'checkDate': '',
+          'firstMileage': 0,
+          'lastRepairDate': '',
+          'lastCheckDate': '',
+          'unitName': '',
+          'regDate': '',
+          'isSingle': '0',
+          'ownerName': '',
+          'ownerPhone': '',
+          'drivingLicensePic': '',
+          'tradingCardPic': '',
+          'trafficPermitPic': '',
+          'guaranteeSlipPic': '',
+          'vehicleId': '290'
         },
-        img1:[],
-        img2:[],
-        img3:[],
-        img4:[],
+        formData2:{
+          "axleNumber": "车轴数/驱动轴数",
+          "brakeType": "气-液",
+          "brandModel": "底盘厂牌型号",
+          "busLevel": "客车类型等级",
+          "driveType": "驱动形式",
+          "emissionStandard": "国II",
+          "engineBrand": "发动机厂牌型号",
+          "engineDisplacement": "发动机排量",
+          "enginePower": "发动机功率",
+          "headlightType": "前照灯制式",
+          "occupantNumber": "核定乘员数",
+          "productionDate": "2018-10-01",
+          "productionPlace": "出厂场地",
+          "qtpz": "其他配置",
+          "retarder": "电磁式",
+          "seatArrangement": "0",
+          "steeringGear": "动力转向",
+          "suspensionType": "悬挂形式",
+          "totalMass": "总质量",
+          "tractionMass": "核定牵引总质量",
+          "transmissionType": "手动",
+          "tyreNumber": "轮胎数/规格",
+          "vehicleDimensions": "车辆外廓尺寸",
+          "vehicleId":290,
+        },
+        //车辆技术参数......
+        img1: [],
+        img2: [],
+        img3: [],
+        img4: []
+
       }
     },
     methods: {
-      success1(res){
-      this.img1 = res;
+      changeOk(res){
+         this.formData.corp_name = res.corp_name;
+         this.formData.transCorpId = res.corp_id;
       },
-      success2(res){
-        this.img2 = res;
+      visibleChange(){
+        this.clear();
       },
-      success3(res){
-        this.img3 = res;
+      addPost(name, code) {
+        switch (code) {
+          case 1:
+            this.$refs[name].validate((valid) => {
+              if (valid) {
+                this.$Modal.confirm({
+                  title: '系统提示', content: '确认保存吗?', onOk: () => {
+                    this.formData.drivingLicensePic = this.pjUrl(this.img1);
+                    this.formData.firstMileage = this.formData.firstMileage || 0;
+                    this.formData.tradingCardPic = this.pjUrl(this.img2);
+                    this.formData.trafficPermitPic = this.pjUrl(this.img3);
+                    this.formData.guaranteeSlipPic = this.pjUrl(this.img4);
+                    //0转空....
+                    this.formData.plateColor = this.formData.plateColor == 0 ? '' : this.formData.plateColor;
+                    this.formData.vehicleType = this.formData.vehicleType == 0 ? '' : this.formData.vehicleType;
+                    this.formData.status = this.formData.status == 0 ? '' : this.formData.status;
+                    this.formData.county = this.formData.county == 0 ? '' : this.formData.county;
+                    this.formData.fuelType = this.formData.fuelType == 0 ? '' : this.formData.fuelType;
+                    this.formData.isSingle = this.formData.isSingle == 0 ? '' : this.formData.isSingle;
+                    this.$axios.post('/manage/vehicle/vehiclebase/save', this.formData).then((res) => {
+                      if (res.data.code == '0') {
+                        if(this.formData.vehicleId == ''){
+                          this.$Message.success("新增成功");
+                        }else{
+                          this.$Message.success("修改成功");
+                        }
+                        this.formData.vehicleId = res.id;
+                        this.getList();
+                      }
+                    })
+                  }
+                })
+              } else {
+                this.$Message.error('请校对红框信息')
+              }
+            })
+            break
+        }
       },
-      success4(res){
-        this.img4 = res;
+      pjUrl(data) {
+        let store = []
+        for (let i in data) {
+          store.push(data[i].url)
+        }
+        return store.join(';')
+      },
+      success1(res) {
+        this.img1 = res
+      },
+      success2(res) {
+        this.img2 = res
+      },
+      success3(res) {
+        this.img3 = res
+      },
+      success4(res) {
+        this.img4 = res
       },
       add() {
-        this.showModal = true;
+        this.formData = deepClone(this.storeData);
+        this.$refs.formData.resetFields();
+        this.showModal = true
       },
       del() {
         this.$Modal.confirm({
@@ -389,13 +613,13 @@
         this.loading = true
         this.clear()
         this.$axios.post('/manage/vehicle/vehiclebase/list', {
-          PLATE_COLOR_eq: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
-          VEHICLE_TYPE_eq: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
-          WARN_TYPE_eq: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,
-          STATUS_eq: this.search.STATUS_eq == 0 ? '' : this.search.STATUS_eq,
-          PLATE_NUM_lk: this.search.PLATE_NUM_lk,
-          RECORD_NO_lk: this.search.RECORD_NO_lk,
-          IS_SINGLE_eq: this.search.IS_SINGLE_eq == 0 ? '' : this.search.IS_SINGLE_eq,
+          plate_color_eq: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
+          vehicle_type_eq: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
+          warn_type_eq: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,
+          status_eq: this.search.STATUS_eq == 0 ? '' : this.search.STATUS_eq,
+          plate_num_lk: this.search.PLATE_NUM_lk,
+          record_no_lk: this.search.RECORD_NO_lk,
+          is_single_eq: this.search.IS_SINGLE_eq == 0 ? '' : this.search.IS_SINGLE_eq,
           pageNo: this.page,
           pageSize: this.limit
         }).then((res) => {
@@ -442,6 +666,9 @@
     computed: {
       canDo() {
         return this.list == ''
+      },
+      canEdit(){
+        return this.formData.vehicleId == '';
       }
     }
   }
