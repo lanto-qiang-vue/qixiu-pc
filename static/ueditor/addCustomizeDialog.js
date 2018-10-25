@@ -24,7 +24,9 @@ UE.registerUI('addimg',function(editor,uiName){
                     // console.log($("#"+dialog.id+'_iframe').contents())
                     // console.log($("#"+dialog.id+'_iframe').contents().find('.addimg')[0].src)
                     // var src=$("#"+dialog.id+'_iframe').contents().find('.addimg')[0].src
-                    var src=$("#"+dialog.id+'_iframe').contents().find('#address').val()
+                    // var src=$("#"+dialog.id+'_iframe').contents().find('#address').val()
+                    var src= document.querySelector("#"+dialog.id+'_iframe').contentWindow.document
+                      .querySelector('#address').value
                     if(src){
                         var html='<img src="'+src+'"/>'
                         editor.focus();
@@ -80,8 +82,11 @@ UE.registerUI('addfile',function(editor,uiName){
                 className:'edui-okbutton',
                 label:'确定',
                 onclick:function () {
-                    var name= $("#"+dialog.id+'_iframe').contents().find('#name').val()
-                    var href= $("#"+dialog.id+'_iframe').contents().find('#address').val()
+                  var iframe= document.querySelector("#"+dialog.id+'_iframe').contentWindow.document
+                  // var name= $("#"+dialog.id+'_iframe').contents().find('#name').val()
+                  // var href= $("#"+dialog.id+'_iframe').contents().find('#address').val()
+                  var name= iframe.querySelector('#name').value
+                  var href= iframe.querySelector('#address').value
                     console.log(name, href)
                     if(!href){
                         layer.msg('请上传文件', {time: 2000, icon:5})

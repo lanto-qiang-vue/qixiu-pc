@@ -34,7 +34,8 @@
 <script>
 import SideMenuItem from './side-menu-item.vue'
 // import CollapsedMenu from './collapsed-menu.vue'
-import { getUnion } from '@/static/tools'
+import { getUnion } from '~/static/tools'
+import { deepClone } from '~/static/util'
 import mixin from './mixin'
 
 export default {
@@ -84,7 +85,20 @@ export default {
   },
   methods: {
     handleSelect (name) {
-      this.$emit('on-select', name)
+
+      this.$emit('on-select', name, this.getMeta(name, this.menuList))
+    },
+    getMeta(name, list){
+      let  meta= null
+      for (let i in list){
+        if(list[i].path && list[i].path== name){
+          meta= deepClone(list[i].meta)
+        }else if(list[i].children){
+          meta= this.getMeta(name, list[i].children)
+        }
+        if(meta) break
+      }
+      return meta
     },
     getOpenedNamesByActiveName (name) {
       return this.$route.matched.map(item => item.name).filter(item => item !== name)
