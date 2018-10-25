@@ -71,17 +71,40 @@
         console.log(fileObj)
         var form = new FormData(); // FormData 对象
         form.append("file", fileObj)
-        filePost(baseu + '/file/add/'+ editor.ACCESSTOKEN , form, function (res) {
-            console.log(res)
-            if(res.code=='000000'){
-                layer.msg('文件上传成功');
-                $("#name").val(fileObj.name)
-                $("#address").val(res.data.docPath)
-            }else{
-                layer.msg(res.status, {icon: 5, time: 2000 });
-            }
-            layer.closeAll('loading');
-        })
+        // filePost(baseu + '/file/add/'+ editor.ACCESSTOKEN , form, function (res) {
+        //     console.log(res)
+        //     if(res.code=='000000'){
+        //         layer.msg('文件上传成功');
+        //         $("#name").val(fileObj.name)
+        //         $("#address").val(res.data.docPath)
+        //     }else{
+        //         layer.msg(res.status, {icon: 5, time: 2000 });
+        //     }
+        //     layer.closeAll('loading');
+        // })
+      $.ajax({
+        url : '/proxy/file/add',
+        data : form,
+        headers: {token: editor.__proto__.token},
+        type : "post",
+        dataType:"json",
+        // contentType:"application/json",
+        contentType: false,
+        processData: false,
+        success : function(res) {
+          if(res.code=='0'){
+            $("#name").val(fileObj.name)
+            $("#address").val(res.data.docPath)
+            // alert('文件上传成功');
+          }else{
+            alert(res.status);
+          }
+        },
+        error: function () {
+          // layer.msg('系统繁忙！', {time: 2000, icon:5});
+          // layer.closeAll('loading');
+        }
+      })
     }
 </script>
 </body>

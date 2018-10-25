@@ -1,25 +1,25 @@
 <template>
 <div style="padding: 10px 20px" id="erss">
   <Form ref="form" :rules="ruleValidate"  :model="detail" :label-width="80" >
-    <FormItem label="文章标题" prop="title">
-      <Input type="text" v-model="detail.title" ></Input>
+    <FormItem label="文章标题" prop="name">
+      <Input type="text" v-model="detail.name" ></Input>
     </FormItem>
-    <FormItem label="文章类型" prop="infoType">
-      <Input type="text" v-model="detail.infoType" ></Input>
+    <FormItem label="文章类型" prop="code">
+      <Input type="text" v-model="detail.code" ></Input>
     </FormItem>
-    <FormItem label="文章来源" prop="dataFrom">
-      <Input type="text" v-model="detail.dataFrom" ></Input>
+    <FormItem label="文章来源" prop="code">
+      <Input type="text" v-model="detail.code" ></Input>
     </FormItem>
-    <FormItem label="文章内容" prop="content">
+    <FormItem label="文章内容" prop="code">
       <div id="articlecontainer"></div>
     </FormItem>
     <FormItem label="封面图片" prop="code">
       <div class="pic-block">
         <!--<Button type="primary" @click="">上传图片</Button>-->
-        <compress-upload-button @done="upPic"></compress-upload-button>
-        <Input type="text" v-model="detail.photo" placeholder="图片地址"></Input>
+        <compress-upload-button></compress-upload-button>
+        <Input type="text" v-model="detail.code" placeholder="图片地址"></Input>
       </div>
-      <div class="pic"><img v-show="detail.photo" :src="detail.photo"/></div>
+      <div class="pic"><img v-show="detail.code" :src="detail.code"/></div>
     </FormItem>
     <FormItem>
       <Button @click="$router.go(-1)">返回</Button>
@@ -35,41 +35,32 @@
   import CompressUploadButton from '~/components/compress-upload-button.vue'
 	export default {
 		name: "article-detail",
+    layout: 'common',
     components: {
       CompressUploadButton,
     },
     head () {
-		  // console.log('head!!!')
+		  console.log('head!!!')
       return {
         script: [
           { type: 'text/javascript', src: '/ueditor/ueditor.config.js'},
           { type: 'text/javascript', src: '/ueditor/ueditor.all.js' },
           { type: 'text/javascript', src: '/ueditor/lang/zh-cn/zh-cn.js'},
           { type: 'text/javascript', src: '/ueditor/addCustomizeDialog.js'},
-        ],
+        ]
       }
     },
     data(){
-      let rule= [{ required: true, message:'必填项不能为空'}]
       return{
         ue: null,
         detail:{
-          infoId: null,
-          title: '',
-          infoType: '',
-          dataFrom: '',
-          content: '',
-          photo: ''
-        },
-        ruleValidate : {
-          title: rule,
-          infoType: rule,
-        },
+
+        }
       }
     },
     mounted(){
-
-      let width= document.querySelector("#articlecontainer").offsetWidth
+		  // console.log($('#erss'))
+		  let width= document.querySelector("#articlecontainer").offsetWidth
       UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
       UE.Editor.prototype.getActionUrl = function(action) {
         if (action == 'uploadimage' ) {
@@ -87,14 +78,6 @@
         zIndex: 1,
         catchRemoteImageEnable:false
       });
-
-    },
-    methods:{
-      upPic(res){
-        if(res.code=='0'){
-          this.detail.photo= res.data.picPath
-        }
-      }
     },
     beforeRouteLeave(to, from, next){
       this.ue.destroy()

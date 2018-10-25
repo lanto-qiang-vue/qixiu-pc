@@ -61,15 +61,21 @@ export default {
     console.log('main-mounted')
   },
   methods: {
-    turnToPage (name) {
+    turnToPage (name, meta) {
+      // console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return
       }
-      this.$router.push({
-        // name: name
-        path: name
-      })
+
+      if(meta && meta.href){
+        window.location.href= name
+      }else{
+        this.$router.push({
+          path: name
+        })
+      }
+
     },
   }
 }
