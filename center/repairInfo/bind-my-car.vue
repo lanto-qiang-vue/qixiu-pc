@@ -14,7 +14,7 @@
         
         <Form :label-width="80">
             <FormItem label="绑定类型:" style="width: 300px;">
-                <Select v-model="infoData.property" >
+                <Select v-model="infoData.property" @on-change="selectBindType">
                     <Option v-for="item in bindTypeArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -498,6 +498,13 @@ export default {
                     this.$Message.info(res.data.status)
                 }
            })
+        },
+        //选择绑定类型--------
+        selectBindType(val){
+            if(val==1){
+                
+            }
+
         },
 
 
