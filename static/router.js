@@ -172,7 +172,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '文章管理',
-      accessId: 17,
+      accessId: 15,
     },
     component: Main,
     children: [
@@ -195,7 +195,7 @@ export default [
         component: resolve('center/articles/article-list.vue'),
       },
       {
-        path: 'article-detail',
+        path: 'article-manage/detail',
         meta: {
           icon: 'md-funnel',
           title: '文章详情',

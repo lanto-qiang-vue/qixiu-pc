@@ -15,6 +15,7 @@
             <Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
           </Select>
         </FormItem>
+      <div style="clear:both;"></div>
         <FormItem label="道路经营许可证:">
           <Input type="text" v-model="search.business_num" placeholder="请输入道路经营许可证"></Input>
         </FormItem>
@@ -37,6 +38,7 @@
       :title="title"
       width="70"
       :scrollable="true"
+      @on-visible-change="visibleChange"
       :transfer="false"
       :transition-names="['', '']">
       <Form :model="formData" ref="formData" :rules="rules" :label-width="120" class="common-form">
@@ -70,7 +72,7 @@
         <FormItem label="有效结束日期:" prop="valid_end_date">
           <DatePicker type="date" v-model="formData.valid_end_date"></DatePicker>
         </FormItem>
-        <FormItem label="电子邮件:">
+        <FormItem label="电子邮箱:">
           <Input v-model="formData.email" type="text"> </Input>
         </FormItem>
         <FormItem label="联系人:" prop="contacts">
@@ -130,7 +132,9 @@
           { title: '首次发证时间', key: 'cert_date', sortable: true, minWidth: 130 },
           { title: '有效开始日期', key: 'valid_start_date', sortable: true, minWidth: 130 },
           { title: '有效结束日期', key: 'valid_end_date', sortable: true, minWidth: 130 },
-          { title: '所属辖区', key: 'corp_area', sortable: true, minWidth: 120 },
+          { title: '所属辖区', key: 'corp_area', sortable: true, minWidth: 120 ,
+            render: (h, params) => h('span', this.getName(this.area, params.row.corp_area))
+          },
           { title: '企业负责人', key: 'charge_person', sortable: true, minWidth: 120 },
           { title: '企业地址', key: 'corp_add', sortable: true, minWidth: 170 }
         ],
@@ -145,23 +149,23 @@
         area2: [],
         list: '',
         formData: {
-          'business_num': '道路营业许可证',
-          'cert_date': '2018-10-23',
-          'charge_person': '企业负责人',
-          'contacts': '联系人',
-          'contacts_tel': '联系人手机',
-          'corp_add': '企业地址',
+          'business_num': '',
+          'cert_date': '',
+          'charge_person': '',
+          'contacts': '',
+          'contacts_tel': '',
+          'corp_add': '',
           'corp_area': '0',
           'corp_id': '',
-          'corp_name': '企业名称',
-          'corp_num': '系统自动生成',
-          'email': '电子邮件',
-          'legal_tel': '负责人手机',
-          'remark': '备注',
-          'service_hotline': '企业联系电话',
-          'valid_end_date': '2018-10-24',
-          'valid_start_date': '2018-10-25',
-          'web_site': '企业网址'
+          'corp_name': '',
+          'corp_num': '',
+          'email': '',
+          'legal_tel': '',
+          'remark': '',
+          'service_hotline': '',
+          'valid_end_date': '',
+          'valid_start_date': '',
+          'web_site': ''
         },
         rules: {
           corp_name: [
@@ -198,6 +202,9 @@
       }
     },
     methods: {
+      visibleChange(){
+        this.clear();
+      },
       del(){
         this.$Modal.confirm({title:'系统提示',content: '确认删除吗',onOk:()=>{
             this.$axios.post('/manage/transcorp/tccorpinfo/delete',{
@@ -238,20 +245,37 @@
         })
       },
       clear() {
-        this.list = 0
+        this.list = '';
         this.clearTableSelect = Math.random()
       },
       rowClick(row) {
         this.list = row
       },
       add() {
-        this.title = '新增运输企业'
+        for(let i in this.formData){
+          this.formData[i] = "";
+        }
+        this.$refs.formData.resetFields();
+        this.title = '新增运输企业';
+        this.formData.corp_num = "系统自动生成";
+        this.formData.corp_area = 0;
         this.showModal = true
       },
       edit() {
+        this.$refs.formData.resetFields();
         this.title = '查看/修改运输企业';
-      this.formData = this.list;
+      this.formData = deepClone(this.list);
       this.showModal = true;
+      },
+      getName(data, code) {
+        let name = ''
+        for (let i in data) {
+          if (data[i].regionCode == code) {
+            name = data[i].shortName
+            break
+          }
+        }
+        return name
       },
       changePage(page) {
         this.page = page

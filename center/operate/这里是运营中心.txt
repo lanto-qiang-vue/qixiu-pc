@@ -1,1 +1,2 @@
 运输企业信息管理-----center/operate/transportation-company-manage.vue
+运输企业车辆技术档案-----center/operate/transportationCompany-record

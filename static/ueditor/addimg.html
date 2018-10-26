@@ -163,10 +163,10 @@
         contentType: false,
         processData: false,
         success : function(res) {
-          if(res.code=='000000'){
+          if(res.code=='0'){
             $("#address").val(res.data.picPath)
             $("img").attr({src: res.data.picPath})
-            alert('图片上传成功');
+            // alert('图片上传成功');
           }else{
             alert(res.status);
           }
