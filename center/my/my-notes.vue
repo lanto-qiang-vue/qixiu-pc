@@ -1,48 +1,67 @@
 <template>
-<div class="menu-manage">
+
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                 :show="showTable" :page="page">
+                 :show="showTable" :page="page" :loading='loading'>
     <div  slot="search"  >
       <Form :label-width="80" class="common-form">
             <FormItem label="通知标题:">
                 <Input type="text" v-model="search.input" placeholder="请输入通知标题"></Input>
             </FormItem>
             <FormItem label="时间:">
-                <DatePicker type="daterange" v-model="search.select" placement="bottom-end" placeholder="Select date"></DatePicker>
+                <DatePicker type="daterange" v-model="search.select" placement="bottom-end" placeholder="请选择时间"></DatePicker>
             </FormItem>
-            <FormItem label="时间:" style="width: 80px;" :label-width="0">
-                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <FormItem label="" style="width: 120px;" :label-width="0">
+                <Button type="primary" v-if="" @click="getList">搜索</Button>
+                <Button type="primary" v-if="" @click="resetFun">清空</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
 
     </div>
-    
+    <my-notes-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" style="height: 100%;overflow: auto;"></my-notes-detail>
   </common-table>
-</div>
-</template>
+  
 
+
+</template>
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { formatDate } from '@/static/tools.js'
+  import myNotesDetail from './my-notes-detail.vue'
 	export default {
 		name: "my-notes",
     components: {
       CommonTable,
+      myNotesDetail
     },
     data(){
 		  return{
+        loading:false,
         columns: [
-          {title: '通知标题', key: 'ORDER_TYPE', sortable: true, minWidth: 120,
+          {title: '通知标题', key: 'title', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '通知发送人', key: 'ORDER_PERSON', sortable: true, minWidth: 120},
-          {title: '通知日期', key: 'TELPHONE', sortable: true, minWidth: 120},
-          {title: '是否已读', key: 'PLATE_NUM', sortable: true, minWidth: 120},
+          {title: '通知发送人', key: 'nickname', sortable: true, minWidth: 120},
+          {title: '通知日期', key: 'sendTime', sortable: true, minWidth: 120},
+          {title: '是否已读', key: 'read', sortable: true, minWidth: 120,
+            //   render: (h, params) => {
+            //     if(params.row.read==false){
+            //       return h('div', [
+            //           h('span', '未读')
+            //       ]);
+            //     }else if(params.row.read==true){
+            //       return h('div', [
+            //           h('span', '已读')
+            //       ]);
+            //     }
+                
+            // }
+
+          },
         ],
         tableData: [],
         searchSelectOption:[],
@@ -77,18 +96,29 @@
         getList(){
             let startTime=formatDate(this.search.select[0]);
             let endTime=formatDate(this.search.select[1]);
+            this.loading=true;
             this.$axios.post('/message/notify/getReceiveNotify', {
-                    
+                    "endDate": this.search.select[1],
+
+                    "startDate": this.search.select[0],
                     
                     "pageNo": this.page,
                     "pageSize": this.limit,
                     
-                    "title": ""
+                    "title": this.search.input,
 
                 }).then( (res) => {
-					console.log(res)
+                  if(res.data.code=='0'){
+                    this.tableData=res.data.items;
+                    this.total=res.data.total;
+                    this.loading=false;
+                  }else{
+                    this.$Message.error(res.data.status);
+                  }
 					
-				})
+				  })
+          this.detailData= null;
+
         },
         changePage(page){
           this.page= page
@@ -107,14 +137,19 @@
         
         closeDetail(){
           this.detailData= null
-          this.isOrderSuccess=true;
-          this.clearTableSelect= Math.random()
+          this.clearTableSelect= Math.random();
+          this.getList();
         },
         //搜索按钮----------
         searchFun(){
           console.log(this.search.select);
           console.log(formatDate(this.search.select[0]));
           console.log(formatDate(this.search.select[1]));
+        },
+        resetFun(){
+          for(let i in this.search){
+            this.search[i]="";
+          }
         },
     },
 	}

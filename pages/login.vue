@@ -161,16 +161,16 @@
 					console.log(res)
 					if(res.data.code==='0'){
 						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-						// localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+						localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
             localStorage.setItem('ACCESSMENU',JSON.stringify([{
-              "id": 401,
-              "name": "运输管理",
+              "id": 701,
+              "name": "登录信息",
               "uri": null,
               "leaf": false,
               "extInfo": null,
               "children": [{
-                "id": 402,
-                "name": "运输企业信息管理",
+                "id": 702,
+                "name": "企业签到信息",
                 "uri": "/center/userInfo",
                 "leaf": true,
                 "extInfo": null,
@@ -179,8 +179,30 @@
                 "parentId": 0,
                 "sortValue": 1
               }, {
-                "id": 403,
-                "name": "运输车辆技术档案",
+                "id": 703,
+                "name": "管理部门登录信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 704,
+                "name": "通知管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 705,
+                "name": "通知审核",
                 "uri": "/center/userInfo",
                 "leaf": true,
                 "extInfo": null,
@@ -197,14 +219,14 @@
 						this.$store.commit('user/setToken', res.data.item.accessToken)
 						// this.$store.commit('user/setMenu', res.data.item.menus)
             this.$store.commit('user/setToken',[{
-              "id": 401,
-              "name": "运输管理",
+              "id": 701,
+              "name": "登录信息",
               "uri": null,
               "leaf": false,
               "extInfo": null,
               "children": [{
-                "id": 402,
-                "name": "运输企业信息管理",
+                "id": 702,
+                "name": "企业签到信息",
                 "uri": "/center/userInfo",
                 "leaf": true,
                 "extInfo": null,
@@ -213,8 +235,31 @@
                 "parentId": 0,
                 "sortValue": 1
               }, {
-                "id": 403,
-                "name": "运输车辆技术档案",
+                "id": 703,
+                "name": "管理部门登录信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 704,
+                "name": "通知管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }
+			  ,
+			  {
+                "id": 705,
+                "name": "通知审核",
                 "uri": "/center/userInfo",
                 "leaf": true,
                 "extInfo": null,
