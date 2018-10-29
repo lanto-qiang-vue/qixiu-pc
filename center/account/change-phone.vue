@@ -2,21 +2,21 @@
     <div style="height: 100%;overflow: auto;">
         <div style="max-width:300px;margin-top: 40px;">
             <Form ref="formData"  :model="formData" :label-width="120" class="common-form">
-                <FormItem label="原手机号码:">
+                <FormItem label="原手机号码:" style="width: 300px;">
                     <Input type="text" v-model="formData.oldTelphone" placeholder="请输入手机号码" disabled></Input>
                 </FormItem>
-                <FormItem label="图形验证码:">
+                <FormItem label="图形验证码:"style="width: 300px;">
                     <Input type="text" v-model="formData.userImg" placeholder="请输入图形验证码"></Input>
                 </FormItem>
-                <FormItem label="新手机号码:">
+                <FormItem label="新手机号码:"style="width: 300px;">
                     <Input type="text" v-model="formData.newTelphone" placeholder="请输入手机号码"></Input>
                 </FormItem>
-                <FormItem label="手机验证码:">
+                <FormItem label="手机验证码:"style="width: 393px;">
                     <Input v-model="formData.randCode" placeholder="请输入手机验证码">
                         <span slot="append"><Button  type="primary" @click='getCaptcha'>{{description}}</Button></span>
                     </Input>
                 </FormItem>
-                <FormItem label="登录密码:">
+                <FormItem label="登录密码:"style="width: 300px;">
                     <Input type="text" v-model="formData.userPass" placeholder="请输入登录密码"></Input>
                 </FormItem>
                 <FormItem :label-width="0">

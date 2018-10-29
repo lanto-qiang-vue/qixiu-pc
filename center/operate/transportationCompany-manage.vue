@@ -38,6 +38,7 @@
       :title="title"
       width="70"
       :scrollable="true"
+      @on-visible-change="visibleChange"
       :transfer="false"
       :transition-names="['', '']">
       <Form :model="formData" ref="formData" :rules="rules" :label-width="120" class="common-form">
@@ -201,6 +202,9 @@
       }
     },
     methods: {
+      visibleChange(){
+        this.clear();
+      },
       del(){
         this.$Modal.confirm({title:'系统提示',content: '确认删除吗',onOk:()=>{
             this.$axios.post('/manage/transcorp/tccorpinfo/delete',{
@@ -241,7 +245,7 @@
         })
       },
       clear() {
-        this.list = 0
+        this.list = '';
         this.clearTableSelect = Math.random()
       },
       rowClick(row) {
@@ -260,7 +264,7 @@
       edit() {
         this.$refs.formData.resetFields();
         this.title = '查看/修改运输企业';
-      this.formData = this.list;
+      this.formData = deepClone(this.list);
       this.showModal = true;
       },
       getName(data, code) {

@@ -113,10 +113,10 @@
                 var p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
                 var p2=/0\d{2,3}-\d{7,8}/;
                 if (p2.test(value)||p1.test(value)||!value) {
-
+					
                     callback();
                 }else{
-
+                	
                     callback(new Error('请输入正确的号码'));
                 }
             };
@@ -137,7 +137,7 @@
 					captcha: [
 						{ required: true,  message: '请填写验证码',}
 					],
-
+					
 				},//规则验证
 
 				single: false,
@@ -162,71 +162,116 @@
 					if(res.data.code==='0'){
 						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
 						localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
-            // localStorage.setItem('ACCESSMENU',JSON.stringify([{
-            //   "id": 401,
-            //   "name": "运输管理",
-            //   "uri": null,
-            //   "leaf": false,
-            //   "extInfo": null,
-            //   "children": [{
-            //     "id": 402,
-            //     "name": "运输企业信息管理",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 1
-            //   }, {
-            //     "id": 403,
-            //     "name": "运输车辆技术档案",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 2
-            //   }],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 8
-            // }]))
+            localStorage.setItem('ACCESSMENU',JSON.stringify([{
+              "id": 701,
+              "name": "登录信息",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 702,
+                "name": "企业签到信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }, {
+                "id": 703,
+                "name": "管理部门登录信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 704,
+                "name": "通知管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 705,
+                "name": "通知审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]))
 						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
 						this.$store.commit('user/setToken', res.data.item.accessToken)
 						// this.$store.commit('user/setMenu', res.data.item.menus)
-            // this.$store.commit('user/setToken',[{
-            //   "id": 401,
-            //   "name": "运输管理",
-            //   "uri": null,
-            //   "leaf": false,
-            //   "extInfo": null,
-            //   "children": [{
-            //     "id": 402,
-            //     "name": "运输企业信息管理",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 1
-            //   }, {
-            //     "id": 403,
-            //     "name": "运输车辆技术档案",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 2
-            //   }],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 8
-            // }]);
+            this.$store.commit('user/setToken',[{
+              "id": 701,
+              "name": "登录信息",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 702,
+                "name": "企业签到信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }, {
+                "id": 703,
+                "name": "管理部门登录信息",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },
+			  {
+                "id": 704,
+                "name": "通知管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }
+			  ,
+			  {
+                "id": 705,
+                "name": "通知审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/my-car-record')
 					}
@@ -235,7 +280,7 @@
 					// .then(function (response) {
 					// 	console.log(response);
 					// })
-
+					
 				})
 			},
 			//获取短信验证码----
@@ -250,7 +295,7 @@
 						"businessType":"10",
 						"mobileNo": this.formMobile.userMobile,
 						"captcha": this.formMobile.captcha
-
+						
 					}).then( (res) => {
 						console.log(res)
 						if(res.data.code==='0'){
@@ -260,12 +305,12 @@
 						}else{
 							this.$Message.info(res.data.status)
 						}
-
+						
 					})
 				}else{
 
 				}
-
+				
 			},
 			handleCaptcha(name){
 				this.$refs[name].validate((valid) => {

@@ -233,7 +233,7 @@
   padding: 10px;
   background-color: white;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   /*opacity: 0;*/
   transition: opacity .2s;

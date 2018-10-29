@@ -296,5 +296,55 @@ export default [
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
     ]
-  }
+  },
+  //管理中心--登录信息
+  {
+    path: '/menu19',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '登录信息',
+      accessId: 701,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'enterprise-sign',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业签到信息',
+          accessId: 702,
+        },
+        component: resolve('center/logininfo/enterprise-sign.vue'),
+      },
+      {
+        path: 'manage-sign',
+        meta: {
+          icon: 'md-funnel',
+          title: '管理部门登录信息',
+          accessId: 703,
+        },
+        component: resolve('center/logininfo/manage-sign.vue'),
+      },
+      {
+        path: 'note-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知管理',
+          accessId: 704,
+        },
+        component: resolve('center/manage-service/note-manage.vue'),
+      },
+      {
+        path: 'note-audit',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知审核',
+          accessId: 705,
+        },
+        component: resolve('center/manage-service/note-audit.vue'),
+      },
+    ]
+  },
+
 ]

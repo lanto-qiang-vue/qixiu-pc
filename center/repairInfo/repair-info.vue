@@ -21,11 +21,11 @@
       <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
       <Button type="error" v-if=""  @click="removeBindFun" :disabled="!detailData">解绑</Button>
       <Button type="primary" v-if=""  @click="showDetail=Math.random()" >绑定本人车辆</Button>
-      <Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>
+      <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
     </div>
     
 </common-table>
-<bind-my-car :showDetail='showDetail' ></bind-my-car>
+<bind-my-car :showDetail='showDetail' @closeDetail="closeDetail"></bind-my-car>
 <bind-other-car :showDetail='showOtherDetail' @closeDetail="closeDetail"></bind-other-car>
 </div>
 </template>
@@ -83,6 +83,7 @@
     // },
     methods:{
         getList(){
+            this.loading=true;
             this.$axios.post('/vehicle/owner/queryVehicelist', {
                     "cartype": "",
                     "pageNo": this.page,
@@ -97,6 +98,7 @@
                     this.loading=false;
                 }
            })
+           this.detailData= null;
         },
         changePage(page){
           this.page= page
@@ -112,12 +114,11 @@
         },
         closeDetail(){
           this.detailData= null
-          this.clearTableSelect= Math.random()
+          this.clearTableSelect= Math.random();
+          this.getList();
         },
         //搜索按钮----
         searchFun(){
-            this.loading=true;
-            this.getList();
             this.closeDetail();
         },
         //解绑按钮-------
@@ -133,16 +134,11 @@
 
             } ).then( (res) => {
                 if(res.data.code=='0'){
-                    this.getList();
                     this.closeDetail();
                 }
             })
         },
-        closeDetail(){
-          this.detailData= null
-          this.clearTableSelect= Math.random()
-          this.getList();
-        },
+        
 
         
     },
