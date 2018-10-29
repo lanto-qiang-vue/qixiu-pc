@@ -30,24 +30,27 @@
     <div slot="operate">
       <Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>
       <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
-      <Button type="info" :disabled="!selectRow.id">菜单授权</Button>
+      <Button type="info" :disabled="!selectRow.id" @click="showAssign= Math.random()">授权</Button>
       <Button type="error" v-show="selectRow.id&& selectRow.state" @click="setState">禁用</Button>
       <Button type="success" v-show="selectRow.id&& !selectRow.state" @click="setState">启用</Button>
     </div>
   </common-table>
   <role-manage-detail :data="selectRow" :show="showDetail" :total="total"
                       @refresh="selectRow={};getList()"></role-manage-detail>
+  <role-assign :show="showAssign" :selectRow="selectRow" :columns="columns"></role-assign>
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
   import RoleManageDetail from './role-manage-detail.vue'
+  import RoleAssign from './role-assign.vue'
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
-      RoleManageDetail
+      RoleManageDetail,
+      RoleAssign
     },
     data(){
 		  return{
@@ -73,6 +76,7 @@
         total: 0,
         showTable:false,
         showDetail: false,
+        showAssign: false,
         selectRow: {},
         clearTableSelect: null,
 

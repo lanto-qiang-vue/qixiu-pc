@@ -68,7 +68,6 @@
       }
     },
     mounted(){
-
       let width= document.querySelector("#articlecontainer").offsetWidth
       UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
       UE.Editor.prototype.getActionUrl = function(action) {
@@ -88,13 +87,44 @@
         catchRemoteImageEnable:false
       });
 
+      let id= this.$route.query.id
+      if(id) this.getDetail(id)
     },
     methods:{
       upPic(res){
         if(res.code=='0'){
           this.detail.photo= res.data.picPath
         }
-      }
+      },
+      getDetail(id){
+        this.$axios.$post('/infopublic/detail/'+ id, {}).then( (res) => {
+          if(res.code== '0'){
+
+          }
+        })
+      },
+      save(){
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            let url= ''
+            if(this.$route.query.id){
+              url= '/menu/edit'
+            }else{
+              url= '/menu/add'
+            }
+            this.detail.parent= {id: this.$route.query.id}
+            this.$axios.$post(url, this.detail).then( (res) => {
+              if(res.code== '0'){
+                this.$Message.success('编辑成功')
+                this.showModal=false
+                this.$emit('refresh');
+              }
+            })
+          } else {
+            this.$Message.error('请输入必填项!');
+          }
+        })
+      },
     },
     beforeRouteLeave(to, from, next){
       this.ue.destroy()
