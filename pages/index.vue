@@ -728,14 +728,14 @@ export default {
             margin-top: 0;
           }
           .dummy{
-            margin-top: 80%;
+            /*margin-top: 80%;*/
           }
           .content {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
+            /*position: absolute;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*top: 0;*/
+            /*bottom: 0;*/
             .news-swiper-body{
               width: 100%;
               height: 100%;
@@ -856,6 +856,7 @@ export default {
           color: black;
           line-height: 24px;
           display: inline-block;
+          white-space: nowrap;
         }
         .guide{
           padding-left: 25px;
