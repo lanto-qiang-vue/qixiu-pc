@@ -255,6 +255,23 @@ export default {
   components: {
     CommonFooter
   },
+  asyncData ({ app }) {
+    console.log('1')
+    let article1= new Promise((resolve, reject) => {
+      app.$axios.$post('/home/all',{
+        "infoType": "10281019",
+        "pageNo": 1,
+        "pageSize": 5,
+      }).then(res => {
+        // if (res.code === '0') {
+console.log(res)
+          resolve()
+        // } else reject()
+      }).then(err => {
+        reject(err)
+      })
+    })
+  },
   data () {
     return {
       banners:[
@@ -296,6 +313,17 @@ export default {
   },
   mounted(){
     this.showSwiper= true
+
+      this.$axios.$post('/home/all',{
+        "infoType": "10281019",
+        "pageNo": 1,
+        "pageSize": 5,
+      }).then(res => {
+        // if (res.code === '0') {
+        console.log(res)
+
+        // } else reject()
+      })
   }
 }
 </script>

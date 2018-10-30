@@ -125,7 +125,7 @@
         this.$Modal.confirm({
           title: '确定要'+ showText+ '该门店吗？',
           onOk: ()=> {
-            this.axios.request({
+            this.$axios({
               url: '/manage/info/tenantinfo/updateCheckStatus',
               method: 'post',
               data: {

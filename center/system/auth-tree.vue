@@ -1,45 +1,48 @@
 <template>
-  <div>
-    <div style="background:none;cursor: pointer;line-height:25px;">
+  <div class="auth-tree">
+    <div style="background:none;line-height:25px;">
       <div style="width:30%;text-align:left;float:left;">
         <div ref="abc" style="width:20px;height:20px;float:left;"></div>
         <div style="cursor:pointer;width:15px;height:15px;float:left;" @click="unfold">{{arrows}}</div>
         <div style="float:left">
           <Checkbox @on-change="onChange" :value="checked"></Checkbox>
         </div>
-        <div style="float:left;" @click="unfold">{{text}}</div>
+        <div style="float:left;cursor: pointer" @click="unfold">{{text}}</div>
       </div>
-      <div style="width:40%;float:left;text-align:left;" v-html="button"></div>
+      <div class="middle" style="width:40%;float:left;text-align:left;" v-html="button"></div>
       <div style="width:30%;float:left;text-align:center;">
-        <Dropdown trigger="custom" :visible="visible" @on-clickoutside="handleClose" v-if="buttonShow">
-          <a href="javascript:void(0)" @click="handleOpen">
-            <Icon type="ios-arrow-down"></Icon>
-            选择权限
+        <Dropdown trigger="custom" placement="bottom-start" :visible="visible" v-if="buttonShow"
+                 @on-clickoutside="visible= false">
+          <a :class="{gray: !checked}"  @click="clickDropdown" >
+            <Icon type="ios-arrow-down"></Icon>选择权限
           </a>
           <DropdownMenu slot="list">
             <div style="text-align:left;margin:10px;max-height:300px;overflow:auto;">
-              <div v-for="item in funcButton">
-                <Checkbox @on-change="changeButton(item.BTN_ID)" :value="item.IS_CHECK == 1">
-                  {{item.BTN_NAME}}</Checkbox>
+              <div v-for="item in funcButton" :key="'checkbox-'+ item.id">
+                <Checkbox @on-change="changeButton(item.id)" :value="item.selected" :disabled="!checked">
+                  {{item.name}}</Checkbox>
 
               </div>
             </div>
           </DropdownMenu>
         </Dropdown>
+        <slot name="level1" v-if="level==1"></slot>
+
       </div>
       <div style="clear:both;"></div>
     </div>
-    <auth-tree v-for="item in data" :expand="item.expand" :indexId="0" :text="item.text" :funcId="item.funcId"
-                v-show="expand"
-                :level="level+1" :data="item.children" @spliceId="spliceId" :funcButton="item.funcButton"
-                :checked="item.checked" @checkTrue="checkTrue" @pushIds="pushIds" @pushButtonId="pushButtonId"
-                @unfoldId="unfoldId" @checkFalse="checkFalse"></auth-tree>
+    <auth-tree v-for="item in data" :key="'role-'+item.id" :expand="item.expand"
+               :text="item.name" :funcId="item.id" v-show="expand"
+                :level="level+1" :data="item.children" :funcButton="item.functions" :checked="item.selected"
+               @unfoldId="unfoldId" @pushButtonId="pushButtonId" @changeMenu="changeMenu"
+               @spliceId="spliceId" @checkTrue="checkTrue" @pushIds="pushIds"
+                 @checkFalse="checkFalse" ></auth-tree>
   </div>
 </template>
 <script>
   export default {
     name: "authTree",
-    props: ['indexId', 'text', 'funcId', 'data', 'checked', 'level', 'expand', 'funcButton'],
+    props: [ 'text', 'funcId', 'data', 'checked', 'level', 'expand', 'funcButton'],
     data() {
       return {
         visible: false,
@@ -51,7 +54,12 @@
     methods: {
       unfold() {
         //展开控制
-        this.$emit('unfoldId', this.funcId);
+        if (this.data && this.data.length) {
+          this.$emit('unfoldId', this.funcId);
+        }else{
+          this.$emit('changeMenu', !this.checked, this.funcId);
+        }
+
       },
       unfoldId(id) {
         this.$emit('unfoldId', id);
@@ -65,17 +73,26 @@
       handleOpen() {
         this.visible = true;
       },
+      clickDropdown(){
+        if(this.checked){
+          this.visible= !this.visible
+        }
+      },
       handleClose() {
         this.visible = false;
       },
       onChange(type) {
-        if (type) {
-          this.$emit('checkTrue', this.funcId);
-          this.$emit('pushIds', [this.funcId]);
-        } else {
-          this.$emit('checkFalse', this.funcId);
-          this.$emit('spliceId', [this.funcId]);
-        }
+        // if (type) {
+        //   this.$emit('checkTrue', this.funcId);
+        //   this.$emit('pushIds', [this.funcId]);
+        // } else {
+        //   this.$emit('checkFalse', this.funcId);
+        //   this.$emit('spliceId', [this.funcId]);
+        // }
+        this.$emit('changeMenu', type, this.funcId);
+      },
+      changeMenu(type, id){
+        this.$emit('changeMenu', type, id);
       },
       checkTrue(row) {
         this.$emit('checkTrue', row);
@@ -94,7 +111,7 @@
     },
     computed: {
       arrows() {
-        if (this.data) {
+        if (this.data && this.data.length) {
           if (this.expand) {
             return '▼';
           } else {
@@ -109,9 +126,9 @@
         let arrows = '';
         let data = this.funcButton;
         for (let i in data) {
-          if (data[i].IS_CHECK == 1) {
-            init += arrows + data[i].BTN_NAME;
-            arrows = "<span style='color:blue'>&nbsp;|&nbsp;</span>";
+          if (data[i].selected ) {
+            init += ( arrows+ '<span class="role-tag">' + data[i].name+'</span>');
+            arrows = '&nbsp;|&nbsp;'
           }
         }
         return init;
@@ -131,6 +148,17 @@
   }
 </script>
 
-<style scoped>
+<style lang="less">
+  .auth-tree{
+    .middle{
+      word-break: break-all;
+      .role-tag{
+          white-space: nowrap;
+        }
+    }
+    .gray{
+      color: #8e8e8e;
+    }
+  }
 
 </style>
