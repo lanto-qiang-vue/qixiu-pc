@@ -161,38 +161,38 @@
 					console.log(res)
 					if(res.data.code==='0'){
 						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-						localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
-            // localStorage.setItem('ACCESSMENU',JSON.stringify([{
-            //   "id": 401,
-            //   "name": "运输管理",
-            //   "uri": null,
-            //   "leaf": false,
-            //   "extInfo": null,
-            //   "children": [{
-            //     "id": 402,
-            //     "name": "运输企业信息管理",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 1
-            //   }, {
-            //     "id": 403,
-            //     "name": "运输车辆技术档案",
-            //     "uri": "/center/userInfo",
-            //     "leaf": true,
-            //     "extInfo": null,
-            //     "children": [],
-            //     "functions": [],
-            //     "parentId": 0,
-            //     "sortValue": 2
-            //   }],
-            //   "functions": [],
-            //   "parentId": 0,
-            //   "sortValue": 8
-            // }]))
+						// localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            localStorage.setItem('ACCESSMENU',JSON.stringify([{
+              "id": 401,
+              "name": "运输管理",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 402,
+                "name": "运输企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }, {
+                "id": 403,
+                "name": "运输车辆技术档案",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]))
 						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
 						this.$store.commit('user/setToken', res.data.item.accessToken)
 						// this.$store.commit('user/setMenu', res.data.item.menus)
