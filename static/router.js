@@ -156,6 +156,15 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
+        path: 'user-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '用户管理',
+          accessId: 18,
+        },
+        component: resolve('center/system/user-manage.vue'),
+      },
+      {
         path: 'system-type-manage',
         meta: {
           icon: 'md-funnel',

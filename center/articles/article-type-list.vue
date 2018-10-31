@@ -6,11 +6,8 @@
                 @onRowDblclick="onRowDblclick" :show="showTable" :page="page">
     <div  slot="search"  >
       <Form :label-width="110" class="common-form">
-        <FormItem label="系统类型名:">
-            <Input type="text" v-model="search.name" ></Input>
-        </FormItem>
-        <FormItem label="系统类型代号:">
-            <Input type="text" v-model="search.code" ></Input>
+        <FormItem label="文章类型名:">
+            <Input type="text" v-model="search.codeDesc" ></Input>
         </FormItem>
         <FormItem >
           <ButtonGroup size="small">
@@ -21,35 +18,57 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>
-      <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
+      <Button type="success" v-if=""  @click="selectRow={},showDetail= true">新增</Button>
+      <Button type="primary" v-if=""  @click="showDetail=true" :disabled="!selectRow.id">修改</Button>
+      <Button type="error" v-if=""  @click="del" :disabled="!selectRow.id">删除</Button>
     </div>
   </common-table>
-  <!--<system-manage-detail :data="selectRow" :show="showDetail" :total="total"-->
-                      <!--@refresh="selectRow={};getList()"></system-manage-detail>-->
+  <!--<Modal-->
+    <!--v-model="showModal"-->
+    <!--title="编辑文章类型"-->
+    <!--width="50"-->
+    <!--@on-visible-change=""-->
+    <!--:footer-hide="false"-->
+    <!--class=""-->
+    <!--:mask-closable="false"-->
+    <!--:transition-names="['', '']"-->
+  <!--&gt;-->
+    <!--<Form ref="form" :rules="ruleValidate"  :model="detail" :label-width="110"  class="common-form">-->
+      <!--<FormItem label="文章类型名" prop="name">-->
+        <!--<Input type="text" v-model="detail.codeDesc" ></Input>-->
+      <!--</FormItem>-->
+    <!--</Form>-->
+    <!--<div slot="footer">-->
+      <!--<Button @click="showDetail=false">取消</Button>-->
+      <!--<Button type="primary" @click="save()">保存</Button>-->
+    <!--</div>-->
+  <!--</Modal>-->
 </div>
 </template>
 
 <script>
+  import { deepClone } from '~/static/util.js'
   import CommonTable from '~/components/common-table.vue'
-  // import SystemManageDetail from './system-type-manage-detail'
+  const initData= {
+    codeDesc: '',
+  }
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
-      // SystemManageDetail
     },
     data(){
 		  return{
         columns: [
-          {title: '系统类型ID', key: 'id',  minWidth: 100},
-          {title: '系统类型名', key: 'name',  minWidth: 100,},
-          {title: '系统类型代号', key: 'code',  minWidth: 100,},
+          {title: '文章类型ID', key: 'codeId',  minWidth: 100},
+          {title: '文章类型名', key: 'codeDesc',  minWidth: 100},
+          {title: '文章数量', key: 'num',  minWidth: 100},
         ],
         tableData: [],
         search:{
-          name: '',
+          codeDesc: '',
           code: '',
+          type: '1028',
         },
         page: 1,
         limit: 10,
@@ -58,8 +77,6 @@
         showDetail: false,
         selectRow: {},
         clearTableSelect: null,
-
-
       }
     },
     mounted () {
@@ -69,7 +86,7 @@
     },
     methods:{
         getList(){
-          this.$axios.$post('/system/list', {
+          this.$axios.$post('/infopublic/getCategoryList', {
             "pageNo": this.page,
             "pageSize": this.limit,
             ...this.search
@@ -89,10 +106,10 @@
         },
 
         onRowClick( row, index){
-          this.selectRow= row
+          this.selectRow= deepClone(row)
         },
         onRowDblclick( row, index){
-          this.selectRow=row
+          this.selectRow= deepClone(row)
         },
         closeDetail(){
           this.detailData= null
@@ -103,6 +120,9 @@
         closeGetList(){
           this.getList();
         },
+      del(){
+
+      }
     },
 	}
 </script>

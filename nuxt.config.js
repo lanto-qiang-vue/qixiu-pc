@@ -40,6 +40,7 @@ module.exports = {
     '~plugins/iview',
     '~/plugins/axios',
     { src: '~/plugins/browser-util.js', ssr: false },
+    { src: '~/plugins/swiper', ssr: false },
   ],
 
   /*
@@ -83,7 +84,6 @@ module.exports = {
         '$': 'jquery',
       })
     ],
-    vendor: ['iview']
   },
 
   router:{

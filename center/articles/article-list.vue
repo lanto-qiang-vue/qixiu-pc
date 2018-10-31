@@ -27,7 +27,7 @@
     </div>
     <div slot="operate">
       <Button type="success" v-if=""  @click="goDetail(true)">新增</Button>
-      <Button type="primary" v-if=""  @click="goDetail(false)">修改</Button>
+      <Button type="primary" v-if="" :disabled="!selectRow.id" @click="goDetail(false)">修改</Button>
     </div>
   </common-table>
   <!--<system-manage-detail :data="selectRow" :show="showDetail" :total="total"-->
@@ -81,6 +81,9 @@
 
     },
     methods:{
+		  getType(){
+
+      },
         getList(){
           this.$axios.$post('/infopublic/all', {
             "pageNo": this.page,
@@ -117,7 +120,7 @@
           this.getList();
         },
       goDetail(isNew){
-          window.location.href= '/center/article-manage/detail'
+          window.location.href= '/center/article-manage/detail' + (isNew ? '': ('?id='+this.selectRow.id))
         // this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew}})
         // this.$router.push({path:'/test', query:{ id: isNew}})
       },
