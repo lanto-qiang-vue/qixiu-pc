@@ -156,6 +156,15 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
+        path: 'user-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '用户管理',
+          accessId: 18,
+        },
+        component: resolve('center/system/user-manage.vue'),
+      },
+      {
         path: 'system-type-manage',
         meta: {
           icon: 'md-funnel',
@@ -247,6 +256,15 @@ export default [
         component: resolve('center/company/repored.vue'),
       },
       {
+        path: 'company-repair-qualify',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业合格证使用信息登记',
+          accessId: 109,
+        },
+        component: resolve('center/company/company-repair-qualify.vue'),
+      },
+      {
         path: 'change-phone',
         meta: {
           icon: 'md-funnel',
@@ -287,5 +305,109 @@ export default [
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
     ]
-  }
+  },
+  //管理中心--登录信息
+  {
+    path: '/menu19',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '登录信息',
+      accessId: 701,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'enterprise-sign',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业签到信息',
+          accessId: 702,
+        },
+        component: resolve('center/logininfo/enterprise-sign.vue'),
+      },
+      {
+        path: 'manage-sign',
+        meta: {
+          icon: 'md-funnel',
+          title: '管理部门登录信息',
+          accessId: 703,
+        },
+        component: resolve('center/logininfo/manage-sign.vue'),
+      },
+      {
+        path: 'note-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知管理',
+          accessId: 704,
+        },
+        component: resolve('center/manage-service/note-manage.vue'),
+      },
+      {
+        path: 'note-audit',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知审核',
+          accessId: 705,
+        },
+        component: resolve('center/manage-service/note-audit.vue'),
+      },
+      {
+        path: 'file-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '文件管理',
+          accessId: 706,
+        },
+        component: resolve('center/logininfo/file-manage.vue'),
+      },
+      {
+        path: 'record-company',
+        meta: {
+          icon: 'md-funnel',
+          title: '根据维修企业查找',
+          accessId: 707,
+        },
+        component: resolve('center/manage-service/record-company.vue'),
+      },
+      {
+        path: 'record-repair',
+        meta: {
+          icon: 'md-funnel',
+          title: '根据维修记录查找',
+          accessId: 708,
+        },
+        component: resolve('center/manage-service/record-repair.vue'),
+      },
+      {
+        path: 'company-info-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '维修企业信息管理',
+          accessId: 709,
+        },
+        component: resolve('center/company-info/company-info-manage.vue'),
+      },
+      {
+        path: 'quality-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '质量信誉考核管理',
+          accessId: 710,
+        },
+        component: resolve('center/company-info/quality-manage.vue'),
+      },
+      {
+        path: 'company-qualify-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业合格证使用信息管理',
+          accessId: 711,
+        },
+        component: resolve('center/company-info/company-qualify-manage.vue'),
+      },
+    ]
+  },
+
 ]

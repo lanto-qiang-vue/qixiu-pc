@@ -82,6 +82,7 @@
                 }
 					
 				    })
+            this.detailData= null;
         },
         changePage(page){
           this.page= page
