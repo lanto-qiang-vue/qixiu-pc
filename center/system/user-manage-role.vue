@@ -9,19 +9,7 @@
     :mask-closable="false"
     :transition-names="['', '']"
   >
-    <Form ref="form" :rules="ruleValidate"  :model="detail" :label-width="110"  class="common-form">
-      <FormItem label="角色名" prop="name">
-        <Input type="text" v-model="detail.name" ></Input>
-      </FormItem>
-      <FormItem label="角色代号" prop="code">
-        <Input type="text" v-model="detail.code" ></Input>
-      </FormItem>
-      <FormItem label="角色系统类型" prop="systemId">
-        <Select v-model="detail.systemId">
-          <Option v-for="(item, index) in systemList" :key="index" :value="item.id">{{item.name}}</Option>
-        </Select>
-      </FormItem>
-    </Form>
+    <Table :columns="columns" :data="tableData"></Table>
     <div slot="footer">
       <Button @click="showModal=false">取消</Button>
       <Button type="primary" @click="save()">保存</Button>
@@ -70,7 +58,8 @@ export default {
     },
     show(){
       this.showModal= true
-      this.getSystemList()
+      // this.getSystemList()
+      this.getRoles()
     }
   },
   mounted(){
@@ -119,6 +108,11 @@ export default {
 
         })
       }
+    },
+    getRoles(){
+      this.$axios.$get('/userid/get/'+ this.detail.id).then( (res) => {
+
+      })
     }
   }
 }

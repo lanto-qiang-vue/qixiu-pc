@@ -35,8 +35,7 @@
                :text="item.name" :funcId="item.id" v-show="expand"
                 :level="level+1" :data="item.children" :funcButton="item.functions" :checked="item.selected"
                @unfoldId="unfoldId" @pushButtonId="pushButtonId" @changeMenu="changeMenu"
-               @spliceId="spliceId" @checkTrue="checkTrue" @pushIds="pushIds"
-                 @checkFalse="checkFalse" ></auth-tree>
+               ></auth-tree>
   </div>
 </template>
 <script>
@@ -70,44 +69,21 @@
       pushButtonId(row) {
         this.$emit('pushButtonId', row);
       },
-      handleOpen() {
-        this.visible = true;
-      },
+
       clickDropdown(){
         if(this.checked){
           this.visible= !this.visible
         }
       },
-      handleClose() {
-        this.visible = false;
-      },
+
       onChange(type) {
-        // if (type) {
-        //   this.$emit('checkTrue', this.funcId);
-        //   this.$emit('pushIds', [this.funcId]);
-        // } else {
-        //   this.$emit('checkFalse', this.funcId);
-        //   this.$emit('spliceId', [this.funcId]);
-        // }
+
         this.$emit('changeMenu', type, this.funcId);
       },
       changeMenu(type, id){
         this.$emit('changeMenu', type, id);
       },
-      checkTrue(row) {
-        this.$emit('checkTrue', row);
-      },
-      checkFalse(row) {
-        this.$emit('checkFalse', row);
-      },
-      spliceId(ids) {
-        ids.push(this.funcId);
-        this.$emit('spliceId', ids);
-      },
-      pushIds(ids) {
-        ids.unshift(this.funcId);
-        this.$emit('pushIds', ids);
-      },
+
     },
     computed: {
       arrows() {
