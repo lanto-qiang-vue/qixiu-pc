@@ -232,7 +232,7 @@
 .common-table{
   padding: 10px;
   background-color: white;
-  height: 100%;
+  /*height: 100%;*/
   overflow: auto;
   position: relative;
   /*opacity: 0;*/

@@ -30,10 +30,10 @@
     <div slot="operate">
       <!--<Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>-->
       <!--<Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>-->
-      <Button type="info" :disabled="!selectRow.id" @click="showDetail= Math.random()">修改角色</Button>
+      <Button type="info" :disabled="!selectRow.id" @click="showDetail= Math.random()">分配角色</Button>
     </div>
   </common-table>
-  <user-role :show="showDetail" :total="total" :selectRow="selectRow" :columns="columns"
+  <user-role :show="showDetail"  :selectRow="selectRow" :columns="columns"
                       @refresh="selectRow={};getList()"></user-role>
 </div>
 </template>

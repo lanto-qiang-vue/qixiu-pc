@@ -23,7 +23,7 @@
             <Select v-model="searchList.companyCategory" clearable>
                 <Option v-for="item in companyType" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
-        </FormItem> 
+        </FormItem>
         <FormItem label="是否对接:">
             <Select v-model="searchList.buttJoin" clearable>
                 <Option v-for="item in isFlagType" :value="item.code" :key="item.code">{{ item.name }}</Option>
@@ -69,7 +69,7 @@
     <div slot="operate">
       <Button type="info" v-if="" @click="backCompany" :disabled="!detailData">查看</Button>
     </div>
-    
+
 </common-table>
 
 
@@ -144,7 +144,7 @@ export default {
             {code:"否",name:'否'},
         ],
         idaysType:[
-            
+
             {code:"7",name:'大于7天'},
             {code:"15",name:'大于15天'},
             {code:"30",name:'大于30天'},
@@ -221,46 +221,38 @@ export default {
                 upData["dept"]=this.manageArr[1]||'';
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
-            this.$axios.post('/vehicle/repair/export', {
-                    "area": upData["area"],
-                    "businessStatus": upData["businessStatus"],
-                    "buttJoin": upData["buttJoin"],
-                    "companyCategory": upData["companyCategory"],
-                    "companyName": upData["companyName"],
-                    "dept": upData["dept"],
-                    "inDays": upData["inDays"],
-                    "license": upData["license"],
-                    "minister": upData["minister"],
-                    "org": upData["org"],
-                    "show": upData["show"],
-                    "special": upData["special"],
-                    "uploadMonth": upData["uploadMonth"],
-
+            this.$axios({
+              method: 'post',
+              url: '/vehicle/repair/export',
+              data:{
+                "area": upData["area"],
+                "businessStatus": upData["businessStatus"],
+                "buttJoin": upData["buttJoin"],
+                "companyCategory": upData["companyCategory"],
+                "companyName": upData["companyName"],
+                "dept": upData["dept"],
+                "inDays": upData["inDays"],
+                "license": upData["license"],
+                "minister": upData["minister"],
+                "org": upData["org"],
+                "show": upData["show"],
+                "special": upData["special"],
+                "uploadMonth": upData["uploadMonth"],
+                },
+              responseType: 'arraybuffer'
             }).then( (res) => {
-                
-                    var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
-                    console.log(blob)
+                // console.log('res',res)
 
-                    var a = document.createElement('a');
-                        a.download = '对接密码.xlsx';
+                let blob = new Blob([res.data], {type: 'application/octet-stream'});
+                console.log(blob)
 
-                        a.href = window.URL.createObjectURL(blob);
-                        $("body").append(a);
-                        a.click();
-                        $(a).remove();
-                    
+                let a = document.createElement('a');
+                    a.download = '导出.xlsx';
 
-                    // var reader = new FileReader();
-                    // reader.readAsDataURL(blob);
-                    // reader.onload = function (e) {
-                    //     var a = document.createElement('a');
-                    //     a.download = '对接密码.xlsx';
-
-                    //     a.href = e.target.result;
-                    //     $("body").append(a);
-                    //     a.click();
-                    //     $(a).remove();
-                    // }
+                    a.href = window.URL.createObjectURL(blob);
+                    $("body").append(a);
+                    a.click();
+                    $(a).remove();
 
            })
            this.detailData= null;
@@ -268,7 +260,7 @@ export default {
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai" 
+                   "areaName": "shanghai"
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
@@ -276,7 +268,7 @@ export default {
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
         getType(id){
             this.$axios.get('/dict/getValuesByTypeId/'+id, {
@@ -345,7 +337,7 @@ export default {
             var query={flag:true,name:this.detailData.companyName};
             this.$router.push({path:'/center/record-repair',query:query});
         }
-        
+
     },
 	}
 </script>
