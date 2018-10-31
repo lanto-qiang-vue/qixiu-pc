@@ -63,6 +63,7 @@
     watch:{
         showList(){
             this.showModal=true;
+            this.page=1;
             this.getList();
             
         },

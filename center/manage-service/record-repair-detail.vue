@@ -1,0 +1,164 @@
+<!--车辆档案详情  2018-10-30 -->
+<template>
+<Modal
+    v-model="showModal"
+    title="车辆档案详情"
+    width="90"
+    @on-visible-change="visibleChange"
+    :scrollable="true"
+    :transfer= "true"
+    :footer-hide="false"
+    :mask-closable="false"
+    class="table-modal-detail"
+    :transition-names="['', '']">
+
+    <div style="height: 100%;overflow: auto;">
+    <Collapse v-model="collapse">
+        <Panel name="1">维修记录
+        <Form slot="content" :label-width="120" class="common-form">
+            <FormItem label="维修企业名称:">
+                <Input type="text" disabled v-model="listSearch.companyname" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="车牌号码:">
+                <Input type="text" disabled v-model="listSearch.vehicleplatenumber" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="车辆识别号VIN:">
+                <Input type="text" disabled v-model="listSearch.vin" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="送修里程:" >
+                <Input type="text" disabled v-model="listSearch.repairmileage" placeholder=""> </Input>
+
+            </FormItem>
+            <FormItem label="送修日期:" prop="ORDER_TIME">
+                <Input type="text" disabled v-model="listSearch.repairdate" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="结算日期:">
+                <Input type="text" disabled v-model="listSearch.settledate" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="结算编号:">
+                <Input type="text" disabled v-model="listSearch.costlistcode" placeholder=""> </Input>
+            </FormItem>
+            <FormItem label="故障描述:" prop="TELPHONE">
+                <Input type="text" disabled v-model="listSearch.faultdescription" placeholder=""> </Input>
+            </FormItem>
+            
+        </Form>
+        </Panel>
+      </Collapse>
+      <div class="r-list-search">
+            <h4>维修项目</h4>
+          </div>
+          <Table
+            class="main-table"
+            ref="tablesMain"
+            :columns="columns"
+            :data="tableData"
+            stripe
+            border
+          ></Table>
+
+          <div class="r-list-search">
+            <h4>维修配件</h4>
+          </div>
+          <Table
+            class="main-table"
+            ref="tablesMain"
+            :columns="columns1"
+            :data="tableData1"
+            stripe
+            border
+          ></Table>
+    </div>
+    <div slot="footer">
+        <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
+    </div>
+  </Modal>
+</template>
+
+<script>
+import { formatDate } from '@/static/tools.js'
+export default {
+	name: "note-audit-detail",
+    props:['showDetail', 'detailData'],
+    data(){
+		return{
+            showModal:false,
+            collapse: '1',
+            listSearch:{
+                companyname:"上海美溢汽车销售服务有限公司",
+                costlistcode:"WX000120171009022",
+                faultdescription:"20171016",
+                repairdate:"20171009",
+                repairmileage:"19631",
+                settledate:"返修车辆，麻烦师傅，",
+                vehicleplatenumber:"皖A828A9",
+                vin:"L6T7964Z6GN000809",
+            },
+            columns: [
+                {title: '项目名称', key: 'repairproject', sortable: true, minWidth: 180,
+                },
+                {title: '工时', key: 'workinghours', sortable: true, minWidth: 120},
+            ],
+            tableData:[],
+            columns1: [
+                {title: '配件名称', key: 'partsname', sortable: true, minWidth: 180,
+                },
+                {title: '编号', key: 'partscode', sortable: true, minWidth: 120},
+                {title: '数量', key: 'partsquantity', sortable: true, minWidth: 120},
+            ],
+            tableData1:[],
+            listButton:{
+                audit:true,
+                out:true,
+            }
+        
+        }
+    },
+    watch:{
+        showDetail(){
+            this.showModal=true;
+            this.getDetail();
+        },
+    },
+    methods:{
+        getDetail(){
+            this.$axios.post('/vehicle/carfile/queryDetail',{
+                        "repairbasicinfoId":this.detailData.repairbasicinfoId,
+                }).then( (res) => {
+                    if(res.data.code=='0'){
+                        
+                        this.listSearch=res.data.item['repairBasicinfo'];
+                        this.tableData=res.data.item['repairprojectlist'];
+                        this.tableData1=res.data.item['vehiclepartslist'];
+                        
+                    }else{
+                        this.$Message.error(res.data.status);
+                    }
+            })
+        },
+        visibleChange(status){
+          if(status === false){
+            this.$emit('closeDetail');
+            
+          }
+        },
+    },
+}
+</script>
+
+<style scoped lang="less">
+.menu-manage{
+
+}
+.search-block{
+  display: inline-block;
+  width: 200px;
+  margin-right: 10px;
+}
+  .r-list-search{
+    width: 100%;
+    padding: 10px 0;
+    
+
+  }
+</style>

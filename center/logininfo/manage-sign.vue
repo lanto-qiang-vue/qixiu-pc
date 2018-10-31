@@ -7,7 +7,7 @@
     <div  slot="search">
       <Form :label-width="80" class="common-form">
             <FormItem label="日期范围:">
-                <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间"></DatePicker>
+                <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间" :options="options"></DatePicker>
             </FormItem>
             <FormItem label="是否登录:">
                   
@@ -37,7 +37,7 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-
+  import { formatDate } from '@/static/tools'
 	export default {
 		name: "manage-sign",
     components: {
@@ -63,7 +63,7 @@
                 searchSelectOption:[],
                 searchList:{
                     areaKey:"310000",
-                    comanyNam:"",
+                    companyName:"",
                     isLogin:"yes",
                     startDate:"",
                 },
@@ -75,7 +75,12 @@
                 showOtherDetail:false,
                 detailData: null,
                 clearTableSelect: null,
-                
+                options: {
+                    disabledDate (date) {
+                        
+                        return date && date.valueOf() > Date.now();
+                    }
+                },
                 
             }
     },
@@ -86,14 +91,15 @@
     methods:{
         getList(){
             this.loading=true;
+
             this.$axios.post('/company/repaircompany/company/login/records', {
                     areaKey:this.searchList.areaKey,
-                    comanyName:this.searchList.comanyNam,
-                    endDate:this.searchList.startDate[1],
+                    companyName:this.searchList.companyName,
+                    endDate:formatDate(this.searchList.startDate[1])||'',
                     isLogin:this.searchList.isLogin,
                     pageNum:this.page,
                     pageSize:this.limit,
-                    startDate:this.searchList.startDate[0],
+                    startDate:formatDate(this.searchList.startDate[0])||'',
                     type:"manager",
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -138,7 +144,7 @@
             this.closeDetail();
         },
         
-        
+
         
 
         

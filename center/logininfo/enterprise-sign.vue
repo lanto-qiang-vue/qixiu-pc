@@ -7,7 +7,7 @@
     <div  slot="search">
       <Form :label-width="80" class="common-form">
             <FormItem label="日期范围:">
-                <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间"></DatePicker>
+                <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间" :options="options"></DatePicker>
             </FormItem>
             <FormItem label="是否签到:">
                   
@@ -16,7 +16,7 @@
                   </Select>
               </FormItem>
               <FormItem label="企业名称:">
-                  <Input type="text" v-model="searchList.comanyNam" placeholder="请输入关键字"></Input>
+                  <Input type="text" v-model="searchList.companyName" placeholder="请输入关键字"></Input>
               </FormItem>
               <FormItem label="所属辖区:">
                   
@@ -39,7 +39,7 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-
+  import { formatDate } from '@/static/tools'
 	export default {
 		name: "enterprise-sign",
     components: {
@@ -65,7 +65,7 @@
                 searchSelectOption:[],
                 searchList:{
                     areaKey:"310000",
-                    comanyNam:"",
+                    companyName:"",
                     isLogin:"yes",
                     startDate:"",
                 },
@@ -77,7 +77,12 @@
                 showOtherDetail:false,
                 detailData: null,
                 clearTableSelect: null,
-                
+                options: {
+                    disabledDate (date) {
+                        
+                        return date && date.valueOf() > Date.now();
+                    }
+                },
                 
             }
     },
@@ -96,12 +101,12 @@
             this.loading=true;
             this.$axios.post('/company/repaircompany/company/login/records', {
                     areaKey:this.searchList.areaKey,
-                    comanyName:this.searchList.comanyNam,
-                    endDate:this.searchList.startDate[1],
+                    companyName:this.searchList.companyName,
+                    endDate:formatDate(this.searchList.startDate[1])||'',
                     isLogin:this.searchList.isLogin,
                     pageNum:this.page,
                     pageSize:this.limit,
-                    startDate:this.searchList.startDate[0],
+                    startDate:formatDate(this.searchList.startDate[0])||'',
                     type:"company",
             }).then( (res) => {
                 if(res.data.code=='0'){
