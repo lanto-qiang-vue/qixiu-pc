@@ -210,11 +210,102 @@
                 "functions": [],
                 "parentId": 0,
                 "sortValue": 2
+              },{
+                "id": 706,
+                "name": "文件管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 707,
+                "name": "根据维修企业查找",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 708,
+                "name": "根据维修记录查找",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 709,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 710,
+                "name": "质量信誉考核管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 711,
+                "name": "企业合格证使用信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
               }],
               "functions": [],
               "parentId": 0,
               "sortValue": 8
             }]))
+        // localStorage.setItem('ACCESSMENU',JSON.stringify([{
+        //       "id": 107,
+        //       "name": "登录信息",
+        //       "uri": null,
+        //       "leaf": false,
+        //       "extInfo": null,
+        //       "children": [{
+        //         "id": 108,
+        //         "name": "维修数据上报查询",
+        //         "uri": "/center/userInfo",
+        //         "leaf": true,
+        //         "extInfo": null,
+        //         "children": [],
+        //         "functions": [],
+        //         "parentId": 0,
+        //         "sortValue": 1
+        //       }, {
+        //         "id": 109,
+        //         "name": "企业合格证使用信息登记",
+        //         "uri": "/center/userInfo",
+        //         "leaf": true,
+        //         "extInfo": null,
+        //         "children": [],
+        //         "functions": [],
+        //         "parentId": 0,
+        //         "sortValue": 2
+        //       }],
+        //       "functions": [],
+        //       "parentId": 0,
+        //       "sortValue": 8
+        //     }]))
 						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
 						this.$store.commit('user/setToken', res.data.item.accessToken)
 						// this.$store.commit('user/setMenu', res.data.item.menus)
@@ -267,19 +358,110 @@
                 "functions": [],
                 "parentId": 0,
                 "sortValue": 2
+              },{
+                "id": 706,
+                "name": "文件管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 707,
+                "name": "根据维修企业查找",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 708,
+                "name": "根据维修记录查找",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 709,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 710,
+                "name": "质量信誉考核管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
+              },{
+                "id": 711,
+                "name": "企业合格证使用信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 2
               }],
               "functions": [],
               "parentId": 0,
               "sortValue": 8
             }]);
+        // this.$store.commit('user/setToken',[{
+        //       "id": 107,
+        //       "name": "登录信息",
+        //       "uri": null,
+        //       "leaf": false,
+        //       "extInfo": null,
+        //       "children": [{
+        //         "id": 108,
+        //         "name": "维修数据上报查询",
+        //         "uri": "/center/userInfo",
+        //         "leaf": true,
+        //         "extInfo": null,
+        //         "children": [],
+        //         "functions": [],
+        //         "parentId": 0,
+        //         "sortValue": 1
+        //       }, {
+        //         "id": 109,
+        //         "name": "企业合格证使用信息登记",
+        //         "uri": "/center/userInfo",
+        //         "leaf": true,
+        //         "extInfo": null,
+        //         "children": [],
+        //         "functions": [],
+        //         "parentId": 0,
+        //         "sortValue": 2
+        //       }],
+        //       "functions": [],
+        //       "parentId": 0,
+        //       "sortValue": 8
+        //     }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/my-car-record')
 					}
 
-					// this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
-					// .then(function (response) {
-					// 	console.log(response);
-					// })
+					this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
+					.then(function (response) {
+						console.log(response);
+					})
 					
 				})
 			},

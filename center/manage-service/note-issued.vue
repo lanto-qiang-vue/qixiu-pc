@@ -121,7 +121,16 @@ export default {
         showDetail(){
 
             this.showModal=true;
-            this.token.token = this.$store.state.user.token
+            this.token.token = this.$store.state.user.token,
+            this.checkAll=false;
+            this.checkTypeAll=false;
+            
+            this.checkAllGroup = [];
+            this.checkRepair=[];
+            this.checkmanage=[];
+            this.checkTypeGroup=[];
+                this.checkRepairGroup=[];
+
             this.getRole();
             if(this.detailData){
                 this.getNotify();
@@ -403,6 +412,7 @@ export default {
             return true;
         },
         handleSuccess(res,file,fileList){
+            console.log(res,file,fileList);
             if(res.code=="0"){
                 this.search.docPath=res.data.docPath;
                 this.$Message.info("上传成功");

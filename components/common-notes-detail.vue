@@ -12,8 +12,8 @@
     :transition-names="['', '']">
 
     <div style="height: 100%;overflow: auto;">
-        <div id="content">
-
+        <div>
+            {{testContent}}
         </div>
         
     </div>
@@ -41,8 +41,9 @@ export default {
                 sendtime:"",
                 title:"",
                 url:'',
-            }
-        
+            },
+            testContent:'',
+            
         }
     },
     watch:{
@@ -63,8 +64,10 @@ export default {
                     this.listData.title=res.data.item.title;
                     this.listData.url=jsonData.url[0];
 
-                    var obj = document.getElementById('content') ;
-                    obj.innerHTML=jsonData.content;
+                    console.log(jsonData.content);
+                    this.testContent=jsonData.content;
+                    // var obj = document.getElementById('content1') ;
+                    // obj.innerHTML=jsonData.content;
 
                   }else{
                     this.$Message.error(res.data.status);
