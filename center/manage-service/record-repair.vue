@@ -65,15 +65,15 @@ export default {
           {title: '序号',  minWidth: 80,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
           },
-          {title: '车牌号码', key: 'vehicleplatenumber', sortable: true, minWidth: 120,
+          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '车牌正确', key: 'checkVehicleNumberSuccess', sortable: true, minWidth: 120},
+          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
           {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 135},
-          {title: 'VIN正确', key: 'checkVinSuccess', sortable: true, minWidth: 120},
-          {title: '结算日期', key: 'faultdescription', sortable: true, minWidth: 120},
+          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120},
+          {title: '结算日期', key: 'repairDate', sortable: true, minWidth: 120},
           {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 135},
-          {title: '维修企业', key: 'companyname', sortable: true, minWidth: 120},
+          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 120},
           
         ],
         tableData: [],

@@ -5,7 +5,7 @@
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                 :show="showTable" :page="page" :loading="loading">
+                 :show="showTable" :page="page" :loading="loading" @onSortChange="onSortChange">
     <div  slot="search"  >
       <Form :label-width="80" class="common-form">
           <FormItem label="区域:">
@@ -124,7 +124,8 @@ export default {
             "org": '',//管理部门
             "show": "",//是否前台显示
             "special": "",//是否特约
-            "uploadMonth": ""//按月查询
+            "uploadMonth": "",//按月查询
+            sortOrder:''//排序查询
         },
         manageArr:[],
         page: 1,
@@ -194,6 +195,7 @@ export default {
                     "show": upData["show"],
                     "special": upData["special"],
                     "uploadMonth": upData["uploadMonth"],
+                    sortOrder:upData["sortOrder"]
 
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -235,7 +237,7 @@ export default {
                     "show": upData["show"],
                     "special": upData["special"],
                     "uploadMonth": upData["uploadMonth"],
-
+                    sortOrder:upData["sortOrder"]
             }).then( (res) => {
                 
                     var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'});
@@ -318,6 +320,16 @@ export default {
           this.detailData= null
           this.clearTableSelect= Math.random();
           this.getList();
+        },
+        onSortChange(type,value){
+            if(type=="normal"){
+                this.searchList.sortOrder='';
+                this.getList();
+            }else{
+                this.searchList.sortOrder=value+' '+type;
+                this.getList();
+            }
+            
         },
         //搜索按钮----
         searchFun(){
