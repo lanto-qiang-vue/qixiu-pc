@@ -112,17 +112,7 @@
           </ul>
           <div class="doctor_content active" id="gather_content">
             <ul>
-
-              <li onclick="goToPage('/cdf/answerQuestion?id=113', true)">大祥是不是猪</li>
-
-              <li onclick="goToPage('/cdf/answerQuestion?id=94', true)">测试123765</li>
-
-              <li onclick="goToPage('/cdf/answerQuestion?id=93', true)">好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好</li>
-
-              <li onclick="goToPage('/cdf/answerQuestion?id=92', true)">好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好</li>
-
-              <li onclick="goToPage('/cdf/answerQuestion?id=91', true)">好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好好GVvVB好不好</li>
-
+              <li v-for="item in questionList" :key="'questionList-'+item.id">{{item.content}}</li>
             </ul>
             <a onclick="goToPage('/cdf', true)" class="list_button">浏览更多</a>
           </div>
@@ -136,17 +126,7 @@
 
           <div class="doctor_content" id="professor_content">
             <ul>
-
-              <li onclick="goToPage('/cdf/expert/1', true)">洪永楠</li>
-
-              <li onclick="goToPage('/cdf/expert/2', true)">李丕毅</li>
-
-              <li onclick="goToPage('/cdf/expert/7', true)">陈洪山</li>
-
-              <li onclick="goToPage('/cdf/expert/8', true)">冯骅</li>
-
-              <li onclick="goToPage('/cdf/expert/16', true)">黄晓懿</li>
-
+              <li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>
             </ul>
             <a onclick="goToPage('/specialist', true)" class="list_button">浏览更多</a>
           </div>
@@ -156,16 +136,16 @@
     </div>
   </div>
   <div class="news">
-    <div class="block block1" v-if="showSwiper">
+    <div class="block block1" >
       <div class="title"><h1>新闻动态</h1><a href="/government/10281019">更多</a></div>
-      <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" >
+      <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" v-if="showSwiper">
         <!-- slides -->
-        <swiper-slide v-for="(item, index) in banners" :key="index">
+        <swiper-slide v-for="(item, index) in articleBanner" :key="index">
           <div class='dummy'></div>
           <div class='content'>
-            <a :href="item.url" class="news-swiper-body">
-              <div>{{item.img}}</div>
-              <img :src="item.img">
+            <a :href="item.id" class="news-swiper-body">
+              <div>{{item.title}}</div>
+              <img :src="item.photo || '/img/default-car.png'">
             </a>
           </div>
         </swiper-slide>
@@ -183,60 +163,24 @@
 
       <div class="best best1">
         <div class="left">最新</div>
-        <ul><a href="/government/detail/185">121test</a><a href="/government/detail/146">市汽修协会工作动态</a><a href="/government/detail/91">上海市汽车维修行业协会近期工作总结</a><a href="/government/detail/160">2017年工作总结和2018年工作意见</a><a href="/government/detail/166">加强与保险行业信息共享 促进事故车维修服务质量</a><a href="/government/detail/162">2018年汽车维修质量服务月活动情况总结</a><a href="/government/detail/169">道路运输车辆综合性能检验报告单申领办事指南</a></ul>
+        <ul>
+          <a v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</a>
+        </ul>
       </div>
       <div class="best best2">
         <div class="left hot">最热</div>
-        <ul><a href="/government/detail/169">道路运输车辆综合性能检验报告单申领办事指南</a><a href="/government/detail/160">2017年工作总结和2018年工作意见</a><a href="/government/detail/185">121test</a><a href="/government/detail/146">市汽修协会工作动态</a><a href="/government/detail/91">上海市汽车维修行业协会近期工作总结</a><a href="/government/detail/162">2018年汽车维修质量服务月活动情况总结</a><a href="/government/detail/166">加强与保险行业信息共享 促进事故车维修服务质量</a></ul>
+        <ul>
+          <a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>
+        </ul>
       </div>
     </div>
     <div class="block block3">
-
       <div class="title"><h1>行业监管</h1><a href="/government/10281001">更多</a></div>
-
-      <a class="article article1" href="/government/detail/121">
-        <h3>管理职责</h3>
-        <p>
-
-
-
-          管理职责
-
-
-
-
-
-          上海市城市交通运输管理处负责具体实施本市机动车维修行业的日常管理和监督工作。
-
-
-          1、负责管辖的机动车维修行业行政事项核查工作，负责审核企业经营许可事项的申请、变更、终止等相关工作，并建立行政许可档案；
-
-
-          2、负责行业精神文明建设，做好管辖的机动车维修经营企业的诚信考核工作，建立诚信考核档案；指导和监督经营者建立质量信誉诚信档案；
-
-
-
-
-        </p>
-      </a>
-      <a class="article article2" href="/government/detail/164">
-        <h3>2017年度全市机动车维修企业诚信考核等级</h3>
-        <p>1、负责管辖的机动车维修行业行政事项核查工作，负责审核企业经营许可事项的申请、变更、终止等相关工作，并建立行政许可档案；
-
-
-          2、负责行业精神文明建设，做好管辖的机动车维修经营企业的诚信考核工作，建立诚信考核档案；指导和监督经营者建立质量信誉诚信档案；
-
-        </p>
-      </a>
-      <a class="article article3" href="/government/detail/138">
-        <h3>2017年机动车维修企业整改通报</h3>
-        <p>1、负责管辖的机动车维修行业行政事项核查工作，负责审核企业经营许可事项的申请、变更、终止等相关工作，并建立行政许可档案；
-
-
-          2、负责行业精神文明建设，做好管辖的机动车维修经营企业的诚信考核工作，建立诚信考核档案；指导和监督经营者建立质量信誉诚信档案；
-
-        </p>
-      </a>
+      <ul>
+        <a class="article" v-for="item in articleRight" :key="'articleRight'+item.id">
+          <h3>{{item.title}}</h3><p>{{item.content | FormatArticle(item.title)}}</p>
+        </a>
+      </ul>
     </div>
   </div>
   <ul class="cooperator">
@@ -251,26 +195,94 @@
 
 <script>
 import CommonFooter from '~/components/common-footer.vue'
+import { deepClone } from '~/static/util.js'
 export default {
   components: {
     CommonFooter
   },
   asyncData ({ app }) {
-    console.log('1')
-    let article1= new Promise((resolve, reject) => {
-      app.$axios.$post('/home/all',{
-        "infoType": "10281019",
+    let getNews= (infoType, pageSize) => {
+      return new Promise((resolve, reject) => {
+        app.$axios.$post('/home/all',{
+          "infoType": infoType,
+          "pageNo": 1,
+          "pageSize": pageSize,
+        }).then(res => {
+          if (res.code === '0') {
+            resolve(res.items)
+          } else reject( res.status)
+        }).then(err => {
+          reject(err)
+        })
+      })
+    }
+    let questionList= new Promise((resolve, reject) => {
+      app.$axios.$post('/center/question/list',{
         "pageNo": 1,
         "pageSize": 5,
       }).then(res => {
-        // if (res.code === '0') {
-console.log(res)
-          resolve()
-        // } else reject()
+        if (res.code === '0') {
+          resolve( res.items)
+        } else reject( res.status)
       }).then(err => {
         reject(err)
       })
     })
+    let cdfList= new Promise((resolve, reject) => {
+      app.$axios.$get('/cdf/manager/nostate/list' ).then(res => {
+        if (res.code === '0') {
+          resolve( res.items)
+        } else reject( res.status)
+      }).then(err => {
+        reject(err)
+      })
+    })
+
+    //文章banner
+    let article10281019= getNews('10281019', 5)
+
+    //中间文章
+    let article10281013= getNews('10281013', 5)
+    let article10281020= getNews('10281020', 5)
+
+    //右边三篇
+    let article10281006= getNews('10281006', 1)
+    let article10281016= getNews('10281016', 1)
+    let article10281017= getNews('10281017', 1)
+
+    return Promise.all([
+      questionList,
+      cdfList,
+      article10281019,
+      article10281013,
+      article10281020,
+      article10281006,
+      article10281016,
+      article10281017,
+    ]).then(([resQuestion, resCdf, res10281019, res10281013, res10281020, res10281006, res10281016, res10281017, ]) => {
+      let latest= res10281013.concat(res10281020)
+      let hottest= deepClone(latest)
+      latest.sort(function (a,b) {
+        return (new Date(a.CREATE_TIME|| 0) > new Date(b.CREATE_TIME || 0))? -1: 1
+      })
+      for (let i in hottest){
+        let temp={}
+        let randomIndex = Math.floor(Math.random()*(hottest.length-1));
+        temp= hottest[i]
+        hottest[i]= hottest[randomIndex]
+        hottest[randomIndex]= temp
+      }
+      return {
+        questionList: resQuestion,
+        cdfList: resCdf,
+        articleBanner: res10281019,
+        articleMiddle: {
+          latest: latest,
+          hottest: hottest,
+        },
+        articleRight: [res10281006[0], res10281016[0], res10281017[0]]
+      }
+    });
   },
   data () {
     return {
@@ -314,16 +326,9 @@ console.log(res)
   mounted(){
     this.showSwiper= true
 
-      this.$axios.$post('/home/all',{
-        "infoType": "10281019",
-        "pageNo": 1,
-        "pageSize": 5,
-      }).then(res => {
-        // if (res.code === '0') {
-        console.log(res)
+  },
+  methods:{
 
-        // } else reject()
-      })
   }
 }
 </script>
@@ -745,7 +750,7 @@ console.log(res)
             border-right: 2px solid #999999;
             transform: rotate(45deg);
             content: '';
-            margin-bottom: 1px;
+            margin-bottom: 2px;
           }
         }
       }
@@ -800,7 +805,7 @@ console.log(res)
             height: 125px;
             line-height: 128px;
             font-size: 14px;
-            padding-left: 20px;
+            padding-left: 25px;
             border-right: 1px solid #999999;
             position: absolute;
             background: url(../assets/img/index/new.png) no-repeat left center;
@@ -865,7 +870,9 @@ console.log(res)
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
+            /*! autoprefixer: off */
             -webkit-box-orient: vertical;
+            /* autoprefixer: on */
           }
         }
       }

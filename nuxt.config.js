@@ -39,6 +39,7 @@ module.exports = {
   plugins: [
     '~plugins/iview',
     '~/plugins/axios',
+    '~/plugins/fliters',
     { src: '~/plugins/browser-util.js', ssr: false },
     { src: '~/plugins/swiper', ssr: false },
   ],

@@ -46,7 +46,12 @@
         ]
       }
     },
-    props:['description','callback'],
+    props:['description','callback','data'],
+    watch:{
+      data(data){
+        this.uploadList = data;
+      }
+    },
     methods: {
       handleView(name) {
         this.imgName = name
@@ -77,10 +82,10 @@
         })
       },
       handleBeforeUpload() {
-        const check = this.uploadList.length < 5
+        const check = this.uploadList.length < 4
         if (!check) {
           this.$Notice.warning({
-            title:'最多只能上传五张图片',
+            title:'最多只能上传'+ this.uploadList.length+'张图片',
           })
         }
         return check

@@ -6,17 +6,17 @@
                 @onRowDblclick="onRowDblclick" :show="showTable" :page="page">
     <div  slot="search"  >
       <Form :label-width="110" class="common-form">
-        <FormItem label="角色代号:">
-            <Input type="text" v-model="search.code" ></Input>
+        <FormItem label="手机号:">
+            <Input type="text" v-model="search.mobileNo" ></Input>
         </FormItem>
-        <FormItem label="角色名:">
-            <Input type="text" v-model="search.name" ></Input>
+        <FormItem label="昵称:">
+            <Input type="text" v-model="search.nickname" ></Input>
         </FormItem>
-        <FormItem label="启用状态:">
-          <Select v-model="search.state">
+        <FormItem label="通过审核:">
+          <Select v-model="search.disabled">
             <Option value="" selected>全部</Option>
-            <Option value="true">启用</Option>
-            <Option value="false">禁用</Option>
+            <Option value="true">是</Option>
+            <Option value="false">否</Option>
           </Select>
         </FormItem>
         <FormItem >
@@ -28,45 +28,44 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>
-      <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
-      <Button type="info" :disabled="!selectRow.id">菜单授权</Button>
-      <Button type="error" v-show="selectRow.id&& selectRow.state" @click="setState">禁用</Button>
-      <Button type="success" v-show="selectRow.id&& !selectRow.state" @click="setState">启用</Button>
+      <!--<Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>-->
+      <!--<Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>-->
+      <Button type="info" :disabled="!selectRow.id" @click="showDetail= Math.random()">分配角色</Button>
     </div>
   </common-table>
-  <role-manage-detail :data="selectRow" :show="showDetail" :total="total"
-                      @refresh="selectRow={};getList()"></role-manage-detail>
+  <user-role :show="showDetail"  :selectRow="selectRow" :columns="columns"
+                      @refresh="selectRow={};getList()"></user-role>
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-  import RoleManageDetail from './role-manage-detail.vue'
+  import UserRole from './user-manage-role.vue'
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
-      RoleManageDetail
+      UserRole
     },
     data(){
 		  return{
         columns: [
-          {title: '角色ID', key: 'id',  minWidth: 100,},
-          {title: '角色名', key: 'name',  minWidth: 100,},
-          {title: '角色代号', key: 'code',  minWidth: 100},
-          {title: '角色系统类型', key: 'system',  minWidth: 100,
-            render: (h, params) => h('span', params.row.system.name)
+          {title: '用户ID', key: 'id',  minWidth: 100,},
+          {title: '手机号', key: 'mobile',  minWidth: 100,},
+          {title: '昵称', key: 'nickName',  minWidth: 100},
+          {title: '通过审核', key: 'disabled',  minWidth: 100,
+            render: (h, params) => h('span', params.row.disabled? '否': '是')
           },
-          {title: '角色状态', key: 'state',  minWidth: 100,
-            render: (h, params) => h('span', params.row.state?'启用' :'禁用')
+          {title: '用户类型', key: 'type',  minWidth: 100,
+            render: (h, params) => h('span', params.row.type?params.row.type.name: '')
           },
+          {title: '上次登录时间', key: 'lastLogin',  minWidth: 100},
         ],
         tableData: [],
         search:{
-          code: '',
-          name: '',
-          state: '',
+          mobileNo: '18700000001',
+          nickname: '',
+          disabled: '',
         },
         page: 1,
         limit: 10,
@@ -86,7 +85,7 @@
     },
     methods:{
       getList(){
-        this.$axios.$post('/role/list', {
+        this.$axios.$post('/user/useraccount/list', {
           "pageNo": this.page,
           "pageSize": this.limit,
           ...this.search

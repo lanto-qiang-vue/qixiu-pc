@@ -37,7 +37,8 @@
   </common-table>
   <role-manage-detail :data="selectRow" :show="showDetail" :total="total"
                       @refresh="selectRow={};getList()"></role-manage-detail>
-  <role-assign :show="showAssign" :selectRow="selectRow" :columns="columns"></role-assign>
+  <role-assign :show="showAssign" :selectRow="selectRow" :columns="columns"
+               @refresh="selectRow={};getList()" ></role-assign>
 </div>
 </template>
 
@@ -125,21 +126,17 @@
         this.getList();
       },
       setState(){
-        let showText= this.detailData.CHECK_STATUS== '10351004'? '恢复': '停用'
+        let showText= this.selectRow.state?  '禁用': '启用'
         this.$Modal.confirm({
-          title: '确定要'+ showText+ '该门店吗？',
+          title: '确定要'+ showText+ '角色吗？',
           onOk: ()=> {
-            this.$axios({
-              url: '/manage/info/tenantinfo/updateCheckStatus',
-              method: 'post',
-              data: {
-                tenantId: this.detailData.TENANT_ID,
-                checkStatus: this.detailData.CHECK_STATUS,
-                access_token: this.query.access_token
-              }
+            this.$axios.$post('/role/state',{
+              "id": this.selectRow.id,
+              "state": !this.selectRow.state
             }).then(res => {
-              if (res.success === true) {
-                this.$Message.success('门店'+showText+'成功')
+              if(res.code== '0'){
+                this.$Message.success(showText+'成功')
+                this.selectRow={};
                 this.getList()
               }
             })
