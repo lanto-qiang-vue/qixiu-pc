@@ -7,7 +7,7 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading" @onSortChange="onSortChange">
     <div  slot="search"  >
-      <Form :label-width="80" class="common-form">
+      <Form :label-width="100" class="common-form">
           <FormItem label="区域:">
             <Select v-model="searchList.area" clearable>
                 <Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
@@ -46,7 +46,7 @@
         </FormItem>
         <FormItem label="经营状态:">
             <Select v-model="searchList.businessStatus" clearable>
-                <Option v-for="item in businessType" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                <Option v-for="item in businessType" :value="item.key" :key="item.key">{{ item.name }}</Option>
             </Select>
         </FormItem>
         <FormItem label="是否前台显示:">
@@ -62,12 +62,12 @@
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="" @click="searchFun">搜索</Button>
-            <Button type="primary" v-if="" @click="exportList">导出</Button>
         </FormItem>
     </Form>
     </div>
     <div slot="operate">
       <Button type="info" v-if="" @click="backCompany" :disabled="!detailData">查看</Button>
+      <Button type="primary" v-if="" @click="exportList">导出</Button>
     </div>
 
 </common-table>
@@ -91,24 +91,24 @@ export default {
                   {code:'no',name:'未登录'},
               ],//问题分类--------
         columns: [
-          {title: '区域', key: 'shortName', sortable: true, minWidth: 120,
+          {title: '区域', key: 'shortName', sortable: true, minWidth: 80,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
           {title: '企业类型', key: 'category', sortable: true, minWidth: 120},
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 135},
-          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 120},
-          {title: '是否对接', key: 'buttJoin', sortable: true, minWidth: 120},
-          {title: '上传数量', key: 'count', sortable: true, minWidth: 135},
+          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150},
+          {title: '是否对接', key: 'buttJoin', sortable: true, minWidth: 110},
+          {title: '上传数量', key: 'count', sortable: true, minWidth: 110},
           {title: '许可证', key: 'license', sortable: true, minWidth: 120},
-          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120},
-          {title: '未上传天数', key: 'noUpdateDays', sortable: true, minWidth: 135},
-          {title: '总对总', key: 'minister', sortable: true, minWidth: 120},
-          {title: '特约维修', key: 'special', sortable: true, minWidth: 120},
-          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 135,
-            render: (h, params) => h('span', params.row.businessStatus.name)
+          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 150},
+          {title: '未上传天数', key: 'noUpdateDays', sortable: true, minWidth: 120},
+          {title: '总对总', key: 'minister', sortable: true, minWidth: 100},
+          {title: '特约维修', key: 'special', sortable: true, minWidth: 110},
+          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 110,
+            // render: (h, params) => h('span', params.row.businessStatus.name)
             },
-          {title: '前台显示', key: 'show', sortable: true, minWidth: 120},
-          {title: '对接时间', key: 'firstUploadTime', sortable: true, minWidth: 120},
+          {title: '前台显示', key: 'show', sortable: true, minWidth: 110},
+          {title: '对接时间', key: 'firstUploadTime', sortable: true, minWidth: 110},
         ],
         tableData: [],
         searchList:{
@@ -247,7 +247,7 @@ export default {
                 // console.log('res',res)
 
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
-                console.log(blob)
+                
 
                 let a = document.createElement('a');
                     a.download = '导出.xlsx';
@@ -311,6 +311,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1;
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -319,7 +320,7 @@ export default {
                 this.searchList.sortOrder='';
                 this.getList();
             }else{
-                this.searchList.sortOrder=value+' '+type;
+                this.searchList.sortOrder="'"+value+"' "+type;
                 this.getList();
             }
             

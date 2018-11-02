@@ -18,7 +18,7 @@
               
               <FormItem label="所属辖区:">
                   
-                  <Select v-model="searchList.areaKey" >
+                  <Select v-model="searchList.areaKey" clearable>
                       <Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                   </Select>
               </FormItem>
@@ -108,7 +108,7 @@
                     this.loading=false;
                 }
            })
-           
+           this.detailData= null
         },
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
@@ -136,6 +136,7 @@
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1
           this.clearTableSelect= Math.random();
           this.getList();
         },

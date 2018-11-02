@@ -20,7 +20,7 @@
               </FormItem>
               <FormItem label="所属辖区:">
                   
-                  <Select v-model="searchList.areaKey" >
+                  <Select v-model="searchList.areaKey" clearable>
                       <Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                   </Select>
               </FormItem>
@@ -64,7 +64,7 @@
                 tableData: [],
                 searchSelectOption:[],
                 searchList:{
-                    areaKey:"310000",
+                    areaKey:"",
                     companyName:"",
                     isLogin:"yes",
                     startDate:"",
@@ -115,6 +115,7 @@
                     this.loading=false;
                 }
            })
+           this.detailData= null;
            
         },
         getAreaInfo(){
@@ -142,7 +143,8 @@
           this.detailData=row
         },
         closeDetail(){
-          this.detailData= null
+          this.detailData= null;
+          this.page=1;
           this.clearTableSelect= Math.random();
           this.getList();
         },
