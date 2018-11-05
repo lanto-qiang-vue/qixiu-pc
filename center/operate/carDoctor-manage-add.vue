@@ -113,6 +113,7 @@ export default {
         showDetail(){
             this.showModal=true;
             // this.getDetail();
+            this.getType();
         },
     },
     methods:{
@@ -127,6 +128,14 @@ export default {
                     this.$Message.error(res.data.status);
                 }
             })
+        },
+        getType(){
+            this.$axios.get('/dict/getValuesByTypeId/1036', {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    
+                }
+           })
         },
         showImg(img){
             this.$Modal.info({
