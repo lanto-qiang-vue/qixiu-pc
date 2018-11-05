@@ -150,7 +150,7 @@ export default {
         handleSuccess(res,file,fileList){
             console.log(res,file,fileList);
             if(res.code=="0"){
-                this.search.docPath=res.data.info;
+                this.search.docPath=res.data.docPath;
                 this.$Message.info("上传成功");
             }else{
                 this.$Message.error(res.status);
