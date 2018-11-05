@@ -780,207 +780,6 @@
             }
           }
         ],
-        // columns4: [
-        //   { type: 'selection', width: 50 },
-        //   {
-        //     title: '时间', key: 'usesTime', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('DatePicker', {
-        //             props: {
-        //               value: params.row.usesTime,
-        //               placement: 'bottom',
-        //               transfer: true,
-        //               editable: false
-        //             },
-        //             on: {
-        //               'on-change': (a, b) => {
-        //                 this.tableData4[params.index].usesTime = a
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   }, {
-        //     title: '行驶里程(KM)', key: 'mileage', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.mileage,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.mileage = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '间隔里程(KM)', key: 'intervalMileage', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.intervalMileage,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.intervalMileage = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '燃油消耗(升)', key: 'fuelConsumption', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.fuelConsumption,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.fuelConsumption = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '定额', key: 'quota', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.quota,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.quota = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '余', key: 'surplus', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.surplus,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.surplus = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '亏', key: 'deficit', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.deficit,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.deficit = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }, {
-        //     title: '使用单位', key: 'useUnit', sortable: true, minWidth: 105,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('Input', {
-        //             props: {
-        //               value: params.row.useUnit
-        //             },
-        //             on: {
-        //               'on-blur': (e) => {
-        //                 let data = params.row;
-        //                 data.useUnit = e.target.value;
-        //                 this.tableData4[params.index] = data;
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }, {
-        //     title: '司机姓名', key: 'driverName', sortable: true, minWidth: 105,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('Input', {
-        //             props: {
-        //               value: params.row.driverName
-        //             },
-        //             on: {
-        //               'on-blur': (e) => {
-        //                 let data = params.row;
-        //                 data.driverName = e.target.value;
-        //                 this.tableData4[params.index] = data;
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }
-        // ],
         columns3: [
           { type: 'selection', width: 50 },
           {
@@ -1419,7 +1218,7 @@
         //车辆基本信息...
         formData: {},
         storeData: {
-          'corp_name': '',
+          'corpName': '',
           'transCorpId': '',
           'plateNum': '',
           'plateColor': '0',
@@ -1662,13 +1461,13 @@
         }
         this.tableData5.push({
           xid: xid,
-          accidentAddr: '事故地址',
-          accidentDate: '2018-10-29',
-          accidentDescription: '事故描述及车辆损坏情况',
-          accidentNature: '事故性质',
-          accidentRegistrant: '登记人',
-          accidentResponsibility: '事故责任',
-          economicLosses: 100
+          accidentAddr: '',
+          accidentDate: '',
+          accidentDescription: '',
+          accidentNature: '',
+          accidentRegistrant: '',
+          accidentResponsibility: '',
+          economicLosses: 0
         })
       },
       del5() {
@@ -1691,18 +1490,18 @@
         }
         this.tableData6.push({
           xid: xid,
-          accidentRecord: '事故记录',
-          certificateNum: '从业资格证',
-          certificateType: '从业资格证类型',
-          dimissionTime: '2018-10-29',
-          driverName: '驾驶员姓名',
-          entryTime: '2018-10-29',
-          idNum: '身份证号',
-          illegalRecord: '违章记录',
-          licenceNum: '驾驶证号',
-          licenceType: '驾驶证类型',
-          otherComplaints: '其他投诉',
-          safeMileage: 100
+          accidentRecord: '',
+          certificateNum: '',
+          certificateType: '',
+          dimissionTime: '',
+          driverName: '',
+          entryTime: '',
+          idNum: '',
+          illegalRecord: '',
+          licenceNum: '',
+          licenceType: '',
+          otherComplaints: '',
+          safeMileage: 0
         })
       },
       del6() {
@@ -1717,7 +1516,8 @@
         this.select6 = []
       },
       changeOk(res) {
-        this.formData.corp_name = res.corp_name
+        console.log(JSON.stringify(res));
+        this.formData.corpName = res.corp_name
         this.formData.transCorpId = res.corp_id
       },
       visibleChange() {
