@@ -54,34 +54,53 @@
   <div class="service">
     <div class="left">
       <ul>
-        <li class="owner-center"><img style="width: 70px;" src="/img/menu-icon/车主服务中心.png"><p>车主服务中心</p></li>
-        <li class="com-center"><img style="width: 50px" src="/img/menu-icon/汽修企业服务中心.png"><p>汽修企业</p><p>服务中心</p></li>
-        <li class="gover-center"><img style="width: 40px;" src="/img/menu-icon/政务服务中心.png"><p>政务服务中心</p></li>
-        <li class="relate-center"><img style="width: 70px;margin-top: 30px" src="/img/menu-icon/汽修相关产业服务中心.png"><p>汽修相关产业</p><p>服务中心</p></li>
-        <li class="association-center"><img style="width: 70px" src="/img/menu-icon/协会服务中心.png"><p>协会服务中心</p></li>
-        <li class="talent-center"><img style="width: 70px" src="/img/menu-icon/人才服务中心.png"><p>人才服务中心</p></li>
-        <li class="supervise-center"><img style="width: 50px;margin-bottom: 5px" src="/img/menu-icon/公共监督服务中心.png"><p>公众监督</p></li>
-        <li class="business-center"><img style="width: 50px" src="/img/menu-icon/商务服务中心.png"><p>商务服务中心</p></li>
-        <li class="data-center"><img style="width: 70px" src="/img/menu-icon/大数据服务中心.png"><p>大数据</p><p>服务中心</p></li>
+        <li class="owner-center" icon-block-type="1">
+          <img style="width: 70px;" src="/img/menu-icon/车主服务中心.png"><p>车主服务中心</p>
+        </li>
+        <li class="com-center" icon-block-type="2">
+          <img style="width: 50px" src="/img/menu-icon/汽修企业服务中心.png"><p>汽修企业</p><p>服务中心</p>
+        </li>
+        <li class="gover-center" icon-block-type="3">
+          <img style="width: 40px;" src="/img/menu-icon/政务服务中心.png"><p>政务服务中心</p>
+        </li>
+        <li class="relate-center" icon-block-type="4">
+          <img style="width: 70px;margin-top: 30px" src="/img/menu-icon/汽修相关产业服务中心.png"><p>汽修相关产业</p><p>服务中心</p>
+        </li>
+        <li class="association-center" icon-block-type="5">
+          <img style="width: 70px" src="/img/menu-icon/协会服务中心.png"><p>协会服务中心</p>
+        </li>
+        <li class="talent-center" icon-block-type="6">
+          <img style="width: 70px" src="/img/menu-icon/人才服务中心.png"><p>人才服务中心</p>
+        </li>
+        <li class="supervise-center" icon-block-type="7">
+          <img style="width: 50px;margin-bottom: 5px" src="/img/menu-icon/公共监督服务中心.png"><p>公众监督</p>
+        </li>
+        <li class="business-center" icon-block-type="8">
+          <img style="width: 50px" src="/img/menu-icon/商务服务中心.png"><p>商务服务中心</p>
+        </li>
+        <li class="data-center" icon-block-type="9">
+          <img style="width: 70px" src="/img/menu-icon/大数据服务中心.png"><p>大数据</p><p>服务中心</p>
+        </li>
       </ul>
       <div class="record" onclick="goToPage('/center/repairInfo')"><img src="/img/menu-icon/电子健康档案系统.png">电子健康档案系统</div>
+      <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
     </div>
     <div class="right">
       <div class="title"><div><h1>维修服务查询</h1><p>快速定位，为您提供满意的服务</p></div></div>
       <div class="query">
         <div><Input v-model="search.q" size="large" placeholder="输入维修企业名称/地址" /></div>
         <div class="select">
-          <Select v-model="search.sort" size="large" placeholder="企业排序" style="width:19%;">
-            <Option value="">全部</Option>
+          <Select v-model="search.sort" size="large" placeholder="企业排序" clearable style="width:19%;">
+            <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
-          <Select v-model="search.sort" size="large" placeholder="企业类型" style="width:19%;">
-            <Option value="">全部</Option>
+          <Select v-model="search.is4s" size="large" placeholder="企业类型" clearable style="width:19%;">
+            <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
-          <Select v-model="search.sort" size="large" placeholder="企业区域" style="width:19%;">
-            <Option value="">全部</Option>
+          <Select v-model="search.area" size="large" placeholder="企业区域" clearable style="width:19%;">
+            <Option v-for="(item, index) in area" :value="item.key" :key="index">{{item.name}}</Option>
           </Select>
-          <Select v-model="search.sort" size="large" placeholder="热门搜索" style="width:19%;">
-            <Option value="">默认</Option>
+          <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;">
+            <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
           <Button size="large" type="primary" style="">查询</Button>
         </div>
@@ -178,7 +197,8 @@
       <div class="title"><h1>行业监管</h1><a href="/government/10281001">更多</a></div>
       <ul>
         <a class="article" v-for="item in articleRight" :key="'articleRight'+item.id">
-          <h3>{{item.title}}</h3><p>{{item.content | FormatArticle(item.title)}}</p>
+          <h3>{{item.title}}</h3>
+          <p style="-webkit-box-orient: vertical;">{{item.content | FormatArticle(item.title)}}</p>
         </a>
       </ul>
     </div>
@@ -190,15 +210,18 @@
   </ul>
 </div>
 <common-footer></common-footer>
+
 </div>
 </template>
 
 <script>
 import CommonFooter from '~/components/common-footer.vue'
+import IconBlock from '~/components/menu/icon-block.vue'
 import { deepClone } from '~/static/util.js'
 export default {
   components: {
-    CommonFooter
+    CommonFooter,
+    IconBlock
   },
   asyncData ({ app }) {
     let getNews= (infoType, pageSize) => {
@@ -250,6 +273,16 @@ export default {
     let article10281016= getNews('10281016', 1)
     let article10281017= getNews('10281017', 1)
 
+    return {
+      questionList: [],
+      cdfList: [],
+      articleBanner: [],
+      articleMiddle: {
+        latest: [],
+        hottest: [],
+      },
+      articleRight: []
+    }
     return Promise.all([
       questionList,
       cdfList,
@@ -281,6 +314,18 @@ export default {
           hottest: hottest,
         },
         articleRight: [res10281006[0], res10281016[0], res10281017[0]]
+      }
+    }).then((err)=>{
+      console.log('err:', err)
+      return {
+        questionList: [],
+        cdfList: [],
+        articleBanner: [],
+        articleMiddle: {
+          latest: [],
+          hottest: [],
+        },
+        articleRight: []
       }
     });
   },
@@ -317,14 +362,58 @@ export default {
       showSwiper: false,
       search:{
         q: '',
-
-      }
+        area: '',
+      },
+      area: [],
+      sort:[
+        {name: '默认', value: ''},
+        {name: '距离优先', value: 'distance'},
+        {name: '好评优先', value: 'rating desc,distance asc'},
+      ],
+      maintainType:[
+        {name: '全部', value: ''},
+        {name: '4S店', value: 1},
+        {name: '维修厂', value: 0},
+      ],
+      hot:[
+        {name: '默认', value: ''},
+        {name: '宝马', value: '宝马'},
+        {name: '奥迪', value: '奥迪'},
+        {name: '迈巴赫', value: '迈巴赫'},
+        {name: '保时捷', value: '保时捷'},
+        {name: '玛莎拉蒂', value: '玛莎拉蒂'},
+        {name: '年检', value: '年检'},
+        {name: '保养', value: '保养'},
+        {name: '车轮', value: '车轮'},
+        {name: '发动机', value: '发动机'},
+        {name: '汽车美容', value: '汽车美容'},
+      ],
+      iconBlockType: 0,
+      iconBlockLeft: 128,
+      iconBlockShow: false
     }
   },
   beforeMount(){
   },
   mounted(){
+    let self= this
     this.showSwiper= true
+
+    $(".service .left ul li, .service .left .icon-block").hover(function () {
+      self.iconBlockShow= true
+      let type= parseInt($(this).attr('icon-block-type') ||0)
+      if (type){
+        self.iconBlockType= type
+        switch (type % 3){
+          case 1: self.iconBlockLeft= 128; break;
+          case 2: self.iconBlockLeft= 260; break;
+          case 0: self.iconBlockLeft= 390; break;
+        }
+      }
+    })
+    $(".service .left ul li, .service .left .icon-block").mouseleave(function () {
+      self.iconBlockShow= false
+    })
 
   },
   methods:{
@@ -463,10 +552,10 @@ export default {
     .service{
       margin-top: 30px;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       .left {
         width: 400px;
-        float: left;
+        /*float: left;*/
         position: relative;
         ul{
           text-align: justify;
@@ -479,12 +568,15 @@ export default {
             background-color: #5f90b7;
             color: white;
             padding: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             border-radius: 10px;
-            overflow: hidden;
+            /*overflow: hidden;*/
+            overflow: visible;
             font-size: 16px;
             cursor: pointer;
             display: inline-block;
+            position: relative;
+            vertical-align: top;
             img{
               margin-top: 15px;
               margin-bottom: 5px;
@@ -870,9 +962,6 @@ export default {
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 3;
-            /*! autoprefixer: off */
-            -webkit-box-orient: vertical;
-            /* autoprefixer: on */
           }
         }
       }
