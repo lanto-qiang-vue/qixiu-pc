@@ -62,18 +62,18 @@ export default {
                   {code:'no',name:'未登录'},
               ],//问题分类--------
         columns: [
-          {title: '序号',  minWidth: 80,
+          {title: '序号',  minWidth: 60,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
           },
-          {title: '车牌号码', key: 'vehicleplatenumber', sortable: true, minWidth: 120,
+          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '车牌正确', key: 'checkVehicleNumberSuccess', sortable: true, minWidth: 120},
-          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 135},
-          {title: 'VIN正确', key: 'checkVinSuccess', sortable: true, minWidth: 120},
-          {title: '结算日期', key: 'faultdescription', sortable: true, minWidth: 120},
-          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 135},
-          {title: '维修企业', key: 'companyname', sortable: true, minWidth: 120},
+          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 110},
+          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
+          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 100},
+          {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
+          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 145},
+          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 165},
           
         ],
         tableData: [],
@@ -163,6 +163,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1;
           this.clearTableSelect= Math.random();
           this.getList();
         },

@@ -33,6 +33,7 @@
     @on-row-click="onRowClick"
     @on-row-dblclick="onRowDblclick"
     @on-current-change="onCurrentChange"
+    @on-sort-change="onSortChange"
   >
   </Table>
   <div class="table-bottom" v-show="showPage">
@@ -220,6 +221,17 @@
       },
       onCurrentChange(currentRow, oldCurrentRow){
         this.$emit('onCurrentChange',currentRow, oldCurrentRow);
+      },
+      onSortChange(column){
+        if(column['order']=='asc'){
+            this.$emit('onSortChange','asc',column['column']['key']);
+        }else if(column['order']=='desc'){
+            this.$emit('onSortChange','desc',column['column']['key']);
+        }else if(column['order']=='normal'){
+            this.$emit('onSortChange','normal',column['column']['key']);
+        }
+        
+        
       }
     },
     activated(){

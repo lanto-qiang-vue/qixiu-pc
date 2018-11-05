@@ -304,6 +304,56 @@ export default [
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
+      {
+        path: 'carDoctor-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '车大夫管理',
+          accessId: 404,
+        },
+        component: resolve('center/operate/carDoctor-manage.vue'),
+      },
+      {
+        path: 'carDoctor-question-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '车大夫问题管理',
+          accessId: 405,
+        },
+        component: resolve('center/operate/carDoctor-question-manage.vue'),
+      },
+      {
+        path: 'carDoctor-answer-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '车大夫回答管理',
+          accessId: 406,
+        },
+        component: resolve('center/operate/carDoctor-answer-manage.vue'),
+      },
+    ]
+  },
+  //专家中心--车大夫管理
+  {
+    path: '/menu20',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '车大夫管理',
+      accessId: 501,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'car-doctor-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '车大夫问题管理',
+          accessId: 502,
+        },
+        component: resolve('center/car-doctor/car-doctor-manage.vue'),
+      },
+      
     ]
   },
   //管理中心--登录信息

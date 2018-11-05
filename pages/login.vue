@@ -122,7 +122,7 @@
             };
 			return {
 				form: {
-					userName: '18700000001',
+					userName: '18400000001',
 					password: '123456'
 				},
 				formMobile:{
@@ -166,7 +166,7 @@
 						this.$store.commit('user/setToken', res.data.item.accessToken)
             this.$store.commit('user/setMenu', res.data.item.menus)
 						this.$store.commit('user/setUser', res.data.item)
-						this.$router.push('/center/my-car-record')
+						this.$router.push('/center/car-doctor-manage')
 					}
 
 				})

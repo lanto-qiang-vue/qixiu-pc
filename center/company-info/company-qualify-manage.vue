@@ -147,6 +147,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1;
           this.clearTableSelect= Math.random();
           this.getList();
         },

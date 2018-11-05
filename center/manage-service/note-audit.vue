@@ -92,7 +92,7 @@ import noteRecipientList from './note-recipient-list.vue'
                     this.$Message.error(res.data.status);
                 }
            })
-           
+           this.detailData= null
         },
         
         changePage(page){
@@ -109,6 +109,7 @@ import noteRecipientList from './note-recipient-list.vue'
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1;
           this.clearTableSelect= Math.random();
           this.getList();
         },

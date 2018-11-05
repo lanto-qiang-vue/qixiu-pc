@@ -24,7 +24,8 @@
                 <Input type="text" disabled v-model="listSearch.description" placeholder=""> </Input>
             </FormItem>
             <FormItem label="考核附件:" style="width: 80%;">
-                <Button  size="large" type="default" style="margin-right: 10px;" @click="">附件下载</Button>
+                <Button  size="large" type="default" style="margin-right: 10px;" @click="downFile" v-show="!isFile">附件下载</Button>
+                <p v-show="isFile">无</p>
             </FormItem>
         </Form>
     </div>
@@ -48,7 +49,8 @@ export default {
                 id:"",
                 status:"",
                 title:"",
-            }
+            },
+            isFile:true,
         }
     },
     watch:{
@@ -66,10 +68,18 @@ export default {
                         for(let i in res.data.item){
                             this.listSearch[i]=res.data.item[i];
                         }
+                        if(this.listSearch['fileurl']){
+                            this.isFile=false;
+                        }else{
+                            this.isFile=true;
+                        }
                     }else{
                         this.$Message.error(res.data.status);
                     }
             })
+        },
+        downFile(){
+            window.location.href = this.listSearch.fileurl;
         },
         visibleChange(status){
           if(status === false){

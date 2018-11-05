@@ -55,16 +55,16 @@ export default {
               
         columns: [
           
-          {title: '企业名称', key: 'companyname', sortable: true, minWidth: 120,
+          {title: '企业名称', key: 'companyname', sortable: true, minWidth: 150,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
           {title: '许可证号', key: 'companyroadtransportationlicense', sortable: true, minWidth: 120},
-          {title: '经营地址', key: 'businessaddress', sortable: true, minWidth: 135},
-          {title: '经营范围', key: 'companybusinessscope', sortable: true, minWidth: 120},
+          {title: '经营地址', key: 'businessaddress', sortable: true, minWidth: 140},
+          {title: '经营范围', key: 'companybusinessscope', sortable: true, minWidth: 180},
           {title: '联系电话', key: 'companysuperintendentphone', sortable: true, minWidth: 120},
-          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 135},
-          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 120},
-          {title: '收费标准', key: 'hourprice', sortable: true, minWidth: 120},
+          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110},
+          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110},
+          {title: '收费标准', key: 'hourprice', sortable: true, minWidth: 110},
           
         ],
         tableData: [],
@@ -152,6 +152,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
+          this.page= 1;
           this.clearTableSelect= Math.random();
           this.getList();
         },
