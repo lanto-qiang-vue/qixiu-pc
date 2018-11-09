@@ -71,15 +71,13 @@
     mounted () {
       this.showTable= Math.random();
       this.getList();
-      this.getRepairList();
+      // this.getRepairList();
     },
 
     methods:{
         getList(){
-            this.$axios.post('/comment/getComments', {
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-
+            this.$axios.get('/comment/maintain/query/userId', {
+                  
                 }).then( (res) => {
 					console.log(res)
 					

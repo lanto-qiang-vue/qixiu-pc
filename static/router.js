@@ -331,6 +331,42 @@ export default [
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
       },
+      {
+        path: 'bind-car-audit',
+        meta: {
+          icon: 'md-funnel',
+          title: '绑定车辆审核',
+          accessId: 407,
+        },
+        component: resolve('center/operate/bind-car-audit.vue'),
+      },
+      {
+        path: 'repair-company-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '维修企业信息管理',
+          accessId: 408,
+        },
+        component: resolve('center/operate/repair-company-manage.vue'),
+      },
+      {
+        path: 'user-login-list',
+        meta: {
+          icon: 'md-funnel',
+          title: '用户行为日志列表',
+          accessId: 409,
+        },
+        component: resolve('center/operate/user-login-list.vue'),
+      },
+      {
+        path: 'for-you-service',
+        meta: {
+          icon: 'md-funnel',
+          title: '为您服务管理',
+          accessId: 410,
+        },
+        component: resolve('center/operate/for-you-service.vue'),
+      },
     ]
   },
   //专家中心--车大夫管理

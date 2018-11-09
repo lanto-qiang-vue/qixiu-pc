@@ -82,7 +82,7 @@
             saveData(){
                 
                
-                        this.$axios.post('/changeUser/updateUser', {
+                        this.$axios.post('/user/update', {
                             "email": this.formData.userEmail,
                             "nickname": this.formData.userName,
                         }).then( (res) => {

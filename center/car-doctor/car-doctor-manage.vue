@@ -27,7 +27,6 @@
     <car-question-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></car-question-detail>
 </common-table>
 
-
 </template>
 
 <script>
@@ -84,7 +83,7 @@ export default {
     methods:{
         getList(){
             this.loading=true;
-            this.$axios.post('/cdf/list', {
+            this.$axios.post('/question/expert/list', {
                     "category": this.searchList.category,
                     "content": this.searchList.content,
                     "pageNo": this.page,
@@ -99,7 +98,7 @@ export default {
            this.detailData= null;
         },
         getType(id){
-            this.$axios.get('/center/question/typeList/'+id, {
+            this.$axios.get('/question/typelist/'+id, {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.typeList=res.data.items;

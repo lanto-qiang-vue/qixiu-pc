@@ -85,7 +85,7 @@ export default {
     methods:{
         getDetail(){
             this.spinShow=true;
-            this.$axios.post('/cdf/answer/detail/'+this.detailData.id,{
+            this.$axios.post('/answer/detail/'+this.detailData.id,{
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.spinShow=false;
@@ -97,7 +97,7 @@ export default {
         },
         //审核通过--
         updateStatus(status){
-            this.$axios.post('/cdf/answer/audit',{
+            this.$axios.post('/answer/audit',{
                 "answerId": this.detailData.id,
                 "status": status
             }).then( (res) => {

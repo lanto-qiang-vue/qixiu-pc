@@ -350,6 +350,46 @@
                 "functions": [],
                 "parentId": 0,
                 "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
               }],
               "functions": [],
               "parentId": 0,
@@ -539,6 +579,46 @@
               },{
                 "id": 406,
                 "name": "车大夫回答管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
                 "uri": "/center/userInfo",
                 "leaf": true,
                 "extInfo": null,
