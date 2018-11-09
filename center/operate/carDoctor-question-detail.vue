@@ -88,7 +88,7 @@ export default {
     methods:{
         getDetail(){
             this.spinShow=true;
-            this.$axios.get('/QxwCdf/question/getId/'+this.detailData.id,{
+            this.$axios.get('/question/audit/detail/'+this.detailData.id,{
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.spinShow=false;
@@ -108,7 +108,7 @@ export default {
         },
         //审核通过--
         updateStatus(status){
-            this.$axios.get('/QxwCdf/question/status/'+this.detailData.id+'/'+status,{
+            this.$axios.get('/question/audit/manage/'+this.detailData.id+'/'+status,{
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.$Message.info('修改审核成功');

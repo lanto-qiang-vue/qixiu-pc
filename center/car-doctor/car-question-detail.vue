@@ -22,10 +22,9 @@
                 <Input v-model="listSearch.content" disabled type="textarea" :rows="4" placeholder="" />
             </FormItem>
             <FormItem label="问题图片:" style="width: 80%;">
-                <Card class="pic-card" v-for="item in listSearch.questionPhoto">
+                <Card class="pic-card" v-for="item in listSearch.questionPhoto" :key="item">
                     <div class="pic-body">
-                        <img  class="pic" :src="item"
-                            @click="showImg(item)"/>
+                        <img  class="pic" :src="item" @click="showImg(item)"/>
                     </div>
                     
                 </Card>
@@ -38,9 +37,9 @@
                 <Divider />
             </FormItem>
 
-            <FormItem style="width: 80%;" :label-width="0" v-for="item in listSearch.answerDetailDtos">
+            <FormItem style="width: 80%;" :label-width="0" v-for="item in listSearch.answerDetailDtos" :key="item.answerHeadPhoto">
                 <div>
-                    <div class="content-list"><img :src="item.answerHeadPhoto" alt=""><h3>{{item.answerName}}</h3><span>{{item.answerTime}}</span></div>
+                    <div class="content-list"><img :src="item.answerHeadPhoto"  alt=""><h3>{{item.answerName}}</h3><span>{{item.answerTime}}</span></div>
                     <p class="content-p">{{item.answerContent}}</p>
                 </div>
                 <Divider />
@@ -66,7 +65,7 @@ export default {
             showModal:false,
             collapse: '1',
             listSearch:{
-                questionPhoto:"",
+                questionPhoto:['xxx'],
                 content:"",
                 categoryName:"",
             },
@@ -90,7 +89,7 @@ export default {
     methods:{
         getDetail(){
             this.spinShow=true;
-            this.$axios.get('/QxwCdf/article/detail/'+this.detailData.id,{
+            this.$axios.get('/question/detail/'+this.detailData.id,{
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.spinShow=false;
@@ -121,7 +120,7 @@ export default {
             });
         },
         addanswer(){
-            this.$axios.post('/QxwCdf/addanswer',{
+            this.$axios.post('/question/answer',{
 
                         "content": this.answerDetail.answerdata,
                         "questionId": this.detailData.id,

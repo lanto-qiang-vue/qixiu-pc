@@ -74,7 +74,7 @@
     methods:{
         getList(){
           this.loading=true;
-          this.$axios.post('/center/all', {
+          this.$axios.post('/question/all', {
               "category": this.searchList.category||'',
               "content": this.searchList.content||'',
               "pageNo": this.page,
@@ -94,7 +94,7 @@
         },
         //获取问题分类---------
         getType(id){
-            this.$axios.get('/center/question/typeList/'+id, {
+            this.$axios.get('/question/typelist/'+id, {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.typeList=res.data.items;

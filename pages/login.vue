@@ -158,16 +158,487 @@
 					"mobile":'',
 
 				}).then( (res) => {
-					// console.log(res)
+					console.log(res)
 					if(res.data.code==='0'){
 						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+						// localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            // localStorage.setItem('ACCESSMENU',JSON.stringify([{
+            //   "id": 701,
+            //   "name": "运输管理",
+            //   "uri": null,
+            //   "leaf": false,
+            //   "extInfo": null,
+            //   "children": [{
+            //     "id": 702,
+            //     "name": "企业签到信息",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 1
+            //   }, {
+            //     "id": 703,
+            //     "name": "管理部门登录信息",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 704,
+            //     "name": "通知管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 705,
+            //     "name": "通知审核",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 706,
+            //     "name": "文件管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 707,
+            //     "name": "根据维修企业查找",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 708,
+            //     "name": "根据维修记录查找",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 709,
+            //     "name": "维修企业信息管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 710,
+            //     "name": "质量信誉考核管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 711,
+            //     "name": "企业合格证使用信息管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }],
+            //   "functions": [],
+            //   "parentId": 0,
+            //   "sortValue": 8
+            // }]))
+			// localStorage.setItem('ACCESSMENU',JSON.stringify([{
+            //   "id": 501,
+            //   "name": "车大夫管理",
+            //   "uri": null,
+            //   "leaf": false,
+            //   "extInfo": null,
+            //   "children": [{
+            //     "id": 502,
+            //     "name": "车大夫问题管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 1
+            //   }],
+            //   "functions": [],
+            //   "parentId": 0,
+            //   "sortValue": 8
+            // }]))
+			localStorage.setItem('ACCESSMENU',JSON.stringify([{
+              "id": 401,
+              "name": "车大夫管理",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 402,
+                "name": "运输企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 403,
+                "name": "运输车辆技术档案",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 404,
+                "name": "车大夫管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 405,
+                "name": "车大夫问题管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 406,
+                "name": "车大夫回答管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]))
 						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
 						this.$store.commit('user/setToken', res.data.item.accessToken)
-            this.$store.commit('user/setMenu', res.data.item.menus)
+						// this.$store.commit('user/setMenu', res.data.item.menus)
+            // this.$store.commit('user/setToken',[{
+            //   "id": 701,
+            //   "name": "运输管理",
+            //   "uri": null,
+            //   "leaf": false,
+            //   "extInfo": null,
+            //   "children": [{
+            //     "id": 702,
+            //     "name": "企业签到信息",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 1
+            //   }, {
+            //     "id": 703,
+            //     "name": "管理部门登录信息",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 704,
+            //     "name": "通知管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 705,
+            //     "name": "通知审核",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 706,
+            //     "name": "文件管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 707,
+            //     "name": "根据维修企业查找",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 708,
+            //     "name": "根据维修记录查找",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 709,
+            //     "name": "维修企业信息管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 710,
+            //     "name": "质量信誉考核管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }, {
+            //     "id": 711,
+            //     "name": "企业合格证使用信息管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 2
+            //   }],
+            //   "functions": [],
+            //   "parentId": 0,
+            //   "sortValue": 8
+            // }]);
+			// this.$store.commit('user/setToken',[{
+            //   "id": 501,
+            //   "name": "车大夫管理",
+            //   "uri": null,
+            //   "leaf": false,
+            //   "extInfo": null,
+            //   "children": [{
+            //     "id": 502,
+            //     "name": "车大夫问题管理",
+            //     "uri": "/center/userInfo",
+            //     "leaf": true,
+            //     "extInfo": null,
+            //     "children": [],
+            //     "functions": [],
+            //     "parentId": 0,
+            //     "sortValue": 1
+            //   }],
+            //   "functions": [],
+            //   "parentId": 0,
+            //   "sortValue": 8
+            // }]);
+			this.$store.commit('user/setToken',[{
+              "id": 401,
+              "name": "车大夫管理",
+              "uri": null,
+              "leaf": false,
+              "extInfo": null,
+              "children": [{
+                "id": 402,
+                "name": "运输企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 403,
+                "name": "运输车辆技术档案",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 404,
+                "name": "车大夫管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 405,
+                "name": "车大夫问题管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 406,
+                "name": "车大夫回答管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              }],
+              "functions": [],
+              "parentId": 0,
+              "sortValue": 8
+            }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/car-doctor-manage')
 					}
+
+					// this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
+					// .then(function (response) {
+					// 	console.log(response);
+					// })
 
 				})
 			},
