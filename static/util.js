@@ -143,16 +143,18 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
 
     for(let j in routers)  {
       let route = routers[j]
-      if(menuItem.parentId== 0 && !menuItem.children.length && route.meta.accessId== 0){
-        res= res.concat(matchItem(route.children, menuItem, route.alias))
-      }
+      if(route.meta&& route.meta.accessId){
+        if(menuItem.parentId== 0 && !menuItem.children.length && route.meta.accessId== 0){
+          res= res.concat(matchItem(route.children, menuItem, route.alias))
+        }
 
-      if(menuItem.parentId== 0 && route.meta.accessId== menuItem.id){
-        let item={}
-        item.meta= route.meta
-        item.meta.title= menuItem.name
-        item.children= matchList(route.children, menuItem.children, route.alias)
-        res.push(item)
+        if(menuItem.parentId== 0 && route.meta.accessId== menuItem.id){
+          let item={}
+          item.meta= route.meta
+          item.meta.title= menuItem.name
+          item.children= matchList(route.children, menuItem.children, route.alias)
+          res.push(item)
+        }
       }
 
     }

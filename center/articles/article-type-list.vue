@@ -23,26 +23,26 @@
       <Button type="error" v-if=""  @click="del" :disabled="!selectRow.id">删除</Button>
     </div>
   </common-table>
-  <!--<Modal-->
-    <!--v-model="showModal"-->
-    <!--title="编辑文章类型"-->
-    <!--width="50"-->
-    <!--@on-visible-change=""-->
-    <!--:footer-hide="false"-->
-    <!--class=""-->
-    <!--:mask-closable="false"-->
-    <!--:transition-names="['', '']"-->
-  <!--&gt;-->
-    <!--<Form ref="form" :rules="ruleValidate"  :model="detail" :label-width="110"  class="common-form">-->
-      <!--<FormItem label="文章类型名" prop="name">-->
-        <!--<Input type="text" v-model="detail.codeDesc" ></Input>-->
-      <!--</FormItem>-->
-    <!--</Form>-->
-    <!--<div slot="footer">-->
-      <!--<Button @click="showDetail=false">取消</Button>-->
-      <!--<Button type="primary" @click="save()">保存</Button>-->
-    <!--</div>-->
-  <!--</Modal>-->
+  <Modal
+    v-model="showDetail"
+    title="编辑文章类型"
+    width="50"
+    @on-visible-change=""
+    :footer-hide="false"
+    class=""
+    :mask-closable="false"
+    :transition-names="['', '']"
+  >
+    <Form ref="form" :model="detail" :label-width="110"  class="common-form">
+      <FormItem label="文章类型名" prop="name">
+        <Input type="text" v-model="detail.codeDesc" ></Input>
+      </FormItem>
+    </Form>
+    <div slot="footer">
+      <Button @click="showDetail=false">取消</Button>
+      <Button type="primary" @click="save()">保存</Button>
+    </div>
+  </Modal>
 </div>
 </template>
 
@@ -76,6 +76,9 @@
         showTable:false,
         showDetail: false,
         selectRow: {},
+        detail:{
+          codeDesc: ''
+        },
         clearTableSelect: null,
       }
     },

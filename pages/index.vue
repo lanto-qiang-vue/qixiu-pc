@@ -102,7 +102,7 @@
           <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;">
             <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
-          <Button size="large" type="primary" style="">查询</Button>
+          <Button size="large" type="primary" style="" @click="query">查询</Button>
         </div>
       </div>
       <div class="msg">
@@ -223,7 +223,7 @@ export default {
     CommonFooter,
     IconBlock
   },
-  asyncData ({ app }) {
+  asyncData ({ app, error }) {
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/home/all',{
@@ -234,29 +234,29 @@ export default {
           if (res.code === '0') {
             resolve(res.items)
           } else reject( res.status)
-        }).then(err => {
+        },err => {
           reject(err)
         })
       })
     }
     let questionList= new Promise((resolve, reject) => {
-      app.$axios.$post('/center/question/list',{
+      app.$axios.$post('/question/nostate/list',{
         "pageNo": 1,
         "pageSize": 5,
       }).then(res => {
         if (res.code === '0') {
           resolve( res.items)
         } else reject( res.status)
-      }).then(err => {
+      },err => {
         reject(err)
       })
     })
     let cdfList= new Promise((resolve, reject) => {
-      app.$axios.$get('/cdf/manager/nostate/list' ).then(res => {
+      app.$axios.$get('/expert/nostate/list' ).then(res => {
         if (res.code === '0') {
           resolve( res.items)
         } else reject( res.status)
-      }).then(err => {
+      },err => {
         reject(err)
       })
     })
@@ -315,8 +315,17 @@ export default {
         },
         articleRight: [res10281006[0], res10281016[0], res10281017[0]]
       }
-    }).then((err)=>{
-      console.log('err:', err)
+    },(err1,err2,err3,err4,err5,err6,err7,err8)=>{
+      // if(process.client)
+      console.log('err1:', err1.response.data)
+      // console.log('err2:', err2.response.data)
+      // console.log('err3:', err3.response.data)
+      // console.log('err4:', err4.response.data)
+      // console.log('err5:', err5.response.data)
+      // console.log('err6:', err6.response.data)
+      // console.log('err7:', err7.response.data)
+      // console.log('err8:', err8.response.data)
+
       return {
         questionList: [],
         cdfList: [],
@@ -325,9 +334,22 @@ export default {
           latest: [],
           hottest: [],
         },
-        articleRight: []
+        articleRight: [],
+        error: {
+          url: err1.response.config.url,
+          // headers: JSON.stringify(err1.response.config.headers),
+          status: err1.response.status,
+          statusText: err1.response.statusText,
+          headers: err1.response.config.headers,
+          data: err1.response.config.data,
+          response: JSON.stringify(err1.response.data)
+          // response: err1.response.data
+        }
       }
-    });
+    })
+    //   .catch((e) => {
+    //   error({ statusCode: 404, message: 'Post not found' })
+    // });
   },
   data () {
     return {
@@ -390,7 +412,9 @@ export default {
       ],
       iconBlockType: 0,
       iconBlockLeft: 128,
-      iconBlockShow: false
+      iconBlockShow: false,
+
+      error: null
     }
   },
   beforeMount(){
@@ -415,9 +439,32 @@ export default {
       self.iconBlockShow= false
     })
 
+    console.log('error: ', this.error? {
+      status: this.error.status,
+      statusText: this.error.statusText,
+      url: this.error.url,
+      headers: this.error.headers,
+      data: this.error.data,
+      response: this.error.response,
+    }: 'no error')
+
+
+      this.$axios.$post('/home/all',{
+      "pageNo": 1,
+      "pageSize": 5,
+        "infoType": '10281019',
+    }).then(res => {
+      if (res.code === '0') {
+
+      }
+    })
+
   },
   methods:{
-
+    query(){
+      window.location.href= '/service-map'
+      // this.$router.push('/service-map')
+    }
   }
 }
 </script>

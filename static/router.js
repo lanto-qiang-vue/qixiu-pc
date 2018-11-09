@@ -3,6 +3,45 @@ const Main= resolve('components/main.vue')
 
 export default [
   {
+    path: '/gov-article',
+    component: resolve('center/public-article/article-menu-list.vue'),
+    children: [
+      {
+        path: ':type',
+        component: resolve('center/public-article/article-list.vue'),
+        children: [
+          {
+            path: ':id',
+            component: resolve('center/public-article/article-detail.vue'),
+          },
+        ]
+      },
+    ]
+  },{
+    path: '/guild-article',
+    component: resolve('center/public-article/article-menu-list.vue'),
+    children: [
+      {
+        path: ':type',
+        component: resolve('center/public-article/article-list.vue'),
+        children: [
+          {
+            path: ':id',
+            component: resolve('center/public-article/article-detail.vue'),
+          },
+        ]
+      },
+    ]
+  }, {
+    path: '/article',
+    component: resolve('center/public-article/single-article.vue'),
+    children: [
+      {
+        path: ':id',
+        component: resolve('center/public-article/article-detail.vue'),
+      },
+    ]
+  },{
     path: '/menu0',
     alias: '/center',
     meta: {
@@ -12,6 +51,24 @@ export default [
     },
     component: Main,
     children: [
+      {
+        path: 'government-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '管理中心首页',
+          accessId: 1,
+        },
+        component: resolve('center/home/government-home.vue'),
+      },
+      {
+        path: 'company-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业中心首页',
+          accessId: 1,
+        },
+        component: resolve('center/home/company-home.vue'),
+      },
       {
         path: 'my-car-record',
         meta: {
@@ -353,7 +410,7 @@ export default [
         },
         component: resolve('center/car-doctor/car-doctor-manage.vue'),
       },
-      
+
     ]
   },
   //管理中心--登录信息

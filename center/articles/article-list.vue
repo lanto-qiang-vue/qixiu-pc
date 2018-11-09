@@ -39,10 +39,13 @@
   import CommonTable from '~/components/common-table.vue'
   // import SystemManageDetail from './system-type-manage-detail'
 	export default {
-		name: "menu-manage",
+		name: "article-manage-list",
     components: {
       CommonTable,
       // SystemManageDetail
+    },
+    asyncData ({ app, params, error }) {
+      console.log('article-manage-list:asyncData')
     },
     data(){
 		  return{
