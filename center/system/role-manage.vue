@@ -91,6 +91,7 @@
     },
     methods:{
       getList(){
+        this.selectRow={}
         this.$axios.$post('/role/list', {
           "pageNo": this.page,
           "pageSize": this.limit,
