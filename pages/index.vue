@@ -273,16 +273,16 @@ export default {
     let article10281016= getNews('10281016', 1)
     let article10281017= getNews('10281017', 1)
 
-    return {
-      questionList: [],
-      cdfList: [],
-      articleBanner: [],
-      articleMiddle: {
-        latest: [],
-        hottest: [],
-      },
-      articleRight: []
-    }
+    // return {
+    //   questionList: [],
+    //   cdfList: [],
+    //   articleBanner: [],
+    //   articleMiddle: {
+    //     latest: [],
+    //     hottest: [],
+    //   },
+    //   articleRight: []
+    // }
     return Promise.all([
       questionList,
       cdfList,
@@ -315,16 +315,9 @@ export default {
         },
         articleRight: [res10281006[0], res10281016[0], res10281017[0]]
       }
-    },(err1,err2,err3,err4,err5,err6,err7,err8)=>{
+    },(err)=>{
       // if(process.client)
-      console.log('err1:', err1.response.data)
-      // console.log('err2:', err2.response.data)
-      // console.log('err3:', err3.response.data)
-      // console.log('err4:', err4.response.data)
-      // console.log('err5:', err5.response.data)
-      // console.log('err6:', err6.response.data)
-      // console.log('err7:', err7.response.data)
-      // console.log('err8:', err8.response.data)
+      console.log('err:', err.response.data)
 
       return {
         questionList: [],
@@ -336,14 +329,14 @@ export default {
         },
         articleRight: [],
         error: {
-          url: err1.response.config.url,
-          // headers: JSON.stringify(err1.response.config.headers),
-          status: err1.response.status,
-          statusText: err1.response.statusText,
-          headers: err1.response.config.headers,
-          data: err1.response.config.data,
-          response: JSON.stringify(err1.response.data)
-          // response: err1.response.data
+          url: err.response.config.url,
+          // headers: JSON.stringify(err.response.config.headers),
+          status: err.response.status,
+          statusText: err.response.statusText,
+          headers: err.response.config.headers,
+          data: err.response.config.data,
+          response: JSON.stringify(err.response.data)
+          // response: err.response.data
         }
       }
     })
@@ -485,6 +478,7 @@ export default {
     min-width: 900px;
     display: inline-block;
     position: relative;
+    padding: 0 10px;
     .head{
       padding: 20px 10px;
       background-color: #6091b7;
