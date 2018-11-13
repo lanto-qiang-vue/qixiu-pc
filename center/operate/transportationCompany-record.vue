@@ -1289,7 +1289,7 @@
     methods: {
       getDriver(id){
         //获取驾驶员登记
-        this.$axios.post('/manage/vehicle/vehiclebase/driverList', {
+        this.$axios.post('/manage/vehicle/driver/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1305,7 +1305,8 @@
       },
       getChange(id) {
         //获取变更记录.....
-        this.$axios.post('/manage/vehicle/vehiclebase/changeList', {
+        ///manage/vehicle/vehiclebase/changeList
+        this.$axios.post('/manage/vehicle/change/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1319,7 +1320,7 @@
         })
       },
       getAccident(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/accidentList', {
+        this.$axios.post('/manage/vehicle/accident/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1333,7 +1334,8 @@
         })
       },
       getUseRecord(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/usesList', {
+        //车辆使用登记...
+        this.$axios.post('/manage/vehicle/uses/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1380,7 +1382,9 @@
         return data
       },
       getParameter(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/vehicleParam', {
+        ///manage/vehicle/vehiclebase/vehicleParam
+        // /manage/vehicle/param/get
+        this.$axios.post('/manage/vehicle/param/get', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id
@@ -1542,7 +1546,7 @@
                     this.formData.county = this.formData.county == 0 ? '' : this.formData.county
                     this.formData.fuelType = this.formData.fuelType == 0 ? '' : this.formData.fuelType
                     this.formData.single = this.formData.single == 0 ? '' : this.formData.single
-                    this.$axios.post('/manage/vehicle/vehiclebase/save', this.formData).then((res) => {
+                    this.$axios.post('/manage/vehicle/base/save', this.formData).then((res) => {
                       if (res.data.code == '0') {
                         if (this.formData.vehicleId == '') {
                           this.$Message.success('新增成功')
@@ -1581,7 +1585,7 @@
                     this.formData2.retarder = this.formData2.retarder == 0 ? '' : this.formData2.retarder
                     this.formData2.steeringGear = this.formData2.steeringGear == 0 ? '' : this.formData2.steeringGear
                     this.formData2.brakeType = this.formData2.brakeType == 0 ? '' : this.formData2.brakeType
-                    this.$axios.post('/manage/vehicle/vehiclebase/save_param', this.formData2).then((res) => {
+                    this.$axios.post('/manage/vehicle/param/save', this.formData2).then((res) => {
                       if (res.data.code == '0') {
                         if (this.formData2.paramId == '') {
                           this.$Message.success('新增车辆技术成功')
@@ -1601,7 +1605,7 @@
           case 3:
             let data = { data: this.tableData3, vehicleId: this.formData.vehicleId }
             // let data = {data:this.tableData3,vehicleId:this.formData.vehicleId};
-            this.$axios.post('/manage/vehicle/vehiclebase/save_change', data).then((res) => {
+            this.$axios.post('/manage/vehicle/change/save', data).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功')
                 this.getChange(this.formData.vehicleId);
@@ -1618,7 +1622,7 @@
               this.tableData4[i].deficit = this.tableData4[i].deficit || 0
             }
             let data3 = { data: this.tableData4, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_uses', data3).then((res) => {
+            this.$axios.post('/manage/vehicle/uses/save', data3).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getUseRecord(this.formData.vehicleId);
@@ -1627,7 +1631,7 @@
             break
           case 5:
             let data5 = { data: this.tableData5, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_accident', data5).then((res) => {
+            this.$axios.post('/manage/vehicle/accident/save', data5).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getAccident(this.formData.vehicleId);
@@ -1636,7 +1640,7 @@
             break
           case 6:
             let data6 = { data: this.tableData6, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_driver', data6).then((res) => {
+            this.$axios.post('/manage/vehicle/driver/save', data6).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getDriver(this.formData.vehicleId);
@@ -1673,7 +1677,7 @@
       del() {
         this.$Modal.confirm({
           title: '系统提示', content: '确认删除吗', onOk: () => {
-            this.$axios.post('/manage/vehicle/vehiclebase/delete', [this.list.vehicle_id]).then((res) => {
+            this.$axios.post('/manage/vehicle/base/delete', [this.list.vehicleId]).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('删除成功')
                 this.getList()
@@ -1692,7 +1696,7 @@
       getList() {
         this.loading = true
         this.clear()
-        this.$axios.post('/manage/vehicle/vehiclebase/list', {
+        this.$axios.post('/manage/vehicle/base/list', {
           plate_color_eq: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
           vehicle_type_eq: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
           warn_type_eq: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,

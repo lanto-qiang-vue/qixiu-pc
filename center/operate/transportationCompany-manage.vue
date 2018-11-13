@@ -288,7 +288,7 @@
       getList() {
         this.loading = true
         this.clear()
-        this.$axios.post('/manage/transcorp/tccorpinfo/list', {
+        this.$axios.post('/manage/transcorp/tccorpinfo/info/list', {
           'business_num': this.search.business_num,
           'corp_add': this.search.corp_add,
           'corp_area': this.search.corp_area == 0 ? '' : this.search.corp_area,
