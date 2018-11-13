@@ -37,7 +37,7 @@ export const setUser = (info) => {
   localStorage.setItem(USERINFO_KEY, info ? JSON.stringify(info) : '')
 }
 export const getUser = () => {
-  const val = localStorage.getItem(USERINFO_KEY)
+  let val = localStorage.getItem(USERINFO_KEY)
   return val ? JSON.parse(val) : false
 }
 export const setMenu = (info) => {

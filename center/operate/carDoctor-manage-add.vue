@@ -281,7 +281,7 @@ export default {
             
             this.$Modal.confirm({
                 title:"系统提示!",
-                content:"该文件格式不正确，仅支持txt、zip、doc、docx、xls、xlsx、pdf",
+                content:"该文件格式不正确，仅支持PNG、JPG、JPEG、BMP",
                 
             })
         },

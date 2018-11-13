@@ -126,7 +126,7 @@
 					password: '123456'
 				},
 				formMobile:{
-					userMobile:'',
+					userMobile:'13761321186',
 					captcha:'',
 				},
 				ruleValidate: {
@@ -633,7 +633,9 @@
             }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/car-doctor-manage')
-					}
+					}else{
+            this.$Message.error(res.data.status);
+          }
 
 					// this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
 					// .then(function (response) {
@@ -662,7 +664,7 @@
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
 						}else{
-							this.$Message.info(res.data.status)
+							this.$Message.error(res.data.status)
 						}
 
 					})
@@ -694,7 +696,7 @@
 								this.$store.commit('user/setUser', res.data.item)
 								this.$router.push('/center/my-car-record')
 							}else{
-								this.$Message.info(res.data.status)
+								this.$Message.error(res.data.status)
 							}
 						})
 					}

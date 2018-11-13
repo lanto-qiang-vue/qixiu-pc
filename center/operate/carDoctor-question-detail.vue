@@ -25,7 +25,7 @@
                 <Input v-model="listSearch.content" disabled type="textarea" :rows="4" placeholder="" />
             </FormItem>
             <FormItem label="问题图片:" style="width: 80%;">
-                <Card class="pic-card" v-for="item in listSearch.questionPhoto">
+                <Card class="pic-card" v-for="item in listSearch.questionPhoto" :key="item">
                     <div class="pic-body">
                         <img  class="pic" :src="item"
                             @click="showImg(item)"/>
