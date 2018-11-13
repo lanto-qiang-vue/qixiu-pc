@@ -3,6 +3,45 @@ const Main= resolve('components/main.vue')
 
 export default [
   {
+    path: '/gov-article',
+    component: resolve('center/public-article/article-menu-list.vue'),
+    children: [
+      {
+        path: ':type',
+        component: resolve('center/public-article/article-list.vue'),
+        children: [
+          {
+            path: ':id',
+            component: resolve('center/public-article/article-detail.vue'),
+          },
+        ]
+      },
+    ]
+  },{
+    path: '/guild-article',
+    component: resolve('center/public-article/article-menu-list.vue'),
+    children: [
+      {
+        path: ':type',
+        component: resolve('center/public-article/article-list.vue'),
+        children: [
+          {
+            path: ':id',
+            component: resolve('center/public-article/article-detail.vue'),
+          },
+        ]
+      },
+    ]
+  }, {
+    path: '/article',
+    component: resolve('center/public-article/single-article.vue'),
+    children: [
+      {
+        path: ':id',
+        component: resolve('center/public-article/article-detail.vue'),
+      },
+    ]
+  },{
     path: '/menu0',
     alias: '/center',
     meta: {
@@ -12,6 +51,24 @@ export default [
     },
     component: Main,
     children: [
+      {
+        path: 'government-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '管理中心首页',
+          accessId: 1,
+        },
+        component: resolve('center/home/government-home.vue'),
+      },
+      {
+        path: 'company-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '企业中心首页',
+          accessId: 1,
+        },
+        component: resolve('center/home/company-home.vue'),
+      },
       {
         path: 'my-car-record',
         meta: {
@@ -331,6 +388,42 @@ export default [
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
       },
+      {
+        path: 'bind-car-audit',
+        meta: {
+          icon: 'md-funnel',
+          title: '绑定车辆审核',
+          accessId: 407,
+        },
+        component: resolve('center/operate/bind-car-audit.vue'),
+      },
+      {
+        path: 'repair-company-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '维修企业信息管理',
+          accessId: 408,
+        },
+        component: resolve('center/operate/repair-company-manage.vue'),
+      },
+      {
+        path: 'user-login-list',
+        meta: {
+          icon: 'md-funnel',
+          title: '用户行为日志列表',
+          accessId: 409,
+        },
+        component: resolve('center/operate/user-login-list.vue'),
+      },
+      {
+        path: 'for-you-service',
+        meta: {
+          icon: 'md-funnel',
+          title: '为您服务管理',
+          accessId: 410,
+        },
+        component: resolve('center/operate/for-you-service.vue'),
+      },
     ]
   },
   //专家中心--车大夫管理
@@ -353,7 +446,7 @@ export default [
         },
         component: resolve('center/car-doctor/car-doctor-manage.vue'),
       },
-      
+
     ]
   },
   //管理中心--登录信息

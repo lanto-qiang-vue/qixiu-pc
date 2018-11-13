@@ -1,0 +1,685 @@
+<template>
+<div style="text-align: center">
+  <div class="map-body">
+    <div class="sub-title">
+      <Breadcrumb>
+        <BreadcrumbItem to="/">Home</BreadcrumbItem>
+        <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+      </Breadcrumb>
+
+      <a href="/">11111111111</a>
+      <nuxt-link to="/">222222222</nuxt-link>
+    </div>
+    <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
+    <div class="map-frame high">
+    <div class="left">
+      <Select v-model="search.type" placeholder="企业类别" @on-change="changeSelectAll" class="type">
+        <Option value="1">维修企业</Option>
+        <Option value="2">综合检测站</Option>
+        <Option value="3">危运车辆维修</Option>
+        <Option value="4">新能源汽车维修</Option>
+        <Option value="5">施救牵引企业</Option>
+      </Select>
+      <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
+      <Input v-model="search.q" placeholder="输入企业名称/地址" class="inline search"
+             @on-enter="getCompList" clearable>
+      <Button slot="append" icon="ios-search" @click="getCompList"></Button>
+      </Input>
+      <div class="select-bar" v-show="search.type=='1'">
+        <Select v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+        <Select v-model="search.is4s" placeholder="企业类型" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+        <Select v-model="search.area" placeholder="企业区域" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, key) in area" :value="item.key" :key="key">{{item.name}}</Option>
+        </Select>
+        <Select v-model="search.hot" placeholder="热门搜索" clearable class="brand">
+          <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+      </div>
+      <div class="res">查询结果：共<span>{{total}}</span>条记录，请在企业列表或地图中选择查看</div>
+      <ul>
+        <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
+          <img :src="item.frontPhoto? item.frontPhoto:'/img/map/com-head.jpg'">
+          <div class="list-right">
+            <span class="name">{{item.name}}</span>
+            <span>地址：{{item.addr}}</span>
+            <span>电话：{{item.tel}}</span>
+            <!--<span>电话：******</span>-->
+            <span>距离：{{calcApart(item.apart)}}</span>
+          </div>
+          <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
+        </li>
+      </ul>
+      <div class="map-page">
+        <Page :total="total" :current="page" :page-size="limit"  class-name="paging"
+              show-elevator show-total @on-change="changePage"></Page>
+      </div>
+    </div>
+    <!--<div class="right" id="map"></div>-->
+    <div class="right" id="comp-map"></div>
+
+
+    <Spin v-show="loading" size="large" fix></Spin>
+  </div>
+  </div>
+</div>
+</template>
+
+<script>
+export default {
+  name: "service-map",
+  layout: 'common',
+  // props:['type','tolimit'],
+  head () {
+    // console.log('head!!!')
+    return {
+      script: [
+        { type: 'text/javascript', src: "https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2"},
+      ],
+      // changed (newInfo, addedTags, removedTags) {
+      //   console.log('addedTags:', addedTags)
+      //   console.log('removedTags:', removedTags)
+      // }
+    }
+  },
+  data(){
+    return{
+      search:{
+        type: '1',
+        q: '',
+        sort:'',
+        area: '',
+        is4s: '',
+        hot: '',
+        lng: '',
+        lat: ''
+      },
+      area: [],
+      sort:[
+        {name: '默认', value: ''},
+        {name: '距离优先', value: 'distance'},
+        {name: '好评优先', value: 'rating desc,distance asc'},
+      ],
+      maintainType:[
+        {name: '全部', value: ''},
+        {name: '4S店', value: 'yes'},
+        {name: '维修厂', value: 'no'},
+      ],
+      hot:[
+        {name: '默认', value: ''},
+        {name: '宝马', value: '宝马'},
+        {name: '奥迪', value: '奥迪'},
+        {name: '迈巴赫', value: '迈巴赫'},
+        {name: '保时捷', value: '保时捷'},
+        {name: '玛莎拉蒂', value: '玛莎拉蒂'},
+        {name: '年检', value: '年检'},
+        {name: '保养', value: '保养'},
+        {name: '车轮', value: '车轮'},
+        {name: '发动机', value: '发动机'},
+        {name: '汽车美容', value: '汽车美容'},
+      ],
+      total: 0,
+      limit: 4,
+      page: 1,
+
+      list:[],
+      pointList: [],
+      loading: false,
+
+      map: null,
+      geolocation: null,
+      markerClusterer: null,
+      markers: null
+    }
+  },
+  mounted(){
+
+    // console.log('this.map', this.map)
+    // console.log('map1', window.map1)
+    this.map= new AMap.Map('comp-map',{
+      zoom: 10,
+    });
+    // console.log('this.map2', this.map)
+    // window.map1= this.map
+
+    // 同时引入工具条插件，比例尺插件和鹰眼插件
+    AMap.plugin(['AMap.ToolBar',], () => {
+      // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+      this.map.addControl(new AMap.ToolBar({
+        locate: false,
+      }));
+    });
+
+    this.map.on('complete', () => {
+      // 地图图块加载完成后触发
+      // console.log('this.map.on(complete)')
+      this.getLocation()
+    });
+
+    this.getArea()
+
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    // console.log(to)
+    //
+    // console.log('beforeRouteLeave-this.markerClusterer', this.markerClusterer)
+    // this.markerClusterer.clearMarkers();
+    // this.markerClusterer.setMap(null);
+    // this.markerClusterer= null
+    // this.map.clearMap()
+    // this.map.destroy()
+    // this.map= null
+    next(false)
+    window.location.href= to.fullPath
+  },
+  methods:{
+    getLocation(){
+      if(this.map){
+        // console.log('AMap.plugin(\'AMap.Geolocation\'')
+        AMap.plugin('AMap.Geolocation', () => {
+          this.geolocation = new AMap.Geolocation({
+            buttonPosition: 'RB',
+            timeout: 2000,
+          });
+          this.map.addControl(this.geolocation);
+          this.geolocation.getCurrentPosition((status,result)=>{
+            if( status== 'complete'){
+              this.map.setCenter(result.position)
+              this.map.add(new AMap.Marker(result.position))
+              this.search.lng= result.position.lng
+              this.search.lat= result.position.lat
+              this.getCompList()
+              this.initPiontList()
+            }else{
+              this.getCity()
+            }
+          });
+        });
+      }
+    },
+    getCity(){
+      AMap.plugin('AMap.CitySearch', () => {
+        let city = new AMap.CitySearch();
+        city.getLocalCity((status, result)=>{
+          // console.log('getLocalCity', status, result)
+          if(status== 'complete'){
+            this.map.setCity(result.city, ()=>{
+              let center= this.map.getCenter()
+              // console.log('this.map.getCenter()', center)
+              this.map.add(new AMap.Marker( center))
+              // console.log('this.map.add(new AMap.Marker( center))')
+              this.search.lng= center.lng
+              this.search.lat= center.lat
+              this.getCompList()
+              this.initPiontList()
+            })
+          }
+        })
+      });
+    },
+    getArea(){
+      this.$axios.$post('/area/list', {
+        parentCode: '310000'
+      }).then( (res) => {
+        this.area= res.items
+      })
+    },
+    getCompList(){
+      let query= this.calcQuery()
+      this.$axios({
+        baseURL: '/repair',
+        url: '/micro/search/company'+ query,
+        method: 'get',
+      }).then( (res) => {
+        this.list= res.data.content
+        this.calcPointList(res.data.content)
+        this.total= res.data.totalElements
+      })
+    },
+    calcQuery(limit){
+      let query='?q='+ this.search.q + '&sort='+ (this.search.sort||'') +
+        '&page='+ (this.page-1) +','+ (limit ||this.limit)
+      if(this.search.lng) query+='&point='+this.search.lat+','+this.search.lng
+      let fq='', is4s=''
+      if(this.search.area) fq= '&fq=areaKey:'+ this.search.area
+      if(this.search.is4s){
+        is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
+        if(fq) fq+= '+AND+' + is4s
+        else fq= '&fq='+ is4s
+      }
+      query += fq
+
+      return query
+    },
+    initPiontList(){
+      let query= this.calcQuery(20)
+      this.$axios({
+        baseURL: '/repair',
+        url: '/micro/search/company'+ query,
+        method: 'get',
+      }).then( (res) => {
+        this.calcPointList(res.data.content)
+      })
+    },
+    calcPointList(list){
+      let hasPoint= false
+      let points= this.pointList
+      for(let i in list){
+        if(list[i].kw.indexOf('4s')>=0) list[i].is4s= true
+        hasPoint= false
+        for(let j in points){
+          if(points[j].sid == list[i].sid){
+            hasPoint= true
+            break
+          }
+        }
+        if(!hasPoint) this.pointList.push(list[i])
+      }
+      this.renderMap()
+    },
+    renderMap(){
+      if(this.markerClusterer ) {
+        this.markerClusterer.clearMarkers();
+        this.markerClusterer.setMap(null);
+        this.markerClusterer= null
+      }
+      let iconNormal = new AMap.Icon({
+          image: "/img/map/icon-normal.png",
+          size: new AMap.Size(52, 52),
+          imageOffset: new AMap.Size(11, 11),
+          imageSize: new AMap.Size(30, 30),
+        });
+      let icon4s = new AMap.Icon({
+        image: "/img/map/icon-4s.png",
+        size: new AMap.Size(52, 52),
+        imageOffset: new AMap.Size(11, 11),
+        imageSize: new AMap.Size(30, 30),
+      });
+      this.markers= []
+
+      AMap.plugin('AMap.AdvancedInfoWindow', () => {
+        for (let i in this.pointList){
+          let lngLat= new AMap.LngLat(this.pointList[i].lon|| this.search.lng, this.pointList[i].lat|| this.search.lat)
+          let content = '<div class="map-content">'+
+            '<div class="title">'+ this.pointList[i].name+'</div>'+
+            '<div class="body">' +
+            '<ul>' +
+            '<li><span>企业名称：</span>'+this.pointList[i].name+'</li>' +
+            '<li><span>经营地址：</span>'+this.pointList[i].addr+'</li>' +
+            '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>' +
+            '<li><span>联系电话：</span>'+this.pointList[i].tel+'</li>' +
+            '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>' +
+            '<li><span>业户类别：</span>'+ this.formatCategory(this.pointList[i].category)+'</li>' +
+            '</ul>'+
+            '<div class="button-block">' +
+            '<button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button>'+
+            '<button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button>'+
+            '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
+            '</div>'+
+            '</div>'+
+            '</div>'
+
+          this.pointList[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
+            // panel: 'panel',
+            offset: new AMap.Pixel(5, -20),
+            position: lngLat,
+            placeSearch: true,
+            asOrigin: true,
+            asDestination: true,
+            content: content
+          });
+
+
+
+          let marker= new AMap.Marker({
+            icon: this.pointList[i].is4s? icon4s: iconNormal,
+            position: lngLat,
+            extData: this.pointList[i]
+          })
+          marker.on('click', (e) => {
+            e.target.getExtData().advancedInfoWindow.open(this.map)
+          })
+          this.markers.push(marker)
+        }
+      })
+
+
+      let style={
+        url: '/img/map/position-num.png',
+        size: new AMap.Size(40, 40),
+        textColor: '#fff',
+        textSize: 14
+      }
+
+      // window.map1= this.map
+      // window.markers1= this.markers
+      // this.map.add(this.markers)
+      // console.log('AMap.MarkerClusterer', AMap.MarkerClusterer)
+      AMap.plugin(["AMap.MarkerClusterer"],() => {
+        this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{styles:[style, style, style]});
+        // console.log('renderMap() over')
+      });
+    },
+    changeSelectAll(){
+
+    },
+    openMapInfo(id){
+      for (let i in this.markers){
+        if(this.markers[i].getExtData().sid== id){
+          this.markers[i].getExtData().advancedInfoWindow.open(this.map)
+        }
+      }
+    },
+    calcApart(ap){
+      let flap= parseFloat(ap)
+      if(flap){
+        if(flap>=1000){
+          return (flap/1000).toFixed(1)+' km'
+        }else{
+          return ap+' 米'
+        }
+      }else return ''
+
+    },
+    changePage(page){
+      this.page= page
+      this.getCompList()
+    },
+    formatCategory(code){
+      switch (parseInt(code || 0)){
+        case 43: return '一类维修企业';
+        case 44: return '二类维修企业';
+        case 45: return '三类维修企业';
+        case 46: return '摩托车维修业户';
+        case 47: return '汽车快修业户';
+        default: return ''
+      }
+    }
+  }
+}
+</script>
+
+<style scoped lang="less">
+  .map-body{
+    min-width: 800px;
+    max-width: 1200px;
+    display: inline-block;
+    text-align: left;
+    width: 100%;
+    padding: 0 15px;
+  }
+  .sub-title{
+    line-height: 38px;
+    padding: 0 10px;
+    background-color: white;
+    border-bottom: 2px solid #4ba7f5;
+    /*min-width: 800px;*/
+    /*max-width: 1200px;*/
+    /*display: inline-block;*/
+    /*text-align: left;*/
+    width: 100%;
+  }
+  .map-frame{
+    width: 100%;
+    /*padding: 10px;*/
+    overflow: hidden;
+    position: relative;
+    /*min-width: 800px;*/
+    /*max-width: 1200px;*/
+    /*display: inline-block;*/
+    /*text-align: left;*/
+    box-sizing: border-box;
+    border: 1px solid #e6e6e6;
+    .left{
+      position: absolute;
+      padding: 5px;
+      background: #FFF;
+      z-index: 888;
+      width: 380px;
+      height: 100%;
+      .select-bar{
+        display: flex;
+        margin-top: 10px;
+        .ivu-select{
+          width: 25%;
+          padding-right: 5px;
+        }
+
+      }
+      .res{
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        span{
+          color: red;
+        }
+      }
+      ul{
+        li.info:hover{
+          border: 1px solid #1E9FFF;
+        }
+        li.info{
+          overflow: hidden;
+          border: 1px solid #ededed;
+          margin-bottom: 5px;
+          position: relative;
+          img{
+            float: left;
+            margin: 8px;
+            width: 90px;
+            height: 70px;
+          }
+          .list-right{
+            float: left;
+            width: 260px;
+            margin-top: 9px;
+            font-size: 12px;
+            line-height: 18px;
+            position: relative;
+            span{
+              /*color: #020202;*/
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              display: block;
+              cursor: default;
+            }
+            .name{
+              background: url(/img/map/com-icon.png) no-repeat left center;
+              color: #252525;
+              padding-left: 20px;
+              background-size: 15px;
+            }
+          }
+          .appraise{
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background-color: white;
+            color: #1E9FFF;
+            border: 1px solid #1E9FFF;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 2px;
+            cursor: pointer;
+          }
+        }
+      }
+      .map-page{
+        position: absolute;
+        left: 0;
+        bottom: 10px;
+        width: 100%;
+      }
+    }
+    .right{
+      height: 580px;
+      border-left: 1px solid #e6e6e6;
+      border-left: 0;
+      position: relative;
+      margin-left: 380px;
+      min-width: 400px;
+    }
+    .rates{
+      width: 500px;
+      height: 450px;
+      position: absolute;
+      margin: auto;
+      background-color: white;
+      border-radius: 10px;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 890;
+      border:  1px solid #e6e6e6;
+      display: none;
+      i{
+        font-size: 20px;
+        width: 500px;
+        text-align: right;
+        display: block;
+        padding-right: 10px;
+        line-height: 20px;
+        height: 25px;
+        border-bottom:  1px solid #e6e6e6;
+        cursor: pointer;
+      }
+    }
+  }
+  .map-frame.high{
+    .left{
+      .type{
+        width: 30%;
+        padding-right: 5px;
+      }
+      .inline{
+        width: 69%;
+        display: inline-table;
+      }
+      .select-bar{
+
+      }
+    }
+    .right{
+      /*height: 800px;*/
+    }
+  }
+</style>
+<style lang="less">
+.map-body{
+  .paging {
+    text-align: center;
+    li{
+      margin: 2px 0;
+    }
+  }
+  .search .ivu-input-icon-clear{
+    right: 40px;
+  }
+  .map-frame .brand .ivu-select-dropdown{
+    overflow-x: hidden;
+  }
+  .map-frame .right{
+    .info{
+      padding: 10px;
+      .img{
+        float: right;
+        width: 170px;
+        height: 140px;
+        img{
+          width: 100%;
+        }
+      }
+      ul {
+        width: 300px;
+        li{
+          line-height: 30px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    .button{
+      padding: 10px;
+      text-align: right;
+      a{
+        display: inline-block;
+        height: 35px;
+        line-height: 35px;
+        color: #1E9FFF;
+        border: 1px solid #1E9FFF;
+        font-size: 14px;
+        border-radius: 2px;
+        cursor: pointer;
+        padding: 0 10px;
+        margin-left: 10px;
+      }
+      .blue{
+        background-color: #1e9fff;
+        color: white;
+      }
+    }
+  }
+  .map-frame .right .BMapLib_SearchInfoWindow table td:first-child{
+    width: 40px;
+  }
+  .map-frame .right .BMapLib_SearchInfoWindow table td:last-child{
+    width: 120px;
+  }
+
+  .ivu-spin{
+    z-index: 889;
+    .demo-spin-icon-load{
+      animation: ani-demo-spin 1s linear infinite;
+    }
+    @keyframes ani-demo-spin {
+      from { transform: rotate(0deg);}
+      50%  { transform: rotate(180deg);}
+      to   { transform: rotate(360deg);}
+    }
+  }
+  .map-content{
+    width: 500px;
+    .title{
+      height: 30px;
+      line-height: 30px;
+      padding: 0 10px;
+      background-color: #2d8cf0;
+      color: white;
+    }
+    .body{
+      padding: 15px;
+      ul li{
+        line-height: 30px;
+        font-size: 13px;
+        span{
+          font-weight: 600;
+        }
+      }
+      .button-block{
+        margin-top: 20px;
+        text-align: right;
+        .ivu-btn{
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+  .amap-info-combo *{
+    box-sizing: content-box;
+  }
+  .amap-adcombo-close{
+    top: 6px;
+    right: 6px;
+  }
+}
+
+
+</style>

@@ -126,7 +126,7 @@
 					password: '123456'
 				},
 				formMobile:{
-					userMobile:'',
+					userMobile:'13761321186',
 					captcha:'',
 				},
 				ruleValidate: {
@@ -350,6 +350,46 @@
                 "functions": [],
                 "parentId": 0,
                 "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
               }],
               "functions": [],
               "parentId": 0,
@@ -546,6 +586,46 @@
                 "functions": [],
                 "parentId": 0,
                 "sortValue": 1
+              },{
+                "id": 407,
+                "name": "绑定车辆审核",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 408,
+                "name": "维修企业信息管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 409,
+                "name": "用户行为日志列表",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
+              },{
+                "id": 410,
+                "name": "为您服务管理",
+                "uri": "/center/userInfo",
+                "leaf": true,
+                "extInfo": null,
+                "children": [],
+                "functions": [],
+                "parentId": 0,
+                "sortValue": 1
               }],
               "functions": [],
               "parentId": 0,
@@ -553,7 +633,9 @@
             }]);
 						this.$store.commit('user/setUser', res.data.item)
 						this.$router.push('/center/car-doctor-manage')
-					}
+					}else{
+            this.$Message.error(res.data.status);
+          }
 
 					// this.$axios.get('/user/useraccount/getUserInfo/{'+res.data.menus[0]['id']+'}')
 					// .then(function (response) {
@@ -582,7 +664,7 @@
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
 						}else{
-							this.$Message.info(res.data.status)
+							this.$Message.error(res.data.status)
 						}
 
 					})
@@ -614,7 +696,7 @@
 								this.$store.commit('user/setUser', res.data.item)
 								this.$router.push('/center/my-car-record')
 							}else{
-								this.$Message.info(res.data.status)
+								this.$Message.error(res.data.status)
 							}
 						})
 					}

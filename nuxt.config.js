@@ -17,7 +17,10 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    script: [
+      { type: 'text/javascript', src: "/libs/jquery-3.3.1.min.js"},
+    ],
   },
 
   /*
@@ -63,12 +66,18 @@ module.exports = {
     // headers:{'Content-Type': "application/x-www-form-urlencoded"}
   },
   proxy: {
+    '/repair': {
+      target: 'http://115.159.101.204:7210/',
+      // target: 'http://api.qixiu.hoxiuxiu.com/',
+      pathRewrite: {'^/repair': ''},
+      secure: false
+    },
     '/proxy': {
       target: 'http://192.168.169.190:8888/',
       // target: 'http://api.qixiu.hoxiuxiu.com/',
       pathRewrite: {'^/proxy': ''},
       secure: false
-    }
+    },
   },
   /*
   ** Build configuration
@@ -80,11 +89,11 @@ module.exports = {
     extend(config, ctx) {
 
     },
-    plugins: [
-      new webpack.ProvidePlugin({
-        '$': 'jquery',
-      })
-    ],
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //     '$': 'jquery',
+    //   })
+    // ],
   },
 
   router:{

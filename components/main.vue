@@ -3,7 +3,7 @@
     <Sider hide-trigger class="common-sider">
       <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
         <div class="logo-con">
-          <p>管理中心</p>
+          <p>{{pageName || '管理中心'}}</p>
         </div>
       </side-menu>
     </Sider>
@@ -30,6 +30,7 @@ export default {
   components: {
     SideMenu,
   },
+  props: ['paraMenu', 'pageName'],
   fetch ({ store ,isClient}) {
 
   },
@@ -43,7 +44,9 @@ export default {
     menuList () {
       // console.log('$route', this.$route)
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
-      return getMenuByRouter2(router, this.$store.state.user.accessMenu)
+      let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
+      // console.log('menuList', JSON.stringify(list) )
+      return this.paraMenu|| list
     },
     setOpenedNames(){
       let list= this.menuList

@@ -73,7 +73,7 @@
     methods:{
         getList(){
           this.loading=true;
-          this.$axios.post('/cdf/answer/list', {
+          this.$axios.post('/answer/list', {
               "status": this.searchList.status,
               "pageNo": this.page,
               "pageSize": this.limit,

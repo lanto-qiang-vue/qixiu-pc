@@ -80,7 +80,7 @@
     methods:{
         getList(){
           this.loading=true;
-          this.$axios.post('/cdf/myQuestion', {
+          this.$axios.post('/question/myquestion', {
               "category": this.search.select||'',
               "content": this.search.input||'',
               "pageNo": this.page,
@@ -124,7 +124,7 @@
           
         },
         delquestionFun(){
-            this.$axios.post('/cdf/delquestion/'+this.detailData.id,{
+            this.$axios.post('/question/delete/'+this.detailData.id,{
             }).then( (res) => {
                   if(res.data.code=='0'){
                       
@@ -134,7 +134,7 @@
             })
         },
         getQuestionType(){
-          this.$axios.get('/center/question/typeList/1040',).then( (res) => {
+          this.$axios.get('/question/typelist/1040',).then( (res) => {
                   console.log(res);
                   if(res.data.code=='0'){
                       this.typeList=res.data.items;

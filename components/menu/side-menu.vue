@@ -15,7 +15,7 @@
           <side-menu-item v-if="showChildren(item)" :key="`menu-${item.meta.accessId}`" :parent-item="item"></side-menu-item>
           <menu-item v-else :name="getNameOrHref(item)" :key="`menu-${item.meta.accessId}`">
             <!--<common-icon :type="item.icon || ''"/>-->
-            <Icon :type="item.icon || ''" />
+            <Icon v-if="item.icon" :type="item.icon || ''" />
             <span>{{ showTitle(item) }}</span>
           </menu-item>
 

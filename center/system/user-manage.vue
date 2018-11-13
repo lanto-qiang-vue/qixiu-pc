@@ -85,6 +85,7 @@
     },
     methods:{
       getList(){
+        this.selectRow={}
         this.$axios.$post('/user/useraccount/list', {
           "pageNo": this.page,
           "pageSize": this.limit,

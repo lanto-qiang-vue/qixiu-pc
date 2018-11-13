@@ -3,14 +3,13 @@
     v-model="showModal"
     title="分配角色"
     width="70"
-    @on-visible-change="visibleChange"
     :footer-hide="false"
     class="table-modal-detail"
     :mask-closable="false"
     :transition-names="['', '']"
   >
     <Table :columns="columns" :data="tableData" style="margin-bottom: 10px"></Table>
-    <Table :columns="roleColumns" :data="roleList" :loading="loading"></Table>
+    <Table :columns="roleColumns" :data="roleList" :loading="loading" @on-selection-change="select"></Table>
     <div slot="footer">
       <Button @click="showModal=false">取消</Button>
       <Button type="primary" @click="save()">保存</Button>
@@ -21,7 +20,7 @@
 <script>
   import { deepClone } from '~/static/util.js'
 export default {
-  name: "menu-manage-detail",
+  name: "user-manage-role",
   props: ['selectRow', 'show', 'columns'],
   data(){
     return{
@@ -39,7 +38,8 @@ export default {
         },
       ],
       roleList:[],
-      loading: true
+      loading: true,
+      selectRole: []
     }
   },
   computed:{
@@ -57,30 +57,30 @@ export default {
     this.getRoleList()
   },
   methods:{
-    visibleChange(status){
-      // if(status === false){
-      //   this.$refs.form.resetFields();
-      // }
+    select(selection){
+      console.log(selection)
+      let arr=[]
+      for (let i in selection){
+        arr.push(selection[i].id)
+      }
+      this.selectRole= arr
     },
     save(){
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          let url= ''
-          if(this.detail.id){
-            url= '/role/edit'
-          }else{
-            url= '/role/add'
-          }
-          this.detail.system= {id: this.detail.systemId}
-          this.$axios.$post(url, this.detail).then( (res) => {
+      this.$Modal.confirm({
+        title: '确定保存用户角色吗？',
+        onOk: ()=> {
+          this.$axios.$post('/userid/assign',{
+            "roleIds": this.selectRole,
+            "userId": this.selectRow.id
+          }).then( (res) => {
             if(res.code== '0'){
-              this.$Message.success('编辑成功')
-              this.showModal=false
+              this.$Message.success('保存成功')
               this.$emit('refresh');
+              this.showModal= false
+            }else{
+              this.$Message.error(res.status)
             }
           })
-        } else {
-          this.$Message.error('请输入必填项!');
         }
       })
     },
@@ -104,10 +104,12 @@ export default {
       this.loading= true
       this.$axios.$get('/userid/get/'+ this.selectRow.id).then( (res) => {
         let arr= deepClone(this.roleList)
+        this.selectRole= []
         for(let i in arr){
           arr[i]._checked= false
           for(let j in res.items ){
             if(res.items[j].id== arr[i].id){
+              this.selectRole.push(res.items[j].id)
               arr[i]._checked= true
             }
           }
