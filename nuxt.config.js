@@ -17,7 +17,10 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
+    script: [
+      { type: 'text/javascript', src: "/libs/jquery-3.3.1.min.js"},
+    ],
   },
 
   /*
@@ -86,11 +89,11 @@ module.exports = {
     extend(config, ctx) {
 
     },
-    plugins: [
-      new webpack.ProvidePlugin({
-        '$': 'jquery',
-      })
-    ],
+    // plugins: [
+    //   new webpack.ProvidePlugin({
+    //     '$': 'jquery',
+    //   })
+    // ],
   },
 
   router:{

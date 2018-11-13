@@ -52,7 +52,7 @@
       }
     },
     asyncData ({ app, params, error }) {
-      console.log('asyncData')
+      // console.log('asyncData')
       return app.$axios.$post('/home/all',{
         "infoType": params.type,
         "pageNo": 1,

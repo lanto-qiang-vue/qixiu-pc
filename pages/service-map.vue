@@ -319,7 +319,7 @@ export default {
             '<div class="button-block">' +
             '<button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button>'+
             '<button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button>'+
-            '<button type="button" class="ivu-btn ivu-btn-info"><span>查看详情</span></button>'+
+            '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
             '</div>'+
             '</div>'+
             '</div>'
@@ -666,7 +666,7 @@ export default {
       .button-block{
         margin-top: 20px;
         text-align: right;
-        button{
+        .ivu-btn{
           margin-left: 15px;
         }
       }
