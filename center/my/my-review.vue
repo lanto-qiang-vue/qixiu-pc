@@ -1,26 +1,11 @@
+<!--车主中心 我的点评 2018-11-12-->
+
 <template>
-<div class="menu-manage" style="padding-top: 30px;">
-  <div style="margin:0 10px;">
-      <Tabs type="card" value="name1" >
-          <TabPane label="根据车牌号评价" name="name1">
-                
-          </TabPane>
-          <TabPane label="根据维修记录评价" name="name2">
-                
-          </TabPane>
-          
-      </Tabs>
-  </div>
 
   <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
-                @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                          :show="showTable" :page="page" :showSearch=false :showOperate=false>
-              <!--<div slot="operate">
-                <Button type="primary" v-if="" @click="detailData=null,showDetail=Math.random()">根据车牌号评价</Button>
-                <Button type="primary" v-if="" @click="showDetail=Math.random()">根据维修记录评价</Button>
-              </div>-->
-            </common-table>
-</div>
+      @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
+                :show="showTable" :page="page" :showSearch=false :showOperate=false :loading="loading">
+  </common-table>
 </template>
 
 <script>
@@ -32,15 +17,26 @@
     },
     data(){
 		  return{
+        loading:false,
         columns: [
-          {title: '点评日期', key: 'ORDER_TYPE', sortable: true, minWidth: 120,
+          {title: '点评日期', key: 'createDate', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '评分', key: 'ORDER_PERSON', sortable: true, minWidth: 120},
-          {title: '评分详情', key: 'TELPHONE', sortable: true, minWidth: 135},
-          {title: '门店名称', key: 'PLATE_NUM', sortable: true, minWidth: 120},
-          {title: '门店地址', key: 'PLATE_NUM', sortable: true, minWidth: 120},
-          {title: '维修车牌', key: 'PLATE_NUM', sortable: true, minWidth: 120},
+          {title: '评分', key: 'avgScore', sortable: true, minWidth: 85},
+          {title: '评分详情', key: 'TELPHONE', sortable: true, minWidth: 150,
+            render: (h, params) => {
+                let scoreDetail='履约'+params.row.keepAppointment+' 态度'+params.row.attitude+' 质量'+params.row.quality+' 速度'+params.row.speed+' 价格'+params.row.price
+                
+                  return h('div', [
+                      h('span', scoreDetail)
+                  ]);
+                
+                
+            }
+          },
+          {title: '门店名称', key: 'companyName', sortable: true, minWidth: 150},
+          {title: '门店地址', key: 'companyAddress', sortable: true, minWidth: 180},
+          {title: '维修车牌', key: 'vehicleNum', sortable: true, minWidth: 120},
           
         ],
         tableData: [],
@@ -76,12 +72,22 @@
 
     methods:{
         getList(){
-            this.$axios.get('/comment/maintain/query/userId', {
-                  
-                }).then( (res) => {
-					console.log(res)
-					
-				})
+            this.loading=true;
+            let page=this.page-1;
+            
+            this.$axios.get('/comment/maintain/query/userId?size='+this.limit+'&page='+page, {
+            }).then( (res) => {
+              console.log(res);
+              if(res.status===200){
+                  this.tableData=res.data.content;
+                  this.total=res.data.totalElements;
+                  this.loading=false;
+              }else{
+                this.loading=false;
+                this.$Message.error(res.statusText);
+              }
+              
+            })
         },
         getRepairList(){
           this.$axios.post('/comment/list', {

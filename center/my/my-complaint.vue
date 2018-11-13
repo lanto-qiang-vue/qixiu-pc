@@ -73,7 +73,7 @@
     },
     mounted () {
       this.showTable= Math.random();
-    //   this.getList();
+      this.getList();
     
     },
     // beforeMount(){
@@ -84,18 +84,12 @@
     // },
     methods:{
         getList(){
-            this.$axios.post('/vehicle/owner/queryVehicelist', {
-                    "cartype": "",
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-                    "status": 0,
-                    "vehicleplatenumber": "",
-                    "vin": ""
-
-                }).then( (res) => {
-					console.log(res)
-					
-				})
+            this.$axios.get('/comment/complaint/maintain/query', {
+                  
+            }).then( (res) => {
+              console.log(res)
+              // this.tableData=res.data.content;
+            })
         },
         changePage(page){
           this.page= page

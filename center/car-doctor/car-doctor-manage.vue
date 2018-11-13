@@ -98,7 +98,7 @@ export default {
            this.detailData= null;
         },
         getType(id){
-            this.$axios.get('/question/typelist/'+id, {
+            this.$axios.get('/question/typelist', {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.typeList=res.data.items;
