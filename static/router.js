@@ -550,6 +550,15 @@ export default [
         },
         component: resolve('center/company-info/company-qualify-manage.vue'),
       },
+      {
+        path: 'review-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '反馈管理',
+          accessId: 712,
+        },
+        component: resolve('center/manage-service/review-manage.vue'),
+      },
     ]
   },
 
