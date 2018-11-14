@@ -10,38 +10,41 @@
       </div>
       <div class="to-question" v-show="flag">
         <p class="title">问题咨询</p>
-        <Form>
-          <FormItem style="width: 100%">
-            <Input type="textarea" placeholder="" :rows="5"/>
+        <Form ref="form" :rules="ruleValidate" :model="ask">
+          <FormItem style="width: 100%" prop="content">
+            <Input type="textarea" placeholder="" v-model="ask.content" :rows="5"/>
           </FormItem>
           <FormItem label="选择问题分类：">
-            <RadioGroup v-model="ask.type" type="button">
+            <RadioGroup v-model="ask.category" type="button">
               <Radio v-for="(item, key) in typeList" :label="item.id" :key="key">{{item.codeDesc}}</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="是否匿名：">
-            <RadioGroup v-model="ask.ignore">
-              <Radio label="是"></Radio>
-              <Radio label="否"></Radio>
+            <RadioGroup v-model="ask.anonymous">
+              <Radio label="true">是</Radio>
+              <Radio label="false">否</Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem label="上传图片：">
-            <Upload action="//jsonplaceholder.typicode.com/posts/">
-              <Button icon="ios-cloud-upload-outline">添加图片</Button>
+          <FormItem label="相关图片：">
+            <div>
+              <compress-upload-button @done="upPic"></compress-upload-button>
               <span>（仅支持jpg、png、bmp）</span>
-            </Upload>
-
+            </div>
+            <ul class="img-block" v-if="ask.images && ask.images.length">
+              <li v-for="(item, key) in ask.images" :key="key">
+                <img :src="item"  v-img="{group: 'ask-img'}" />
+                <Icon type="md-close-circle" size="24" @click="delImg(key)" class="del-img" />
+              </li>
+            </ul>
           </FormItem>
           <FormItem>
-            <Button type="primary" @click="" style="float: right;">提交问题</Button>
+            <Button type="primary" @click="toAsk" style="float: right;">提交问题</Button>
           </FormItem>
         </Form>
       </div>
       <div class="sub-title question-list-head" v-show="flag">
         <span><Icon type="ios-pie" />问题集锦</span>
         <nuxt-link tag="a" to="/cdf/question-list" class="more">更多<Icon type="ios-arrow-forward" /></nuxt-link>
-
-        <!--<nuxt-link tag="a" to="/" class="more">index<Icon type="ios-arrow-forward" /></nuxt-link>-->
       </div>
       <div class="query" v-show="!flag">
         <Form :label-width="60" class="common-form" >
@@ -54,9 +57,8 @@
           <FormItem label="关键字:">
             <Input type="text" v-model="search.content" placeholder="请输入问题关键字"></Input>
           </FormItem>
-          <!--<FormItem >-->
-            <Button type="primary" @click="search.pageNo=1;getList()">查询</Button>
-          <!--</FormItem>-->
+          <Button type="primary" @click="search.pageNo=1;getList()">查询</Button>
+
         </Form>
       </div>
       <div class="question-list">
@@ -71,7 +73,7 @@
         </CellGroup>
       </div>
       <div class="question-page" v-show="!flag" >
-        <Page :total="total" :current="search.pageNo" />
+        <Page :total="total" :current="search.pageNo" @on-change="getList"/>
       </div>
 
 
@@ -88,16 +90,31 @@
 
 <script>
 import CdfExpertList from '~/components/cdf-expert-list.vue'
+import CompressUploadButton from '~/components/compress-upload-button.vue'
 export default {
   name: "cdf-question-list",
   components: {
     CdfExpertList,
+    CompressUploadButton
   },
   props: ['flag',],
   data(){
+    let rule= [{ required: true, message:'必填项不能为空'}]
     return{
       ask:{
-
+        "anonymous": 'false',
+        "category": "",
+        "content": "",
+        "expertId": "",
+        "images": [
+          // '/img/cdf/user.png',
+          // '/img/cdf/user.png',
+          // '/img/cdf/user.png',
+          // '/img/cdf/user.png',
+        ]
+      },
+      ruleValidate : {
+        content: rule,
       },
       search:{
         "category": "",
@@ -114,8 +131,21 @@ export default {
     this.getType()
     this.getList()
   },
+  mounted(){
+    // console.log(this.$route)
+  },
+  watch:{
+    ask(item){
+      console.log('ask',item)
+      if(!this.$store.state.user.token) this.$router.push({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    }
+  },
   methods:{
-    getList(){
+    getList(page){
+      if(page) this.search.pageNo= page
       this.$axios.$post('/question/nostate/list', this.search).then((res) => {
         this.list= res.items
         this.total= res.total
@@ -124,6 +154,26 @@ export default {
     getType(){
       this.$axios.$get('/question/typelist').then((res) => {
         this.typeList= res.items
+      })
+    },
+    upPic(res){
+      if(res.code=='0'){
+        this.ask.images.push(res.item.path)
+      }
+    },
+    delImg(index){
+      console.log(index)
+      this.ask.images.splice(index, 1)
+    },
+    toAsk(){
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.$axios.$post('/question/add', this.ask).then( (res) => {
+            if(res.code==='0') this.$Message.success('提问成功！审核后可显示。');
+          })
+        } else {
+          this.$Message.error('请输入必填项!');
+        }
       })
     }
   }
@@ -163,6 +213,36 @@ export default {
           color: #4ba7f5;
           font-size: 16px;
           margin: 10px 0;
+        }
+        .img-block{
+          li{
+            width: 80px;
+            height: 80px;
+            margin: 10px 10px 0 0;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            img{
+              position: absolute;
+              width: auto;
+              height: auto;
+              max-width: 100%;
+              max-height: 100%;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%,-50%);
+            }
+            .del-img{
+              position: absolute;
+              top: 0;
+              right: 0;
+              cursor: pointer;
+              color: #cecece;
+            }
+            .del-img:hover{
+              color: #ff3333;
+            }
+          }
         }
       }
       .question-list-head{

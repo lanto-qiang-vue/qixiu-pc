@@ -1,9 +1,5 @@
-
-
 export default function ({store}) {
-
-  // console.log('server',process.server)
-  // console.log('client',process.client)
+  // console.log('set-store')
 
   if (process.client) {
 

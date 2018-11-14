@@ -226,7 +226,7 @@ export default {
   asyncData ({ app, error }) {
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
-        app.$axios.$post('/home/all',{
+        app.$axios.$post('/infopublic/home/all',{
           "infoType": infoType,
           "pageNo": 1,
           "pageSize": pageSize,
@@ -442,15 +442,15 @@ export default {
     }: 'no error')
 
 
-      this.$axios.$post('/home/all',{
-      "pageNo": 1,
-      "pageSize": 5,
-        "infoType": '10281019',
-    }).then(res => {
-      if (res.code === '0') {
-
-      }
-    })
+    // this.$axios.$post('/infopublic/home/all',{
+    //   "pageNo": 1,
+    //   "pageSize": 5,
+    //     "infoType": '10281019',
+    // }).then(res => {
+    //   if (res.code === '0') {
+    //
+    //   }
+    // })
 
   },
   methods:{

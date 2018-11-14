@@ -87,7 +87,7 @@
     mounted () {
       this.showTable= Math.random();
       this.getList();
-
+      console.log(this.$route)
     },
     methods:{
       getList(){

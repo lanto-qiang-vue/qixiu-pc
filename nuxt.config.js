@@ -45,6 +45,7 @@ module.exports = {
     '~/plugins/fliters',
     { src: '~/plugins/browser-util.js', ssr: false },
     { src: '~/plugins/swiper', ssr: false },
+    { src: '~/plugins/lightbox', ssr: false },
   ],
 
   /*
@@ -97,7 +98,7 @@ module.exports = {
   },
 
   router:{
-    middleware: ['set-store'],
+    middleware: ['set-store', 'check-auth'],
     extendRoutes (routes,resolve) {
       // routes.splice(0,routes.length, ...routers)
       routes.push(...router)
