@@ -780,207 +780,6 @@
             }
           }
         ],
-        // columns4: [
-        //   { type: 'selection', width: 50 },
-        //   {
-        //     title: '时间', key: 'usesTime', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('DatePicker', {
-        //             props: {
-        //               value: params.row.usesTime,
-        //               placement: 'bottom',
-        //               transfer: true,
-        //               editable: false
-        //             },
-        //             on: {
-        //               'on-change': (a, b) => {
-        //                 this.tableData4[params.index].usesTime = a
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   }, {
-        //     title: '行驶里程(KM)', key: 'mileage', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.mileage,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.mileage = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '间隔里程(KM)', key: 'intervalMileage', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.intervalMileage,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.intervalMileage = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '燃油消耗(升)', key: 'fuelConsumption', sortable: true, minWidth: 150,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.fuelConsumption,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.fuelConsumption = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '定额', key: 'quota', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.quota,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.quota = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '余', key: 'surplus', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.surplus,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.surplus = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //
-        //     }
-        //   },
-        //   {
-        //     title: '亏', key: 'deficit', sortable: true, minWidth: 100,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('InputNumber', {
-        //             props: {
-        //               value: params.row.deficit,
-        //               min: 0
-        //             },
-        //             on: {
-        //               'on-change': (e) => {
-        //                 let data = params.row
-        //                 data.deficit = e
-        //                 this.tableData4[params.index] = data
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }, {
-        //     title: '使用单位', key: 'useUnit', sortable: true, minWidth: 105,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('Input', {
-        //             props: {
-        //               value: params.row.useUnit
-        //             },
-        //             on: {
-        //               'on-blur': (e) => {
-        //                 let data = params.row;
-        //                 data.useUnit = e.target.value;
-        //                 this.tableData4[params.index] = data;
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }, {
-        //     title: '司机姓名', key: 'driverName', sortable: true, minWidth: 105,
-        //     render: (h, params) => {
-        //       return h('div', [
-        //         h('Input', {
-        //             props: {
-        //               value: params.row.driverName
-        //             },
-        //             on: {
-        //               'on-blur': (e) => {
-        //                 let data = params.row;
-        //                 data.driverName = e.target.value;
-        //                 this.tableData4[params.index] = data;
-        //               }
-        //
-        //             }
-        //           }
-        //         )
-        //       ])
-        //     }
-        //   }
-        // ],
         columns3: [
           { type: 'selection', width: 50 },
           {
@@ -1419,7 +1218,7 @@
         //车辆基本信息...
         formData: {},
         storeData: {
-          'corp_name': '',
+          'corpName': '',
           'transCorpId': '',
           'plateNum': '',
           'plateColor': '0',
@@ -1490,7 +1289,7 @@
     methods: {
       getDriver(id){
         //获取驾驶员登记
-        this.$axios.post('/manage/vehicle/vehiclebase/driverList', {
+        this.$axios.post('/manage/vehicle/driver/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1506,7 +1305,8 @@
       },
       getChange(id) {
         //获取变更记录.....
-        this.$axios.post('/manage/vehicle/vehiclebase/changeList', {
+        ///manage/vehicle/vehiclebase/changeList
+        this.$axios.post('/manage/vehicle/change/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1520,7 +1320,7 @@
         })
       },
       getAccident(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/accidentList', {
+        this.$axios.post('/manage/vehicle/accident/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1534,7 +1334,8 @@
         })
       },
       getUseRecord(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/usesList', {
+        //车辆使用登记...
+        this.$axios.post('/manage/vehicle/uses/list', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id,
@@ -1581,7 +1382,9 @@
         return data
       },
       getParameter(id){
-        this.$axios.post('/manage/vehicle/vehiclebase/vehicleParam', {
+        ///manage/vehicle/vehiclebase/vehicleParam
+        // /manage/vehicle/param/get
+        this.$axios.post('/manage/vehicle/param/get', {
           pageNo: 1,
           pageSize: 10,
           vehicleId: id
@@ -1662,13 +1465,13 @@
         }
         this.tableData5.push({
           xid: xid,
-          accidentAddr: '事故地址',
-          accidentDate: '2018-10-29',
-          accidentDescription: '事故描述及车辆损坏情况',
-          accidentNature: '事故性质',
-          accidentRegistrant: '登记人',
-          accidentResponsibility: '事故责任',
-          economicLosses: 100
+          accidentAddr: '',
+          accidentDate: '',
+          accidentDescription: '',
+          accidentNature: '',
+          accidentRegistrant: '',
+          accidentResponsibility: '',
+          economicLosses: 0
         })
       },
       del5() {
@@ -1691,18 +1494,18 @@
         }
         this.tableData6.push({
           xid: xid,
-          accidentRecord: '事故记录',
-          certificateNum: '从业资格证',
-          certificateType: '从业资格证类型',
-          dimissionTime: '2018-10-29',
-          driverName: '驾驶员姓名',
-          entryTime: '2018-10-29',
-          idNum: '身份证号',
-          illegalRecord: '违章记录',
-          licenceNum: '驾驶证号',
-          licenceType: '驾驶证类型',
-          otherComplaints: '其他投诉',
-          safeMileage: 100
+          accidentRecord: '',
+          certificateNum: '',
+          certificateType: '',
+          dimissionTime: '',
+          driverName: '',
+          entryTime: '',
+          idNum: '',
+          illegalRecord: '',
+          licenceNum: '',
+          licenceType: '',
+          otherComplaints: '',
+          safeMileage: 0
         })
       },
       del6() {
@@ -1717,7 +1520,8 @@
         this.select6 = []
       },
       changeOk(res) {
-        this.formData.corp_name = res.corp_name
+        console.log(JSON.stringify(res));
+        this.formData.corpName = res.corp_name
         this.formData.transCorpId = res.corp_id
       },
       visibleChange() {
@@ -1742,7 +1546,7 @@
                     this.formData.county = this.formData.county == 0 ? '' : this.formData.county
                     this.formData.fuelType = this.formData.fuelType == 0 ? '' : this.formData.fuelType
                     this.formData.single = this.formData.single == 0 ? '' : this.formData.single
-                    this.$axios.post('/manage/vehicle/vehiclebase/save', this.formData).then((res) => {
+                    this.$axios.post('/manage/vehicle/base/save', this.formData).then((res) => {
                       if (res.data.code == '0') {
                         if (this.formData.vehicleId == '') {
                           this.$Message.success('新增成功')
@@ -1781,7 +1585,7 @@
                     this.formData2.retarder = this.formData2.retarder == 0 ? '' : this.formData2.retarder
                     this.formData2.steeringGear = this.formData2.steeringGear == 0 ? '' : this.formData2.steeringGear
                     this.formData2.brakeType = this.formData2.brakeType == 0 ? '' : this.formData2.brakeType
-                    this.$axios.post('/manage/vehicle/vehiclebase/save_param', this.formData2).then((res) => {
+                    this.$axios.post('/manage/vehicle/param/save', this.formData2).then((res) => {
                       if (res.data.code == '0') {
                         if (this.formData2.paramId == '') {
                           this.$Message.success('新增车辆技术成功')
@@ -1801,7 +1605,7 @@
           case 3:
             let data = { data: this.tableData3, vehicleId: this.formData.vehicleId }
             // let data = {data:this.tableData3,vehicleId:this.formData.vehicleId};
-            this.$axios.post('/manage/vehicle/vehiclebase/save_change', data).then((res) => {
+            this.$axios.post('/manage/vehicle/change/save', data).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功')
                 this.getChange(this.formData.vehicleId);
@@ -1818,7 +1622,7 @@
               this.tableData4[i].deficit = this.tableData4[i].deficit || 0
             }
             let data3 = { data: this.tableData4, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_uses', data3).then((res) => {
+            this.$axios.post('/manage/vehicle/uses/save', data3).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getUseRecord(this.formData.vehicleId);
@@ -1827,7 +1631,7 @@
             break
           case 5:
             let data5 = { data: this.tableData5, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_accident', data5).then((res) => {
+            this.$axios.post('/manage/vehicle/accident/save', data5).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getAccident(this.formData.vehicleId);
@@ -1836,7 +1640,7 @@
             break
           case 6:
             let data6 = { data: this.tableData6, vehicleId: this.formData.vehicleId }
-            this.$axios.post('/manage/vehicle/vehiclebase/save_driver', data6).then((res) => {
+            this.$axios.post('/manage/vehicle/driver/save', data6).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功');
                 this.getDriver(this.formData.vehicleId);
@@ -1873,7 +1677,7 @@
       del() {
         this.$Modal.confirm({
           title: '系统提示', content: '确认删除吗', onOk: () => {
-            this.$axios.post('/manage/vehicle/vehiclebase/delete', [this.list.vehicle_id]).then((res) => {
+            this.$axios.post('/manage/vehicle/base/delete', [this.list.vehicleId]).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('删除成功')
                 this.getList()
@@ -1892,7 +1696,7 @@
       getList() {
         this.loading = true
         this.clear()
-        this.$axios.post('/manage/vehicle/vehiclebase/list', {
+        this.$axios.post('/manage/vehicle/base/list', {
           plate_color_eq: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
           vehicle_type_eq: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
           warn_type_eq: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,

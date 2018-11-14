@@ -47,7 +47,7 @@ export default {
     autoRoll(){
       this.timer=setInterval( () => {
         this.rolls()
-      },50)
+      },70)
 
       $('#expert-list').bind('mouseover', () => {
         clearInterval(this.timer)
@@ -57,7 +57,7 @@ export default {
         clearInterval(this.timer)
         this.timer=setInterval( () => {
           this.rolls()
-        },50)
+        },70)
       })
     },
     rolls(){

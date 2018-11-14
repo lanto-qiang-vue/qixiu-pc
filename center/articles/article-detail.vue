@@ -93,7 +93,7 @@
     methods:{
       upPic(res){
         if(res.code=='0'){
-          this.detail.photo= res.data.picPath
+          this.detail.photo= res.item.path
         }
       },
       getDetail(id){
