@@ -61,7 +61,7 @@
       <!--</div>-->
   <!--</div>-->
 
-     <nuxt />
+     <nuxt keep-alive/>
     <!--页脚-->
     <common-footer></common-footer>
     <!--页脚end-->

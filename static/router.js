@@ -52,7 +52,7 @@ export default [
     component: Main,
     children: [
       {
-        path: 'government-home',
+        path: 'gov-home',
         meta: {
           icon: 'md-funnel',
           title: '管理中心首页',
