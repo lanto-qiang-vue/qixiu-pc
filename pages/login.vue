@@ -149,6 +149,7 @@
 			}
 		},
     mounted(){
+		  console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
     },
 		methods: {
