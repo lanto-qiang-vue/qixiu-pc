@@ -4,13 +4,14 @@
     <header>
 
       <div class="top center">
-        <a class="title" href="javascript:void(0);">
+        <nuxt-link tag="a" class="title" to="/">
             <img src="../assets/img/login_img/logo.png">
             <div style="text-align: left;">
                 <h1 style="font-size: 32px">上海市机动车维修公共服务平台</h1>
                 <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
             </div>
-        </a>
+        </nuxt-link>
+
         <div class="login unLogin" style="font-size: 16px">
             <span style="color: black;">您好，欢迎光临本站！</span><router-link tag="a" to="/login">登录</router-link>|<a @click='testLogout'>注册</a>
         </div>
@@ -22,6 +23,7 @@
             </div>
             |<span onclick="logout()" style="cursor: pointer;margin-left: 10px">注销</span>
         </div>
+
     </div>
 
   </header>
