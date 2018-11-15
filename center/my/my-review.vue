@@ -69,6 +69,8 @@
       this.getList();
       // this.getRepairList();
       this.getDetail();
+      this.getDetail1();
+      this.getDetail2();
     },
 
     methods:{
@@ -109,7 +111,44 @@
               
             })
         },
+        getDetail1(){
+            // this.loading=true;
+            let page=this.page-1;
 
+            this.$axios.get('/comment/complaint/maintain/query/userId?size='+this.limit+'&page='+page+'&type=0', {
+            }).then( (res) => {
+              
+              console.log(res);
+              if(res.status===200){
+                  // this.tableData=res.data.content;
+                  // this.total=res.data.totalElements;
+                  // this.loading=false;
+              }else{
+                // this.loading=false;
+                // this.$Message.error(res.statusText);
+              }
+              
+            })
+        },
+        getDetail2(){
+            // this.loading=true;
+            let page=this.page-1;
+
+            this.$axios.get('/comment/complaint/maintain/query/companyId?size='+this.limit+'&page='+page+'&type=0', {
+            }).then( (res) => {
+              
+              console.log(res);
+              if(res.status===200){
+                  // this.tableData=res.data.content;
+                  // this.total=res.data.totalElements;
+                  // this.loading=false;
+              }else{
+                // this.loading=false;
+                // this.$Message.error(res.statusText);
+              }
+              
+            })
+        },
         getRepairList(){
           this.$axios.post('/comment/list', {
                     "pageNo": this.page,

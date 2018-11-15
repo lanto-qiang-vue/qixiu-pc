@@ -56,7 +56,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '管理中心首页',
-          accessId: 11111,
+          accessId: 123,
         },
         component: resolve('center/home/government-home.vue'),
       },
@@ -65,7 +65,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业中心首页',
-          accessId: 122222,
+          accessId: 29,
         },
         component: resolve('center/home/company-home.vue'),
       },
@@ -73,7 +73,7 @@ export default [
         path: 'my-car-record',
         meta: {
           icon: 'md-funnel',
-          title: '爱车档案1',
+          title: '爱车档案',
           accessId: 1,
         },
         component: resolve('center/repairInfo/repair-info.vue'),
@@ -82,7 +82,7 @@ export default [
         path: 'my-questions',
         meta: {
           icon: 'md-funnel',
-          title: '我的咨询1',
+          title: '我的咨询',
           accessId: 2,
         },
         component: resolve('center/my/my-questions.vue'),
@@ -345,7 +345,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '企业信息管理',
-      accessId: 107,
+      accessId: 30,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -354,7 +354,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '维修数据上报查询',
-          accessId: 108,
+          accessId: 31,
         },
         component: resolve('center/company/repored.vue'),
       },
@@ -363,7 +363,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业合格证使用信息登记',
-          accessId: 109,
+          accessId: 32,
         },
         component: resolve('center/company/company-repair-qualify.vue'),
       },

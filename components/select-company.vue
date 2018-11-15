@@ -55,13 +55,13 @@
         area:[],
         loading:false,
         columns: [{
-          title: '企业编号', key: 'corp_num', sortable: true, minWidth: 110
+          title: '企业编号', key: 'corpNum', sortable: true, minWidth: 110
         },
-          { title: '企业名称', key: 'corp_name', sortable: true, minWidth: 150 },
-          { title: '所属辖区', key: 'corp_area', sortable: true, minWidth: 120 ,
-            render: (h, params) => h('span', this.getName(this.area, params.row.corp_area))
+          { title: '企业名称', key: 'corpName', sortable: true, minWidth: 150 },
+          { title: '所属辖区', key: 'corpArea', sortable: true, minWidth: 120 ,
+            render: (h, params) => h('span', this.getName(this.area, params.row.corpArea))
           },
-          { title: '操作', key: 'charge_person', sortable: true, minWidth: 120,
+          { title: '操作', key: 'chargePerson', sortable: true, minWidth: 120,
             render: (h, params) => {
               let buttonContent= '选择';
               let buttonStatus = 'primary';
@@ -111,11 +111,11 @@
       getList() {
         this.loading = true
         this.$axios.post('/manage/transcorp/tccorpinfo/list', {
-          'business_num': this.search.business_num,
-          'corp_add': this.search.corp_add,
-          'corp_area': this.search.corp_area == 0 ? '' : this.search.corp_area,
-          'corp_name': this.search.corp_name,
-          'corp_num': this.search.corp_num,
+          'businessNum': this.search.business_num,
+          'corpAdd': this.search.corp_add,
+          'corpArea': this.search.corp_area == 0 ? '' : this.search.corp_area,
+          'corpName': this.search.corp_name,
+          'corpNum': this.search.corp_num,
           'pageNo': this.page,
           'pageSize': this.limit
         }).then((res) => {

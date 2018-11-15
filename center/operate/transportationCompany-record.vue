@@ -1251,7 +1251,8 @@
           'guaranteeSlipPic': '',
           'vehicleId': ''
         },
-        formData2: {
+        formData2:{},
+        storeData2: {
           'axleNumber': 0,
           'brakeType': '',
           'brandModel': '',
@@ -1351,6 +1352,12 @@
       edit() {
         this.indexName = "m1";
         this.formData = this.list
+        this.formData.plateColor = this.formData.plateColor || '0';
+        this.formData.vehicleType = this.formData.vehicleType || '0';
+        this.formData.status = this.formData.status || '0';
+        this.formData.county = this.formData.county || '0';
+        this.formData.fuelType = this.formData.fuelType || '0';
+        this.formData.single = this.formData.single || '0';
         //查询车辆技术参数
         this.getParameter(this.list.vehicleId);
         //获取变更记录....
@@ -1389,7 +1396,7 @@
           pageSize: 10,
           vehicleId: id
         }).then((res) => {
-          this.formData2 = res.data.item;
+          this.formData2 = res.data.item || deepClone(this.storeData2);
           // console.log(JSON.stringify(res.data.item));
         })
       },
@@ -1520,9 +1527,8 @@
         this.select6 = []
       },
       changeOk(res) {
-        console.log(JSON.stringify(res));
-        this.formData.corpName = res.corp_name
-        this.formData.transCorpId = res.corp_id
+        this.formData.corpName = res.corpName
+        this.formData.transCorpId = res.corpId
       },
       visibleChange() {
         this.clear()
@@ -1671,6 +1677,7 @@
       add() {
         this.indexName = 'm1'
         this.formData = deepClone(this.storeData)
+        this.formData2 = deepClone(this.storeData2)
         this.$refs.formData.resetFields()
         this.showModal = true
       },
@@ -1697,13 +1704,13 @@
         this.loading = true
         this.clear()
         this.$axios.post('/manage/vehicle/base/list', {
-          plate_color_eq: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
-          vehicle_type_eq: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
-          warn_type_eq: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,
-          status_eq: this.search.STATUS_eq == 0 ? '' : this.search.STATUS_eq,
-          plate_num_lk: this.search.PLATE_NUM_lk,
-          record_no_lk: this.search.RECORD_NO_lk,
-          is_single_eq: this.search.IS_SINGLE_eq == 0 ? '' : this.search.IS_SINGLE_eq,
+          plateColor: this.search.PLATE_COLOR_eq == 0 ? '' : this.search.PLATE_COLOR_eq,
+          vehicleType: this.search.VEHICLE_TYPE_eq == 0 ? '' : this.search.VEHICLE_TYPE_eq,
+          warnType: this.search.WARN_TYPE_eq == 0 ? '' : this.search.WARN_TYPE_eq,
+          status: this.search.STATUS_eq == 0 ? '' : this.search.STATUS_eq,
+          plateNum: this.search.PLATE_NUM_lk,
+          recordNo: this.search.RECORD_NO_lk,
+          isSingle: this.search.IS_SINGLE_eq == 0 ? '' : this.search.IS_SINGLE_eq,
           pageNo: this.page,
           pageSize: this.limit
         }).then((res) => {
