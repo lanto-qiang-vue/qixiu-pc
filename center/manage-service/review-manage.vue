@@ -55,23 +55,14 @@
           {title: '反馈日期', key: 'createDate', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '企业名称', key: 'avgScore', sortable: true, minWidth: 85},
-          {title: '企业联系人电话', key: 'TELPHONE', sortable: true, minWidth: 150,
-            render: (h, params) => {
-                let scoreDetail='履约'+params.row.keepAppointment+' 态度'+params.row.attitude+' 质量'+params.row.quality+' 速度'+params.row.speed+' 价格'+params.row.price
-                
-                  return h('div', [
-                      h('span', scoreDetail)
-                  ]);
-                
-                
-            }
+          {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120},
+          {title: '企业联系人电话', key: 'companyPhone', sortable: true, minWidth: 150,
           },
-          {title: '车牌号', key: 'companyName', sortable: true, minWidth: 150},
-          {title: '反馈类型', key: 'companyAddress', sortable: true, minWidth: 180},
-          {title: '事件发生日期', key: 'vehicleNum', sortable: true, minWidth: 120},
-          {title: '凭证', key: 'companyAddress', sortable: true, minWidth: 180},
-          {title: '企业是否已读', key: 'vehicleNum', sortable: true, minWidth: 120},
+          {title: '车牌号', key: 'vehicleNum', sortable: true, minWidth: 120},
+          {title: '反馈类型', key: 'type', sortable: true, minWidth: 120},
+          {title: '事件发生日期', key: 'cmCreateDate', sortable: true, minWidth: 150},
+          {title: '凭证', key: 'hasRead', sortable: true, minWidth: 130},
+          {title: '企业是否已读', key: 'details', sortable: true, minWidth: 130},
           
         ],
         tableData: [],
@@ -81,7 +72,7 @@
             hasEvidence:'',
             type:'',
             vehicleNum:'',
-            status:"",
+            
         },
         page: 1,
         limit: 10,
@@ -103,16 +94,28 @@
     mounted () {
       this.showTable= Math.random();
       this.getList();
-      // this.getRepairList();
-      this.getDetail();
+
     },
 
     methods:{
         getList(){
             this.loading=true;
             let page=this.page-1;
+            
+            let strUrl="";
+            for(let i in this.searchList){
+                if(i=="hasEvidence"){
+                    if(this.searchList[i]=="0"){
+                        strUrl+='&'+i+'=true';
+                    }else if(this.searchList[i]=="1"){
+                        strUrl+='&'+i+'=false';
+                    }
+                }else if(this.searchList[i]){
+                    strUrl+='&'+i+'='+this.searchList[i];
+                }
+            }
 
-            this.$axios.get('/comment/maintain/query/userId?size='+this.limit+'&page='+page, {
+            this.$axios.get('/comment/complaint/maintain/query?size='+this.limit+'&page='+page+strUrl, {
             }).then( (res) => {
               console.log(res);
               if(res.status===200){
@@ -125,36 +128,6 @@
               }
               
             })
-        },
-        getDetail(){
-            // this.loading=true;
-            let page=this.page-1;
-
-            this.$axios.get('/comment/complaint/maintain/query?size='+this.limit+'&page='+page+'&hasEvidence=true&type=0', {
-            }).then( (res) => {
-              
-              console.log(res);
-              if(res.status===200){
-                  // this.tableData=res.data.content;
-                  // this.total=res.data.totalElements;
-                  // this.loading=false;
-              }else{
-                // this.loading=false;
-                // this.$Message.error(res.statusText);
-              }
-              
-            })
-        },
-
-        getRepairList(){
-          this.$axios.post('/comment/list', {
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-
-                }).then( (res) => {
-					console.log(res)
-					
-				})
         },
         changePage(page){
           this.page= page
@@ -183,6 +156,8 @@
           this.detailData= null
           this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
+          this.page=1;
+          this.getList();
         },
         searchFun(){
 
