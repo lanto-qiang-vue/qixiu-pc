@@ -56,7 +56,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '管理中心首页',
-          accessId: 1,
+          accessId: 11111,
         },
         component: resolve('center/home/government-home.vue'),
       },
@@ -65,7 +65,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业中心首页',
-          accessId: 1,
+          accessId: 122222,
         },
         component: resolve('center/home/company-home.vue'),
       },

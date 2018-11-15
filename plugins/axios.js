@@ -12,6 +12,7 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('Interceptors:',response.data)
 
     if(response.data.code==='100') {
+      $axios.$get('/user/useraccount/logout')
       localStorage.removeItem('ACCESSTOKEN')
       localStorage.removeItem('ACCESSMENU')
       localStorage.removeItem('USERINFO')
