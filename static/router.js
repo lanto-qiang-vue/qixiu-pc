@@ -56,7 +56,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '管理中心首页',
-          accessId: 123,
+          accessId: 33,
         },
         component: resolve('center/home/government-home.vue'),
       },
@@ -146,7 +146,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '绑定车辆审核(运营商)',
-          accessId: 407,
+          accessId: 34,
         },
         component: resolve('center/operate/bind-car-audit.vue'),
       },
@@ -418,7 +418,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '车大夫管理(运营)',
-      accessId: 401,
+      accessId: 35,
     },
     component: resolve('components/main.vue'),
     children: [{
