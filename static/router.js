@@ -146,7 +146,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '绑定车辆审核(运营商)',
-          accessId: 407,
+          accessId: 34,
         },
         component: resolve('center/operate/bind-car-audit.vue'),
       },
@@ -164,7 +164,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '用户行为日志列表(运营商)',
-          accessId: 409,
+          accessId: 45,
         },
         component: resolve('center/operate/user-login-list.vue'),
       },
@@ -283,7 +283,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '文章管理',
-      accessId: 15,
+      accessId: 42,
     },
     component: Main,
     children: [
@@ -376,7 +376,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '运输管理',
-      accessId: 401,
+      accessId: 39,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -385,7 +385,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运输企业信息管理',
-          accessId: 402,
+          accessId: 40,
         },
         component: resolve('center/operate/transportationCompany-manage.vue'),
       },
@@ -394,7 +394,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运输车辆技术档案',
-          accessId: 403,
+          accessId: 41,
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
@@ -418,7 +418,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '车大夫管理(运营)',
-      accessId: 401,
+      accessId: 35,
     },
     component: resolve('components/main.vue'),
     children: [{
@@ -426,7 +426,7 @@ export default [
       meta: {
         icon: 'md-funnel',
         title: '车大夫专家管理',
-        accessId: 404,
+        accessId: 36,
       },
       component: resolve('center/operate/carDoctor-manage.vue'),
     },
@@ -435,7 +435,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫问题管理',
-          accessId: 405,
+          accessId: 37,
         },
         component: resolve('center/operate/carDoctor-question-manage.vue'),
       },
@@ -444,7 +444,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫回答管理',
-          accessId: 406,
+          accessId: 38,
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
       },]
