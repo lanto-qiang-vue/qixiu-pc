@@ -73,7 +73,7 @@ export default [
         path: 'my-car-record',
         meta: {
           icon: 'md-funnel',
-          title: '爱车档案1',
+          title: '爱车档案',
           accessId: 1,
         },
         component: resolve('center/repairInfo/repair-info.vue'),
