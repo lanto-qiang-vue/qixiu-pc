@@ -4,7 +4,7 @@
 <template>
   <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
       @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page"  :loading="loading">
+                :show="showTable" :page="page"  :loading="loading" :showOperate=false>
 
     <div  slot="search"  >
         <Form :label-width="80" class="common-form">
@@ -43,6 +43,8 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import { formatDate } from '@/static/tools.js'
+  import { getName } from '@/static/util.js'
 	export default {
 		name: "review-manage",
     components: {
@@ -53,16 +55,57 @@
         loading:false,
         columns: [
           {title: '反馈日期', key: 'createDate', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
+            render: (h, params) => h('span', formatDate(params.row.createDate)||'')
           },
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120},
           {title: '企业联系人电话', key: 'companyPhone', sortable: true, minWidth: 150,
           },
           {title: '车牌号', key: 'vehicleNum', sortable: true, minWidth: 120},
-          {title: '反馈类型', key: 'type', sortable: true, minWidth: 120},
-          {title: '事件发生日期', key: 'cmCreateDate', sortable: true, minWidth: 150},
-          {title: '凭证', key: 'hasRead', sortable: true, minWidth: 130},
-          {title: '企业是否已读', key: 'details', sortable: true, minWidth: 130},
+          {title: '反馈类型', key: 'type', sortable: true, minWidth: 120,
+                render: (h, params) => h('span', getName(this.typeList,params.row.type)||'')
+            },
+          {title: '事件发生日期', key: 'cmCreateDate', sortable: true, minWidth: 150,
+            render: (h, params) => h('span', formatDate(params.row.cmCreateDate)||'')
+            },
+          {title: '凭证', key: 'photoUrl', sortable: true, minWidth: 130,
+                render: (h, params) => {
+                  if(params.row.photoUrl){
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'primary',
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    this.showImg(params.row.photoUrl);
+                                }
+                            }
+                        }, '查看凭证')
+                    ]);
+                  }else{
+                    return h('div', [
+                        h('span', '暂无凭证')
+                    ]);
+                  }
+
+              }
+            
+            },
+          {title: '企业是否已读', key: 'hasRead', sortable: true, minWidth: 130,
+                render: (h, params) => {
+                  if(params.row.hasRead){
+                    return h('div', [
+                        h('span', '已读')
+                    ]);
+                  }else{
+                    return h('div', [
+                        h('span', '未读')
+                    ]);
+                  }
+
+              }
+            },
           
         ],
         tableData: [],
@@ -161,7 +204,15 @@
         },
         searchFun(){
 
-        }
+        },
+        showImg(img){
+                this.$Modal.info({
+                width: 50,
+                title: '查看',
+                closable: true,
+                content: '<img src="'+img+'" style="width: 100%"/>'
+                })
+            },
     },
 	}
 </script>

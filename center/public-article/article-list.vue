@@ -39,7 +39,7 @@
       }else{
         console.log('validate-Promise')
         return new Promise((resolve, reject) => {
-          app.$axios.$get('/infopublic/public/info/category/1028' ).then(res => {
+          app.$axios.$get('/infopublic/public/info/category' ).then(res => {
             if (res.code === '0') {
               store.commit('app/setArticleType', res.items)
               // console.log('hasType', hasType(res.items))
@@ -53,7 +53,7 @@
     },
     asyncData ({ app, params, error }) {
       // console.log('asyncData')
-      return app.$axios.$post('/home/all',{
+      return app.$axios.$post('/infopublic/home/all',{
         "infoType": params.type,
         "pageNo": 1,
         "pageSize": 10
