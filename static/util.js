@@ -143,7 +143,7 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
 
     for(let j in routers)  {
       let route = routers[j]
-      if(route.meta&& route.meta.accessId){
+      if(route.meta&& route.meta.accessId!= undefined){
         if(menuItem.parentId== 0 && !menuItem.children.length && route.meta.accessId== 0){
           res= res.concat(matchItem(route.children, menuItem, route.alias))
         }

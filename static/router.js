@@ -56,7 +56,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '管理中心首页',
-          accessId: 123,
+          accessId: 33,
         },
         component: resolve('center/home/government-home.vue'),
       },
@@ -146,7 +146,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '绑定车辆审核(运营商)',
-          accessId: 407,
+          accessId: 34,
         },
         component: resolve('center/operate/bind-car-audit.vue'),
       },
@@ -155,7 +155,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '维修企业信息管理(运营商)',
-          accessId: 408,
+          accessId: 44,
         },
         component: resolve('center/operate/repair-company-manage.vue'),
       },
@@ -164,7 +164,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '用户行为日志列表(运营商)',
-          accessId: 409,
+          accessId: 45,
         },
         component: resolve('center/operate/user-login-list.vue'),
       },
@@ -283,7 +283,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '文章管理',
-      accessId: 15,
+      accessId: 42,
     },
     component: Main,
     children: [
@@ -292,7 +292,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章类别',
-          accessId: 16,
+          accessId: 57,
         },
         component: resolve('center/articles/article-type-list.vue'),
       },
@@ -301,7 +301,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章列表',
-          accessId: 17,
+          accessId: 58,
         },
         component: resolve('center/articles/article-list.vue'),
       },
@@ -310,7 +310,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章详情',
-          // accessId: 17,
+          accessId: 59,
         },
         component: resolve('center/articles/article-detail.vue'),
       },
@@ -376,7 +376,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '运输管理',
-      accessId: 401,
+      accessId: 39,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -385,7 +385,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运输企业信息管理',
-          accessId: 402,
+          accessId: 40,
         },
         component: resolve('center/operate/transportationCompany-manage.vue'),
       },
@@ -394,7 +394,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运输车辆技术档案',
-          accessId: 403,
+          accessId: 41,
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
@@ -418,7 +418,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '车大夫管理(运营)',
-      accessId: 401,
+      accessId: 35,
     },
     component: resolve('components/main.vue'),
     children: [{
@@ -426,7 +426,7 @@ export default [
       meta: {
         icon: 'md-funnel',
         title: '车大夫专家管理',
-        accessId: 404,
+        accessId: 36,
       },
       component: resolve('center/operate/carDoctor-manage.vue'),
     },
@@ -435,7 +435,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫问题管理',
-          accessId: 405,
+          accessId: 37,
         },
         component: resolve('center/operate/carDoctor-question-manage.vue'),
       },
@@ -444,7 +444,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫回答管理',
-          accessId: 406,
+          accessId: 38,
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
       },
@@ -476,7 +476,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '电子健康档案',
-      accessId: 701,
+      accessId: 46,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -485,7 +485,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '根据维修企业查找',
-          accessId: 707,
+          accessId: 47,
         },
         component: resolve('center/manage-service/record-company.vue'),
       },
@@ -494,7 +494,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '根据维修记录查找',
-          accessId: 708,
+          accessId: 48,
         },
         component: resolve('center/manage-service/record-repair.vue'),
       },
@@ -506,7 +506,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '管理服务',
-      accessId: 701,
+      accessId: 25,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -515,7 +515,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '通知管理',
-          accessId: 704,
+          accessId: 27,
         },
         component: resolve('center/manage-service/note-manage.vue'),
       },
@@ -524,7 +524,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '通知审核',
-          accessId: 705,
+          accessId: 28,
         },
         component: resolve('center/manage-service/note-audit.vue'),
       },
@@ -533,7 +533,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文件管理',
-          accessId: 706,
+          accessId: 50,
         },
         component: resolve('center/logininfo/file-manage.vue'),
       },
@@ -542,7 +542,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '反馈管理',
-          accessId: 712,
+          accessId: 49,
         },
         component: resolve('center/manage-service/review-manage.vue'),
       },
@@ -554,7 +554,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '登录信息',
-      accessId: 701,
+      accessId: 51,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -563,7 +563,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业签到信息',
-          accessId: 702,
+          accessId: 52,
         },
         component: resolve('center/logininfo/enterprise-sign.vue'),
       },
@@ -572,7 +572,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '管理部门登录信息',
-          accessId: 703,
+          accessId: 53,
         },
         component: resolve('center/logininfo/manage-sign.vue'),
       },
@@ -585,7 +585,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '企业资料',
-      accessId: 701,
+      accessId: 54,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -594,7 +594,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '维修企业信息管理',
-          accessId: 709,
+          accessId: 55,
         },
         component: resolve('center/company-info/company-info-manage.vue'),
       },
@@ -603,7 +603,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '质量信誉考核管理',
-          accessId: 710,
+          accessId: 56,
         },
         component: resolve('center/company-info/quality-manage.vue'),
       },
