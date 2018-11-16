@@ -1,8 +1,6 @@
 export default function ({store}) {
-  // console.log('set-store')
-
   if (process.client) {
-
+    console.log('set-store')
     let token = localStorage.getItem('ACCESSTOKEN')
     if(!store.state.user.token && token){
       store.commit('user/setToken', token)

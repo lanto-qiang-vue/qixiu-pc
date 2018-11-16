@@ -21,16 +21,8 @@
       </div>
       <a href="/czzn"><img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></a>
     </div>
-    <div class="login unLogin" style="font-size: 16px; display: none;">
-      <span style="color: #d1d1d2;">您好，欢迎光临本站！</span>
-      <a href="/toLogin"><img src="../assets/img/index/login.png">登录</a>|
-      <a href="/toLogin?type=register">注册</a>
-    </div>
-    <div class="login isLogin">
-      <span class="nick-name">我是领导</span>
-      <a href="/center/manageHome" class="center">管理中心</a>
-      |<span onclick="logout()" class="logout">注销</span>
-    </div>
+
+    <login-status :isIndex="true"></login-status>
   </div>
   <div class="banner" v-if="showSwiper">
     <swiper :options="swiperOption" ref="mySwiper" class="banner-swiper" >
@@ -217,12 +209,16 @@
 <script>
 import CommonFooter from '~/components/common-footer.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
+import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
+import mixin from '~/static/page-mount-mixin.js'
 export default {
   components: {
     CommonFooter,
-    IconBlock
+    IconBlock,
+    LoginStatus
   },
+  mixins: [mixin],
   asyncData ({ app, error }) {
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {

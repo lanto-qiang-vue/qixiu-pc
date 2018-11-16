@@ -42,9 +42,10 @@ export default {
   },
   computed: {
     menuList () {
-      // console.log('$route', this.$route)
+      // console.log('router', router)
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
+      // console.log('this.$store.state.user.accessMenu', this.$store.state.user.accessMenu )
       // console.log('menuList', JSON.stringify(list) )
       return this.paraMenu|| list
     },

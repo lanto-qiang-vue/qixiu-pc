@@ -2,7 +2,6 @@
   <div>
     <!--页头-->
     <header>
-
       <div class="top center">
         <nuxt-link tag="a" class="title" to="/">
             <img src="../assets/img/login_img/logo.png">
@@ -12,20 +11,8 @@
             </div>
         </nuxt-link>
 
-        <div class="login unLogin" style="font-size: 16px">
-            <span style="color: black;">您好，欢迎光临本站！</span><router-link tag="a" to="/login">登录</router-link>|<a @click='testLogout'>注册</a>
-        </div>
-        <div class="login isLogin" style="display: none;font-size: 16px">
-            <span class="nickName" style="color: black;"></span>
-            <div class="switch">
-                <a href="javascript:void(0);" class="loginButton show"></a>
-                <a href="javascript:void(0);" class="goOwner">车主中心</a>
-            </div>
-            |<span onclick="logout()" style="cursor: pointer;margin-left: 10px">注销</span>
-        </div>
-
+        <login-status :isIndex="false"></login-status>
     </div>
-
   </header>
   <!--导航菜单-->
   <!--<div class="nav_top">-->
@@ -72,39 +59,38 @@
 </template>
 
 <script>
-  import CommonFooter from '~/components/common-footer.vue'
-	export default {
-		name: "common",
-    components: {
-      CommonFooter
-    },
-    data () {
-        return {
+import CommonFooter from '~/components/common-footer.vue'
+import LoginStatus from '~/components/login-status.vue'
+import mixin from '~/static/page-mount-mixin.js'
+export default {
+  name: "common",
+  components: {
+    CommonFooter,
+    LoginStatus
+  },
+  mixins: [mixin],
+  data () {
+    return {
     }
-    },
-    beforeMount(){
-      let token = localStorage.getItem('ACCESSTOKEN')
-      if(!this.$store.state.user.token && token){
-        this.$store.commit('user/setToken', token)
-        this.$store.commit('user/setMenu', JSON.parse(localStorage.getItem('ACCESSMENU')))
-        this.$store.commit('user/setUser', JSON.parse(localStorage.getItem('USERINFO')))
-      }
-    },
-    methods:{
-        testLogout(){
+  },
+  // beforeMount(){
 
-            this.$axios.get('/user/useraccount/logout')
-            .then(function (response) {
-                if(response.data.code==='0'){
+  // },
+  methods:{
+      testLogout(){
 
-						this.$router.push('/login')
-					}
-            })
+          this.$axios.get('/user/useraccount/logout')
+          .then(function (response) {
+              if(response.data.code==='0'){
+
+          this.$router.push('/login')
         }
-    }
+          })
+      }
+  }
 
 
-	}
+}
 </script>
 
 <style scoped lang="less">
@@ -138,64 +124,7 @@
     line-height: 45px;
 }
 
-.top .login{
-    position: absolute;
-    top: 25px;
-    right: 10px;
-    height: 40px;
-    line-height: 40px;
-    color: #4285f4;
-}
-.top .login a{
-    padding: 0 10px;
-    color: #4285f4;
-}
 
-.top .login .switch{
-    display: inline-block;
-    position: relative;
-}
-.top .login .switch a{
-    display: none;
-    position: absolute;
-    top: 38px;
-    background-color: #f5f5f5;
-    color: #6091b7;
-    z-index: 1;
-    width: 100px;
-    text-align: center;
-}
-.top .login .switch a.show{
-    position: static;
-    display: block;
-    color: white;
-    background-color: #6091b7;
-}
-.top .login .switch a:hover{
-    background-color: #0c6dbe;
-    color: white;
-}
-.top .login .switch:hover a{
-    display: block;
-}
-
-/*.nav_top {*/
-
-    /*width: 100%;*/
-    /*overflow: initial;*/
-    /*min-width: 800px;*/
-    /*text-align: center;*/
-
-/*}*/
-
-/*.nav_in_top {*/
-    /*margin: 0 auto;*/
-    /*overflow: initial;*/
-    /*max-width: 1200px;*/
-    /*position: relative;*/
-    /*display: inline-block;*/
-    /*text-align: left;*/
-/*}*/
 .ivu-menu{
   min-width: 800px;
   height: 40px;

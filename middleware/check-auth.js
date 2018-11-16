@@ -4,6 +4,7 @@ export default function ({ route, store, redirect, error }) {
   // console.log('route', meta)
   // console.log('store.state.user.token', store.state.user.token)
   if (process.client) {
+    console.log('check-auth')
     if(store.state.user.token){
       // console.log('is login')
     }else{
