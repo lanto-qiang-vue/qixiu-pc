@@ -292,7 +292,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章类别',
-          // accessId: 16,
+          accessId: 57,
         },
         component: resolve('center/articles/article-type-list.vue'),
       },
@@ -301,7 +301,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章列表',
-          accessId: 43,
+          accessId: 58,
         },
         component: resolve('center/articles/article-list.vue'),
       },
@@ -310,7 +310,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章详情',
-          // accessId: 17,
+          accessId: 59,
         },
         component: resolve('center/articles/article-detail.vue'),
       },
@@ -496,7 +496,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '通知管理',
-          accessId: 704,
+          accessId: 27,
         },
         component: resolve('center/manage-service/note-manage.vue'),
       },
@@ -523,7 +523,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '反馈管理',
-          accessId: 712,
+          accessId: 49,
         },
         component: resolve('center/manage-service/review-manage.vue'),
       },
