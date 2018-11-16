@@ -1,15 +1,18 @@
 {
-  "name": "qixiu-frontend",
-  "version": "1.0.0",
-  "description": "My riveting Nuxt.js project",
-  "author": "lanto",
-  "private": true,
   "config": {
+    "title": "上海市机动车维修公共服务平台",
+    "proxy-api": "http://192.168.169.190:8888/",
+    "proxy-repair": "http://115.159.101.204:7210/",
     "nuxt": {
       "host": "0.0.0.0",
       "port": "3000"
     }
   },
+  "name": "qixiu-frontend",
+  "version": "1.0.0",
+  "description": "My riveting Nuxt.js project",
+  "author": "lanto",
+  "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
