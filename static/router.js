@@ -447,7 +447,26 @@ export default [
           accessId: 406,
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
-      },]
+      },
+      {
+        path: 'visit-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '上门服务管理',
+          accessId: 407,
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '预约服务管理',
+          accessId: 408,
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },
+      ]
   },
 
   //管理中心

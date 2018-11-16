@@ -80,7 +80,7 @@
 			},
             //获取短信验证码----
 			getCaptcha(){
-				// this.$refs['formMobile'].validateField('userMobile');
+				// this.$refs['formData'].validateField('newTelphone');
 				var pattern = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 				if (!pattern.test(this.formData.newTelphone)) {
 					return false;
