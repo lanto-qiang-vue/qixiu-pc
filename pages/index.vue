@@ -106,9 +106,9 @@
             <p>中心</p>
           </div>
           <ul>
-            <li onclick="goToPage('/center/applyList', false, [1,2,3,4,5,6,7])"><a>爱车档案</a></li>
-            <li onclick="goToPage('/center/myOrders', false, [1,2,3,4,5,6,7])"><a>我的预约服务</a></li>
-            <li onclick="goToPage('/center/myQuestions', false, [1,2,3,4,5,6,7])"><a>我的咨询</a></li>
+            <nuxt-link tag="li" :to="'/center/my-car-record'"><a>爱车档案</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-order'"><a>我的预约服务</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-car-record'"><a>我的咨询</a></nuxt-link>
             <li><a href="/statics/tips.pdf" target="_blank">爱车小贴士</a></li>
           </ul>
         </div>
@@ -123,9 +123,10 @@
           </ul>
           <div class="doctor_content active" id="gather_content">
             <ul>
-              <li v-for="item in questionList" :key="'questionList-'+item.id">{{item.content}}</li>
+              <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
+              <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
             </ul>
-            <a onclick="goToPage('/cdf', true)" class="list_button">浏览更多</a>
+            <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
           </div>
 
 
@@ -154,10 +155,15 @@
         <swiper-slide v-for="(item, index) in articleBanner" :key="index">
           <div class='dummy'></div>
           <div class='content'>
-            <a :href="item.id" class="news-swiper-body">
-              <div>{{item.title}}</div>
-              <img :src="item.photo || '/img/default-car.png'">
-            </a>
+            <!--<a :href="item.id" class="news-swiper-body">-->
+              <!--<div>{{item.title}}</div>-->
+              <!--<img :src="item.photo || '/img/default-car.png'">-->
+            <!--</a>-->
+
+          <nuxt-link tag="a" :to="'/guild-article/detail/'+item.id" class="news-swiper-body">
+            <div>{{item.title}}</div>
+            <img :src="item.photo || '/img/default-car.png'">
+          </nuxt-link>
           </div>
         </swiper-slide>
 
