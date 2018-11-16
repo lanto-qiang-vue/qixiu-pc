@@ -9,7 +9,7 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('store.state.user.token:', token)
   })
   $axios.onResponse(response => {
-    console.log('Interceptors:',response.status)
+    // console.log('Interceptors:',response.status)
 
 
     if(response.status== 200){
