@@ -1,28 +1,21 @@
+<!--车主中心 我的反馈 2018-11-16-->
 <template>
 <div class="menu-manage">
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
-                @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                @onRowDblclick="onRowDblclick" :show="showTable" :page="page">
+                @changePage="changePage" @changePageSize="changePageSize" 
+                :show="showTable" :page="page" :showOperate=false>
     <div  slot="search"  >
       <Form :label-width="80" class="common-form">
             <FormItem label="反馈类型:">
-                <Select v-model="model1">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                <Select v-model="searchList.type" clearable>
+                    <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="时间:" style="width: 80px;" :label-width="0">
-                <Button type="primary" v-if="" @click="searchFun">查询</Button>
+            <FormItem style="width: 80px;" :label-width="0">
+                <Button type="primary" v-if="" @click="page=1,getList()">查询</Button>
             </FormItem>
         </Form>
-    </div>
-    <div slot="operate">
-      <Button type="primary" v-if="" @click="detailData=null,showDetail=Math.random()">搜索</Button>
-      <Button type="info" v-if="" @click="showDetail=Math.random()" :disabled="!detailData">查看</Button>
-      <Button type="error" v-if=""  @click="" :disabled="isOrderSuccess">解绑</Button>
-      <Button type="error" v-if=""  @click="" :disabled="isOrderSuccess">绑定本人车辆</Button>
-      <Button type="error" v-if=""  @click="" :disabled="isOrderSuccess">绑定他人车辆</Button>
-      
     </div>
   </common-table>
 </div>
@@ -30,6 +23,7 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import { formatDate } from '@/static/tools.js'
 	export default {
 		name: "my-complaint",
     components: {
@@ -38,20 +32,42 @@
     data(){
 		  return{
         columns: [
-          {title: '反馈企业', key: 'ORDER_TYPE', sortable: true, minWidth: 120,
+          {title: '反馈企业', key: 'companyName', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '反馈原因', key: 'ORDER_PERSON', sortable: true, minWidth: 120},
-          {title: '反馈日期', key: 'TELPHONE', sortable: true, minWidth: 135},
-          {title: '车牌号', key: 'PLATE_NUM', sortable: true, minWidth: 120},
-          {title: '凭据', key: 'PLATE_NUM', sortable: true, minWidth: 120},
+          {title: '反馈原因', key: 'details', sortable: true, minWidth: 120},
+          {title: '反馈日期', key: 'createDate', sortable: true, minWidth: 135,
+            render: (h, params) => h('span', formatDate(params.row.createDate))
+          },
+          {title: '车牌号', key: 'vehicleNum', sortable: true, minWidth: 120},
+          {title: '凭据', key: 'photoUrl', sortable: true, minWidth: 120,
+              render: (h, params) => {
+                  if(params.row.photoUrl){
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'primary',
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    this.showImg(params.row.photoUrl);
+                                }
+                            }
+                        }, '查看凭证')
+                    ]);
+                  }else{
+                    return h('div', [
+                        h('span', '暂无凭证')
+                    ]);
+                  }
+
+              }
+          },
         ],
         tableData: [],
-        searchSelectOption:[],
-        searchSelectOption1:[],//重新赋值--
-        search:{
-          input: '',
-          select: '',
+        searchList:{
+          type: '',
         },
         page: 1,
         limit: 10,
@@ -60,15 +76,10 @@
         showDetail: false,
         detailData: null,
         clearTableSelect: null,
-        isOrderSuccess:true,//判断是不是预约成功
-        cityList: [
-            {
-                value: 'New York',
-                label: 'New York'
-            },
+        typeList:[
+            {code:0,name:"维修记录未上传"},
+            {code:1,name:"维修记录不正确"},
         ],
-        model1:'',
-        
       }
     },
     mounted () {
@@ -76,19 +87,27 @@
       this.getList();
     
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         getList(){
-            this.$axios.get('/comment/complaint/maintain/query', {
-                  
+            this.loading=true;
+            let page=this.page-1;
+            let strUrl="";
+            for(let i in this.searchList){
+                if(this.searchList[i]){
+                    strUrl+='&'+i+'='+this.searchList[i];
+                }
+            }
+
+            this.$axios.get('/comment/complaint/maintain/query/userId?size='+this.limit+'&page='+page+strUrl, {
             }).then( (res) => {
-              console.log(res)
-              // this.tableData=res.data.content;
+              if(res.status===200){
+                  this.tableData=res.data.content;
+                  this.total=res.data.totalElements;
+                  this.loading=false;
+              }else{
+                this.loading=false;
+                this.$Message.error(res.statusText);
+              }
             })
         },
         changePage(page){
@@ -99,29 +118,14 @@
           this.limit= size
           this.getList()
         },
-
-        onRowClick( row, index){
-            console.log('row：',row);
-            if(row.STATUS=="10421003"){
-                this.isOrderSuccess=true;
-            }else{
-                this.isOrderSuccess=false;
-            }
-          this.detailData=row
-        },
-        onRowDblclick( row, index){
-          this.detailData=row
-          console.log('row：',row);
-          this.showDetail=Math.random()
-        },
-        closeDetail(){
-          this.detailData= null
-          this.isOrderSuccess=true;
-          this.clearTableSelect= Math.random()
-        },
-        searchFun(){
-
-        }
+        showImg(img){
+                this.$Modal.info({
+                width: 50,
+                title: '查看',
+                closable: true,
+                content: '<img src="'+img+'" style="width: 100%"/>'
+                })
+            },
     },
 	}
 </script>
