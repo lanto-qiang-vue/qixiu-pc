@@ -2,6 +2,7 @@
 <div class="article-detail">
   <p class="title">{{title}}</p>
   <div v-html="detail"></div>
+  <BackTop></BackTop>
 </div>
 </template>
 
@@ -16,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 .article-detail{
   padding: 10px 20px;
   overflow: hidden;
