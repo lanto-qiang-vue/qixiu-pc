@@ -9,10 +9,11 @@
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
-        <Breadcrumb>
-          <BreadcrumbItem to="/">Home</BreadcrumbItem>
-          <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
-        </Breadcrumb>
+        <!--<Breadcrumb>-->
+          <!--<BreadcrumbItem to="/">Home</BreadcrumbItem>-->
+          <!--<BreadcrumbItem>Breadcrumb</BreadcrumbItem>-->
+        <!--</Breadcrumb>-->
+        <my-bread-crumb></my-bread-crumb>
       </div>
       <nuxt-child/>
     </Content>
@@ -21,6 +22,7 @@
 
 <script>
 import SideMenu from './menu/side-menu.vue'
+import MyBreadCrumb from '~/components/bread-crumb.vue'
 import {  getMenuByRouter2 } from '@/static/util'
 import router from '@/static/router'
 
@@ -29,6 +31,7 @@ export default {
   layout: 'common',
   components: {
     SideMenu,
+    MyBreadCrumb
   },
   props: ['paraMenu', 'pageName'],
   fetch ({ store ,isClient}) {

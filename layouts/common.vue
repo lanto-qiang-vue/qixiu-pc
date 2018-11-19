@@ -19,7 +19,7 @@
       <!--<div class="nav_in_top">-->
           <Menu mode="horizontal" theme="primary" style="z-index: 1000">
             <MenuItem name="1" to="/">
-                首页
+                主页
             </MenuItem>
             <Submenu name="2">
                 <template slot="title">
@@ -43,7 +43,7 @@
             <MenuItem name="3">
                 电子健康档案系统
             </MenuItem>
-            <MenuItem name="4">
+            <MenuItem name="4" to="/cdf">
                 车大夫门诊
             </MenuItem>
             <MenuItem name="5">
@@ -71,7 +71,7 @@
 import CommonFooter from '~/components/common-footer.vue'
 import LoginStatus from '~/components/login-status.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
-import mixin from '~/static/page-mount-mixin.js'
+import mixin from '~/components/page-mount-mixin.js'
 export default {
   name: "common-layout",
   components: {

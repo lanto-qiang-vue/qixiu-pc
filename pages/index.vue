@@ -211,7 +211,7 @@ import CommonFooter from '~/components/common-footer.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
 import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
-import mixin from '~/static/page-mount-mixin.js'
+import mixin from '~/components/page-mount-mixin.js'
 export default {
   components: {
     CommonFooter,
@@ -220,7 +220,7 @@ export default {
   },
   mixins: [mixin],
   asyncData ({ app, error }) {
-    
+
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
