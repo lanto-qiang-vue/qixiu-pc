@@ -320,7 +320,9 @@ export default {
         articleRight: [res10281006[0], res10281016[0], res10281017[0]]
       }
     },(err)=>{
+      // if(process.client)
       console.log('err:', err.response.data)
+
       return {
         questionList: [],
         cdfList: [],
