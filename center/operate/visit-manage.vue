@@ -6,14 +6,14 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
     <div  slot="search"  >
-        <Form :label-width="80" class="common-form">
+        <Form :label-width="70" class="common-form">
             <FormItem label="联系人:">
                 <Input type="text" v-model="search.input" placeholder="请输入联系人"></Input>
             </FormItem>
             <FormItem label="联系方式:">
                 <Input type="text" v-model="search.select" placeholder="请输入联系方式"></Input>
             </FormItem>
-            <FormItem label="上门服务地址:">
+            <FormItem label="服务地址:">
                 <Input type="text" v-model="search.select" placeholder="请输入上门服务地址"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 80px;">
@@ -22,10 +22,10 @@
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="" :disabled="showFlag"  @click="showType=Math.random()">指派维修企业</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
-    <select-repair-company :showType="showType" :detailData="detailData"></select-repair-company>
+    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail"></select-repair-company>
   </common-table>
 </div>
 </template>
@@ -74,6 +74,7 @@
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
         showType:null,
+        showFlag:true,
       }
     },
     mounted () {
@@ -81,12 +82,6 @@
       this.getList();
     
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         getList(){
           this.loading=true;
@@ -117,12 +112,20 @@
         onRowClick( row, index){
             console.log('row：',row);
             
-          this.detailData=row
+          this.detailData=row;
+          if(this.detailData.status=="已指派企业"){
+              this.showFlag=true;
+          }else{
+              this.showFlag=false;
+          }
         },
         
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random()
+          this.showFlag=true;
+          this.page=1;
+          this.getList();
         },
         //删除按钮----------
         deleteFun(){
@@ -136,12 +139,10 @@
         deleteFuncion(){
             this.$axios.delete('/service/delete/'+this.detailData.id,).then( 
             (res) => {
-					      if(res.data.code=='0'){
-                  this.getList();
-                  this.closeDetail();
+                if(res.data.code=='0'){
+                    this.closeDetail();
                 }
-					
-				    })
+            })
         }
         
     },

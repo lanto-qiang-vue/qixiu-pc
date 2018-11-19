@@ -144,8 +144,8 @@ export default {
               if (valid) {
                  this.$axios.post('/company/repairquality/add',{
                         "carSource": this.listSearch.carSource,
-                        "carType": this.listSearch.carSource,
-                        "certificateCode": this.listSearch.carSource,
+                        "carType": this.listSearch.carType,
+                        "certificateCode": this.listSearch.certificateCode,
 
                         "exFactoryDate": formatDate(this.listSearch.exFactoryDate)||'',
                         "examinationReportCode": this.listSearch.examinationReportCode,

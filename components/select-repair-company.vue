@@ -5,6 +5,7 @@
     v-model="showModal"
     :mask-closable="false"
     title="指定维修企业"
+    @on-visible-change="visibleChange"
     width="60"
     :scrollable="true"
     :transfer="false"
@@ -17,16 +18,16 @@
       <div slot="search">
         <Form :label-width="80" class="common-form">
           <FormItem label="企业名称:">
-            <Input type="text" v-model="search.corp_num" placeholder="请输入企业名称"></Input>
+            <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
           </FormItem>
-          <FormItem label="许可证号:" prop="corp_name">
-            <Input type="text" v-model="search.corp_name" :readonly="true" placeholder="请输入许可证号"></Input>
+          <FormItem label="许可证号:" >
+            <Input type="text" v-model="search.license"  placeholder="请输入许可证号"></Input>
           </FormItem>
-          <FormItem label="经营地址:" prop="corp_area">
-            <Input type="text" v-model="search.corp_name" :readonly="true" placeholder="请输入经营地址"></Input>
+          <FormItem label="经营地址:" >
+            <Input type="text" v-model="search.businessAddress"  placeholder="请输入经营地址"></Input>
           </FormItem>
-          <FormItem label="联系方式:" prop="corp_area">
-            <Input type="text" v-model="search.corp_name" :readonly="true" placeholder="请输入联系方式"></Input>
+          <FormItem label="联系方式:" >
+            <Input type="text" v-model="search.companyLinkMantel"  placeholder="请输入联系方式"></Input>
           </FormItem>
           <FormItem :label-width="80" style="width: 100px;">
             <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
@@ -45,11 +46,17 @@
     watch:{
       showType(){
         this.showModal = true;
+        this.getList();
       }
     },
     data(){
       return {
-        search:{},
+        search:{
+            businessAddress:"",
+            companyLinkMantel:"",
+            companyName:"",
+            license:"",
+        },
         total:0,
         page:1,
         limit:10,
@@ -94,10 +101,10 @@
       getList() {
         this.loading = true
         this.$axios.post('company/list', {
-            businessAddress:"",
-            companyLinkMantel:"",
-            companyName:"",
-            license:"",
+            businessAddress:this.search.businessAddress,
+            companyLinkMantel:this.search.companyLinkMantel,
+            companyName:this.search.companyName,
+            license:this.search.license,
             'pageNo': this.page,
             'pageSize': this.limit
         }).then((res) => {
@@ -109,19 +116,25 @@
         })
       },
       setRepairCompany(row) {
-        this.$axios.post('/service/setRepairCompany', {
+        this.$axios.post('/service/setServiceRepairCompany', {
             "companyId": row.companyId,
             "id": this.detailData.id
         }).then((res) => {
           if (res.data.code == '0') {
-            
+            this.showModal=false;
           }
         })
-      }
+      },
+      //监听界面变化--------
+      visibleChange(status){
+        if(status === false){
+          this.$emit('closeDetail');
+        }
+      },
     },
     mounted(){
       this.search.corp_area = "0";
-      this.getList();
+      
     }
   }
 </script>
