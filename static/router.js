@@ -70,6 +70,15 @@ export default [
         component: resolve('center/home/company-home.vue'),
       },
       {
+        path: 'company-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '运营中心首页',
+          accessId: 29,
+        },
+        component: resolve('center/home/operator-home.vue'),
+      },
+      {
         path: 'my-car-record',
         meta: {
           icon: 'md-funnel',
