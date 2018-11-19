@@ -3,7 +3,7 @@
     <Sider hide-trigger class="common-sider">
       <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
         <div class="logo-con">
-          <p>{{pageName || '管理中心'}}</p>
+          <p>{{pageName || roleName+'中心'}}</p>
         </div>
       </side-menu>
     </Sider>
@@ -24,6 +24,7 @@
 import SideMenu from './menu/side-menu.vue'
 import MyBreadCrumb from '~/components/bread-crumb.vue'
 import {  getMenuByRouter2 } from '@/static/util'
+import mixin from '~/components/home-path-mixin.js'
 import router from '@/static/router'
 
 export default {
@@ -33,6 +34,7 @@ export default {
     SideMenu,
     MyBreadCrumb
   },
+  mixins: [mixin],
   props: ['paraMenu', 'pageName'],
   fetch ({ store ,isClient}) {
 

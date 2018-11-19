@@ -26,13 +26,13 @@ export default {
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
-    roleName(){
-      let sortRoles= this.sortRole(true), roleName= ''
-      for(let i in sortRoles){
-        roleName= sortRoles[i].name
-      }
-      return roleName
-    },
+    // roleName(){
+    //   let sortRoles= this.sortRole(true), roleName= ''
+    //   for(let i in sortRoles){
+    //     roleName= sortRoles[i].name
+    //   }
+    //   return roleName
+    // },
     // centerHref(){
     //   let sortRoles= this.sortRole(false)
     //   return sortRoles.length? sortRoles[sortRoles.length-1].path: ''

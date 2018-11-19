@@ -13,11 +13,11 @@
       <span class="tel">400-663-8210</span>
       <a href="http://www.lantoev.com/android/DownLoad.html" target="_blank" class="app">
         <p>下载APP</p>
-        <img src="../assets/img/index/qrcode_app.png" style="display: none;">
+        <img src="../assets/img/index/qrcode_app.png">
       </a>
       <div class="wx">
         <p>关注微信</p>
-        <img src="../assets/img/index/qrcode_weixin.jpg" style="display: none;">
+        <img src="../assets/img/index/qrcode_weixin.jpg">
       </div>
       <a href="/czzn"><img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></a>
     </div>
@@ -508,6 +508,8 @@ export default {
           }
           >*{
             margin-left: 10px;
+            position: relative;
+            overflow: visible;
           }
           .tel{
             padding-left: 18px;
@@ -521,6 +523,17 @@ export default {
           .wx{
             padding-left: 20px;
             background: url('../assets/img/index/wechat.png') no-repeat left center;
+            cursor: pointer;
+          }
+          .app img, .wx img{
+            display: none;
+            width: 75px;
+            position: absolute;
+            z-index: 9;
+            left: 0;
+          }
+          .app:hover img, .wx:hover img{
+            display: block;
           }
           .czzn{
             width: 40px;
