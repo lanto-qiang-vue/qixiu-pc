@@ -313,9 +313,10 @@ export default {
       }
     },(err)=>{
       // if(process.client)
-      console.log('err:', err.response.data)
+      console.log('err1:', err)
+      // console.log('err2:', err.response.data)
 
-      return {
+      let setData={
         questionList: [],
         cdfList: [],
         articleBanner: [],
@@ -323,8 +324,10 @@ export default {
           latest: [],
           hottest: [],
         },
-        articleRight: [],
-        error: {
+        articleRight: []
+      }
+      if(err.response && err.response.config && err.response.data){
+        setData.error=  {
           url: err.response.config.url,
           // headers: JSON.stringify(err.response.config.headers),
           status: err.response.status,
@@ -334,7 +337,12 @@ export default {
           response: JSON.stringify(err.response.data)
           // response: err.response.data
         }
+      }else{
+        setData.error= err.response
       }
+
+
+      return setData
     })
     //   .catch((e) => {
     //   error({ statusCode: 404, message: 'Post not found' })
@@ -428,25 +436,17 @@ export default {
       self.iconBlockShow= false
     })
 
-    console.log('error: ', this.error? {
-      status: this.error.status,
-      statusText: this.error.statusText,
-      url: this.error.url,
-      headers: this.error.headers,
-      data: this.error.data,
-      response: this.error.response,
-    }: 'no error')
+    // console.log('error: ', this.error? {
+    //   status: this.error.status,
+    //   statusText: this.error.statusText,
+    //   url: this.error.url,
+    //   headers: this.error.headers,
+    //   data: this.error.data,
+    //   response: this.error.response,
+    // }: 'no error')
 
 
-    // this.$axios.$post('/infopublic/home/all',{
-    //   "pageNo": 1,
-    //   "pageSize": 5,
-    //     "infoType": '10281019',
-    // }).then(res => {
-    //   if (res.code === '0') {
-    //
-    //   }
-    // })
+    console.log('error: ', this.error|| 'no error')
 
   },
   methods:{
