@@ -62,27 +62,12 @@ export default {
                   {code:'no',name:'未登录'},
               ],//问题分类--------
         columns: [
-          {title: '序号',  minWidth: 60,
-            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-          },
-          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110,
-            // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
-          },
-          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 110},
-          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
-          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 100},
-          {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
-          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 145},
-          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 165},
-          
+          {title: '结算日期', key: 'plateNumber', sortable: true, minWidth: 110,},
+          {title: '维修单号', key: 'checkVn', sortable: true, minWidth: 110},
+          {title: '维修内容', key: 'vin', sortable: true, minWidth: 150},
+          {title: '维修车牌', key: 'checkVin', sortable: true, minWidth: 100},
         ],
         tableData: [],
-        searchSelectOption:[],
-        searchSelectOption1:[],//重新赋值--
-        search:{
-          input: '',
-          select: '',
-        },
         searchList:{
             byVehicleNumberStandard:"all",
             byVinStandard:"all",
@@ -98,12 +83,7 @@ export default {
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-        typeList:[
-            {code:'all',name:'全部'},
-            {code:'yes',name:'正确'},
-            {code:'no',name:'错误'},
-            
-        ]
+
       }
     },
     mounted () {

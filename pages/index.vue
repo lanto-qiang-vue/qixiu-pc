@@ -220,6 +220,7 @@ export default {
   },
   mixins: [mixin],
   asyncData ({ app, error }) {
+    
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
@@ -417,6 +418,7 @@ export default {
   beforeMount(){
   },
   mounted(){
+
     let self= this
     this.showSwiper= true
 
