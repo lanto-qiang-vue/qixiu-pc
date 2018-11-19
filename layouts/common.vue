@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="common-layout">
     <!--页头-->
     <header>
       <div class="top center">
@@ -17,19 +17,28 @@
   <!--导航菜单-->
   <!--<div class="nav_top">-->
       <!--<div class="nav_in_top">-->
-          <Menu mode="horizontal" theme="primary" active-name="1" style="z-index: 1000">
-            <MenuItem name="1">
+          <Menu mode="horizontal" theme="primary" style="z-index: 1000">
+            <MenuItem name="1" to="/">
                 首页
             </MenuItem>
             <Submenu name="2">
                 <template slot="title">
                     服务中心
                 </template>
-                <!--<MenuGroup title="使用">-->
-                    <MenuItem name="3-1" to="/gov-article">政务文章</MenuItem>
-                    <MenuItem name="3-2" to="/guild-article">协会文章</MenuItem>
-                    <MenuItem name="3-3" to="/article">单篇文章</MenuItem>
 
+                <ul class="ivu-menu-drop-list icon-menus">
+                  <a class="ivu-menu-item" @mouseover="iconBlockShow= false">电子健康档案系统</a>
+                  <a class="ivu-menu-item" icon-block-type="1">车主服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="2">汽修企业服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="3">政务服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="5">协会服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="6">人才服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="4">汽修相关产业服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="8">商务服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="7">公众监督服务中心</a>
+                  <a class="ivu-menu-item" icon-block-type="9">大数据服务中心</a>
+                  <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
+                </ul>
             </Submenu>
             <MenuItem name="3">
                 电子健康档案系统
@@ -61,21 +70,36 @@
 <script>
 import CommonFooter from '~/components/common-footer.vue'
 import LoginStatus from '~/components/login-status.vue'
+import IconBlock from '~/components/menu/icon-block.vue'
 import mixin from '~/static/page-mount-mixin.js'
 export default {
-  name: "common",
+  name: "common-layout",
   components: {
     CommonFooter,
-    LoginStatus
+    LoginStatus,
+    IconBlock
   },
   mixins: [mixin],
   data () {
     return {
+      iconBlockType: 0,
+      iconBlockLeft: 170,
+      iconBlockShow: false,
     }
   },
-  // beforeMount(){
-
-  // },
+  mounted(){
+    let self= this
+    $(".icon-menus a, .icon-menus .icon-block").hover(function () {
+      let type= parseInt($(this).attr('icon-block-type') ||0)
+      if (type){
+        self.iconBlockShow= true
+        self.iconBlockType= type
+      }
+    })
+    $(".icon-menus, .icon-menus .icon-block").mouseleave(function () {
+      self.iconBlockShow= false
+    })
+  },
   methods:{
       testLogout(){
 
@@ -94,8 +118,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-
-.top{
+.common-layout{
+  .top{
     width: 100%;
     height: 90px;
     border-bottom: 1px solid #f1f1f1;
@@ -104,43 +128,54 @@ export default {
     /*overflow: hidden;*/
     background-color: white;
     position: relative;
-}
+  }
 
-.top .title{
+  .top .title{
     float: left;
     /*width: 100%;*/
-}
-.top .title img{
+  }
+  .top .title img{
     width: 70px;
     float: left;
-}
-.top .title div{
+  }
+  .top .title div{
     float: left;
     color: #333333;
-}
-.top .title div h1{
+  }
+  .top .title div h1{
     font-weight: 400;
     height: 45px;
     line-height: 45px;
-}
+  }
 
 
-.ivu-menu{
-  min-width: 800px;
-  height: 40px;
-  display: -webkit-flex;
-  display: flex;
-  justify-content: center;
-}
-.ivu-menu li{
-  height: 40px;
-  line-height: 40px;
-  padding: 0 18px;
-}
-.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-selected{
-  color: #fff;
-  background-color: #2b85e4;
-}
+  .ivu-menu{
+    min-width: 800px;
+    height: 40px;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    .ivu-menu-submenu, .ivu-menu-item{
+      height: 40px;
+      line-height: 40px;
+      padding: 0 18px;
+    }
+  }
+  .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-selected{
+    color: #fff;
+    background-color: #2b85e4;
+  }
+  .icon-menus{
+    overflow: visible;
+    position: relative;
+  }
 
-
+}
+</style>
+<style lang="less">
+.common-layout{
+  .ivu-select-dropdown{
+    overflow: visible;
+  }
+}
 </style>

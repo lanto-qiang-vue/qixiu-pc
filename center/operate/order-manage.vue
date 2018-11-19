@@ -23,7 +23,7 @@
         <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
-    <select-repair-company :showType="showType" :detailData="detailData"></select-repair-company>
+    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail"></select-repair-company>
   </common-table>
 </div>
 </template>
@@ -110,8 +110,10 @@ export default {
         },
         
         closeDetail(){
-          this.detailData= null
-          this.clearTableSelect= Math.random()
+          this.detailData= null;
+          this.clearTableSelect= Math.random();
+          this.page=1;
+          this.getList();
         },
         //删除按钮----------
         deleteFun(){
@@ -123,10 +125,12 @@ export default {
             
         },
         deleteFuncion(){
-            this.$axios.delete('/service/delete/'+this.detailData.id,).then( 
+            this.$axios.post('/service/order/delete/'+this.detailData.id,
+            
+            ).then( 
             (res) => {
 					      if(res.data.code=='0'){
-                  this.getList();
+                  
                   this.closeDetail();
                 }
 					

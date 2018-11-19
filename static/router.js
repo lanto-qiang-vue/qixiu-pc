@@ -466,6 +466,24 @@ export default [
         },
         component: resolve('center/operate/order-manage.vue'),
       },
+      {
+        path: 'complaint-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '反馈管理',
+          accessId: 409,
+        },
+        component: resolve('center/company/complaint-manage.vue'),
+      },
+      {
+        path: 'company-repair-data',
+        meta: {
+          icon: 'md-funnel',
+          title: '反馈管理',
+          accessId: 410,
+        },
+        component: resolve('center/company/company-repair-data.vue'),
+      },
       ]
   },
 

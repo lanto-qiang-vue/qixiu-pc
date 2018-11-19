@@ -32,7 +32,7 @@ export default function ({ $axios, redirect, store, route, app }) {
           Message.error({content:'登录过期，请重新登录', duration: 3})
           break
         }
-        default: Message.error({content: response.data.status, duration: 3})
+        default: response.data.status? Message.error({content: response.data.status, duration: 3}): '';
       }
     }else{
       if (process.client) Message.error({content: response.error+', status:'+response.status, duration: 3})
