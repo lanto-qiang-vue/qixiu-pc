@@ -3,7 +3,7 @@
   <div class="block" v-show="type==1">
     <nuxt-link tag="a" to="/center/my-car-record"><img src="/img/menu-icon/爱车档案.png"/><p>爱车档案</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/维修服务查选.png"/><p>维修服务查选</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/车大夫门诊.png"/><p>车大夫门诊</p></nuxt-link>
+    <nuxt-link tag="a" to="/cdf"><img src="/img/menu-icon/车大夫门诊.png"/><p>车大夫门诊</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/上门服务.png"/><p>上门服务</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/预约服务.png"/><p>预约服务</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/道路救援.png"/><p>道路救援</p></nuxt-link>
@@ -13,10 +13,10 @@
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/新能源汽车维修.png"/><p>新能源汽车维修</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/道路救援.png"/><p>施救牵引企业</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></nuxt-link>
+    <a href="/file/tips.pdf" target="_blank"><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></a>
   </div>
   <div class="block" v-show="type==2">
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/门店管理.png"/><p>门店管理</p></nuxt-link>
+    <a href="http://hxx.hoxiuxiu.com" target="_blank"><img src="/img/menu-icon/门店管理.png"/><p>门店管理</p></a>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/电子健康档案上传情况.png"/><p>维修记录</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/维修合格证.png"/><p>维修合格证</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/开业停业咨询.png"/><p>开业停业咨询</p></nuxt-link>
@@ -26,17 +26,17 @@
   </div>
   <div class="block" v-show="type==3">
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/电子健康档案.png"/><p>电子健康档案</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/法律法规.png"/><p>法律法规</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/管理规范.png"/><p>管理规范</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/行业政策.png"/><p>行业政策</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/技术标准.png"/><p>技术标准</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/办事指南.png"/><p>办事指南</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/管理职责.png"/><p>管理职责</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/行业概况.png"/><p>行业概况</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/行业文明建设.png"/><p>行业文明建设</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/优质企业.png"/><p>优质企业</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/违法违规公告.png"/><p>违法违规公告</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/质量信誉考核.png"/><p>质量信誉考核</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281001" target="_blank"><img src="/img/menu-icon/法律法规.png"/><p>法律法规</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281002" target="_blank"><img src="/img/menu-icon/管理规范.png"/><p>管理规范</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281003" target="_blank"><img src="/img/menu-icon/行业政策.png"/><p>行业政策</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281004" target="_blank"><img src="/img/menu-icon/技术标准.png"/><p>技术标准</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281005" target="_blank"><img src="/img/menu-icon/办事指南.png"/><p>办事指南</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281006" target="_blank"><img src="/img/menu-icon/管理职责.png"/><p>管理职责</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281007" target="_blank"><img src="/img/menu-icon/行业概况.png"/><p>行业概况</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281010" target="_blank"><img src="/img/menu-icon/行业文明建设.png"/><p>行业文明建设</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281009" target="_blank"><img src="/img/menu-icon/优质企业.png"/><p>优质企业</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281017" target="_blank"><img src="/img/menu-icon/违法违规公告.png"/><p>违法违规公告</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281016" target="_blank"><img src="/img/menu-icon/质量信誉考核.png"/><p>质量信誉考核</p></nuxt-link>
   </div>
   <div class="block" v-show="type==4">
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/汽车配件.png"/><p>汽车配件</p></nuxt-link>

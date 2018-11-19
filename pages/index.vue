@@ -108,8 +108,8 @@
           <ul>
             <nuxt-link tag="li" :to="'/center/my-car-record'"><a>爱车档案</a></nuxt-link>
             <nuxt-link tag="li" :to="'/center/my-order'"><a>我的预约服务</a></nuxt-link>
-            <nuxt-link tag="li" :to="'/center/my-car-record'"><a>我的咨询</a></nuxt-link>
-            <li><a href="/statics/tips.pdf" target="_blank">爱车小贴士</a></li>
+            <nuxt-link tag="li" :to="'/center/my-questions'"><a>我的咨询</a></nuxt-link>
+            <li><a href="/file/tips.pdf" target="_blank">爱车小贴士</a></li>
           </ul>
         </div>
         <div class="doctor">
@@ -149,7 +149,7 @@
   </div>
   <div class="news">
     <div class="block block1" >
-      <div class="title"><h1>新闻动态</h1><a href="/government/10281019">更多</a></div>
+      <div class="title"><h1>新闻动态</h1><nuxt-link tag="a" :to="'/gov-article/10281019/'">更多</nuxt-link></div>
       <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" v-if="showSwiper">
         <!-- slides -->
         <swiper-slide v-for="(item, index) in articleBanner" :key="index">
@@ -160,7 +160,7 @@
               <!--<img :src="item.photo || '/img/default-car.png'">-->
             <!--</a>-->
 
-          <nuxt-link tag="a" :to="'/guild-article/detail/'+item.id" class="news-swiper-body">
+          <nuxt-link tag="a" :to="'/gov-article/10281019/'+item.id" class="news-swiper-body">
             <div>{{item.title}}</div>
             <img :src="item.photo || '/img/default-car.png'">
           </nuxt-link>
@@ -176,28 +176,29 @@
     </div>
     <div class="block block2">
 
-      <div class="title"><h1>管理动态</h1><a href="/government/10281020">更多</a></div>
+      <div class="title"><h1>管理动态</h1><nuxt-link tag="a" :to="'/gov-article/10281020'">更多</nuxt-link></div>
 
       <div class="best best1">
         <div class="left">最新</div>
         <ul>
-          <a v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</a>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
       <div class="best best2">
         <div class="left hot">最热</div>
         <ul>
-          <a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>
+          <!--<a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>-->
+          <nuxt-link v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id" :to="'/gov-article/10281020/'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
     </div>
     <div class="block block3">
-      <div class="title"><h1>行业监管</h1><a href="/government/10281001">更多</a></div>
+      <div class="title"><h1>行业监管</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
       <ul>
-        <a class="article" v-for="item in articleRight" :key="'articleRight'+item.id">
+        <nuxt-link class="article" v-for="item in articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
           <h3>{{item.title}}</h3>
           <p style="-webkit-box-orient: vertical;">{{item.content | FormatArticle(item.title)}}</p>
-        </a>
+        </nuxt-link>
       </ul>
     </div>
   </div>
