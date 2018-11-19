@@ -1,8 +1,9 @@
 <template>
 <div style="padding: 10px" class="open-article-list">
-  <CellGroup>
+  <CellGroup class="article-list-group">
     <Cell v-for="(item, key) in list" :title="item.title" :key="key" :to="type+'/'+item.id">
       <Icon type="md-square" slot="icon" size="4" color="#2d8cf0"/>
+      <span slot="arrow"></span>
     </Cell>
   </CellGroup>
   <div class="article-list-page">
@@ -54,7 +55,7 @@ export default {
   methods: {
     changePage(page){
       this.pageNo= page
-      this.$axios.$post('/home/all',{
+      this.$axios.$post('/infopublic/home/all',{
         "infoType": this.type,
         "pageNo": page,
         "pageSize": 10
@@ -69,6 +70,9 @@ export default {
 
 <style scoped lang="less">
 .open-article-list{
+  .article-list-group{
+    min-height: 550px;
+  }
   .ivu-cell{
     padding: 15px 16px;
     border-bottom: 1px solid #dddddd;

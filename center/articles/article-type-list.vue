@@ -40,7 +40,7 @@
     </Form>
     <div slot="footer">
       <Button @click="showDetail=false">取消</Button>
-      <Button type="primary" @click="save()">保存</Button>
+      <Button type="primary" @click="save">保存</Button>
     </div>
   </Modal>
 </div>
@@ -67,7 +67,6 @@
         tableData: [],
         search:{
           codeDesc: '',
-          code: '',
           type: '1028',
         },
         page: 1,
@@ -77,7 +76,8 @@
         showDetail: false,
         selectRow: {},
         detail:{
-          codeDesc: ''
+          codeDesc: '',
+          type: '1028',
         },
         clearTableSelect: null,
       }
@@ -88,43 +88,48 @@
 
     },
     methods:{
-        getList(){
-          this.$axios.$post('/infopublic/getCategoryList', {
-            "pageNo": this.page,
-            "pageSize": this.limit,
-            ...this.search
-          }).then( (res) => {
-            // console.log(res)
-            this.tableData= res.items
-            this.total= res.total
-				  })
-        },
-        changePage(page){
-          this.page= page
-          this.getList()
-        },
-        changePageSize(size){
-          this.limit= size
-          this.getList()
-        },
+      getList(){
+        this.$axios.$post('/article/category/list', {
+          "pageNo": this.page,
+          "pageSize": this.limit,
+          ...this.search
+        }).then( (res) => {
+          // console.log(res)
+          this.tableData= res.items
+          this.total= res.total
+        })
+      },
+      changePage(page){
+        this.page= page
+        this.getList()
+      },
+      changePageSize(size){
+        this.limit= size
+        this.getList()
+      },
 
-        onRowClick( row, index){
-          this.selectRow= deepClone(row)
-        },
-        onRowDblclick( row, index){
-          this.selectRow= deepClone(row)
-        },
-        closeDetail(){
-          this.detailData= null
-          this.isOrderSuccess=true;
-          this.clearTableSelect= Math.random()
-        },
-        //只有保存数据和提交数据的时候更新界面列表，
-        closeGetList(){
-          this.getList();
-        },
+      onRowClick( row, index){
+        this.selectRow= deepClone(row)
+      },
+      onRowDblclick( row, index){
+        this.selectRow= deepClone(row)
+      },
+      closeDetail(){
+        this.detailData= null
+        this.isOrderSuccess=true;
+        this.clearTableSelect= Math.random()
+      },
+      //只有保存数据和提交数据的时候更新界面列表，
+      closeGetList(){
+        this.getList();
+      },
       del(){
 
+      },
+      save(){
+        this.$axios.$post('/article/category/list', this.detail).then( (res) => {
+
+        })
       }
     },
 	}

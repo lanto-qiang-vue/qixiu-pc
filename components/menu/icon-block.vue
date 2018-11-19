@@ -105,6 +105,7 @@
     margin-bottom: 30px;
     cursor: pointer;
     color: black;
+    line-height: normal;
     img{
       width: 36px;
       height: 36px;
@@ -112,6 +113,7 @@
     p{
       margin-top: 10px;
       font-size: 14px;
+      line-height: normal;
     }
   }
   a:hover{
