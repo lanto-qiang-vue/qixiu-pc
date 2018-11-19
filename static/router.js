@@ -146,7 +146,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫问答问题(专家)',
-          accessId: 502,
+          accessId: 60,
         },
         component: resolve('center/car-doctor/car-doctor-manage.vue'),
       },
@@ -182,7 +182,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业合格证使用信息管理(管理部门)',
-          accessId: 711,
+          accessId: 61,
         },
         component: resolve('center/company-info/company-qualify-manage.vue'),
       },

@@ -9,7 +9,17 @@
       </Breadcrumb>
     </div>
     <div>
-
+    <Form class="common-form" :label-width="120">
+      <FormItem label="车主姓名:" style="width:70%;">
+        <Input placeholder="请输入"></Input>
+      </FormItem>
+      <FormItem label="联系方式:" style="width:70%;">
+        <Input placeholder="请输入"></Input>
+      </FormItem>
+      <FormItem label="地址:" style="width:70%;">
+        <Input placeholder="请输入"></Input>
+      </FormItem>
+    </Form>
     </div>
   </div>
 </div>

@@ -106,10 +106,10 @@
             <p>中心</p>
           </div>
           <ul>
-            <li onclick="goToPage('/center/applyList', false, [1,2,3,4,5,6,7])"><a>爱车档案</a></li>
-            <li onclick="goToPage('/center/myOrders', false, [1,2,3,4,5,6,7])"><a>我的预约服务</a></li>
-            <li onclick="goToPage('/center/myQuestions', false, [1,2,3,4,5,6,7])"><a>我的咨询</a></li>
-            <li><a href="/statics/tips.pdf" target="_blank">爱车小贴士</a></li>
+            <nuxt-link tag="li" :to="'/center/my-car-record'"><a>爱车档案</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-order'"><a>我的预约服务</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-questions'"><a>我的咨询</a></nuxt-link>
+            <li><a href="/file/tips.pdf" target="_blank">爱车小贴士</a></li>
           </ul>
         </div>
         <div class="doctor">
@@ -123,9 +123,10 @@
           </ul>
           <div class="doctor_content active" id="gather_content">
             <ul>
-              <li v-for="item in questionList" :key="'questionList-'+item.id">{{item.content}}</li>
+              <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
+              <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
             </ul>
-            <a onclick="goToPage('/cdf', true)" class="list_button">浏览更多</a>
+            <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
           </div>
 
 
@@ -148,16 +149,21 @@
   </div>
   <div class="news">
     <div class="block block1" >
-      <div class="title"><h1>新闻动态</h1><a href="/government/10281019">更多</a></div>
+      <div class="title"><h1>新闻动态</h1><nuxt-link tag="a" :to="'/gov-article/10281019/'">更多</nuxt-link></div>
       <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" v-if="showSwiper">
         <!-- slides -->
         <swiper-slide v-for="(item, index) in articleBanner" :key="index">
           <div class='dummy'></div>
           <div class='content'>
-            <a :href="item.id" class="news-swiper-body">
-              <div>{{item.title}}</div>
-              <img :src="item.photo || '/img/default-car.png'">
-            </a>
+            <!--<a :href="item.id" class="news-swiper-body">-->
+              <!--<div>{{item.title}}</div>-->
+              <!--<img :src="item.photo || '/img/default-car.png'">-->
+            <!--</a>-->
+
+          <nuxt-link tag="a" :to="'/gov-article/10281019/'+item.id" class="news-swiper-body">
+            <div>{{item.title}}</div>
+            <img :src="item.photo || '/img/default-car.png'">
+          </nuxt-link>
           </div>
         </swiper-slide>
 
@@ -170,28 +176,29 @@
     </div>
     <div class="block block2">
 
-      <div class="title"><h1>管理动态</h1><a href="/government/10281020">更多</a></div>
+      <div class="title"><h1>管理动态</h1><nuxt-link tag="a" :to="'/gov-article/10281020'">更多</nuxt-link></div>
 
       <div class="best best1">
         <div class="left">最新</div>
         <ul>
-          <a v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</a>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
       <div class="best best2">
         <div class="left hot">最热</div>
         <ul>
-          <a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>
+          <!--<a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>-->
+          <nuxt-link v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id" :to="'/gov-article/10281020/'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
     </div>
     <div class="block block3">
-      <div class="title"><h1>行业监管</h1><a href="/government/10281001">更多</a></div>
+      <div class="title"><h1>行业监管</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
       <ul>
-        <a class="article" v-for="item in articleRight" :key="'articleRight'+item.id">
+        <nuxt-link class="article" v-for="item in articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
           <h3>{{item.title}}</h3>
           <p style="-webkit-box-orient: vertical;">{{item.content | FormatArticle(item.title)}}</p>
-        </a>
+        </nuxt-link>
       </ul>
     </div>
   </div>
