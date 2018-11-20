@@ -280,7 +280,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '用户管理',
-          accessId: 18,
+          accessId: 62,
         },
         component: resolve('center/system/user-manage.vue'),
       },
