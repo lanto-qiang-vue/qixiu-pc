@@ -13,12 +13,12 @@
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="" @click="searchFun" :disabled="!detailData">查看</Button>
       <Button type="error" v-if=""  @click="removeBindFun" :disabled="!detailData">解绑</Button>
       <Button type="primary" v-if=""  @click="showDetail=Math.random()" >绑定本人车辆</Button>
       <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
@@ -41,7 +41,7 @@
     },
     data(){
 		  return{
-              loading:true,
+              loading:false,
         columns: [
           {title: '序号',  minWidth: 80,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
@@ -75,12 +75,6 @@
     mounted () {
       this.getList();
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         getList(){
             this.loading=true;
@@ -115,11 +109,8 @@
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
+          this.page=1;
           this.getList();
-        },
-        //搜索按钮----
-        searchFun(){
-            this.closeDetail();
         },
         //解绑按钮-------
         removeBindFun(){
@@ -138,7 +129,10 @@
                 }
             })
         },
-        
+        searchFun(){
+          var query={vehicleplatenumber:this.detailData.vehicleplatenumber,vin:this.detailData.vin};
+          this.$router.push({path:'/center/repair-info-detail',query:query});
+        }
 
         
     },

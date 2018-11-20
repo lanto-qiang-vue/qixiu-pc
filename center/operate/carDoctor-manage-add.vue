@@ -169,7 +169,7 @@ export default {
         //获取详情
         getDetail(){
             this.spinShow=true;
-            this.$axios.post('/expert/detail/'+this.detailData.id,{
+            this.$axios.get('/expert/detail/'+this.detailData.id,{
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.spinShow=false;
@@ -184,7 +184,7 @@ export default {
                     }
 
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
             })
         },
@@ -239,7 +239,7 @@ export default {
                             this.$Message.info('提交成功');
                             this.showModal=false;
                         }else{
-                            this.$Message.error(res.data.status);
+                            // this.$Message.error(res.data.status);
                         }
                 })
             }else{
@@ -263,7 +263,7 @@ export default {
                             this.$Message.info('提交成功');
                             this.showModal=false;
                         }else{
-                            this.$Message.error(res.data.status);
+                            // this.$Message.error(res.data.status);
                         }
                 })
             }
@@ -299,7 +299,7 @@ export default {
                 this.listSearch.photo=res.item.path;
                 this.$Message.info("上传成功");
             }else{
-                this.$Message.error(res.status);
+                // this.$Message.error(res.status);
             }
         }
     },

@@ -15,7 +15,7 @@
             </FormItem>
             
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
@@ -23,7 +23,7 @@
         <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
-    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail"></select-repair-company>
+    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
   </common-table>
 </div>
 </template>
@@ -72,6 +72,7 @@ export default {
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
         showType:null,
+        typeFlag:null,
       }
     },
     mounted () {
@@ -81,15 +82,18 @@ export default {
     },
     methods:{
         getList(){
+          this.loading=true;
             this.$axios.post('/service/order/list', {
                     "pageNo": this.page,
                     "pageSize": this.limit,
 
             }).then( (res) => {
+              this.loading=false;
               if(res.data.code=='0'){
                 this.tableData=res.data.items;
                 this.total=res.data.total;
               }
+               
               
             })
             this.detailData= null;
@@ -104,9 +108,8 @@ export default {
         },
 
         onRowClick( row, index){
-            console.log('row：',row);
-            
-          this.detailData=row
+          this.detailData=row;
+          this.typeFlag="order";
         },
         
         closeDetail(){

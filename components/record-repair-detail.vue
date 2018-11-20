@@ -78,7 +78,7 @@
 <script>
 import { formatDate } from '@/static/tools.js'
 export default {
-	name: "record-repair-detail",
+	name: "note-audit-detail",
     props:['showDetail', 'detailData'],
     data(){
 		return{

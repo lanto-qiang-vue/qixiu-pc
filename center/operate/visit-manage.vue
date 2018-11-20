@@ -22,26 +22,26 @@
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" :disabled="showFlag"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
-    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail"></select-repair-company>
+    <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
   </common-table>
 </div>
 </template>
 
 <script>
-  import CommonTable from '~/components/common-table.vue'
-  import selectRepairCompany from '~/components/select-repair-company.vue'
+import CommonTable from '~/components/common-table.vue'
+import selectRepairCompany from '~/components/select-repair-company.vue'
 
-	export default {
-		name: "visit-manage",
+export default {
+	name: "visit-manage",
     components: {
       CommonTable,
       selectRepairCompany
     },
     data(){
-		  return{
+	    return{
         loading:true,
         columns: [
         {title: '序号',  minWidth: 80,
@@ -74,7 +74,7 @@
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
         showType:null,
-        showFlag:true,
+        typeFlag:null,
       }
     },
     mounted () {
@@ -113,11 +113,8 @@
             console.log('row：',row);
             
           this.detailData=row;
-          if(this.detailData.status=="已指派企业"){
-              this.showFlag=true;
-          }else{
-              this.showFlag=false;
-          }
+          this.typeFlag="visit";
+          
         },
         
         closeDetail(){
@@ -137,7 +134,7 @@
             
         },
         deleteFuncion(){
-            this.$axios.delete('/service/delete/'+this.detailData.id,).then( 
+            this.$axios.delete('/service/delete/'+this.detailData.id,).then(
             (res) => {
                 if(res.data.code=='0'){
                     this.closeDetail();
