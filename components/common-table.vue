@@ -230,8 +230,8 @@
         }else if(column['order']=='normal'){
             this.$emit('onSortChange','normal',column['column']['key']);
         }
-        
-        
+
+
       }
     },
     activated(){
@@ -275,6 +275,9 @@
 </style>
 <style lang="less">
 .common-table{
+  .ivu-collapse-content-box{
+    padding-bottom: 0;
+  }
   .main-table{
     .ivu-table-row{
       cursor: default;

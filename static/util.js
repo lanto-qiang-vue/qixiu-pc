@@ -2,7 +2,7 @@
 // cookie保存的天数
 // import config from '@/config'
 import { forEach, hasOneOf } from './tools'
-
+import router from '~/static/router'
 export const TOKEN_KEY = 'ACCESSTOKEN'
 export const USERINFO_KEY = 'USERINFO'
 export const ACCESSMENU_KEY = 'ACCESSMENU'
@@ -602,4 +602,58 @@ export const  base64ToBlob= (dataurl) => {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new Blob([u8arr], { type: mime });
+}
+
+export const  haveRight = (menuList, id) =>{
+  let flag= false
+  if(id){
+    for( let i in menuList){
+      if(menuList[i].meta.accessId== id){
+        flag= true
+        break
+      }else if(menuList[i].children && menuList[i].children.length){
+        flag= haveRight(menuList[i].children, id)
+        if (flag) break
+      }
+    }
+  }else flag= true
+  return flag
+}
+
+export const checkAuth = ({ route, store},redirect, error) =>{
+  // console.log('check-auth', route)
+
+  // console.log('route', meta)
+  // console.log('store.state.user.token', store.state.user.token)
+  if (process.client) {
+    let meta= route.matched.length>0? route.matched[route.matched.length-1].meta: {}
+    // console.log('check-auth, accessId:', meta.accessId)
+    if(store.state.user.token){
+      let list= getMenuByRouter2(router, store.state.user.accessMenu)
+      if(!haveRight(list, meta.accessId)){
+        // console.log('用户无权限访问此页面' )
+        // return redirect({
+        //   path: '/login',
+        //   query: {
+        //     statusCode: 403,
+        //     message: '用户无权限访问此页面'
+        //   }})
+        // console.log(app)
+        error()
+      }else{
+        // console.log('有权限')
+      }
+      // console.log('check-auth: is login', route)
+      // console.log('store', list)
+    }else{
+      // console.log('not login')
+      if(meta && meta.accessId){
+        redirect({
+          path: '/login',
+          query: { redirect: route.fullPath }
+        })
+        redirect()
+      }
+    }
+  }
 }

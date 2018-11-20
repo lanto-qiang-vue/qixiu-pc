@@ -70,7 +70,7 @@ export default [
         component: resolve('center/home/company-home.vue'),
       },
       {
-        path: 'company-home',
+        path: 'operator-home',
         meta: {
           icon: 'md-funnel',
           title: '运营中心首页',
@@ -319,7 +319,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章详情',
-          accessId: 59,
+          // accessId: 59,
         },
         component: resolve('center/articles/article-detail.vue'),
       },

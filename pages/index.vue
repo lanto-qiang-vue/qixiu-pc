@@ -13,11 +13,11 @@
       <span class="tel">400-663-8210</span>
       <a href="http://www.lantoev.com/android/DownLoad.html" target="_blank" class="app">
         <p>下载APP</p>
-        <img src="../assets/img/index/qrcode_app.png" style="display: none;">
+        <img src="../assets/img/index/qrcode_app.png">
       </a>
       <div class="wx">
         <p>关注微信</p>
-        <img src="../assets/img/index/qrcode_weixin.jpg" style="display: none;">
+        <img src="../assets/img/index/qrcode_weixin.jpg">
       </div>
       <a href="/czzn"><img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></a>
     </div>
@@ -115,13 +115,13 @@
         <div class="doctor">
           <div class="tit"><p>车大夫门诊</p></div>
           <ul class="tag">
-            <li class="button active">问题集锦</li>
-            <li class="button">专家团</li>
+            <li class="button" @mouseover="showCdfFlag=true">问题集锦</li>
+            <li class="button" @mouseover="showCdfFlag=false">专家团</li>
             <li class="cdf" style="background-color: #e86d1c;">
               <a href="/cdf" target="_blank">在线咨询</a>
             </li>
           </ul>
-          <div class="doctor_content active" id="gather_content">
+          <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
             <ul>
               <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
               <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
@@ -129,14 +129,7 @@
             <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
           </div>
 
-
-
-
-
-
-
-
-          <div class="doctor_content" id="professor_content">
+          <div class="doctor_content" id="professor_content" v-show="!showCdfFlag">
             <ul>
               <li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>
             </ul>
@@ -418,6 +411,7 @@ export default {
       iconBlockType: 0,
       iconBlockLeft: 128,
       iconBlockShow: false,
+      showCdfFlag: true,
 
       error: null
     }
@@ -515,6 +509,8 @@ export default {
           }
           >*{
             margin-left: 10px;
+            position: relative;
+            overflow: visible;
           }
           .tel{
             padding-left: 18px;
@@ -528,6 +524,17 @@ export default {
           .wx{
             padding-left: 20px;
             background: url('../assets/img/index/wechat.png') no-repeat left center;
+            cursor: pointer;
+          }
+          .app img, .wx img{
+            display: none;
+            width: 75px;
+            position: absolute;
+            z-index: 9;
+            left: 0;
+          }
+          .app:hover img, .wx:hover img{
+            display: block;
           }
           .czzn{
             width: 40px;
@@ -786,7 +793,7 @@ export default {
               width: 100%;
             }
             .doctor_content{
-              display: none;
+              /*display: none;*/
               height: 150px;
               position: relative;
               overflow: hidden;
@@ -846,9 +853,9 @@ export default {
                 border-color: #e86d1c;
               }
             }
-            .doctor_content.active {
-              display: block;
-            }
+            /*.doctor_content.active {*/
+              /*display: block;*/
+            /*}*/
           }
         }
       }

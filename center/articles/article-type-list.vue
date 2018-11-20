@@ -127,8 +127,11 @@
 
       },
       save(){
-        this.$axios.$post('/article/category/list', this.detail).then( (res) => {
-
+        this.$axios.$post('/article/category/add', this.detail).then( (res) => {
+          if(res.code=='0'){
+            this.showDetail=false
+            this.getList();
+          }
         })
       }
     },

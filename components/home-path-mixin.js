@@ -1,5 +1,12 @@
 export default {
   computed:{
+    roleName(){
+      let sortRoles= this.sortRole(true), roleName= ''
+      for(let i in sortRoles){
+        roleName= sortRoles[i].name
+      }
+      return roleName
+    },
     centerHref(){
       let sortRoles= this.sortRole(false)
       return sortRoles.length? sortRoles[sortRoles.length-1].path: ''
@@ -14,8 +21,8 @@ export default {
         {code:'zhuanjia', path: '/center/answer-questions'},
         {code:'xiehui', path: '/center/account-info'},
         {code:'guanlibumen', path: '/center/gov-home'},
-        {code:'yunying', path: '/center'},
-        {code:'admin', path: '/center'},
+        {code:'yunying', path: '/center/operator-home'},
+        {code:'admin', path: '/center/menu-manage'},
       ]
       for (let i in order){
         for (let j in roles){
