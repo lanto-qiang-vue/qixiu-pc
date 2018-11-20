@@ -1,7 +1,9 @@
 <template>
 <div style="padding: 10px" class="open-article-list">
   <CellGroup class="article-list-group">
-    <Cell v-for="(item, key) in list" :title="item.title" :key="key" :to="type+'/'+item.id">
+    <!--<Cell v-for="(item, key) in list" :title="item.title" :key="key" :to="type+'/'+item.id">-->
+    <Cell v-for="(item, key) in list" :title="item.title" :key="key"
+          :to="$route.matched[0].path+'/'+ type+'/'+item.id">
       <Icon type="md-square" slot="icon" size="4" color="#2d8cf0"/>
       <span slot="arrow"></span>
     </Cell>

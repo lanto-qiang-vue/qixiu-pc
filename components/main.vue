@@ -9,10 +9,6 @@
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
-        <!--<Breadcrumb>-->
-          <!--<BreadcrumbItem to="/">Home</BreadcrumbItem>-->
-          <!--<BreadcrumbItem>Breadcrumb</BreadcrumbItem>-->
-        <!--</Breadcrumb>-->
         <my-bread-crumb></my-bread-crumb>
       </div>
       <nuxt-child/>
@@ -67,7 +63,7 @@ export default {
     }
   },
   mounted(){
-    console.log('main-mounted')
+    // console.log('main-mounted')
   },
   methods: {
     turnToPage (name, meta) {

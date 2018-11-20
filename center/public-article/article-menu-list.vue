@@ -38,7 +38,7 @@
       this.relocation(this.$route.params.type)
     },
     mounted(){
-      console.log(this.$route)
+      // console.log(this.$route)
 
       // this.relocation(this.$route.params.type)
     },
@@ -100,14 +100,26 @@
           case 2:{
             this.menuList =[
               {
-                meta: {title: '协会简介', accessId: 10281005},
-                path: "/guild-article/10281005"
+                meta: {title: '协会简介', accessId: 10281022},
+                path: "/guild-article/10281022"
               },{
-                meta: {title: '协会职能', accessId: 10281005},
-                path: "/guild-article/10281005"
+                meta: {title: '协会职能', accessId: 10281023},
+                path: "/guild-article/10281023"
               },{
                 meta: {title: '工作动态', accessId: 10281013},
                 path: "/guild-article/10281013"
+              },{
+                meta: {title: '行业风采', accessId: 10281014},
+                path: "/guild-article/10281014"
+              },{
+                meta: {title: '行业党建', accessId: 10281015},
+                path: "/guild-article/10281015"
+              },{
+                meta: {title: '行业能手', accessId: 10281008},
+                path: "/guild-article/10281008"
+              },{
+                meta: {title: '专家组', accessId: 10281024},
+                path: "/guild-article/10281024"
               }
             ]
           }

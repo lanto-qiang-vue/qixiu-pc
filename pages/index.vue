@@ -115,13 +115,13 @@
         <div class="doctor">
           <div class="tit"><p>车大夫门诊</p></div>
           <ul class="tag">
-            <li class="button active">问题集锦</li>
-            <li class="button">专家团</li>
+            <li class="button" @mouseover="showCdfFlag=true">问题集锦</li>
+            <li class="button" @mouseover="showCdfFlag=false">专家团</li>
             <li class="cdf" style="background-color: #e86d1c;">
               <a href="/cdf" target="_blank">在线咨询</a>
             </li>
           </ul>
-          <div class="doctor_content active" id="gather_content">
+          <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
             <ul>
               <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
               <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
@@ -129,14 +129,7 @@
             <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
           </div>
 
-
-
-
-
-
-
-
-          <div class="doctor_content" id="professor_content">
+          <div class="doctor_content" id="professor_content" v-show="!showCdfFlag">
             <ul>
               <li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>
             </ul>
@@ -418,6 +411,7 @@ export default {
       iconBlockType: 0,
       iconBlockLeft: 128,
       iconBlockShow: false,
+      showCdfFlag: true,
 
       error: null
     }
@@ -799,7 +793,7 @@ export default {
               width: 100%;
             }
             .doctor_content{
-              display: none;
+              /*display: none;*/
               height: 150px;
               position: relative;
               overflow: hidden;
@@ -859,9 +853,9 @@ export default {
                 border-color: #e86d1c;
               }
             }
-            .doctor_content.active {
-              display: block;
-            }
+            /*.doctor_content.active {*/
+              /*display: block;*/
+            /*}*/
           }
         }
       }
