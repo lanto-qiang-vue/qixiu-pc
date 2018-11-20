@@ -1,3 +1,4 @@
+<!--车主中心 我的咨询-->
 <template>
 <div class="menu-manage">
 
@@ -7,8 +8,7 @@
     <div  slot="search"  >
         <Form :label-width="80" class="common-form">
               <FormItem label="问题分类:">
-                  
-                  <Select v-model="search.select" style="width:200px">
+                  <Select v-model="search.select" style="width:200px" clearable >
                       <Option v-for="item in typeList" :value="item.id" :key="item.id">{{ item.codeDesc }}</Option>
                   </Select>
               </FormItem>
@@ -16,13 +16,12 @@
                   <Input type="text" v-model="search.input" placeholder="请输入关键字"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="" @click="getList()">搜索</Button>
-                  <Button type="primary" v-if="" @click="resetList">清空</Button>
+                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" :disabled="!detailData" @click="">查看</Button>
+      <Button type="info" v-if="" :disabled="!detailData" @click="searchFun">查看</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="delquestion">删除</Button>
     </div>
   </common-table>
@@ -38,7 +37,7 @@
     },
     data(){
 		  return{
-        loading:true,
+        loading:false,
         columns: [
           {title: '问题分类', key: 'categoryName', sortable: true, minWidth: 120,
           },
@@ -71,12 +70,6 @@
       this.getList();
       this.getQuestionType();
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         getList(){
           this.loading=true;
@@ -92,7 +85,7 @@
               this.total=res.data.total;
               this.loading=false;
             }else{
-              this.$Message.info(res.data.status);
+              // this.$Message.info(res.data.status);
             }
             
           })
@@ -112,7 +105,9 @@
         },
         closeDetail(){
           this.detailData= null
-          this.clearTableSelect= Math.random()
+          this.clearTableSelect= Math.random();
+          this.page=1;
+          this.getList();
         },
         //删除数据-------
         delquestion(){
@@ -127,27 +122,25 @@
             this.$axios.post('/question/delete/'+this.detailData.id,{
             }).then( (res) => {
                   if(res.data.code=='0'){
-                      
-                      this.getList();
                       this.closeDetail();
                   }
             })
         },
         getQuestionType(){
-          this.$axios.get('/question/typelist/1040',).then( (res) => {
+          this.$axios.get('/question/typelist',).then( (res) => {
                   console.log(res);
                   if(res.data.code=='0'){
                       this.typeList=res.data.items;
                       
                   }else{
-                      this.$Message.info(res.data.status);
+                      // this.$Message.info(res.data.status);
                   }
             })
         },
-        resetList(){
-          for(let i in this.search){
-            this.search[i]='';
-          }
+        //查看按钮数据---------
+        searchFun(){
+          let path='/cdf/'+this.detailData.id;
+          this.$router.push({path:path});
         }
     },
 	}
