@@ -1,11 +1,14 @@
 <template>
-<div style="padding: 10px 20px" id="erss">
+<div style="padding: 10px 20px" class="article-detail">
   <Form ref="form" :rules="ruleValidate"  :model="detail" :label-width="80" >
     <FormItem label="文章标题" prop="title">
       <Input type="text" v-model="detail.title" ></Input>
     </FormItem>
-    <FormItem label="文章类型" prop="infoType">
-      <Input type="text" v-model="detail.infoType" ></Input>
+    <FormItem label="文章类型" prop="infoType" style="width: 300px">
+      <!--<Input type="text" v-model="detail.infoType" ></Input>-->
+      <Select v-model="detail.infoType">
+        <Option v-for="(item, index) in typeList" :key="index" :value="item.id">{{item.codeDesc}}</Option>
+      </Select>
     </FormItem>
     <FormItem label="文章来源" prop="dataFrom">
       <Input type="text" v-model="detail.dataFrom" ></Input>
@@ -39,7 +42,6 @@
       CompressUploadButton,
     },
     head () {
-		  // console.log('head!!!')
       return {
         script: [
           { type: 'text/javascript', src: '/ueditor/ueditor.config.js'},
@@ -54,7 +56,6 @@
       return{
         ue: null,
         detail:{
-          infoId: null,
           title: '',
           infoType: '',
           dataFrom: '',
@@ -65,6 +66,7 @@
           title: rule,
           infoType: rule,
         },
+        typeList:[]
       }
     },
     mounted(){
@@ -89,8 +91,14 @@
 
       let id= this.$route.query.id
       if(id) this.getDetail(id)
+      this.getType()
     },
     methods:{
+		  getType(){
+        this.$axios.$get('/infopublic/public/info/category').then( (res) => {
+          this.typeList= res.items
+        })
+      },
       upPic(res){
         if(res.code=='0'){
           this.detail.photo= res.item.path
@@ -99,7 +107,15 @@
       getDetail(id){
         this.$axios.$post('/infopublic/detail/'+ id, {}).then( (res) => {
           if(res.code== '0'){
-
+            this.detail={
+              infoId: res.item.id,
+              title: res.item.title,
+              infoType: res.item.typeId,
+              dataFrom: res.item.dataFrom,
+              content: res.item.content,
+              photo: res.item.photo
+            }
+            this.ue.setContent(res.item.content)
           }
         })
       },
@@ -108,16 +124,20 @@
           if (valid) {
             let url= ''
             if(this.$route.query.id){
-              url= '/menu/edit'
+              url= '/infopublic/update'
             }else{
-              url= '/menu/add'
+              url= '/infopublic/add'
             }
-            this.detail.parent= {id: this.$route.query.id}
+            res.item.content= this.ue.getContent()
             this.$axios.$post(url, this.detail).then( (res) => {
               if(res.code== '0'){
-                this.$Message.success('编辑成功')
-                this.showModal=false
-                this.$emit('refresh');
+                this.$Message.success({
+                  content: '编辑成功',
+                  duration: 2,
+                  onClose(){
+                    history.go(-1)
+                  }
+                })
               }
             })
           } else {
