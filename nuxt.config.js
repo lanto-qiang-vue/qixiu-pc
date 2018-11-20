@@ -1,19 +1,24 @@
 const pkg = require('./package')
 const webpack = require('webpack')
 import router from './static/router'
+import config from './config.js'
 
 module.exports = {
   mode: 'universal',
 
+  server: {
+    port: config.port, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+  },
   /*
   ** Headers of the page
   */
   head: {
-    title: pkg.config.title,
+    title: '上海市机动车维修公共服务平台',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
+      { hid: 'description', name: 'description', content: '机动车维修公共服务平台' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -60,23 +65,17 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    // baseURL: '/proxy/',
     prefix: '/proxy/',
     proxy: true,
-    // headers:{'Content-Type': "application/json; charset=utf-8"}
-    // headers:{'Content-Type': "application/x-www-form-urlencoded"}
   },
   proxy: {
     '/repair': {
-      target: 'http://115.159.101.204:7210/',
-      // target: 'http://api.qixiu.hoxiuxiu.com/',
+      target: config.repairUrl,
       pathRewrite: {'^/repair': ''},
       secure: false
     },
     '/proxy': {
-      target: 'http://192.168.169.190:8888/',
-      // target: 'http://212.64.5.54:8888/',
-      // target: 'http://api.qixiu.hoxiuxiu.com/',
+      target: config.apiUrl,
       pathRewrite: {'^/proxy': ''},
       secure: false
     },
@@ -101,9 +100,8 @@ module.exports = {
   router:{
     middleware: ['set-store', 'check-auth'],
     extendRoutes (routes,resolve) {
-      // routes.splice(0,routes.length, ...routers)
       routes.push(...router)
-      // console.log(routes)
     }
   }
 }
+
