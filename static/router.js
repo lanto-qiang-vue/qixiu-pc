@@ -74,7 +74,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运营中心首页',
-          accessId: 29,
+          accessId: 67,
         },
         component: resolve('center/home/operator-home.vue'),
       },
@@ -385,6 +385,15 @@ export default [
         },
         component: resolve('center/company/company-repair-qualify.vue'),
       },
+      {
+        path: 'complaint-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '反馈管理',
+          accessId: 409,
+        },
+        component: resolve('center/company/complaint-manage.vue'),
+      },
     ]
   },
 
@@ -436,7 +445,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '服务管理',
-      accessId: 35,
+      accessId: 63,
     },
     component: resolve('components/main.vue'),
     children: [
@@ -445,7 +454,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '上门服务管理',
-          accessId: 407,
+          accessId: 64,
         },
         component: resolve('center/operate/visit-manage.vue'),
       },
@@ -454,7 +463,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '预约服务管理',
-          accessId: 408,
+          accessId: 65,
         },
         component: resolve('center/operate/order-manage.vue'),
       },]
@@ -512,15 +521,6 @@ export default [
           accessId: 408,
         },
         component: resolve('center/operate/order-manage.vue'),
-      },
-      {
-        path: 'complaint-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '反馈管理',
-          accessId: 409,
-        },
-        component: resolve('center/company/complaint-manage.vue'),
       },
       {
         path: 'company-repair-data',
