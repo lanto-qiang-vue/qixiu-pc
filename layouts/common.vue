@@ -27,8 +27,8 @@
                 </template>
 
                 <ul class="ivu-menu-drop-list icon-menus">
-                  <nuxt-link tag="a" class="ivu-menu-item" to="/center/unaccess"
-                             @mouseover="iconBlockShow= false">电子健康档案系统</nuxt-link>
+                  <a class="ivu-menu-item" @click="$router.push('/center/repair-info-detail')"
+                             @mouseover="iconBlockShow= false">电子健康档案系统</a>
                   <a class="ivu-menu-item" icon-block-type="1">车主服务中心</a>
                   <a class="ivu-menu-item" icon-block-type="2">汽修企业服务中心</a>
                   <a class="ivu-menu-item" icon-block-type="3">政务服务中心</a>
