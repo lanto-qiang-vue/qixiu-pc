@@ -171,7 +171,7 @@
 						this.$store.commit('user/setUser', res.data.item)
             this.redirect()
 					}else{
-            this.$Message.error(res.data.status);
+            // this.$Message.error(res.data.status);
           }
 				})
 			},
@@ -194,7 +194,7 @@
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
 						}else{
-							this.$Message.error(res.data.status)
+							// this.$Message.error(res.data.status)
 						}
 					})
 				}else{
@@ -225,7 +225,7 @@
 								this.$store.commit('user/setUser', res.data.item)
                 this.redirect()
 							}else{
-								this.$Message.error(res.data.status)
+								// this.$Message.error(res.data.status)
 							}
 						})
 					}
@@ -304,10 +304,6 @@
 
 
 }
-
-
-
-
 </style>
 <style lang="less">
   .login-content {
@@ -319,9 +315,7 @@
       display: inline-block;
     }
 	.ivu-card{
-
       font-size: 16px;
-
     }
   }
 </style>

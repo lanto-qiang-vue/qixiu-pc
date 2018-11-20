@@ -14,7 +14,7 @@
                   <Input type="text" v-model="searchList.content" placeholder="请输入问题内容"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="" @click="getList()">搜索</Button>
+                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>

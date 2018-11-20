@@ -39,7 +39,7 @@
     <div slot="operate">
       <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
     </div>
-    <record-repair-detail :showDetail="showDetail" :detailData="detailData"></record-repair-detail>
+    <record-repair-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></record-repair-detail>
 </common-table>
 
 
@@ -47,7 +47,7 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
-import recordRepairDetail from './record-repair-detail.vue'
+import recordRepairDetail from '~/components/record-repair-detail.vue'
 export default {
 	name: "record-repair",
     components: {
@@ -62,10 +62,10 @@ export default {
                   {code:'no',name:'未登录'},
               ],//问题分类--------
         columns: [
-          {title: '结算日期', key: 'plateNumber', sortable: true, minWidth: 110,},
-          {title: '维修单号', key: 'checkVn', sortable: true, minWidth: 110},
-          {title: '维修内容', key: 'vin', sortable: true, minWidth: 150},
-          {title: '维修车牌', key: 'checkVin', sortable: true, minWidth: 100},
+          {title: '结算日期', key: 'repairDate', sortable: true, minWidth: 110,},
+          {title: '维修单号', key: 'costlistcode', sortable: true, minWidth: 110},
+          {title: '维修内容', key: 'settleDate', sortable: true, minWidth: 150},
+          {title: '维修车牌', key: 'plateNumber', sortable: true, minWidth: 100},
         ],
         tableData: [],
         searchList:{

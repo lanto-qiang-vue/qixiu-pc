@@ -79,6 +79,15 @@ export default [
         component: resolve('center/repairInfo/repair-info.vue'),
       },
       {
+        path: 'repair-info-detail',
+        meta: {
+          icon: 'md-funnel',
+          title: '电子健康档案',
+         
+        },
+        component: resolve('center/repairInfo/repair-info-detail.vue'),
+      },
+      {
         path: 'my-questions',
         meta: {
           icon: 'md-funnel',
@@ -411,6 +420,35 @@ export default [
       //   component: resolve('center/operate/for-you-service.vue'),
       // },
     ]
+  },
+    {
+    path: '/menu30',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '服务管理',
+      accessId: 35,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'visit-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '上门服务管理',
+          accessId: 407,
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '预约服务管理',
+          accessId: 408,
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },]
   },
   {
     path: '/menu19',

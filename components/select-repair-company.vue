@@ -42,11 +42,13 @@
   export default{
     name:"select-repair-company",
     components:{CommonTable},
-    props:['showType','detailData'],
+    props:['showType','detailData','typeFlag'],
     watch:{
       showType(){
         this.showModal = true;
         this.getList();
+        console.log(this.detailData);
+        console.log(this.typeFlag);
       }
     },
     data(){
@@ -85,8 +87,12 @@
       },
       onRowClick( row, index){
             console.log('row：',row);
-            
-          this.setRepairCompany(row)
+          if(this.typeFlag=="visit"){
+            this.setRepairCompany(row)
+          }else if(this.typeFlag=="order"){
+            this.setOrderRepairCompany(row);
+          }
+          
         },
       getName(data, code) {
         let name = ''
@@ -115,8 +121,20 @@
           }
         })
       },
+      //上门服务选择----
       setRepairCompany(row) {
         this.$axios.post('/service/setServiceRepairCompany', {
+            "companyId": row.companyId,
+            "id": this.detailData.id
+        }).then((res) => {
+          if (res.data.code == '0') {
+            this.showModal=false;
+          }
+        })
+      },
+      //预约服务选择----
+      setOrderRepairCompany(row) {
+        this.$axios.post('/service/setOrderRepairCompany', {
             "companyId": row.companyId,
             "id": this.detailData.id
         }).then((res) => {
