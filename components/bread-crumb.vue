@@ -1,16 +1,21 @@
 <template>
 <div class="bread-crumb">
   <Breadcrumb>
-    <BreadcrumbItem to="/">Home</BreadcrumbItem>
-    <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+    <BreadcrumbItem :to="centerHref">首页</BreadcrumbItem>
+    <BreadcrumbItem>{{$route.meta.title}}</BreadcrumbItem>
   </Breadcrumb>
 </div>
 </template>
 
 <script>
-	export default {
-		name: "bread-crumb"
-	}
+import mixin from '~/components/home-path-mixin.js'
+export default {
+  name: "bread-crumb",
+  mixins: [mixin],
+  mounted(){
+    console.log(this.$route)
+  }
+}
 </script>
 
 <style scoped>

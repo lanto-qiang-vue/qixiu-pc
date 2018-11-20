@@ -3,16 +3,13 @@
     <Sider hide-trigger class="common-sider">
       <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
         <div class="logo-con">
-          <p>{{pageName || '管理中心'}}</p>
+          <p>{{pageName || roleName+'中心'}}</p>
         </div>
       </side-menu>
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
-        <Breadcrumb>
-          <BreadcrumbItem to="/">Home</BreadcrumbItem>
-          <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
-        </Breadcrumb>
+        <my-bread-crumb></my-bread-crumb>
       </div>
       <nuxt-child/>
     </Content>
@@ -21,7 +18,9 @@
 
 <script>
 import SideMenu from './menu/side-menu.vue'
+import MyBreadCrumb from '~/components/bread-crumb.vue'
 import {  getMenuByRouter2 } from '@/static/util'
+import mixin from '~/components/home-path-mixin.js'
 import router from '@/static/router'
 
 export default {
@@ -29,7 +28,9 @@ export default {
   layout: 'common',
   components: {
     SideMenu,
+    MyBreadCrumb
   },
+  mixins: [mixin],
   props: ['paraMenu', 'pageName'],
   fetch ({ store ,isClient}) {
 
@@ -62,7 +63,7 @@ export default {
     }
   },
   mounted(){
-    console.log('main-mounted')
+    // console.log('main-mounted')
   },
   methods: {
     turnToPage (name, meta) {

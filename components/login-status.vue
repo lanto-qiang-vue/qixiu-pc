@@ -14,70 +14,72 @@
 </template>
 
 <script>
-	export default {
-		name: "login-status",
-    props: ['isIndex'],
-    computed:{
-		  isLogin(){
-		    return this.$store.state.user.token? true: false
-      },
-      nickName(){
-        return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
-      },
-      roleName(){
-        let sortRoles= this.sortRole(true), roleName= ''
-        for(let i in sortRoles){
-          roleName= sortRoles[i].name
-        }
-        return roleName
-      },
-      centerHref(){
-        let sortRoles= this.sortRole(false)
-        return sortRoles.length? sortRoles[sortRoles.length-1].path: ''
-      }
+import mixin from '~/components/home-path-mixin.js'
+export default {
+  name: "login-status",
+  props: ['isIndex'],
+  mixins: [mixin],
+  computed:{
+    isLogin(){
+      return this.$store.state.user.token? true: false
     },
-    methods:{
-      sortRole(flag){
-        let roles= this.$store.state.user.userInfo.roles, sortRoles=[]
-        let order=[
-          {code:'chezhu', path: '/center/my-car-record'},
-          {code:'weixiuqiye', path: '/center/company-home'},
-          {code:'zhuanjia', path: '/center/answer-questions'},
-          {code:'xiehui', path: '/center/account-info'},
-          {code:'guanlibumen', path: '/center/gov-home'},
-          {code:'yunying', path: '/center'},
-          {code:'admin', path: '/center'},
-        ]
-        for (let i in order){
-          for (let j in roles){
-            if(order[i].code== roles[j].code){
-              flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
-            }
-          }
-        }
-        return sortRoles
-      },
-      logout(){
-        this.$Modal.confirm({
-          title: '确定退出登录吗？',
-          onOk: ()=> {
-            this.$axios.$get('/user/useraccount/logout').then(res => {
-              localStorage.removeItem('ACCESSTOKEN')
-              localStorage.removeItem('ACCESSMENU')
-              localStorage.removeItem('USERINFO')
-              this.$store.commit('user/setToken', '')
-              this.$store.commit('user/setMenu', '')
-              this.$store.commit('user/setUser', '')
-              this.$router.push({
-                path: '/login',
-                // query: { redirect: route.fullPath }
-              })
+    nickName(){
+      return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
+    },
+    // roleName(){
+    //   let sortRoles= this.sortRole(true), roleName= ''
+    //   for(let i in sortRoles){
+    //     roleName= sortRoles[i].name
+    //   }
+    //   return roleName
+    // },
+    // centerHref(){
+    //   let sortRoles= this.sortRole(false)
+    //   return sortRoles.length? sortRoles[sortRoles.length-1].path: ''
+    // }
+  },
+  methods:{
+    // sortRole(flag){
+    //   let roles= this.$store.state.user.userInfo.roles, sortRoles=[]
+    //   let order=[
+    //     {code:'chezhu', path: '/center/my-car-record'},
+    //     {code:'weixiuqiye', path: '/center/company-home'},
+    //     {code:'zhuanjia', path: '/center/answer-questions'},
+    //     {code:'xiehui', path: '/center/account-info'},
+    //     {code:'guanlibumen', path: '/center/gov-home'},
+    //     {code:'yunying', path: '/center'},
+    //     {code:'admin', path: '/center'},
+    //   ]
+    //   for (let i in order){
+    //     for (let j in roles){
+    //       if(order[i].code== roles[j].code){
+    //         flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
+    //       }
+    //     }
+    //   }
+    //   return sortRoles
+    // },
+    logout(){
+      this.$Modal.confirm({
+        title: '确定退出登录吗？',
+        onOk: ()=> {
+          this.$axios.$get('/user/useraccount/logout').then(res => {
+            localStorage.removeItem('ACCESSTOKEN')
+            localStorage.removeItem('ACCESSMENU')
+            localStorage.removeItem('USERINFO')
+            this.$store.commit('user/setToken', '')
+            this.$store.commit('user/setMenu', '')
+            this.$store.commit('user/setUser', '')
+            this.$router.push({
+              path: '/login',
+              // query: { redirect: route.fullPath }
             })
-          }
-        })
-      }
+          })
+        }
+      })
     }
-	}
+  }
+}
 </script>
 
 <style scoped lang="less">

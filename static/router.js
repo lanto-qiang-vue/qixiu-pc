@@ -70,6 +70,15 @@ export default [
         component: resolve('center/home/company-home.vue'),
       },
       {
+        path: 'operator-home',
+        meta: {
+          icon: 'md-funnel',
+          title: '运营中心首页',
+          accessId: 29,
+        },
+        component: resolve('center/home/operator-home.vue'),
+      },
+      {
         path: 'my-car-record',
         meta: {
           icon: 'md-funnel',
@@ -146,7 +155,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '车大夫问答问题(专家)',
-          accessId: 502,
+          accessId: 60,
         },
         component: resolve('center/car-doctor/car-doctor-manage.vue'),
       },
@@ -182,7 +191,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '企业合格证使用信息管理(管理部门)',
-          accessId: 711,
+          accessId: 61,
         },
         component: resolve('center/company-info/company-qualify-manage.vue'),
       },
@@ -319,7 +328,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '文章详情',
-          accessId: 59,
+          // accessId: 59,
         },
         component: resolve('center/articles/article-detail.vue'),
       },

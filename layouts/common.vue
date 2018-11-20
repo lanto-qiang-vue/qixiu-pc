@@ -19,7 +19,7 @@
       <!--<div class="nav_in_top">-->
           <Menu mode="horizontal" theme="primary" style="z-index: 1000">
             <MenuItem name="1" to="/">
-                首页
+                主页
             </MenuItem>
             <Submenu name="2">
                 <template slot="title">
@@ -27,7 +27,8 @@
                 </template>
 
                 <ul class="ivu-menu-drop-list icon-menus">
-                  <a class="ivu-menu-item" @mouseover="iconBlockShow= false">电子健康档案系统</a>
+                  <nuxt-link tag="a" class="ivu-menu-item" to="/center/unaccess"
+                             @mouseover="iconBlockShow= false">电子健康档案系统</nuxt-link>
                   <a class="ivu-menu-item" icon-block-type="1">车主服务中心</a>
                   <a class="ivu-menu-item" icon-block-type="2">汽修企业服务中心</a>
                   <a class="ivu-menu-item" icon-block-type="3">政务服务中心</a>
@@ -43,7 +44,7 @@
             <MenuItem name="3">
                 电子健康档案系统
             </MenuItem>
-            <MenuItem name="4">
+            <MenuItem name="4" to="/cdf">
                 车大夫门诊
             </MenuItem>
             <MenuItem name="5">
@@ -59,7 +60,8 @@
       <!--</div>-->
   <!--</div>-->
 
-     <nuxt keep-alive/>
+     <nuxt />
+     <!--<nuxt keep-alive/>-->
     <!--页脚-->
     <common-footer></common-footer>
     <!--页脚end-->
@@ -71,7 +73,8 @@
 import CommonFooter from '~/components/common-footer.vue'
 import LoginStatus from '~/components/login-status.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
-import mixin from '~/static/page-mount-mixin.js'
+import mixin from '~/components/page-mount-mixin.js'
+
 export default {
   name: "common-layout",
   components: {
@@ -101,16 +104,7 @@ export default {
     })
   },
   methods:{
-      testLogout(){
 
-          this.$axios.get('/user/useraccount/logout')
-          .then(function (response) {
-              if(response.data.code==='0'){
-
-          this.$router.push('/login')
-        }
-          })
-      }
   }
 
 

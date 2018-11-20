@@ -13,11 +13,11 @@
       <span class="tel">400-663-8210</span>
       <a href="http://www.lantoev.com/android/DownLoad.html" target="_blank" class="app">
         <p>下载APP</p>
-        <img src="../assets/img/index/qrcode_app.png" style="display: none;">
+        <img src="../assets/img/index/qrcode_app.png">
       </a>
       <div class="wx">
         <p>关注微信</p>
-        <img src="../assets/img/index/qrcode_weixin.jpg" style="display: none;">
+        <img src="../assets/img/index/qrcode_weixin.jpg">
       </div>
       <a href="/czzn"><img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></a>
     </div>
@@ -106,36 +106,30 @@
             <p>中心</p>
           </div>
           <ul>
-            <li onclick="goToPage('/center/applyList', false, [1,2,3,4,5,6,7])"><a>爱车档案</a></li>
-            <li onclick="goToPage('/center/myOrders', false, [1,2,3,4,5,6,7])"><a>我的预约服务</a></li>
-            <li onclick="goToPage('/center/myQuestions', false, [1,2,3,4,5,6,7])"><a>我的咨询</a></li>
-            <li><a href="/statics/tips.pdf" target="_blank">爱车小贴士</a></li>
+            <nuxt-link tag="li" :to="'/center/my-car-record'"><a>爱车档案</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-order'"><a>我的预约服务</a></nuxt-link>
+            <nuxt-link tag="li" :to="'/center/my-questions'"><a>我的咨询</a></nuxt-link>
+            <li><a href="/file/tips.pdf" target="_blank">爱车小贴士</a></li>
           </ul>
         </div>
         <div class="doctor">
           <div class="tit"><p>车大夫门诊</p></div>
           <ul class="tag">
-            <li class="button active">问题集锦</li>
-            <li class="button">专家团</li>
+            <li class="button" @mouseover="showCdfFlag=true">问题集锦</li>
+            <li class="button" @mouseover="showCdfFlag=false">专家团</li>
             <li class="cdf" style="background-color: #e86d1c;">
               <a href="/cdf" target="_blank">在线咨询</a>
             </li>
           </ul>
-          <div class="doctor_content active" id="gather_content">
+          <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
             <ul>
-              <li v-for="item in questionList" :key="'questionList-'+item.id">{{item.content}}</li>
+              <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
+              <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
             </ul>
-            <a onclick="goToPage('/cdf', true)" class="list_button">浏览更多</a>
+            <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
           </div>
 
-
-
-
-
-
-
-
-          <div class="doctor_content" id="professor_content">
+          <div class="doctor_content" id="professor_content" v-show="!showCdfFlag">
             <ul>
               <li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>
             </ul>
@@ -148,16 +142,21 @@
   </div>
   <div class="news">
     <div class="block block1" >
-      <div class="title"><h1>新闻动态</h1><a href="/government/10281019">更多</a></div>
+      <div class="title"><h1>新闻动态</h1><nuxt-link tag="a" :to="'/gov-article/10281019/'">更多</nuxt-link></div>
       <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" v-if="showSwiper">
         <!-- slides -->
         <swiper-slide v-for="(item, index) in articleBanner" :key="index">
           <div class='dummy'></div>
           <div class='content'>
-            <a :href="item.id" class="news-swiper-body">
-              <div>{{item.title}}</div>
-              <img :src="item.photo || '/img/default-car.png'">
-            </a>
+            <!--<a :href="item.id" class="news-swiper-body">-->
+              <!--<div>{{item.title}}</div>-->
+              <!--<img :src="item.photo || '/img/default-car.png'">-->
+            <!--</a>-->
+
+          <nuxt-link tag="a" :to="'/gov-article/10281019/'+item.id" class="news-swiper-body">
+            <div>{{item.title}}</div>
+            <img :src="item.photo || '/img/default-car.png'">
+          </nuxt-link>
           </div>
         </swiper-slide>
 
@@ -170,28 +169,29 @@
     </div>
     <div class="block block2">
 
-      <div class="title"><h1>管理动态</h1><a href="/government/10281020">更多</a></div>
+      <div class="title"><h1>管理动态</h1><nuxt-link tag="a" :to="'/gov-article/10281020'">更多</nuxt-link></div>
 
       <div class="best best1">
         <div class="left">最新</div>
         <ul>
-          <a v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</a>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
       <div class="best best2">
         <div class="left hot">最热</div>
         <ul>
-          <a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>
+          <!--<a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>-->
+          <nuxt-link v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id" :to="'/gov-article/10281020/'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
     </div>
     <div class="block block3">
-      <div class="title"><h1>行业监管</h1><a href="/government/10281001">更多</a></div>
+      <div class="title"><h1>行业监管</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
       <ul>
-        <a class="article" v-for="item in articleRight" :key="'articleRight'+item.id">
+        <nuxt-link class="article" v-for="item in articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
           <h3>{{item.title}}</h3>
           <p style="-webkit-box-orient: vertical;">{{item.content | FormatArticle(item.title)}}</p>
-        </a>
+        </nuxt-link>
       </ul>
     </div>
   </div>
@@ -211,7 +211,7 @@ import CommonFooter from '~/components/common-footer.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
 import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
-import mixin from '~/static/page-mount-mixin.js'
+import mixin from '~/components/page-mount-mixin.js'
 export default {
   components: {
     CommonFooter,
@@ -220,7 +220,7 @@ export default {
   },
   mixins: [mixin],
   asyncData ({ app, error }) {
-    
+
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
@@ -314,9 +314,10 @@ export default {
       }
     },(err)=>{
       // if(process.client)
-      console.log('err:', err.response.data)
+      console.log('err1:', err)
+      // console.log('err2:', err.response.data)
 
-      return {
+      let setData={
         questionList: [],
         cdfList: [],
         articleBanner: [],
@@ -324,8 +325,10 @@ export default {
           latest: [],
           hottest: [],
         },
-        articleRight: [],
-        error: {
+        articleRight: []
+      }
+      if(err.response && err.response.config && err.response.data){
+        setData.error=  {
           url: err.response.config.url,
           // headers: JSON.stringify(err.response.config.headers),
           status: err.response.status,
@@ -335,7 +338,12 @@ export default {
           response: JSON.stringify(err.response.data)
           // response: err.response.data
         }
+      }else{
+        setData.error= err.response
       }
+
+
+      return setData
     })
     //   .catch((e) => {
     //   error({ statusCode: 404, message: 'Post not found' })
@@ -403,6 +411,7 @@ export default {
       iconBlockType: 0,
       iconBlockLeft: 128,
       iconBlockShow: false,
+      showCdfFlag: true,
 
       error: null
     }
@@ -430,25 +439,17 @@ export default {
       self.iconBlockShow= false
     })
 
-    console.log('error: ', this.error? {
-      status: this.error.status,
-      statusText: this.error.statusText,
-      url: this.error.url,
-      headers: this.error.headers,
-      data: this.error.data,
-      response: this.error.response,
-    }: 'no error')
+    // console.log('error: ', this.error? {
+    //   status: this.error.status,
+    //   statusText: this.error.statusText,
+    //   url: this.error.url,
+    //   headers: this.error.headers,
+    //   data: this.error.data,
+    //   response: this.error.response,
+    // }: 'no error')
 
 
-    // this.$axios.$post('/infopublic/home/all',{
-    //   "pageNo": 1,
-    //   "pageSize": 5,
-    //     "infoType": '10281019',
-    // }).then(res => {
-    //   if (res.code === '0') {
-    //
-    //   }
-    // })
+    console.log('error: ', this.error|| 'no error')
 
   },
   methods:{
@@ -508,6 +509,8 @@ export default {
           }
           >*{
             margin-left: 10px;
+            position: relative;
+            overflow: visible;
           }
           .tel{
             padding-left: 18px;
@@ -521,6 +524,17 @@ export default {
           .wx{
             padding-left: 20px;
             background: url('../assets/img/index/wechat.png') no-repeat left center;
+            cursor: pointer;
+          }
+          .app img, .wx img{
+            display: none;
+            width: 75px;
+            position: absolute;
+            z-index: 9;
+            left: 0;
+          }
+          .app:hover img, .wx:hover img{
+            display: block;
           }
           .czzn{
             width: 40px;
@@ -779,7 +793,7 @@ export default {
               width: 100%;
             }
             .doctor_content{
-              display: none;
+              /*display: none;*/
               height: 150px;
               position: relative;
               overflow: hidden;
@@ -839,9 +853,9 @@ export default {
                 border-color: #e86d1c;
               }
             }
-            .doctor_content.active {
-              display: block;
-            }
+            /*.doctor_content.active {*/
+              /*display: block;*/
+            /*}*/
           }
         }
       }
