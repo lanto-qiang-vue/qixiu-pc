@@ -4,7 +4,7 @@ export default {
   created(){
     // console.log('page-mount-mixin', this.$router)
     setStore({store: this.$store})
-    console.log('process.env.NODE_ENV',process.env.NODE_ENV)
+    // console.log('process.env.NODE_ENV',process.env.NODE_ENV)
     checkAuth({
       route: this.$route,
       store: this.$store,

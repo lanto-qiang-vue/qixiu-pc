@@ -17,7 +17,7 @@
   <!--导航菜单-->
   <!--<div class="nav_top">-->
       <!--<div class="nav_in_top">-->
-          <Menu mode="horizontal" theme="primary" style="z-index: 1000">
+          <Menu mode="horizontal" theme="primary" class="head-menu">
             <MenuItem name="1" to="/">
                 主页
             </MenuItem>
@@ -60,8 +60,8 @@
       <!--</div>-->
   <!--</div>-->
 
-     <nuxt />
-     <!--<nuxt keep-alive/>-->
+     <!--<nuxt />-->
+     <nuxt keep-alive/>
     <!--页脚-->
     <common-footer></common-footer>
     <!--页脚end-->
@@ -168,8 +168,11 @@ export default {
 </style>
 <style lang="less">
 .common-layout{
-  .ivu-select-dropdown{
-    overflow: visible;
+  .head-menu{
+    z-index: 1000;
+    .ivu-select-dropdown{
+      overflow: visible;
+    }
   }
 }
 </style>
