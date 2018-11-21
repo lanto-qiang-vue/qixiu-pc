@@ -14,7 +14,7 @@
     class="table-modal-detail"
     :transition-names="['', '']">
         <div style="height: 100%;overflow: auto;">
-        
+
         <Form :label-width="80" ref="search" :rules="ruleValidate"  :model="search">
             <FormItem label="考核标题:" style="width: 80%;" prop="title">
                 <Input type="text" v-model="search.title" placeholder=""></Input>
@@ -23,7 +23,7 @@
                 <Input type="textarea" :rows="6" v-model="search.content" placeholder=""></Input>
             </FormItem>
             <FormItem label="上传附件" style="width: 450px;">
-                <Upload 
+                <Upload
                 ref="upload"
                 :headers="token"
                 :format="['txt','zip','doc','docx','xls','xlsx','pdf']"
@@ -32,7 +32,7 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-                action="http://192.168.169.190:8888/file/add"
+                action="/proxy/file/add"
                 >
                     <Button icon="ios-cloud-upload-outline">添加附件</Button>
                     <span>（仅支持txt、zip、doc、docx、xls、xlsx、pdf）</span>
@@ -47,7 +47,7 @@
         </div>
 
   </Modal>
-  
+
 </template>
 
 <script>
@@ -57,7 +57,7 @@ export default {
     props:['showDetail', 'detailData'],
     data(){
         return{
-            
+
             showModal:false,
             search:{
                 "content":"",
@@ -71,9 +71,9 @@ export default {
                 title: [
                     { required: true,  message: '请填写数据',}
                 ],
-                
+
             },//规则验证
-           
+
             token: {token: ''},
 
         }
@@ -89,7 +89,7 @@ export default {
         },
     },
     mounted () {
-      
+
     },
     methods:{
         //监听界面变化--------
@@ -123,8 +123,8 @@ export default {
                                 this.$Message.error(res.data.status);
                             }
                     })
-                        
-                    
+
+
                 }
             });
 
@@ -132,18 +132,18 @@ export default {
 
         //选择文件--------
         handleFormatError (file) {
-            
+
             this.$Modal.confirm({
                 title:"系统提示!",
                 content:"该文件格式不正确，仅支持txt、zip、doc、docx、xls、xlsx、pdf",
-                
+
             })
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 this.$refs.upload.fileList.splice(0, 1);
-                
+
             }
             return true;
         },
