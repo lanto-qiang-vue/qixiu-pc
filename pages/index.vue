@@ -313,9 +313,14 @@ export default {
         articleRight: [res10281006[0], res10281016[0], res10281017[0]]
       }
     },(err)=>{
-      // if(process.client)
-      console.log('err1:', err)
-      // console.log('err2:', err.response.data)
+
+      // console.log('err1:', err)
+      // for(let key in err){
+      //   console.log('err:',key)
+      // }
+      // for(let key in err.response){
+      //   console.log('err.response:',key)
+      // }
 
       let setData={
         questionList: [],
@@ -327,7 +332,9 @@ export default {
         },
         articleRight: []
       }
-      if(err.response && err.response.config && err.response.data){
+
+      // if(err.response && err.response.config && err.response.data){
+
         setData.error=  {
           url: err.response.config.url,
           // headers: JSON.stringify(err.response.config.headers),
@@ -335,12 +342,12 @@ export default {
           statusText: err.response.statusText,
           headers: err.response.config.headers,
           data: err.response.config.data,
-          response: JSON.stringify(err.response.data)
+          response: JSON.stringify(err.response.data),
           // response: err.response.data
         }
-      }else{
-        setData.error= err.response
-      }
+      // }else{
+        // setData.error= JSON.stringify(err)
+      // }
 
 
       return setData
@@ -449,7 +456,7 @@ export default {
     // }: 'no error')
 
 
-    console.log('error: ', this.error|| 'no error')
+    console.error('error: ', this.error|| 'no error')
 
   },
   methods:{

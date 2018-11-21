@@ -84,7 +84,7 @@ export default {
     }
   },
   mounted(){
-    this.$axios.$get('/question/detail/'+ this.$route.params.id)
+    // this.$axios.$get('/question/detail/'+ this.$route.params.id)
   }
 }
 </script>

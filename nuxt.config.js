@@ -7,8 +7,8 @@ module.exports = {
   mode: 'universal',
 
   server: {
-    port: config.port, // default: 3000
-    host: '0.0.0.0', // default: localhost,
+    port: config.port,
+    host: '0.0.0.0',
   },
   /*
   ** Headers of the page
@@ -47,7 +47,7 @@ module.exports = {
   plugins: [
     '~plugins/iview',
     '~/plugins/axios',
-    '~/plugins/fliters',
+    '~/plugins/vue-api',
     { src: '~/plugins/browser-util.js', ssr: false },
     { src: '~/plugins/swiper', ssr: false },
     { src: '~/plugins/lightbox', ssr: false },
