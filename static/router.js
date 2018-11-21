@@ -276,6 +276,15 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
+        path: 'banner-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '广告管理',
+          accessId: 68,
+        },
+        component: resolve('center/system/banner-manage.vue'),
+      },
+      {
         path: 'user-manage',
         meta: {
           icon: 'md-funnel',
@@ -390,7 +399,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '反馈管理',
-          accessId: 409,
+          accessId: 69,
         },
         component: resolve('center/company/complaint-manage.vue'),
       },
