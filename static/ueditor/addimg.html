@@ -164,8 +164,8 @@
         processData: false,
         success : function(res) {
           if(res.code=='0'){
-            $("#address").val(res.data.picPath)
-            $("img").attr({src: res.data.picPath})
+            $("#address").val(res.item.path)
+            $("img").attr({src: res.item.path})
             // alert('图片上传成功');
           }else{
             alert(res.status);

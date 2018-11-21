@@ -10,11 +10,13 @@
             <Input type="text" v-model="search.title" ></Input>
         </FormItem>
         <FormItem label="文章类别:">
-            <Input type="text" v-model="search.infoType" ></Input>
+          <Select v-model="search.infoType" clearable>
+            <Option v-for="(item, index) in typeList" :key="index" :value="item.id">{{item.codeDesc}}</Option>
+          </Select>
         </FormItem>
         <FormItem label="发布状态:">
           <Select v-model="search.publishStatus">
-            <Option v-for="(item, index) in systemList" :key="index" :value="item.id">{{item.name}}</Option>
+            <Option v-for="(item, index) in statusList" :key="index" :value="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
         <FormItem >
@@ -26,8 +28,10 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" v-if=""  @click="goDetail(true)">新增</Button>
+      <Button type="info" v-if=""  @click="goDetail(true)">新增</Button>
       <Button type="primary" v-if="" :disabled="!selectRow.id" @click="goDetail(false)">修改</Button>
+      <Button :type="rowStatus?'error': 'success'" v-if="" :disabled="!selectRow.id"
+              @click="changeStatus">{{rowStatus?'取消发布': '发布'}}</Button>
     </div>
   </common-table>
   <!--<system-manage-detail :data="selectRow" :show="showDetail" :total="total"-->
@@ -49,6 +53,12 @@
     },
     data(){
 		  return{
+		    typeList:[],
+        statusList: [
+          {id: '', name: '全部'},
+          {id: '10311001', name: '已发布'},
+          {id: '10311002', name: '未发布'},
+        ],
         columns: [
           {title: '文章ID', key: 'id',  minWidth: 100},
           {title: '文章标题', key: 'title',  minWidth: 100,},
@@ -59,6 +69,7 @@
           {title: '发布时间', key: 'publishTime',  minWidth: 100,},
           {title: '创建者姓名', key: 'creator',  minWidth: 100,},
           {title: '文章来源', key: 'dataFrom',  minWidth: 100,},
+          {title: '文章标识', key: 'customFlag',  minWidth: 100,},
         ],
         tableData: [],
         search:{
@@ -74,18 +85,24 @@
         showDetail: false,
         selectRow: {},
         clearTableSelect: null,
-
-
+      }
+    },
+    computed:{
+      rowStatus(){
+        return (this.selectRow.status && this.selectRow.status.status== '10311001') ? true: false
       }
     },
     mounted () {
       this.showTable= Math.random();
+      this.getType()
       this.getList();
 
     },
     methods:{
-		  getType(){
-
+      getType(){
+        this.$axios.$get('/infopublic/public/info/category').then( (res) => {
+          this.typeList= res.items
+        })
       },
         getList(){
           this.$axios.$post('/infopublic/all', {
@@ -127,6 +144,23 @@
         // this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew}})
         // this.$router.push({path:'/test', query:{ id: isNew}})
       },
+      changeStatus(){
+        this.$Modal.confirm({
+          title:"确定"+ (this.rowStatus?'取消发布': '发布')+'吗？',
+          onOk:()=>{
+            this.$axios.$post('/infopublic/update/status', {
+              "id": this.selectRow.id,
+              "publishStatus": this.rowStatus?'10311002': '10311001',
+            }).then( (res) => {
+              if(res.code==='0'){
+                this.$Message.success('修改成功');
+                this.getList()
+                this.selectRow={}
+              }
+            })
+          },
+        })
+      }
     },
 	}
 </script>

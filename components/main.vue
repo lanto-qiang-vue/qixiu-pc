@@ -47,7 +47,7 @@ export default {
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
       // console.log('this.$store.state.user.accessMenu', this.$store.state.user.accessMenu )
-      // console.log('menuList', JSON.stringify(list) )
+      console.log('menuList', list )
       return this.paraMenu|| list
     },
     setOpenedNames(){
@@ -64,6 +64,7 @@ export default {
   },
   mounted(){
     // console.log('main-mounted')
+    // this.funAuth('sss')
   },
   methods: {
     turnToPage (name, meta) {

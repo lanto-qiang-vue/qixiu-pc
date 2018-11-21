@@ -23839,7 +23839,7 @@ UE.plugin.register('autoupload', function (){
             // }
             var json = JSON.parse(e.target.response)
             json.state= json.code=='0'?'SUCCESS': (json.code+json.status)
-            json.url= json.data.picPath
+            json.url= json.item.path
             json.original=file.name
             json.title=file.name
             successHandler(json);

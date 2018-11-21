@@ -13,6 +13,9 @@
     <FormItem label="文章来源" prop="dataFrom">
       <Input type="text" v-model="detail.dataFrom" ></Input>
     </FormItem>
+    <FormItem label="文章标识" prop="customFlag">
+      <Input type="text" v-model="detail.customFlag" ></Input>
+    </FormItem>
     <FormItem label="文章内容" prop="content">
       <div id="articlecontainer"></div>
     </FormItem>
@@ -22,24 +25,34 @@
         <compress-upload-button @done="upPic"></compress-upload-button>
         <Input type="text" v-model="detail.photo" placeholder="图片地址"></Input>
       </div>
-      <div class="pic"><img v-show="detail.photo" :src="detail.photo"/></div>
+      <div class="pic"><img v-img v-show="detail.photo" :src="detail.photo"/></div>
     </FormItem>
     <FormItem>
       <Button @click="$router.go(-1)">返回</Button>
-      <Button type="info"  @click="">预览</Button>
-      <Button type="primary" @click="">提交</Button>
+      <Button type="info"  @click="preview">预览</Button>
+      <Button type="primary" @click="save">提交</Button>
     </FormItem>
   </Form>
 
+  <Modal
+    v-model="showPreview"
+    title="预览"
+    width="80"
+    class="table-modal-detail"
+    :transition-names="['', '']">
+    <public-article-detail :title="detail.title" :detail="detail.content"></public-article-detail>
+  </Modal>
 </div>
 </template>
 
 <script>
   import CompressUploadButton from '~/components/compress-upload-button.vue'
+  import PublicArticleDetail from '~/components/public-article-detail.vue'
 	export default {
 		name: "article-detail",
     components: {
       CompressUploadButton,
+      PublicArticleDetail
     },
     head () {
       return {
@@ -60,13 +73,15 @@
           infoType: '',
           dataFrom: '',
           content: '',
-          photo: ''
+          photo: '',
+          customFlag: ''
         },
         ruleValidate : {
           title: rule,
           infoType: rule,
         },
-        typeList:[]
+        typeList:[],
+        showPreview: false
       }
     },
     mounted(){
@@ -113,11 +128,19 @@
               infoType: res.item.typeId,
               dataFrom: res.item.dataFrom,
               content: res.item.content,
-              photo: res.item.photo
+              photo: res.item.photo,
+              customFlag: res.item.customFlag
             }
-            this.ue.setContent(res.item.content)
+            this.ue.ready( ()=> {
+              this.ue.setContent(res.item.content)
+            });
+
           }
         })
+      },
+      preview(){
+        this.detail.content= this.ue.getContent()
+        this.showPreview= true
       },
       save(){
         this.$refs.form.validate((valid) => {
@@ -128,7 +151,7 @@
             }else{
               url= '/infopublic/add'
             }
-            res.item.content= this.ue.getContent()
+            this.detail.content= this.ue.getContent()
             this.$axios.$post(url, this.detail).then( (res) => {
               if(res.code== '0'){
                 this.$Message.success({
