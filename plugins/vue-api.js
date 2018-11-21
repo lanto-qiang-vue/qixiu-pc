@@ -11,14 +11,3 @@ Vue.filter("FormatArticle", function (value, title) {
 Vue.filter("FormatDate", function (value, format) {
   return formatDate(value, format||'')
 })
-
-// Vue.mixin({
-//   computed: {
-//     funAuth() {
-//       return (fun)=>{
-//         console.log('Vue.mixin.methods.funAuthq', fun, this.$route)
-//         return fun
-//       }
-//     }
-//   }
-// })

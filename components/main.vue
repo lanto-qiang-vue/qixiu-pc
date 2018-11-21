@@ -11,7 +11,7 @@
       <div class="sub-title">
         <my-bread-crumb></my-bread-crumb>
       </div>
-      <nuxt-child/>
+      <nuxt-child />
     </Content>
   </Layout>
 </template>
@@ -47,7 +47,7 @@ export default {
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
       // console.log('this.$store.state.user.accessMenu', this.$store.state.user.accessMenu )
-      console.log('menuList', list )
+      // console.log('menuList', list )
       return this.paraMenu|| list
     },
     setOpenedNames(){
@@ -63,7 +63,7 @@ export default {
     }
   },
   mounted(){
-    // console.log('main-mounted')
+    // console.log('main-mounted', this.$route)
     // this.funAuth('sss')
   },
   methods: {
