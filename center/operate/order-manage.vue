@@ -6,7 +6,7 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
     <div  slot="search"  >
-        <Form :label-width="80" class="common-form">
+        <Form :label-width="90" class="common-form">
             <FormItem label="预约联系人:">
                 <Input type="text" v-model="search.input" placeholder="请输入预约联系人"></Input>
             </FormItem>
@@ -15,15 +15,15 @@
             </FormItem>
             
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
-        <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">接受</Button>
-        <Button type="error" v-if="" :disabled="!detailData"  @click="showType=Math.random()">拒绝</Button>
-      <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
+        <Button type="primary" v-if="accessBtn('query')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="accessBtn('update')" :disabled="showStatus"  @click="updateOrderFun(true)">接受</Button>
+        <Button type="error" v-if="accessBtn('update')" :disabled="showStatus"  @click="updateOrderFun(false)">拒绝</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
   </common-table>
@@ -33,12 +33,15 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import selectRepairCompany from '~/components/select-repair-company.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
+
 export default {
 	name: "order-manage",
     components: {
       CommonTable,
       selectRepairCompany
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:false,
@@ -75,6 +78,7 @@ export default {
         isOrderSuccess:true,//判断是不是预约成功
         showType:null,
         typeFlag:null,
+        showStatus:true,
       }
     },
     mounted () {
@@ -86,6 +90,9 @@ export default {
         getList(){
           this.loading=true;
             this.$axios.post('/service/order/list', {
+
+  "contactMobile": this.search.select,
+  "ownerName": this.search.input,
                     "pageNo": this.page,
                     "pageSize": this.limit,
 
@@ -110,8 +117,15 @@ export default {
         },
 
         onRowClick( row, index){
+          console.log(row);
+
           this.detailData=row;
           this.typeFlag="order";
+          if(row.handleStatus.code=='1'){
+            this.showStatus=false;
+          }else{
+            this.showStatus=true;
+          }
         },
         
         closeDetail(){
@@ -140,6 +154,30 @@ export default {
                 }
 					
 				    })
+        },
+        //更新状态值-----
+        // updateOrderFun(status){
+        //   this.$Modal.confirm({
+        //       title:"系统提示!",
+        //       content:"确定要提交吗？",
+        //       onOk:this.updateOrder(status),
+        //   })
+        // },
+        updateOrderFun(falg){
+            this.$axios.post('/service/onSiteOrderHandle', {
+                    "accept": falg,
+                    "onSiteOrderId": this.detailData.id,
+                    "reason": ""
+
+            }).then( (res) => {
+              this.loading=false;
+              if(res.data.code=='0'){
+                this.showStatus=true;
+                this.closeDetail();
+              }
+               
+              
+            })
         }
         
     },

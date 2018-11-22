@@ -1,14 +1,14 @@
+<!--车主中心 我的预约服务-->
 <template>
 <div class="menu-manage">
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                 :show="showTable" :page="page" :showSearch=false>
+                 :show="showTable" :page="page" :showSearch=false :loading="loading">
     <div  slot="search"  >
-      
     </div>
     <div slot="operate">
-      <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
       
     </div>
   </common-table>
@@ -17,11 +17,13 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "my-order",
     components: {
       CommonTable,
     },
+    mixins: [funMixin],
     data(){
 		  return{
         columns: [
@@ -52,7 +54,7 @@
         detailData: null,
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
-        
+        loading:false,
       }
     },
     mounted () {
@@ -68,6 +70,7 @@
     // },
     methods:{
         getList(){
+          this.loading=true;
             this.$axios.post('/service/order/list', {
                     "pageNo": this.page,
                     "pageSize": this.limit,
@@ -76,6 +79,7 @@
               if(res.data.code=='0'){
                 this.tableData=res.data.items;
                 this.total=res.data.total;
+                this.loading=false;
               }
               
             })
@@ -97,7 +101,8 @@
         
         closeDetail(){
           this.detailData= null
-
+          this.page=1;
+          this.getList();
           this.clearTableSelect= Math.random()
         },
         //删除按钮----------
@@ -114,7 +119,6 @@
                     id:this.detailData.id
             }).then( (res) => {
 					      if(res.data.code=='0'){
-                  this.getList();
                   this.closeDetail();
                 }
 					

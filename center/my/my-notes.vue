@@ -1,6 +1,5 @@
+<!--车主中心 通知管理 -->
 <template>
-
-
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading='loading'>
@@ -13,13 +12,13 @@
                 <DatePicker type="daterange" v-model="search.select" placement="bottom-end" placeholder="请选择时间"></DatePicker>
             </FormItem>
             <FormItem label="" style="width: 140px;" :label-width="0">
-                <Button type="primary" v-if="" @click="getList">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="getList">搜索</Button>
                 <Button type="primary" v-if="" @click="resetFun">清空</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
 
     </div>
     <my-notes-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" style="height: 100%;overflow: auto;"></my-notes-detail>
@@ -32,12 +31,14 @@
   import CommonTable from '~/components/common-table.vue'
   import { formatDate } from '@/static/tools.js'
   import myNotesDetail from './my-notes-detail.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "my-notes",
     components: {
       CommonTable,
       myNotesDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:false,

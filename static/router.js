@@ -395,38 +395,56 @@ export default [
         },
         component: resolve('center/company/complaint-manage.vue'),
       },
+        {
+        path: 'quality-manage',
+        meta: {
+          icon: '',
+          title: '质量信誉考核管理',
+          accessId: '/center/quality-manage',
+        },
+        component: resolve('center/company-info/quality-manage.vue'),
+      },
+      {
+        path: 'company-note-manage',
+        meta: {
+          icon: '',
+          title: '通知管理',
+          accessId: '/center/company-note-manage',
+        },
+        component: resolve('center/company/company-note-manage.vue'),
+      },
     ]
   },
-  {
-    path: '/menu26',
+      {
+    path: '/menu30',
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
-      title: '预约上门管理',
-      accessId: 72,
+      title: '服务管理',
+      accessId: '/menu30',
     },
     component: resolve('components/main.vue'),
     children: [
       {
         path: 'visit-manage',
         meta: {
-          icon: 'md-funnel',
+          icon: '',
           title: '上门服务管理',
-          accessId: 73,
+          accessId: '/center/visit-manage',
         },
         component: resolve('center/operate/visit-manage.vue'),
       },
       {
         path: 'order-manage',
         meta: {
-          icon: 'md-funnel',
-          title: '预约维修管理',
-          accessId: 74,
+          icon: '',
+          title: '预约服务管理',
+          accessId: '/center/order-manage',
         },
         component: resolve('center/operate/order-manage.vue'),
-      },
-      ]
+      },]
   },
+ 
 
   {
     path: '/menu18',
@@ -469,35 +487,6 @@ export default [
       //   component: resolve('center/operate/for-you-service.vue'),
       // },
     ]
-  },
-    {
-    path: '/menu30',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '服务管理',
-      accessId: '/menu30',
-    },
-    component: resolve('components/main.vue'),
-    children: [
-      {
-        path: 'visit-manage',
-        meta: {
-          icon: '',
-          title: '上门服务管理',
-          accessId: '/center/visit-manage',
-        },
-        component: resolve('center/operate/visit-manage.vue'),
-      },
-      {
-        path: 'order-manage',
-        meta: {
-          icon: '',
-          title: '预约服务管理',
-          accessId: '/center/order-manage',
-        },
-        component: resolve('center/operate/order-manage.vue'),
-      },]
   },
   {
     path: '/menu19',

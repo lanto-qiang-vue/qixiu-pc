@@ -16,17 +16,17 @@
                         <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间"></DatePicker>
                     </FormItem>
                     <FormItem :label-width="0" style="width: 70px;">
-                        <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+                        <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
                     </FormItem>
                 </Form>
             </div>
             <div slot="operate">
                 <Button type="primary" v-if="" @click="showNote=Math.random();detailData=null;" >通知发布</Button>
-                <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
-                <Button type="primary" v-if="" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>
+                <Button type="primary" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
+                <Button type="primary" v-if="accessBtn('roles')" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>
                 
                 <Button type="info" v-if="" @click="showNote=Math.random();" :disabled="editButton">编辑</Button>
-                <Button type="error" v-if="" @click="removeListFun" :disabled="editButton">删除</Button>
+                <Button type="error" v-if="accessBtn('delete')" @click="removeListFun" :disabled="editButton">删除</Button>
             
             </div>
             <note-issued :showDetail="showNote" :detailData="detailData" @closeDetail="closeDetail"></note-issued>
@@ -49,12 +49,12 @@
                                 <DatePicker type="daterange" v-model="receiveList.startDate" placement="bottom-start" placeholder="请选择时间"></DatePicker>
                             </FormItem>
                             <FormItem :label-width="0" style="width: 70px;">
-                                <Button type="primary" v-if="" @click="closeDetail1">搜索</Button>
+                                <Button type="primary" v-if="accessBtn('query')" @click="closeDetail1">搜索</Button>
                             </FormItem>
                 </Form>
             </div>
             <div slot="operate">
-            <Button type="info" v-if="" @click="showDetail1=Math.random();" :disabled="!detailData1">查看</Button>
+            <Button type="info" v-if="accessBtn('view')" @click="showDetail1=Math.random();" :disabled="!detailData1">查看</Button>
             </div>
             <common-notes-detail :showDetail="showDetail1" :detailData="detailData1" @closeDetail="closeDetail1" ></common-notes-detail>
 
@@ -71,6 +71,7 @@
   import CommonTable from '~/components/common-table.vue'
 import CommonNotesDetail from '~/components/common-notes-detail.vue'
 import noteRecipientList from './note-recipient-list.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
     import noteIssued from './note-issued.vue'
 	export default {
 		name: "note-manage",
@@ -80,6 +81,7 @@ import noteRecipientList from './note-recipient-list.vue'
       noteRecipientList,
       noteIssued
     },
+    mixins: [funMixin],
     data(){
 		  return{
               typeList: [

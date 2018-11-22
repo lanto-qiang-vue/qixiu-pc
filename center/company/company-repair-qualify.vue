@@ -18,14 +18,14 @@
         </FormItem>
         
         <FormItem :label-width="0" style="width: 90px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
         </FormItem>
 
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" @click="showAdd=Math.random();detailData=null;">新增</Button>
-        <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
+        <Button type="primary" v-if="accessBtn('add')"  @click="showAdd=Math.random();detailData=null;">新增</Button>
+        <Button type="info" v-if="accessBtn('get')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
     </div>
     <detail-company-qualify :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></detail-company-qualify>
     <add-company-qualify :showDetail="showAdd" @closeDetail="closeDetail"></add-company-qualify>
@@ -38,7 +38,7 @@
 import CommonTable from '~/components/common-table.vue'
 import detailCompanyQualify from './detail-company-qualify.vue'
 import addCompanyQualify from './add-company-qualify.vue'
-
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "company-repair-qualify",
     components: {
@@ -46,6 +46,7 @@ export default {
       detailCompanyQualify,
       addCompanyQualify
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,

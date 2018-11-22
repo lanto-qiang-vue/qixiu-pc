@@ -12,12 +12,12 @@
                   </Select>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
+      <Button type="info" v-if="accessBtn('view')" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
     </div>
     <carDoctor-answer-detail :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></carDoctor-answer-detail>
   </common-table>
@@ -27,13 +27,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import carDoctorAnswerDetail from './carDoctor-answer-detail.vue'
-  
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "carDoctor-answer-manage",
     components: {
       CommonTable,
       carDoctorAnswerDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

@@ -15,7 +15,7 @@
 
 
 						<div class="form-con">
-							<Form ref="formMobile" :rules="ruleValidate"  :model="formMobile">
+							<Form ref="formMobile" :rules="ruleValidate"  :model="formMobile" @keydown.enter.native="handleFun('tel')">
 								<FormItem prop="userMobile">
 									<Input v-model="formMobile.userMobile" :maxlength="11" placeholder="请输入手机号">
 									<span slot="prepend">
@@ -48,7 +48,7 @@
 					<TabPane label="账号密码登录" name="name2">
 						<div class="login-con-in">
 							<div class="form-con">
-								<Form ref="loginForm" :model="form">
+								<Form ref="loginForm" :model="form" @keydown.enter.native="handleFun('tenant')">
 								<FormItem prop="userName">
 									<Input v-model="form.userName" placeholder="请输入用户名">
 									<span slot="prepend">
@@ -253,6 +253,14 @@
 					this.mobileFlag = true;
 				}
 			},
+			handleFun(name){
+				if(name=="tel"){
+					
+					this.handleCaptcha('formMobile');
+				}else if(name=="tenant"){
+					this.handleSubmit();
+				}
+			}
 
 		}
 	}

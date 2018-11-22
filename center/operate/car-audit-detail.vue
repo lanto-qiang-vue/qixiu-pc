@@ -148,8 +148,8 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="updateStatus(2)" size="large" type="success"  >通过</Button>
-            <Button  @click="updateStatus(3)" size="large" type="success"  >驳回</Button>
+            <Button  @click="updateStatus(2)" size="large" type="success" v-if="accessBtn('edit')" >通过</Button>
+            <Button  @click="updateStatus(3)" size="large" type="success" v-if="accessBtn('edit')" >驳回</Button>
             <Button  size="large" type="default" @click="showModal=false;">返回</Button>
         </div>
   </Modal>
@@ -157,10 +157,12 @@
 
 <script>
 import { getName, getDictGroup, imgToBase64 } from '@/static/util.js'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
     
 	name: "car-audit-detail",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
 	return{
         spinShow:false,

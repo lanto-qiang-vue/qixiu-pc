@@ -7,7 +7,7 @@
         
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">审核</Button>
+      <Button type="primary" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">审核</Button>
     </div>
     <car-audit-detail :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></car-audit-detail>
   </common-table>
@@ -17,7 +17,7 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import carAuditDetail from './car-audit-detail.vue'
-  
+  import funMixin from '~/components/fun-auth-mixim.js'
 
 	export default {
 		name: "bind-car-audit",
@@ -25,6 +25,7 @@
       CommonTable,
       carAuditDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

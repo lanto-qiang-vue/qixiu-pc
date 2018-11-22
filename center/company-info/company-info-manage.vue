@@ -42,13 +42,14 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
-
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "company-info-manage",
     components: {
       CommonTable,
 
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,

@@ -52,11 +52,8 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-<<<<<<< HEAD
-                action="http://118.25.81.63:8888/file/add"
-=======
                 action="/proxy/file/add"
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
+
                 >
                     <Button icon="ios-cloud-upload-outline">添加附件</Button>
                     <span>（仅支持txt、zip、doc、docx、xls、xlsx、pdf）</span>
@@ -66,7 +63,7 @@
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="sendNotify('search')" size="large" type="success"  style="margin-right: 10px;">发送</Button>
+            <Button  @click="sendNotify('search')" size="large" type="success"  style="margin-right: 10px;" v-if="accessBtn('send')">发送</Button>
             <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
         </div>
 
@@ -75,10 +72,12 @@
 </template>
 
 <script>
+import funMixin from '~/components/fun-auth-mixim.js'
 
 export default {
 	name: "note-issued",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
         return{
             spinShow:false,

@@ -61,13 +61,13 @@
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择"></DatePicker>
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
         </FormItem>
     </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="backCompany" :disabled="!detailData">查看</Button>
-      <Button type="primary" v-if="" @click="exportList">导出</Button>
+      <Button type="info" @click="backCompany" :disabled="!detailData">查看</Button>
+      <Button type="primary" v-if="accessBtn('export')" @click="exportList">导出</Button>
     </div>
 
 </common-table>
@@ -78,11 +78,13 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "record-company",
     components: {
       CommonTable,
     },
+    mixins: [funMixin],
     data(){
 	return{
               loading:false,

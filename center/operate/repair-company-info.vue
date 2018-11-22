@@ -189,59 +189,89 @@
             <FormItem label="企业技术人员配备情况:" style="width: 90%;">
                 <Divider />
             </FormItem>
-            <FormItem label="机工高级技师人数:" style="width: 20%;" prop="machinistSeniorTechnician">
-                <Input type="text" v-model="listSearch.machinistSeniorTechnician"  placeholder="高级技师人数" ></Input>
+            <FormItem label="机工高级技师人数:" style="width: 45%;" prop="machinistSeniorTechnician">
+                
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistSeniorTechnician" placeholder="高级技师人数"></InputNumber>
             </FormItem>
-            <FormItem label="机工技师人数:" style="width: 20%;" prop="machinistTechnician">
-                <Input type="text" v-model="listSearch.machinistTechnician" placeholder="技师人数"></Input>
-            </FormItem>
-            <FormItem label="机工高级人数:" style="width: 20%;" prop="machinistSenior">
-                <Input type="text" v-model="listSearch.machinistSenior" placeholder="高级人数"></Input>
-            </FormItem>
-            <FormItem label="机工中级人数:" style="width: 20%;" prop="machinistMedium">
-                <Input type="text" v-model="listSearch.machinistMedium" placeholder="中级人数"></Input>
-            </FormItem>
-            <FormItem label="电工高级技师人数:" style="width: 20%;" prop="electricianSeniorTechnician">
-                <Input type="text" v-model="listSearch.electricianSeniorTechnician"  placeholder="高级技师人数"></Input>
-            </FormItem>
-            <FormItem label="电工技师人数:" style="width: 20%;" prop="electricianTechnician">
-                <Input type="text" v-model="listSearch.electricianTechnician"  placeholder="技师人数"></Input>
-            </FormItem>
-            <FormItem label="电工高级人数:" style="width: 20%;" prop="electricianSenior">
-                <Input type="text" v-model="listSearch.electricianSenior"  placeholder="高级人数"></Input>
+            <FormItem label="机工技师人数:" style="width: 45%;" prop="machinistTechnician">
+                
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistTechnician" placeholder="技师人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="电工中级人数:" style="width: 20%;" prop="electricianMedium">
-                <Input type="text" v-model="listSearch.electricianMedium"  placeholder="中级人数"></Input>
-            </FormItem>
-            <FormItem label="钣金工高级技师人数:" style="width: 20%;" prop="tinbenderSeniorTechnician">
-                <Input type="text" v-model="listSearch.tinbenderSeniorTechnician" placeholder="高级技师人数"></Input>
-            </FormItem>
-            <FormItem label="钣金工技师人数:" style="width: 20%;" prop="tinbenderTechnician">
-                <Input type="text" v-model="listSearch.tinbenderTechnician" placeholder="技师人数"></Input>
-            </FormItem>
-            <FormItem label="钣金工高级人数:" style="width: 20%;" prop="tinbenderSenior">
-                <Input type="text" v-model="listSearch.tinbenderSenior" placeholder="高级人数"></Input>
-            </FormItem>
-            <FormItem label="钣金工中级人数:" style="width: 20%;" prop="tinbenderMedium">
-                <Input type="text" v-model="listSearch.tinbenderMedium" placeholder="中级人数"></Input>
-            </FormItem>
-            <FormItem label="油漆工高级技师人数:" style="width: 20%;" prop="painterSeniorTechnician">
-                <Input type="text" v-model="listSearch.painterSeniorTechnician" placeholder="高级技师人数"></Input>
-            </FormItem>
-            <FormItem label="油漆工技师人数:" style="width: 20%;" prop="painterTechnician">
-                
-                <Input type="text" v-model="listSearch.painterTechnician" placeholder="技师人数"></Input>
+            <FormItem label="机工高级人数:" style="width: 45%;" prop="machinistSenior">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistSenior" placeholder="高级人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="油漆工高级人数:" style="width: 20%;" prop="painterSenior">
-                
-                <Input type="text" v-model="listSearch.painterSenior" placeholder="高级人数"></Input>
+            <FormItem label="机工中级人数:" style="width: 45%;" prop="machinistMedium">
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistMedium" placeholder="中级人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="油漆工中级人数:" style="width: 20%;" prop="painterMedium">
+            <FormItem label="电工高级技师人数:" style="width: 45%;" prop="electricianSeniorTechnician">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianSeniorTechnician" placeholder="高级技师人数"></InputNumber>
                 
-                <Input type="text" v-model="listSearch.painterMedium" placeholder="中级人数"></Input>
+            </FormItem>
+            <FormItem label="电工技师人数:" style="width: 45%;" prop="electricianTechnician">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianTechnician" placeholder="技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="电工高级人数:" style="width: 45%;" prop="electricianSenior">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianSenior" placeholder="高级人数"></InputNumber>
+                
+                
+            </FormItem>
+            <FormItem label="电工中级人数:" style="width: 45%;" prop="electricianMedium">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianMedium" placeholder="中级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工高级技师人数:" style="width: 45%;" prop="tinbenderSeniorTechnician">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderSeniorTechnician" placeholder="高级技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工技师人数:" style="width: 45%;" prop="tinbenderTechnician">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderTechnician" placeholder="技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工高级人数:" style="width: 45%;" prop="tinbenderSenior">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderSenior" placeholder="高级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工中级人数:" style="width: 45%;" prop="tinbenderMedium">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderMedium" placeholder="中级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="油漆工高级技师人数:" style="width: 45%;" prop="painterSeniorTechnician">
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterSeniorTechnician" placeholder="高级技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="油漆工技师人数:" style="width: 45%;" prop="painterTechnician">
+                
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterTechnician" placeholder="技师人数"></InputNumber>
+                
+                
+            </FormItem>
+            <FormItem label="油漆工高级人数:" style="width: 45%;" prop="painterSenior">
+                
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterSenior" placeholder="高级人数"></InputNumber>
+                
+                
+            </FormItem>
+            <FormItem label="油漆工中级人数:" style="width: 45%;" prop="painterMedium">
+                
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterMedium" placeholder="中级人数"></InputNumber>
+                
             </FormItem>
             <FormItem label="企业主要维修车型:" style="width: 92%;">
                 <CheckboxGroup v-model="listSearch.model">
@@ -403,10 +433,10 @@ export default {
                 "corpName": "",
                 "economicType": {id:1},
                 "economicTypeOther": "",
-                "electricianMedium": "",
-                "electricianSenior": "",
-                "electricianSeniorTechnician": "",
-                "electricianTechnician": "",
+                "electricianMedium": 0,
+                "electricianSenior": 0,
+                "electricianSeniorTechnician": 0,
+                "electricianTechnician": 0,
                 "employeeNumber": {id:1},
                 "floorSpace": {id:1},
                 "honor": "",
@@ -423,10 +453,10 @@ export default {
                 "licenceBeginDate": "",
                 "licenceEndDate": "",
                 "longitude": "",
-                "machinistMedium": "",
-                "machinistSenior": "",
-                "machinistSeniorTechnician": "",
-                "machinistTechnician": "",
+                "machinistMedium": 0,
+                "machinistSenior": 0,
+                "machinistSeniorTechnician": 0,
+                "machinistTechnician": 0,
                 "manager": "",
                 "managerOther": "",
                 "model": [],
@@ -438,10 +468,10 @@ export default {
                 "operatorMobile": "",
                 "operatorName": "",
                 "operatorTel": "",
-                "painterMedium": "",
-                "painterSenior": "",
-                "painterSeniorTechnician": "",
-                "painterTechnician": "",
+                "painterMedium": 0,
+                "painterSenior": 0,
+                "painterSeniorTechnician": 0,
+                "painterTechnician": 0,
                 "qualityInspector": "",
                 "qualityReputationAssessmentLevel": {id:4},
                 "registerAddress": "",
@@ -468,10 +498,10 @@ export default {
                 "technologyLeader": "",
                 "throughEnvironmentalProtectionSpecialRenovation": false,
                 "throughSafetyProductionStandardization": false,
-                "tinbenderMedium": "",
-                "tinbenderSenior": "",
-                "tinbenderSeniorTechnician": "",
-                "tinbenderTechnician": "",
+                "tinbenderMedium": 0,
+                "tinbenderSenior": 0,
+                "tinbenderSeniorTechnician": 0,
+                "tinbenderTechnician": 0,
                 "workingHoursPrice": "",
                 "workingHoursQuotaExecutionStandard": {id:1},
             },
@@ -701,86 +731,86 @@ export default {
                 this.getDetail();
             }else{
                 this.listSearch={
-                    "businessHours": "",
-                    "businessPostalCode": "",
-                    "businessRegion": "",
-                    "businessAddress": "",
-                    "complaintTel": "",
-                    "corpName": "",
-                    "economicType": {id:1},
-                    "economicTypeOther": "",
-                    "electricianMedium": "",
-                    "electricianSenior": "",
-                    "electricianSeniorTechnician": "",
-                    "electricianTechnician": "",
-                    "employeeNumber": {id:1},
-                    "floorSpace": {id:1},
-                    "honor": "",
-                    "id": "",
-                    "industryCategory": {id:1},
-                    "industryCategoryOther": "",
-                    "iso": false,
-                    "latitude": "",
-                    "legalEmail": "",
-                    "legalMobile": "",
-                    "legalName": "",
-                    "legalTel": "",
-                    "licence": "",
-                    "licenceBeginDate": "",
-                    "licenceEndDate": "",
-                    "longitude": "",
-                    "machinistMedium": "",
-                    "machinistSenior": "",
-                    "machinistSeniorTechnician": "",
-                    "machinistTechnician": "",
-                    "manager": "",
-                    "managerOther": "",
-                    "model": [],
-                    "modelOther": "",
-                    "offerOnsiteRepair": false,
-                    "openOnlineBusinessService": false,
-                    "openOnlineRepairService": false,
-                    "operatorEmail": "",
-                    "operatorMobile": "",
-                    "operatorName": "",
-                    "operatorTel": "",
-                    "painterMedium": "",
-                    "painterSenior": "",
-                    "painterSeniorTechnician": "",
-                    "painterTechnician": "",
-                    "qualityInspector": "",
-                    "qualityReputationAssessmentLevel": {id:4},
-                    "registerAddress": "",
-                    "registerDate": "",
-                    "registerRegion": "",
-                    "rescue": false,
-                    "scope1": [],
-                    "scope2": [],
-                    "scope3": [],
-                    "scope4": [],
-                    "scope5": [],
-                    "selfDesc": "",
-                    "selfIntroduction": "",
-                    "serviceCategory": [],
-                    "serviceCategoryOther": "",
-                    "serviceLeader": "",
-                    "sincerity": false,
-                    "sincerityYear": 0,
-                    "specialRepair": false,
-                    "specialRepairBrand": "",
-                    "specialService": "",
-                    "sphere": [],
-                    "sphereOther": "",
-                    "technologyLeader": "",
-                    "throughEnvironmentalProtectionSpecialRenovation": false,
-                    "throughSafetyProductionStandardization": false,
-                    "tinbenderMedium": "",
-                    "tinbenderSenior": "",
-                    "tinbenderSeniorTechnician": "",
-                    "tinbenderTechnician": "",
-                    "workingHoursPrice": "",
-                    "workingHoursQuotaExecutionStandard": {id:1},
-                };
+                "businessHours": "",
+                "businessPostalCode": "",
+                "businessRegion": "",
+                "businessAddress": "",
+                "complaintTel": "",
+                "corpName": "",
+                "economicType": {id:1},
+                "economicTypeOther": "",
+                "electricianMedium": 0,
+                "electricianSenior": 0,
+                "electricianSeniorTechnician": 0,
+                "electricianTechnician": 0,
+                "employeeNumber": {id:1},
+                "floorSpace": {id:1},
+                "honor": "",
+                "id": "",
+                "industryCategory": {id:1},
+                "industryCategoryOther": "",
+                "iso": false,
+                "latitude": "",
+                "legalEmail": "",
+                "legalMobile": "",
+                "legalName": "",
+                "legalTel": "",
+                "licence": "",
+                "licenceBeginDate": "",
+                "licenceEndDate": "",
+                "longitude": "",
+                "machinistMedium": 0,
+                "machinistSenior": 0,
+                "machinistSeniorTechnician": 0,
+                "machinistTechnician": 0,
+                "manager": "",
+                "managerOther": "",
+                "model": [],
+                "modelOther": "",
+                "offerOnsiteRepair": false,
+                "openOnlineBusinessService": false,
+                "openOnlineRepairService": false,
+                "operatorEmail": "",
+                "operatorMobile": "",
+                "operatorName": "",
+                "operatorTel": "",
+                "painterMedium": 0,
+                "painterSenior": 0,
+                "painterSeniorTechnician": 0,
+                "painterTechnician": 0,
+                "qualityInspector": "",
+                "qualityReputationAssessmentLevel": {id:4},
+                "registerAddress": "",
+                "registerDate": "",
+                "registerRegion": "",
+                "rescue": false,
+                "scope1": [],
+                "scope2": [],
+                "scope3": [],
+                "scope4": [],
+                "scope5": [],
+                "selfDesc": "",
+                "selfIntroduction": "",
+                "serviceCategory": [],
+                "serviceCategoryOther": "",
+                "serviceLeader": "",
+                "sincerity": false,
+                "sincerityYear": 0,
+                "specialRepair": false,
+                "specialRepairBrand": "",
+                "specialService": "",
+                "sphere": [],
+                "sphereOther": "",
+                "technologyLeader": "",
+                "throughEnvironmentalProtectionSpecialRenovation": false,
+                "throughSafetyProductionStandardization": false,
+                "tinbenderMedium": 0,
+                "tinbenderSenior": 0,
+                "tinbenderSeniorTechnician": 0,
+                "tinbenderTechnician": 0,
+                "workingHoursPrice": "",
+                "workingHoursQuotaExecutionStandard": {id:1},
+            };
             }
 
         },
