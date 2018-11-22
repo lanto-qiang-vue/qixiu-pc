@@ -15,9 +15,9 @@
 
 
 						<div class="form-con">
-							<Form ref="formMobile" :rules="ruleValidate"  :model="formMobile">
+							<Form ref="phone" :rules="rulePhone"  :model="formPhone">
 								<FormItem prop="userMobile">
-									<Input v-model="formMobile.userMobile" :maxlength="11" placeholder="请输入手机号">
+									<Input v-model="formPhone.userMobile" :maxlength="11" placeholder="请输入手机号">
 									<span slot="prepend">
 										<Icon :size="16" type="ios-person"></Icon>
 									</span>
@@ -25,11 +25,12 @@
 									</Input>
 								</FormItem>
 								<FormItem prop="captcha">
-											<Input v-model="formMobile.captcha" placeholder="请输入验证码">
+											<Input v-model="formPhone.captcha" placeholder="请输入验证码">
 												<span slot="prepend">
 													<Icon :size="14" type="md-lock"></Icon>
 												</span>
-												<span slot="append"><Button  type="primary" @click='getCaptcha'>{{description}}</Button></span>
+												<span slot="append"><Button  type="primary" @click='getCaptcha(false)'>
+                          {{description}}</Button></span>
 											</Input>
 								</FormItem>
 								<FormItem>
@@ -39,7 +40,7 @@
 									</div>
 								</FormItem>
 								<FormItem>
-									<Button type="primary" long @click="handleCaptcha('formMobile')">验证并登录</Button>
+									<Button type="primary" long @click="toLogin('phone')">验证并登录</Button>
 								</FormItem>
 							</Form>
 						</div>
@@ -48,16 +49,16 @@
 					<TabPane label="账号密码登录" name="name2">
 						<div class="login-con-in">
 							<div class="form-con">
-								<Form ref="loginForm" :model="form">
+								<Form ref="pass" :model="formPass">
 								<FormItem prop="userName">
-									<Input v-model="form.userName" placeholder="请输入用户名">
+									<Input v-model="formPass.userName" placeholder="请输入用户名">
 									<span slot="prepend">
 										<Icon :size="16" type="ios-person"></Icon>
 										</span>
 											</Input>
 								</FormItem>
 								<FormItem prop="password">
-											<Input type="password" v-model="form.password" placeholder="请输入密码">
+											<Input type="password" v-model="formPass.password" placeholder="请输入密码">
 											<span slot="prepend">
 										<Icon :size="14" type="md-lock"></Icon>
 									</span>
@@ -77,7 +78,7 @@
 									</div>
 								</FormItem>
 								<FormItem>
-									<Button type="primary" long @click="handleSubmit">登录</Button>
+									<Button type="primary" long @click="toLogin('pass')">登录</Button>
 								</FormItem>
 
 
@@ -98,7 +99,51 @@
           </div>
       </div>
     </div>
-  </div>
+
+  <Modal
+    v-model="showBind"
+    title="请绑定手机号"
+    width="350px"
+    @on-visible-change=""
+    :footer-hide="true"
+    class=""
+    :mask-closable="false"
+  >
+    <div class="login-con-in">
+
+
+      <div class="form-con">
+        <Form ref="phone" :rules="rulePhone"  :model="formBind">
+          <FormItem prop="userMobile">
+            <Input v-model="formBind.userMobile" :maxlength="11" placeholder="请输入手机号">
+            <span slot="prepend">
+										<Icon :size="16" type="ios-person"></Icon>
+									</span>
+
+            </Input>
+          </FormItem>
+          <FormItem prop="captcha">
+            <Input v-model="formBind.captcha" placeholder="请输入验证码">
+            <span slot="prepend">
+													<Icon :size="14" type="md-lock"></Icon>
+												</span>
+            <span slot="append"><Button  type="primary" @click='getCaptcha(true)'>{{description}}</Button></span>
+            </Input>
+          </FormItem>
+          <FormItem>
+            <div class="login-rember">
+              <span style="font-weight: 400">新用户完成注册，代表同意</span>
+              <a href="/phone/agreement" target="_blank" style="color: #1E9FFF">《上海汽修平台用户协议》</a>
+            </div>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" long @click="toLogin(bindParam.type, bindParam.openId, true)">绑定并登录</Button>
+          </FormItem>
+        </Form>
+      </div>
+    </div>
+  </Modal>
+</div>
 
 
 </template>
@@ -106,14 +151,13 @@
 <script>
 	export default {
 		name: "login",
-    	layout: 'common',
+    layout: 'common',
 		data () {
 			// 联系电话验证
             const validatePass = (rule, value, callback) => {
                 var p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
                 var p2=/0\d{2,3}-\d{7,8}/;
                 if (p2.test(value)||p1.test(value)||!value) {
-
                     callback();
                 }else{
 
@@ -121,15 +165,19 @@
                 }
             };
 			return {
-				form: {
-					userName: '18400000001',
+				formPass: {
+					userName: '18700000001',
 					password: '123456'
 				},
-				formMobile:{
-					userMobile:'13761321186',
+				formPhone:{
+					userMobile:'',
 					captcha:'',
 				},
-				ruleValidate: {
+        formBind:{
+          userMobile:'',
+          captcha:'',
+        },
+				rulePhone: {
 					userMobile:[
 						{ required: true, message: '请输入正确的号码', },
 						{ validator: validatePass, trigger: 'blur'},
@@ -137,7 +185,6 @@
 					captcha: [
 						{ required: true,  message: '请填写验证码',}
 					],
-
 				},//规则验证
 
 				single: false,
@@ -146,53 +193,37 @@
 				time: 60,
 				timing: null,
 
+        showBind:false,
+        bindParam:{
+          type: '',
+          openId: ''
+        }
 			}
 		},
     mounted(){
-		  console.log('this',this)
+		  // console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
+      this.getOpenId()
     },
 		methods: {
-			//账号密码登录--------
-			handleSubmit(){
-				this.$axios.post('/user/useraccount/login', {
-					"system":"pcqixiu",
-					"loginaccount": this.form.userName,
-					"userpassword": this.form.password,
-					"mobile":'',
-				}).then( (res) => {
-					console.log(res)
-					if(res.data.code==='0'){
-						localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-			      localStorage.setItem('ACCESSMENU',JSON.stringify(res.data.item.menus))
-						localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
-						this.$store.commit('user/setToken', res.data.item.accessToken)
-						this.$store.commit('user/setMenu', res.data.item.menus)
-						this.$store.commit('user/setUser', res.data.item)
-            this.redirect()
-					}else{
-            // this.$Message.error(res.data.status);
-          }
-				})
-			},
 			//获取短信验证码----
-			getCaptcha(){
-				this.$refs['formMobile'].validateField('userMobile');
+			getCaptcha(isBind){
+				this.$refs[isBind?'formBind':'formPhone'].validateField('userMobile');
 				var pattern = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
-				if (!pattern.test(this.formMobile.userMobile)) {
+				if (!pattern.test(this[isBind?'formBind':'formPhone'].userMobile)) {
 					return false;
 				}
 				if(this.mobileFlag){
 					this.$axios.post('/message/sms/sendsmscaptcha', {
 						"businessType":"10",
-						"mobileNo": this.formMobile.userMobile,
-						"captcha": this.formMobile.captcha
+						"mobileNo": this[isBind?'formBind':'formPhone'].userMobile,
+						"captcha": this[isBind?'formBind':'formPhone'].captcha
 					}).then( (res) => {
 						console.log(res)
 						if(res.data.code==='0'){
 							this.timing = setInterval(this.decrTime, 1000);
 							this.mobileFlag = false;
-							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
+              this.$Message.success('短信发送成功')
 						}else{
 							// this.$Message.error(res.data.status)
 						}
@@ -202,35 +233,81 @@
 				}
 
 			},
-			handleCaptcha(name){
-				this.$refs[name].validate((valid) => {
-					if (valid) {
-						this.$axios.post('/user/useraccount/login', {
-							"system": "pcqixiu",
-							"loginaccount": '',
-							"userpassword": '',
-							"loginMethod":'手机',
-							"captureCode": this.formMobile.captcha,
-							"ip": "",
-							"mobile": this.formMobile.userMobile,
-							"openid": "",
-						}).then( (res) => {
-							console.log(res)
-							if(res.data.code==='0'){
-								localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-								localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
-								localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
-								this.$store.commit('user/setToken', res.data.item.accessToken)
-								this.$store.commit('user/setMenu', res.data.item.menus)
-								this.$store.commit('user/setUser', res.data.item)
-                this.redirect()
-							}else{
-								// this.$Message.error(res.data.status)
-							}
-						})
-					}
-				});
-			},
+      toLogin(type, openId, toBind){
+			  let param= {}
+        switch (type){
+          case 'phone':{
+            param={
+              "system": "pcqixiu",
+              "loginMethod":'手机',
+              "captureCode": this.formPhone.captcha,
+              "mobile": this.formPhone.userMobile,
+            }
+            this.$refs.phone.validate((valid) => {
+              if (valid) {
+                this.toRequest(param)
+              }
+            })
+            return
+          }
+          case 'pass':{
+            param={
+              "loginaccount": this.formPass.userName,
+              "userpassword": this.formPass.password,
+            }
+            break
+          }
+          case 'qq':{
+            param={
+              "loginMethod": "QQ",
+              "openid": openId,
+            }
+            break
+          }
+          case 'wx':{
+            param={
+              "loginMethod": "微信",
+              "openid": openId,
+            }
+            break
+          }
+          case 'zfb':{
+            param={
+              "loginMethod": "支付宝",
+              "openid": openId,
+            }
+            break
+          }
+        }
+        param.system= "pcqixiu"
+        if(toBind){
+          param.captureCode= this.formBind.captcha
+          param.mobile= this.formBind.userMobile
+          this.$refs.bind.validate((valid) => {
+            if (valid) {
+              this.toRequest(param)
+            }
+          })
+        }else{
+          this.toRequest(param)
+        }
+      },
+      toRequest(param){
+        this.$axios.post('/user/useraccount/login', param).then( (res) => {
+          if(res.data.code==='0'){
+            this.showBind=false
+            localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
+            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
+            this.$store.commit('user/setToken', res.data.item.accessToken)
+            this.$store.commit('user/setMenu', res.data.item.menus)
+            this.$store.commit('user/setUser', res.data.item)
+            this.redirect()
+          }else if(1==0){
+            this.showBind= true
+          }
+        })
+      },
       redirect(){
         if(this.$route.query.redirect){
           this.$router.replace({
@@ -262,11 +339,48 @@
             break
           }
           case 'wx':{
-            url= ''
+            url= 'https://open.weixin.qq.com/connect/qrconnect?appid=wx9ae88a5a9e1b4cd1&redirect_uri='+ location+'&response_type=code&scope=snsapi_login&state=wx#wechat_redirect'
+            break
           }
           case 'zfb':{
-
+            url= 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2018042002584289&scope=auth_user&redirect_uri='+location+'&state=zfb'
+            break
           }
+        }
+        window.location.href= url
+      },
+      getOpenId(){
+        let state= this.$route.query.state, href= window.location.origin + window.location.pathname
+        let param={
+          redirectUri: encodeURIComponent(href),
+        }
+        if(state){
+          param.code= this.$route.query.code
+          switch (state){
+            case 'qq':{
+              param.platform= 'QQ'
+              param.state= 'qq'
+              break
+            }
+            case 'wx':{
+              param.platform= 'WX'
+              param.state= 'wx'
+              break
+            }
+            case 'zfb':{
+              param.platform= 'ALI'
+              param.state= 'ali'
+              break
+            }
+          }
+          this.$axios.$post('/user/useraccount/access/openid', param).then( (res) => {
+            if(res.code==='0'){
+              this.bindParam.type= state
+              this.bindParam.openId= res.item.openId
+              this.toLogin(state, res.item.openId)
+            }
+          })
+          history.replaceState(null, null, window.location.origin + window.location.pathname)
         }
       }
 		}

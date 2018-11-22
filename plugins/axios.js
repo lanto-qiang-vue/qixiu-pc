@@ -33,7 +33,7 @@ export default function ({ $axios, redirect, store, route, app }) {
           break
         }
         default: {
-          if (process.client) {
+          if (process.client && code!= undefined) {
             Message.destroy()
             response.data.status? Message.error({content: response.data.status, duration: 3}): '';
           }
