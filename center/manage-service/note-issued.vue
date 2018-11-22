@@ -14,7 +14,7 @@
     class="table-modal-detail"
     :transition-names="['', '']">
         <div style="height: 100%;overflow: auto;">
-        
+
         <Form :label-width="80" ref="search" :rules="ruleValidate"  :model="search">
             <FormItem label="通知标题:" style="width: 100%;" prop="title">
                 <Input type="text" v-model="search.title" placeholder=""></Input>
@@ -43,7 +43,7 @@
                 </CheckboxGroup>
             </FormItem>
             <FormItem label="发送对象" style="width: 450px;">
-                <Upload 
+                <Upload
                 ref="upload"
                 :headers="token"
                 :format="['txt','zip','doc','docx','xls','xlsx','pdf']"
@@ -52,7 +52,11 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
+<<<<<<< HEAD
                 action="http://118.25.81.63:8888/file/add"
+=======
+                action="/proxy/file/add"
+>>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
                 >
                     <Button icon="ios-cloud-upload-outline">添加附件</Button>
                     <span>（仅支持txt、zip、doc、docx、xls、xlsx、pdf）</span>
@@ -67,7 +71,7 @@
         </div>
 
   </Modal>
-  
+
 </template>
 
 <script>
@@ -85,8 +89,8 @@ export default {
                 "title":"",
                 docPath:'',
             },
-            
-            
+
+
             ruleValidate: {
                 content:[
                     { required: true, message: '请填写数据', },
@@ -94,12 +98,12 @@ export default {
                 title: [
                     { required: true,  message: '请填写数据',}
                 ],
-                
+
             },//规则验证
-           
+
             token: {token: ''},
             checkAllGroup: [],
-            
+
             checkAll: false,//发送人全选
             checkTypeAll:false,//类别全选
 
@@ -124,7 +128,7 @@ export default {
             this.token.token = this.$store.state.user.token,
             this.checkAll=false;
             this.checkTypeAll=false;
-            
+
             this.checkAllGroup = [];
             this.checkRepair=[];
             this.checkmanage=[];
@@ -139,25 +143,25 @@ export default {
         },
     },
     mounted () {
-      
+
     },
     methods:{
         getNotify(){
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
-                    
+
                 }).then( (res) => {
                   if(res.data.code=='0'){
                       var jsonContent=JSON.parse(res.data.item.content);
                     this.search.content=jsonContent.content;
                     this.search.title=res.data.item.title;
-                    
+
 
                   }else{
                     this.$Message.error(res.data.status);
                   }
-					
+
 				  })
-          
+
 
         },
         //监听界面变化--------
@@ -193,8 +197,8 @@ export default {
                                         this.repairData.push(resData[i].types[j]);
                                         this.repairDataName.push(resData[i].types[j].name);
                                     }
-                                    
-                                    
+
+
                                 }else if(resData[i].name=="管理部门"){
                                     for(let j in resData[i].types){
                                         this.manageData.push(resData[i].types[j]);
@@ -218,7 +222,7 @@ export default {
             let objTem=[];
             console.log(this.checkAllGroup);
             for(let i in this.checkAllGroup){
-                
+
             if(this.checkAllGroup[i]=="维修企业"){
                     let objWX=this.checkList[this.checkListName.indexOf(this.checkAllGroup[i])];
                     objWX.types=[];
@@ -229,7 +233,7 @@ export default {
                 }else if(this.checkAllGroup[i]=="管理部门"){
                     let objBM=this.checkList[this.checkListName.indexOf(this.checkAllGroup[i])];
                     objBM.types=[];
-                    
+
                     for(let j in this.checkTypeGroup){
                         objBM.types.push(this.manageData[this.manageDataName.indexOf(this.checkTypeGroup[j])]);
                     }
@@ -294,11 +298,11 @@ export default {
                                         }
                                 })
                         }
-                        
+
                     }else{
                         this.$Message.error("请选择发送对象");
                     }
-                    
+
                 }
             });
 
@@ -344,7 +348,7 @@ export default {
                 for(let i in this.manageData){
                     this.checkmanage.push(this.manageData[i]);
                 }
-                
+
             }else{
                 this.checkmanage=[];
             }
@@ -378,7 +382,7 @@ export default {
         },
         checkRepairGroupChange (data) {
             console.log("选择的数据",data);
-            
+
             if (data.length === this.repairData.length&&this.checkTypeGroup.length===this.manageData.length) {
                 this.checkTypeAll = true;
             }else {
@@ -387,7 +391,7 @@ export default {
         },
         checkTypeGroupChange (data) {
             console.log("选择的数据",data);
-            
+
             if (data.length === this.manageData.length&&this.checkRepairGroup.length===this.repairData.length) {
                 this.checkTypeAll = true;
             }else {
@@ -396,18 +400,18 @@ export default {
         },
         //选择文件--------
         handleFormatError (file) {
-            
+
             this.$Modal.confirm({
                 title:"系统提示!",
                 content:"该文件格式不正确，仅支持txt、zip、doc、docx、xls、xlsx、pdf",
-                
+
             })
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 this.$refs.upload.fileList.splice(0, 1);
-                
+
             }
             return true;
         },

@@ -15,17 +15,15 @@
     </div>
   </header>
   <!--导航菜单-->
-  <!--<div class="nav_top">-->
-      <!--<div class="nav_in_top">-->
+
           <Menu mode="horizontal" theme="primary" class="head-menu">
-            <MenuItem name="1" to="/">
+            <MenuItem name="head-menu-1" to="/">
                 主页
             </MenuItem>
-            <Submenu name="2">
+            <Submenu name="head-menu-2">
                 <template slot="title">
                     服务中心
                 </template>
-
                 <ul class="ivu-menu-drop-list icon-menus">
                   <a class="ivu-menu-item" @click="$router.push('/center/repair-info-detail')"
                              @mouseover="iconBlockShow= false">电子健康档案系统</a>
@@ -41,24 +39,22 @@
                   <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
                 </ul>
             </Submenu>
-            <MenuItem name="3">
+            <MenuItem name="head-menu-3">
                 电子健康档案系统
             </MenuItem>
-            <MenuItem name="4" to="/cdf">
+            <MenuItem name="head-menu-4" to="/cdf">
                 车大夫门诊
             </MenuItem>
-            <MenuItem name="5">
+            <MenuItem name="head-menu-5">
                 上门服务
             </MenuItem>
-            <MenuItem name="6">
+            <MenuItem name="head-menu-6">
                 预约维修
             </MenuItem>
-            <MenuItem name="7">
+            <MenuItem name="head-menu-7">
                 维修反馈
             </MenuItem>
           </Menu>
-      <!--</div>-->
-  <!--</div>-->
 
      <!--<nuxt />-->
      <nuxt keep-alive/>
@@ -106,8 +102,6 @@ export default {
   methods:{
 
   }
-
-
 }
 </script>
 
