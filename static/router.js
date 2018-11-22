@@ -74,11 +74,8 @@ export default [
         meta: {
           icon: '',
           title: '运营中心首页',
-<<<<<<< HEAD
-          accessId: 67,
-=======
           accessId: '/center/operator-home',
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
+
         },
         component: resolve('center/home/operator-home.vue'),
       },
@@ -391,39 +388,13 @@ export default [
       {
         path: 'complaint-manage',
         meta: {
-<<<<<<< HEAD
-          icon: 'md-funnel',
-          title: '反馈管理',
-          accessId: 69,
-        },
-        component: resolve('center/company/complaint-manage.vue'),
-      },
-      {
-        path: 'company-note-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '通知管理',
-          accessId: 70,
-        },
-        component: resolve('center/company/company-note-manage.vue'),
-      },
-      {
-        path: 'quality-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '质量信誉考核管理',
-          accessId: 71,
-        },
-        component: resolve('center/company-info/quality-manage.vue'),
-      },
-=======
+
           icon: '',
           title: '反馈管理',
           accessId: '/center/complaint-manage',
         },
         component: resolve('center/company/complaint-manage.vue'),
       },
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
     ]
   },
   {
@@ -564,37 +535,7 @@ export default [
         },
         component: resolve('center/operate/carDoctor-answer-manage.vue'),
       },
-<<<<<<< HEAD
-      {
-        path: 'visit-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '上门服务管理',
-          accessId: 407,
-        },
-        component: resolve('center/operate/visit-manage.vue'),
-      },
-      {
-        path: 'order-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '预约服务管理',
-          accessId: 408,
-        },
-        component: resolve('center/operate/order-manage.vue'),
-      },
-      
-      {
-        path: 'company-repair-data',
-        meta: {
-          icon: 'md-funnel',
-          title: '反馈管理',
-          accessId: 410,
-        },
-        component: resolve('center/company/company-repair-data.vue'),
-      },
-      
-=======
+
 
       // {
       //   path: 'company-repair-data',
@@ -605,7 +546,7 @@ export default [
       //   },
       //   component: resolve('center/company/company-repair-data.vue'),
       // },
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
+
       ]
   },
 
