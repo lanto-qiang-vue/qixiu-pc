@@ -17,29 +17,29 @@
         <Panel name="1">维修记录
         <Form slot="content" :label-width="120" class="common-form">
             <FormItem label="维修企业名称:">
-                <Input type="text" disabled v-model="listSearch.companyname" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.companyName" placeholder=""> </Input>
             </FormItem>
             <FormItem label="车牌号码:">
-                <Input type="text" disabled v-model="listSearch.vehicleplatenumber" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.plateNumber" placeholder=""> </Input>
             </FormItem>
             <FormItem label="车辆识别号VIN:">
                 <Input type="text" disabled v-model="listSearch.vin" placeholder=""> </Input>
             </FormItem>
             <FormItem label="送修里程:" >
-                <Input type="text" disabled v-model="listSearch.repairmileage" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.repairMileage" placeholder=""> </Input>
 
             </FormItem>
             <FormItem label="送修日期:" prop="ORDER_TIME">
-                <Input type="text" disabled v-model="listSearch.repairdate" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.repairDate" placeholder=""> </Input>
             </FormItem>
             <FormItem label="结算日期:">
-                <Input type="text" disabled v-model="listSearch.settledate" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.settleDate" placeholder=""> </Input>
             </FormItem>
             <FormItem label="结算编号:">
                 <Input type="text" disabled v-model="listSearch.costlistcode" placeholder=""> </Input>
             </FormItem>
             <FormItem label="故障描述:" prop="TELPHONE">
-                <Input type="text" disabled v-model="listSearch.faultdescription" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.faultDescription" placeholder=""> </Input>
             </FormItem>
             
         </Form>
@@ -85,13 +85,13 @@ export default {
             showModal:false,
             collapse: '1',
             listSearch:{
-                companyname:"",
+                companyName:"",
                 costlistcode:"",
-                faultdescription:"",
-                repairdate:"",
-                repairmileage:"",
-                settledate:"",
-                vehicleplatenumber:"",
+                faultDescription:"",
+                repairDate:"",
+                repairMileage:"",
+                settleDate:"",
+                plateNumber:"",
                 vin:"",
             },
             columns: [
@@ -117,6 +117,7 @@ export default {
     watch:{
         showDetail(){
             this.showModal=true;
+            console.log('x    xxxxxxxxxxxxxx');
             this.getDetail();
         },
     },
@@ -126,9 +127,14 @@ export default {
                 "repairbasicinfoId":this.detailData.id,
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    this.listSearch=res.data.item['repairBasicinfo'];
+                    console.log(res.data);
+                    for(let i in res.data.item['repairBasicinfo']){
+                        this.listSearch[i]=res.data.item['repairBasicinfo'][i];
+                    }
+                    // this.listSearch=res.data.item['repairBasicinfo'];
                     this.tableData=res.data.item['repairprojectlist'];
                     this.tableData1=res.data.item['vehiclepartslist'];
+                    console.log('fsdsd',this.listSearch);
                 }else{
                     this.$Message.error(res.data.status);
                 }

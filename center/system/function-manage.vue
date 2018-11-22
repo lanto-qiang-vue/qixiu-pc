@@ -14,10 +14,10 @@
         <FormItem label="功能名:">
             <Input type="text" v-model="search.name" ></Input>
         </FormItem>
-        <FormItem label="功能ID:">
+        <FormItem label="功能key:">
             <Input type="text" v-model="search.btnId" ></Input>
         </FormItem>
-        <FormItem label="uri:">
+        <FormItem label="接口地址:">
           <Input type="text" v-model="search.uri" ></Input>
         </FormItem>
         <FormItem >
@@ -50,13 +50,13 @@
     data(){
 		  return{
         columns: [
-          {title: '功能名', key: 'name',  minWidth: 100,},
           {title: '功能ID', key: 'id',  minWidth: 100},
-          {title: '按钮ID', key: 'btnId',  minWidth: 100},
+          {title: '功能名', key: 'name',  minWidth: 100,},
+          {title: '功能key', key: 'btnId',  minWidth: 100},
           {title: '菜单名', key: 'menu',  minWidth: 100,
             render: (h, params) => h('span', params.row.menu.name)
           },
-          {title: '链接地址', key: 'uri',  minWidth: 100},
+          {title: '接口地址', key: 'uri',  minWidth: 100},
         ],
         tableData: [],
         search:{

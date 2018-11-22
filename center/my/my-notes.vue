@@ -12,7 +12,7 @@
             <FormItem label="时间:">
                 <DatePicker type="daterange" v-model="search.select" placement="bottom-end" placeholder="请选择时间"></DatePicker>
             </FormItem>
-            <FormItem label="" style="width: 120px;" :label-width="0">
+            <FormItem label="" style="width: 140px;" :label-width="0">
                 <Button type="primary" v-if="" @click="getList">搜索</Button>
                 <Button type="primary" v-if="" @click="resetFun">清空</Button>
             </FormItem>

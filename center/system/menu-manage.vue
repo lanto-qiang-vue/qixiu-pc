@@ -12,7 +12,7 @@
         <FormItem label="父菜单ID:">
             <Input type="text" v-model="search.parentId" ></Input>
         </FormItem>
-        <FormItem label="菜单uri:">
+        <FormItem label="链接地址:">
           <Input type="text" v-model="search.uri" ></Input>
         </FormItem>
         <FormItem >
@@ -24,7 +24,7 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>
+      <Button type="success" v-if="accessBtn('add')"  @click="selectRow={},showDetail= Math.random()">新增</Button>
       <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
     </div>
   </common-table>
@@ -36,12 +36,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import MenuManageDetail from './menu-manage-detail.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "menu-manage",
     components: {
       CommonTable,
       MenuManageDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
         columns: [

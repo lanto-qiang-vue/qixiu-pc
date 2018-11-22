@@ -58,8 +58,8 @@
                             @click="showImg(listSearch.photo)"/>
                     </div>
                 </Card>
-                
-                <Upload 
+
+                <Upload
                 ref="upload"
                 :show-upload-list="false"
                 :headers="token"
@@ -69,13 +69,17 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-                action="http://192.168.169.190:8888/file/image/add"
+<<<<<<< HEAD
+                action="http://118.25.81.63:8888/file/image/add"
+=======
+                action="/proxy/file/image/add"
+>>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
                 >
                     <Button icon="ios-cloud-upload-outline">上传头像</Button>
                     <span>仅支持PNG、JPG、JPEG、BMP</span>
                 </Upload>
             </FormItem>
-            
+
         </Form>
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
@@ -122,7 +126,7 @@ export default {
                 ],
                 sex: [
                     { required: true,  message: '必填', },
-                    
+
                 ],
                 empUnit: [
                     { required: true,  message: '必填',  }
@@ -133,8 +137,8 @@ export default {
                 photo: [
                     { required: true,  message: '必填',  }
                 ],
-                
-            
+
+
             },
             typeList:[],//学历类别数据------
             infoDriverData:{
@@ -204,7 +208,7 @@ export default {
             content: '<img src="'+img+'" style="width: 100%"/>'
             })
         },
-        
+
         //提交回答------
         saveFun(name){
             this.$refs[name].validate((valid) => {
@@ -243,7 +247,7 @@ export default {
                         }
                 })
             }else{
-                
+
                 this.$axios.post('/expert/add',{
                             "birthDate": formatDate(this.listSearch.birthDate),
                             "degree": this.listSearch.degree,
@@ -267,9 +271,9 @@ export default {
                         }
                 })
             }
-            
+
         },
-        
+
         visibleChange(status){
           if(status === false){
             this.$emit('closeDetail');
@@ -278,18 +282,18 @@ export default {
         },
         //选择文件--------
         handleFormatError (file) {
-            
+
             this.$Modal.confirm({
                 title:"系统提示!",
                 content:"该文件格式不正确，仅支持PNG、JPG、JPEG、BMP",
-                
+
             })
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 this.$refs.upload.fileList.splice(0, 1);
-                
+
             }
             return true;
         },
@@ -327,7 +331,7 @@ export default {
     span{
         float: right;
     }
-    
+
 }
 .content-p{
     padding-left: 55px;
@@ -343,7 +347,7 @@ export default {
   .r-list-search{
     width: 100%;
     padding: 10px 0;
-    
+
 
   }
 
@@ -352,7 +356,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 200px;
       min-width: 200px;
-      
+
       .red{
         color: red;
       }

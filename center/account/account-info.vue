@@ -21,8 +21,8 @@
                                 @click="showImg(listSearch.photo)"/>
                         </div>
                     </Card>
-                    
-                    <Upload 
+
+                    <Upload
                     ref="upload"
                     :show-upload-list="false"
                     :headers="token"
@@ -32,7 +32,11 @@
                     :before-upload="handleBeforeUpload"
                     :on-success="handleSuccess"
                     type="select"
-                    action="http://192.168.169.190:8888/file/image/add"
+<<<<<<< HEAD
+                    action="http://118.25.81.63:8888/file/image/add"
+=======
+                    action="/proxy/file/image/add"
+>>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
                     >
                         <Button icon="ios-cloud-upload-outline">上传头像</Button>
                         <span>仅支持PNG、JPG、JPEG、BMP</span>
@@ -44,7 +48,7 @@
     </div>
 </template>
 <script>
-  
+
   import {  getUser, deepClone } from '@/static/util'
 	export default {
 		name: "account-info",
@@ -91,12 +95,12 @@
                                 title:"系统提示!",
                                 content:"确定要提交吗？",
                                 onOk:this.saveData,
-                                
+
                             })
                     }
                 });
-            
-				
+
+
 			},
             saveData(){
                 this.$axios.post('/user/update', {
@@ -113,7 +117,7 @@
 
                         localStorage.setItem('USERINFO', JSON.stringify(this.userInfo))
                         this.$store.commit('user/setUser', deepClone(this.userInfo))
-                        
+
                     }else{
                         this.$Message.error(res.data.status);
                     }
@@ -129,18 +133,18 @@
             },
             //选择文件--------
             handleFormatError (file) {
-                
+
                 this.$Modal.confirm({
                     title:"系统提示!",
                     content:"该文件格式不正确，仅支持PNG、JPG、JPEG、BMP",
-                    
+
                 })
             },
             handleBeforeUpload () {
                 let fileList = this.$refs.upload.fileList;
                 if(fileList.length>0){
                     this.$refs.upload.fileList.splice(0, 1);
-                    
+
                 }
                 return true;
             },
@@ -158,7 +162,7 @@
             addPhoto(){
                 this.$axios.post('/user/photo', {
                     "url": this.listSearch.photo,
-                    
+
                 }).then( (res) => {
                     console.log(res)
                     if(res.data.code==='0'){

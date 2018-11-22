@@ -31,7 +31,7 @@
     :mask-closable="false"
     :transition-names="['', '']">
 
-    <Upload 
+    <Upload
     ref="upload"
     :headers="token"
     :format="['doc','xls','xlsx']"
@@ -40,13 +40,17 @@
     :before-upload="handleBeforeUpload"
     :on-success="handleSuccess"
     type="select"
-    action="http://192.168.169.190:8888/file/add"
+<<<<<<< HEAD
+    action="http://118.25.81.63:8888/file/add"
+=======
+    action="/proxy/file/add"
+>>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
     >
         <Button type="primary">上传文件</Button>
         <span>(仅支持doc, xls, xlsx)</span>
     </Upload>
     <div slot="footer">
-        <Button  @click="uploadFile" size="large" type="success"  >确定</Button> 
+        <Button  @click="uploadFile" size="large" type="success"  >确定</Button>
         <Button  size="large" type="default"  @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -71,8 +75,8 @@ export default {
                 },
                 {title: '文件名', key: 'filename', sortable: true, minWidth: 120,
                 },
-               
-                
+
+
             ],
             tableData: [],
             page: 1,
@@ -81,7 +85,7 @@ export default {
 
             searchList:{
                 title:'',
-                
+
             },
             showTable:false,
             showDetail: false,
@@ -99,7 +103,7 @@ export default {
     mounted () {
         this.token.token = this.$store.state.user.token;
         this.getList();
-      
+
     },
     methods:{
         getList(){
@@ -119,9 +123,9 @@ export default {
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
-        
+
         changePage(page){
           this.page= page
           this.closeDetail();
@@ -151,7 +155,7 @@ export default {
               content:"确定要删除吗？",
               onOk:this.delFun,
           })
-          
+
         },
         delFun(){
             this.$axios.post('/file/delete/'+this.detailData.id,{
@@ -168,7 +172,7 @@ export default {
               content:"确定要下载吗？",
               onOk:this.downFileFun,
           })
-          
+
         },
         downFileFun(){
             window.location.href = this.detailData.url;
@@ -181,7 +185,7 @@ export default {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.showModal=false;
-                    
+
                     this.$Message.info("提交成功");
                 }else{
                     this.$Message.error(res.data.status);
@@ -193,14 +197,14 @@ export default {
             this.$Modal.confirm({
                 title:"系统提示!",
                 content:"该文件格式不正确,仅支持doc,xls,xlsx",
-                
+
             })
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 this.$refs.upload.fileList.splice(0, 1);
-                
+
             }
             return true;
         },
@@ -210,7 +214,7 @@ export default {
                 // this.search.docPath=res.data.docPath;
                 this.uploadData.info=res.data.info;
                 this.uploadData.fileUrl=res.data.fileUrl;
-                
+
                 this.$Message.info("上传成功");
             }else{
                 this.$Message.error(res.status);
@@ -222,12 +226,12 @@ export default {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 this.$refs.upload.fileList.splice(0, 1);
-                
+
             }
             this.closeDetail();
           }
         },
-        
+
     },
 	}
 </script>

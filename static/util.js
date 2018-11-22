@@ -144,11 +144,13 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
     for(let j in routers)  {
       let route = routers[j]
       if(route.meta&& route.meta.accessId!= undefined){
-        if(menuItem.parentId== 0 && !menuItem.children.length && route.meta.accessId== 0){
+        //如果route文件有设置权限
+        if( !menuItem.children.length && route.meta.accessId== 'root'){
+          //如果是一级
           res= res.concat(matchItem(route.children, menuItem, route.alias))
         }
 
-        if(menuItem.parentId== 0 && route.meta.accessId== menuItem.id){
+        if( route.meta.accessId== menuItem.uri){
           let item={}
           item.meta= route.meta
           item.meta.title= menuItem.name
@@ -168,7 +170,7 @@ export const matchItem = ( routers, menuItem, path) => {
   let arr= []
   for(let i in routers)  {
     let route= routers[i], item={}
-    if(route.meta.accessId== menuItem.id){
+    if(route.meta.accessId== menuItem.uri){
       item.meta= route.meta
       item.meta.title= menuItem.name
       item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
@@ -183,6 +185,7 @@ export const matchItem = ( routers, menuItem, path) => {
       path: menuItem.uri
     })
   }
+  // console.log('matchItem',arr)
   return arr
 }
 
@@ -200,7 +203,7 @@ export const matchList = ( routers, accessMenu, path) => {
     }
     for (let j in routers) {
       let route = routers[j], item={}
-      if(route.meta.accessId== menuItem.id){
+      if(route.meta.accessId== menuItem.uri){
         item.meta= route.meta
         item.meta.title= menuItem.name
         item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
@@ -621,30 +624,15 @@ export const  haveRight = (menuList, id) =>{
 }
 
 export const checkAuth = ({ route, store},redirect, error) =>{
-  // console.log('check-auth', route)
-
-  // console.log('route', meta)
-  // console.log('store.state.user.token', store.state.user.token)
   if (process.client) {
     let meta= route.matched.length>0? route.matched[route.matched.length-1].meta: {}
-    // console.log('check-auth, accessId:', meta.accessId)
     if(store.state.user.token){
       let list= getMenuByRouter2(router, store.state.user.accessMenu)
       if(!haveRight(list, meta.accessId)){
-        // console.log('用户无权限访问此页面' )
-        // return redirect({
-        //   path: '/login',
-        //   query: {
-        //     statusCode: 403,
-        //     message: '用户无权限访问此页面'
-        //   }})
-        // console.log(app)
         error()
       }else{
         // console.log('有权限')
       }
-      // console.log('check-auth: is login', route)
-      // console.log('store', list)
     }else{
       // console.log('not login')
       if(meta && meta.accessId){

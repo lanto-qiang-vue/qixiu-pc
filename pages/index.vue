@@ -456,7 +456,7 @@ export default {
     // }: 'no error')
 
 
-    console.error('error: ', this.error|| 'no error')
+    this.error? console.error('error: ', this.error) : console.log('no-error')
 
   },
   methods:{
