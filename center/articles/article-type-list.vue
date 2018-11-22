@@ -19,8 +19,8 @@
     </div>
     <div slot="operate">
       <Button type="success" v-if=""  @click="selectRow={},showDetail= true">新增</Button>
-      <Button type="primary" v-if=""  @click="showDetail=true" :disabled="!selectRow.id">修改</Button>
-      <Button type="error" v-if=""  @click="del" :disabled="!selectRow.id">删除</Button>
+      <Button type="primary" v-if=""  @click="showDetail=true" :disabled="!selectRow.codeId">修改</Button>
+      <Button type="error" v-if=""  @click="del" :disabled="!selectRow.codeId">删除</Button>
     </div>
   </common-table>
   <Modal
@@ -62,7 +62,7 @@
         columns: [
           {title: '文章类型ID', key: 'codeId',  minWidth: 100},
           {title: '文章类型名', key: 'codeDesc',  minWidth: 100},
-          {title: '文章数量', key: 'num',  minWidth: 100},
+          {title: 'num', key: 'num',  minWidth: 100},
         ],
         tableData: [],
         search:{

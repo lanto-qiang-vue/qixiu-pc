@@ -12,7 +12,7 @@
         <FormItem label="父菜单ID:">
             <Input type="text" v-model="search.parentId" ></Input>
         </FormItem>
-        <FormItem label="菜单uri:">
+        <FormItem label="链接地址:">
           <Input type="text" v-model="search.uri" ></Input>
         </FormItem>
         <FormItem >

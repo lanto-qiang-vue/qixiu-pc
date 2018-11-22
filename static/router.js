@@ -276,6 +276,15 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
+        path: 'banner-manage',
+        meta: {
+          icon: '',
+          title: '广告管理',
+          accessId:'/center/banner-manage',
+        },
+        component: resolve('center/system/banner-manage.vue'),
+      },
+      {
         path: 'user-manage',
         meta: {
           icon: '',
@@ -415,6 +424,7 @@ export default [
       },
     ]
   },
+<<<<<<< HEAD
       {
     path: '/menu30',
     alias: '/center',
@@ -445,6 +455,8 @@ export default [
       },]
   },
  
+=======
+>>>>>>> 1ed3b2a00a23cdea326f3223f8c72f60543d8516
 
   {
     path: '/menu18',
