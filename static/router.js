@@ -276,6 +276,15 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
+        path: 'banner-manage',
+        meta: {
+          icon: '',
+          title: '广告管理',
+          accessId:'/center/banner-manage',
+        },
+        component: resolve('center/system/banner-manage.vue'),
+      },
+      {
         path: 'user-manage',
         meta: {
           icon: '',

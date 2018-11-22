@@ -140,7 +140,7 @@
           this.getList();
         },
       goDetail(isNew){
-          window.location.href= '/center/article-manage/detail' + (isNew ? '': ('?id='+this.selectRow.id))
+          window.location.href= '/center/article-manage/detail' + (isNew ? '?id='+null : ('?id='+this.selectRow.id))
         // this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew}})
         // this.$router.push({path:'/test', query:{ id: isNew}})
       },
@@ -148,9 +148,7 @@
         this.$Modal.confirm({
           title:"确定"+ (this.rowStatus?'取消发布': '发布')+'吗？',
           onOk:()=>{
-            this.$axios.$post('/infopublic/update/status', {
-              "id": this.selectRow.id,
-              "publishStatus": this.rowStatus?'10311002': '10311001',
+            this.$axios.$post('/infopublic/update/status/'+this.selectRow.id, {
             }).then( (res) => {
               if(res.code==='0'){
                 this.$Message.success('修改成功');
