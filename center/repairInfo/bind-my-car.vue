@@ -20,7 +20,7 @@
                 </Select>
             </FormItem>
             <FormItem label="上传行驶证:" style="margin-bottom: 12px;">
-                <div class="pic-card">
+                <div class="pic-card" v-if="accessBtn('uploadDriverLicense')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
@@ -70,7 +70,7 @@
         </Form>
         <Form :label-width="140" v-show="imgFlag">
             <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton">
-                <div class="pic-card">
+                <div class="pic-card" v-if="accessBtn('upload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
@@ -107,7 +107,7 @@
         </Form>
         <Form :label-width="140" v-show="busineFlag">
             <FormItem label="上传营业执照:" style="margin-bottom: 12px;">
-                <div class="pic-card">
+                <div class="pic-card" v-if="accessBtn('upload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
@@ -146,7 +146,7 @@
         
         </div>
         <div slot="footer">
-            <Button  @click="bindFun" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+            <Button v-if="accessBtn('bind')"  @click="bindFun" size="large" type="success"  style="margin-right: 10px;">提交</Button>
             <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
         </div>
         <!--修改身份信息-->
@@ -164,7 +164,7 @@
                     
                 </Form>
                 <div slot="footer">
-                    <Button  @click="updateCard('infoDataTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button v-if="accessBtn('update')"  @click="updateCard('infoDataTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
                     <Button  size="large" type="default" style="margin-right: 10px;" @click="showCard=false;">返回</Button>
                 </div>
         </Modal>
@@ -183,7 +183,7 @@
                     
                 </Form>
                 <div slot="footer">
-                    <Button  @click="updateBusine('infoBusineTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button v-if="accessBtn('update')"  @click="updateBusine('infoBusineTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
                     <Button  size="large" type="default" style="margin-right: 10px;" @click="showBusine=false;">返回</Button>
                 </div>
         </Modal>
@@ -207,7 +207,7 @@
                     </FormItem>
                 </Form>
                 <div slot="footer">
-                    <Button  @click="updateDriverFun('infoDriverDataTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
+                    <Button v-if="accessBtn('update')"  @click="updateDriverFun('infoDriverDataTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
                     <Button  size="large" type="default" style="margin-right: 10px;" @click="showDriver=false;">返回</Button>
                 </div>
         </Modal>
@@ -216,10 +216,12 @@
 
 <script>
 import { getName, getDictGroup, imgToBase64 } from '@/static/util.js'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
     
 	name: "bind-my-car",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
 	return{
         loading:false,//身份证上传----

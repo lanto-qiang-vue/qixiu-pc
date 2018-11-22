@@ -208,9 +208,7 @@
       del() {
         this.$Modal.confirm({
           title: '系统提示', content: '确认删除吗', onOk: () => {
-            this.$axios.post('/manage/transcorp/tccorpinfo/delete', {
-              corpId: this.list.corp_id
-            }).then((res) => {
+            this.$axios.delete('/manage/transcorp/tccorpinfo/delete/'+this.list.id,{}).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('删除成功')
                 this.getList()
@@ -237,7 +235,9 @@
                     this.showModal = false
                     this.getList()
                   }else{
-                    this.$Modal.error({title:'系统提示',content:res.data.status});
+                    setTimeout(()=>{
+                      this.$Modal.error({title:'系统提示',content:res.data.status});
+                    },300)
                   }
                   // console.log(JSON.stringify(res.data));
                 })

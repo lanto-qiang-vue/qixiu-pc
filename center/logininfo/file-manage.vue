@@ -10,14 +10,14 @@
                 <Input type="text" v-model="searchList.title" placeholder="请输入文件名"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 70px;">
-                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="searchFun">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" @click="showModal=true;">上传文件</Button>
+        <Button type="primary" v-if="accessBtn('upload')" @click="showModal=true;">上传文件</Button>
         <Button type="info" v-if="" @click="isDownFun" :disabled="!detailData">下载文件</Button>
-        <Button type="error" v-if="" @click="delquestion" :disabled="!detailData">删除</Button>
+        <Button type="error" v-if="accessBtn('delete')" @click="delquestion" :disabled="!detailData">删除</Button>
     </div>
 
     <Modal
@@ -40,11 +40,9 @@
     :before-upload="handleBeforeUpload"
     :on-success="handleSuccess"
     type="select"
-<<<<<<< HEAD
-    action="http://118.25.81.63:8888/file/add"
-=======
     action="/proxy/file/add"
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
+    
+    v-if="accessBtn('upload')"
     >
         <Button type="primary">上传文件</Button>
         <span>(仅支持doc, xls, xlsx)</span>
@@ -59,12 +57,14 @@
 
 </template>
 <script>
+import funMixin from '~/components/fun-auth-mixim.js'
   import CommonTable from '~/components/common-table.vue'
 export default {
 	name: "file-manage",
     components: {
               CommonTable,
     },
+    mixins: [funMixin],
     data(){
 		return{
             token: {token: ''},

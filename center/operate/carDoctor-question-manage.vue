@@ -14,12 +14,12 @@
                   <Input type="text" v-model="searchList.content" placeholder="请输入问题内容"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
+      <Button type="info" v-if="accessBtn('view')" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
     </div>
     <carDoctor-question-detail :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></carDoctor-question-detail>
   </common-table>
@@ -29,12 +29,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
     import carDoctorQuestionDetail from './carDoctor-question-detail.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "carDoctor-question-manage",
     components: {
       CommonTable,
       carDoctorQuestionDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

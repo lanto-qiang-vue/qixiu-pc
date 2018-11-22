@@ -1,6 +1,6 @@
+<!--车主中心 爱车档案 2018-11-22-->
 <template>
 <div class="menu-manage">
-
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
@@ -13,14 +13,14 @@
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="searchFun" :disabled="!detailData">查看</Button>
-      <Button type="error" v-if=""  @click="removeBindFun" :disabled="!detailData">解绑</Button>
-      <Button type="primary" v-if=""  @click="showDetail=Math.random()" >绑定本人车辆</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="searchFun" :disabled="!detailData">查看</Button>
+      <Button type="error" v-if="accessBtn('removeBind')"  @click="removeBindFun" :disabled="!detailData">解绑</Button>
+      <Button type="primary" v-if="accessBtn('myBind')"  @click="showDetail=Math.random()" >绑定本人车辆</Button>
       <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
     </div>
     
@@ -34,11 +34,14 @@
   import CommonTable from '~/components/common-table.vue'
   import bindMyCar from './bind-my-car.vue'
   import bindOtherCar from './bind-other-car.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
+
 	export default {
 		name: "repair-info",
     components: {
       CommonTable,bindMyCar,bindOtherCar
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,

@@ -20,7 +20,7 @@
                     <Input type="text" v-model="formData.userPass" placeholder="请输入登录密码"></Input>
                 </FormItem>
                 <FormItem :label-width="0">
-                    <Button type="primary" @click="updatePhone" long style="width: 100px; margin-left: 120px;">确认修改</Button>
+                    <Button type="primary" @click="updatePhone" long style="width: 100px; margin-left: 120px;" v-if="accessBtn('edit')">确认修改</Button>
                 </FormItem>
                 
             </Form>
@@ -31,9 +31,11 @@
 </template>
 <script>
     import {  getUser, deepClone } from '@/static/util'
+    import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "change-phone",
     // layout: 'common',
+    mixins: [funMixin],
         data () {
             return {
                 formData: {

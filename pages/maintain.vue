@@ -51,6 +51,13 @@
           {id:"300006",title:'上门泵电'},
           {id:"300007",title:'其它'},
         ],
+        formData:{
+          companyId:null,
+          contactMobile:'',
+          onSiteTime:'',
+          ownerName:'',
+          serviceContent:'',
+        }
       }
     }
   }

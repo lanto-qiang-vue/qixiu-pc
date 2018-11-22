@@ -48,7 +48,7 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" style="margin-right: 10px;" @click="addanswerFun('answerDetail')">提交回答内容</Button>
+        <Button size="large" type="primary" style="margin-right: 10px;" @click="addanswerFun('answerDetail')" v-if="accessBtn('add')">提交回答内容</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -56,9 +56,11 @@
 
 <script>
 import { formatDate } from '@/static/tools.js'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "note-audit-detail",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
 		return{
             spinShow:false,

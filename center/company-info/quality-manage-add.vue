@@ -32,11 +32,7 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-<<<<<<< HEAD
-                action="http://118.25.81.63:8888/file/add"
-=======
                 action="/proxy/file/add"
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
                 >
                     <Button icon="ios-cloud-upload-outline">添加附件</Button>
                     <span>（仅支持txt、zip、doc、docx、xls、xlsx、pdf）</span>

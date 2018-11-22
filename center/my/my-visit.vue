@@ -9,7 +9,7 @@
      
     </div>
     <div slot="operate">
-      <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
       
       
     </div>
@@ -19,11 +19,13 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "my-visit",
     components: {
       CommonTable,
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

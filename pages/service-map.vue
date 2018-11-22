@@ -178,6 +178,9 @@ export default {
     window.location.href= to.fullPath
   },
   methods:{
+    dropIn(){
+      alert(1);
+    },
     getLocation(){
       if(this.map){
         // console.log('AMap.plugin(\'AMap.Geolocation\'')
@@ -317,8 +320,8 @@ export default {
             '<li><span>业户类别：</span>'+ this.formatCategory(this.pointList[i].category)+'</li>' +
             '</ul>'+
             '<div class="button-block">' +
-            '<button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button>'+
-            '<button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button>'+
+            '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
+            '<a href="/maintain/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
             '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
             '</div>'+
             '</div>'+

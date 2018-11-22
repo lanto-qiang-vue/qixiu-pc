@@ -69,11 +69,7 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-<<<<<<< HEAD
-                action="http://118.25.81.63:8888/file/image/add"
-=======
                 action="/proxy/file/image/add"
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
                 >
                     <Button icon="ios-cloud-upload-outline">上传头像</Button>
                     <span>仅支持PNG、JPG、JPEG、BMP</span>
@@ -84,7 +80,7 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" @click="saveFun('listSearch')">提交</Button>
+        <Button size="large" type="primary" @click="saveFun('listSearch')" v-if="accessBtn('edit')">提交</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -93,9 +89,11 @@
 <script>
 import {  imgToBase64,getName } from '@/static/util.js'
   import { formatDate } from '@/static/tools'
+  import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "carDoctor-manage-add",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
 		return{
             loadImg:false,

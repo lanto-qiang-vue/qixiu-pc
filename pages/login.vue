@@ -15,13 +15,13 @@
 
 
 						<div class="form-con">
-							<Form ref="phone" :rules="rulePhone"  :model="formPhone">
+
+							<Form ref="phone" :rules="rulePhone"  :model="formPhone"  @keydown.enter.native="toLogin('phone')">
 								<FormItem prop="userMobile">
 									<Input v-model="formPhone.userMobile" :maxlength="11" placeholder="请输入手机号">
-									<span slot="prepend">
-										<Icon :size="16" type="ios-person"></Icon>
-									</span>
-
+                    <span slot="prepend">
+                      <Icon :size="16" type="ios-person"></Icon>
+                    </span>
 									</Input>
 								</FormItem>
 								<FormItem prop="captcha">
@@ -49,19 +49,20 @@
 					<TabPane label="账号密码登录" name="name2">
 						<div class="login-con-in">
 							<div class="form-con">
-								<Form ref="pass" :model="formPass">
+
+								<Form ref="pass" :model="formPass" @keydown.enter.native="toLogin('pass')">
 								<FormItem prop="userName">
 									<Input v-model="formPass.userName" placeholder="请输入用户名">
-									<span slot="prepend">
-										<Icon :size="16" type="ios-person"></Icon>
+									  <span slot="prepend">
+										  <Icon :size="16" type="ios-person"></Icon>
 										</span>
-											</Input>
+                  </Input>
 								</FormItem>
 								<FormItem prop="password">
-											<Input type="password" v-model="formPass.password" placeholder="请输入密码">
-											<span slot="prepend">
-										<Icon :size="14" type="md-lock"></Icon>
-									</span>
+                  <Input type="password" v-model="formPass.password" placeholder="请输入密码">
+                    <span slot="prepend">
+										  <Icon :size="14" type="md-lock"></Icon>
+									  </span>
 									</Input>
 
 
