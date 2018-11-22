@@ -13,7 +13,7 @@
       <FormItem label="功能名" prop="name">
         <Input type="text" v-model="detail.name" ></Input>
       </FormItem>
-      <FormItem label="按钮ID" prop="btnId">
+      <FormItem label="按钮key" prop="btnId">
         <Input type="text" v-model="detail.btnId" ></Input>
       </FormItem>
       <FormItem label="菜单名" prop="menuId">
@@ -21,7 +21,7 @@
           <Option v-for="(item, index) in menuList" :key="index" :value="item.id">{{item.name}}</Option>
         </Select>
       </FormItem>
-      <FormItem label="链接地址">
+      <FormItem label="接口地址" prop="uri">
         <Input type="text" v-model="detail.uri" ></Input>
       </FormItem>
     </Form>
@@ -52,6 +52,7 @@ export default {
         name: rule,
         btnId: rule,
         menuId: rule,
+        uri: rule,
       },
     }
   },

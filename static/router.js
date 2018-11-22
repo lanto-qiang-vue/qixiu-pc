@@ -397,36 +397,6 @@ export default [
       },
     ]
   },
-  {
-    path: '/menu26',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '预约上门管理',
-      accessId: 72,
-    },
-    component: resolve('components/main.vue'),
-    children: [
-      {
-        path: 'visit-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '上门服务管理',
-          accessId: 73,
-        },
-        component: resolve('center/operate/visit-manage.vue'),
-      },
-      {
-        path: 'order-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '预约维修管理',
-          accessId: 74,
-        },
-        component: resolve('center/operate/order-manage.vue'),
-      },
-      ]
-  },
 
   {
     path: '/menu18',

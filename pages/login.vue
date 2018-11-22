@@ -89,9 +89,9 @@
 				<div>
 					<span>其他方式登录:</span>
 
-					<img src="../assets/img/login_img/qq_logo.png" style="width: 20px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/login_img/wx_logo.png" style="width: 28px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/login_img/zhifu_logo.png" style="width: 25px;margin-right: 10px;cursor: pointer;">
+					<img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px;margin-right: 10px;cursor: pointer;">
+					<img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 28px;margin-right: 10px;cursor: pointer;">
+					<img src="../assets/img/login_img/zhifu_logo.png" @click="uniteLogin('zfb')" style="width: 25px;margin-right: 10px;cursor: pointer;">
 				</div>
             </Card>
 
@@ -253,7 +253,22 @@
 					this.mobileFlag = true;
 				}
 			},
+      uniteLogin(type){
+			  let url='', location= encodeURIComponent(window.location.href)
+			  switch (type){
+          case 'qq':{
+            url= 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101467137&redirect_uri='+
+              location+'&state=qq'
+            break
+          }
+          case 'wx':{
+            url= ''
+          }
+          case 'zfb':{
 
+          }
+        }
+      }
 		}
 	}
 </script>
