@@ -3,7 +3,7 @@
 
     <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                   @changePage="changePage" @changePageSize="changePageSize"
-                  :show="showTable" :page="page" :loading="loading">
+                  :show="showTable" :page="page" :loading="loading" :showOperate=false>
       <div slot="search">
         <Form :label-width="80" class="common-form">
           <FormItem label="维修单号:">
@@ -34,11 +34,11 @@
         loading: false,
         columns: [
           {
-            title: '结算日期', key: 'repairdate', sortable: true, minWidth: 120
+            title: '结算日期', key: 'repairDate', sortable: true, minWidth: 120
           },
           { title: '维修单号', key: 'costlistcode', sortable: true, minWidth: 120 },
-          { title: '维修内容', key: 'faultdescription', sortable: true, minWidth: 135 },
-          { title: '维修车牌', key: 'vehicleplatenumber', sortable: true, minWidth: 120 }
+          { title: '维修内容', key: 'faultDescription', sortable: true, minWidth: 135 },
+          { title: '维修车牌', key: 'plateNumber', sortable: true, minWidth: 120 }
         ],
         tableData: [],
         clearTableSelect: false,
@@ -82,6 +82,7 @@
       //搜索按钮----
       searchFun() {
         this.loading = true
+        this.page=1;
         this.getList()
       }
     }

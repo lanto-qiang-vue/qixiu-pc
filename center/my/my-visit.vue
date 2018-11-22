@@ -34,7 +34,7 @@
           {title: '联系方式', key: 'contactMobile', sortable: true, minWidth: 135},
           {title: '上门服务地址', key: 'contactAddress', sortable: true, minWidth: 120},
           {title: '状态', key: 'status', sortable: true, minWidth: 120,
-            render: (h, params) => h('span',  params.row.status.name)
+            // render: (h, params) => h('span',  params.row.status.name)
           },
         ],
         tableData: [],

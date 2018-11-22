@@ -40,7 +40,7 @@
     :before-upload="handleBeforeUpload"
     :on-success="handleSuccess"
     type="select"
-    action="http://192.168.169.190:8888/file/add"
+    action="http://118.25.81.63:8888/file/add"
     >
         <Button type="primary">上传文件</Button>
         <span>(仅支持doc, xls, xlsx)</span>

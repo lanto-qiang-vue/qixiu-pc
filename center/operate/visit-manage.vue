@@ -23,6 +23,8 @@
     </div>
     <div slot="operate">
         <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="" :disabled="updateFlag"  @click="updateFun">已回复</Button>
+        
       <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
@@ -75,6 +77,7 @@ export default {
         isOrderSuccess:true,//判断是不是预约成功
         showType:null,
         typeFlag:null,
+        updateFlag:true,
       }
     },
     mounted () {
@@ -114,6 +117,11 @@ export default {
             
           this.detailData=row;
           this.typeFlag="visit";
+          if(this.detailData.status!="已回复"){
+              this.updateFlag=false;
+          }else{
+              this.updateFlag=true;
+          }
           
         },
         
@@ -138,6 +146,22 @@ export default {
             (res) => {
                 if(res.data.code=='0'){
                     this.closeDetail();
+                }
+            })
+        },
+        updateFun(){
+            this.$Modal.confirm({
+                title:"系统提示!",
+                content:"确定要回复吗？",
+                onOk:this.updateStatusFun,
+            })
+        },
+        updateStatusFun(){
+            this.$axios.post('/service/edit/'+this.detailData.id,).then(
+            (res) => {
+                if(res.data.code=='0'){
+                    this.closeDetail();
+                    this.updateFlag=true;
                 }
             })
         }

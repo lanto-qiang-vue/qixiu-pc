@@ -69,7 +69,7 @@
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
-                action="http://192.168.169.190:8888/file/image/add"
+                action="http://118.25.81.63:8888/file/image/add"
                 >
                     <Button icon="ios-cloud-upload-outline">上传头像</Button>
                     <span>仅支持PNG、JPG、JPEG、BMP</span>

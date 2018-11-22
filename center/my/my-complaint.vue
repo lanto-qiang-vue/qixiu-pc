@@ -35,7 +35,20 @@
           {title: '反馈企业', key: 'companyName', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '反馈原因', key: 'details', sortable: true, minWidth: 120},
+          {title: '反馈原因', key: 'type', sortable: true, minWidth: 120,
+            render: (h, params) => {
+                  if(params.row.type==1){
+                    return h('div', [
+                        h('span', '维修记录不正确')
+                    ]);
+                  }else if(params.row.type==0){
+                    return h('div', [
+                        h('span', '维修记录未上传')
+                    ]);
+                  }
+
+              }
+        },
           {title: '反馈日期', key: 'createDate', sortable: true, minWidth: 135,
             render: (h, params) => h('span', formatDate(params.row.createDate))
           },
@@ -93,7 +106,9 @@
             let page=this.page-1;
             let strUrl="";
             for(let i in this.searchList){
-                if(this.searchList[i]){
+                if(i=="type"&&this.searchList[i]==0){
+                    strUrl+='&'+i+'='+this.searchList[i];
+                }else if(this.searchList[i]){
                     strUrl+='&'+i+'='+this.searchList[i];
                 }
             }

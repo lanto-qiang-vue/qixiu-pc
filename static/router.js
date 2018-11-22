@@ -74,7 +74,7 @@ export default [
         meta: {
           icon: 'md-funnel',
           title: '运营中心首页',
-          accessId: 29,
+          accessId: 67,
         },
         component: resolve('center/home/operator-home.vue'),
       },
@@ -385,7 +385,64 @@ export default [
         },
         component: resolve('center/company/company-repair-qualify.vue'),
       },
+      {
+        path: 'complaint-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '反馈管理',
+          accessId: 69,
+        },
+        component: resolve('center/company/complaint-manage.vue'),
+      },
+      {
+        path: 'company-note-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '通知管理',
+          accessId: 70,
+        },
+        component: resolve('center/company/company-note-manage.vue'),
+      },
+      {
+        path: 'quality-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '质量信誉考核管理',
+          accessId: 71,
+        },
+        component: resolve('center/company-info/quality-manage.vue'),
+      },
     ]
+  },
+  {
+    path: '/menu26',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '预约上门管理',
+      accessId: 72,
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'visit-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '上门服务管理',
+          accessId: 73,
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-manage',
+        meta: {
+          icon: 'md-funnel',
+          title: '预约维修管理',
+          accessId: 74,
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },
+      ]
   },
 
   {
@@ -513,15 +570,7 @@ export default [
         },
         component: resolve('center/operate/order-manage.vue'),
       },
-      {
-        path: 'complaint-manage',
-        meta: {
-          icon: 'md-funnel',
-          title: '反馈管理',
-          accessId: 409,
-        },
-        component: resolve('center/company/complaint-manage.vue'),
-      },
+      
       {
         path: 'company-repair-data',
         meta: {
@@ -531,6 +580,7 @@ export default [
         },
         component: resolve('center/company/company-repair-data.vue'),
       },
+      
       ]
   },
 

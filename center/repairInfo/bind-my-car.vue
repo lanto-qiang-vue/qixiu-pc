@@ -159,7 +159,7 @@
                         <Input type="text" v-model="infoDataTem.ownerName" placeholder=""></Input>
                     </FormItem>
                     <FormItem label="身份证号:" style="width: 400px;" prop="idCardNo">
-                        <Input type="text" v-model="infoDataTem.idCardNo" placeholder="" :maxlength="17"></Input>
+                        <Input type="text" v-model="infoDataTem.idCardNo" placeholder="" :maxlength="18"></Input>
                     </FormItem>
                     
                 </Form>
@@ -393,7 +393,7 @@ export default {
                     this.infoData.id=res.data.item['creditId'];
                     this.infoData['imageUrl']= 'data:image/png;base64,'+this.infoData['imageData'];
                 }else{
-                    this.$Message.info(res.data.status);
+                    // this.$Message.info(res.data.status);
                 }
            })
         },
@@ -422,7 +422,7 @@ export default {
                    this.infoDriverData.imageUrl='data:image/png;base64,'+this.infoDriverData['imageData'];
                    this.infoDriverData.id=res.data.item.id;
                 }else{
-                    this.$Message.info(res.data.status)
+                    // this.$Message.info(res.data.status)
                 }
            })
         },
@@ -437,9 +437,10 @@ export default {
                         this.infoData['idCardNo']=res.data.item.reviseIdCardNo;
                         this.infoData['ownerName']=res.data.item.reviseOwnerName;
                         this.infoData['imageUrl']='data:image/png;base64,'+res.data.item.frontImage;
+                        this.infoData['id']=res.data.item.creditId;
                     }
                 }else{
-                    this.$Message.info(res.data.status)
+                    // this.$Message.info(res.data.status)
                 }
            })
         },
@@ -465,7 +466,7 @@ export default {
                             this.infoData['ownerName']=this.infoDataTem['ownerName'];
                             this.$Message.info('修改成功')
                         }else{
-                            this.$Message.info(res.data.status)
+                            // this.$Message.info(res.data.status)
                         }
                     })
                 }
@@ -499,7 +500,7 @@ export default {
                                 this.infoDriverData['vin']=this.infoDriverDataTem.vin;
                                 this.$Message.info('修改成功');
                             }else{
-                                this.$Message.info(res.data.status)
+                                // this.$Message.info(res.data.status)
                             }
                     })
                 }
@@ -516,7 +517,7 @@ export default {
                    this.$Message.info('绑定成功');
                    this.showModal=false;
                 }else{
-                    this.$Message.info(res.data.status)
+                    // this.$Message.info(res.data.status)
                 }
            })
         },
@@ -547,7 +548,7 @@ export default {
                     this.infoBusine.id=res.data.item['businessId'];
                     this.infoBusine['imageUrl']= 'data:image/png;base64,'+this.infoBusine['imageData'];
                 }else{
-                    this.$Message.info(res.data.status);
+                    // this.$Message.info(res.data.status);
                 }
            })
         },
@@ -573,7 +574,7 @@ export default {
                                 this.infoBusine['legalPerson']=this.infoBusineTem['legalPerson'];
                                 this.$Message.info('修改成功')
                             }else{
-                                this.$Message.info(res.data.status)
+                                // this.$Message.info(res.data.status)
                             }
                     })
                 }
