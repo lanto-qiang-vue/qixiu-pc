@@ -64,19 +64,18 @@
   </div>
   <div class="block" v-show="type==7">
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/满意度调查.png"/><p>满意度调查</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/维修投诉.png"/><p>维修反馈</p></nuxt-link>
+    <nuxt-link tag="a" to="/feedback" target="_blank"><img src="/img/menu-icon/维修投诉.png"/><p>维修反馈</p></nuxt-link>
   </div>
   <div class="block" v-show="type==8">
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/在线商务.png"/><p>在线商务</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/商务合作.png"/><p>商务合作</p></nuxt-link>
   </div>
   <div class="block" v-show="type==9">
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/二手车市场.png"/><p>二手车服务</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/车辆保险.png"/><p>保险数据服务</p></nuxt-link>
+    <nuxt-link tag="a" to="/partner" target="_blank"><img src="/img/menu-icon/二手车市场.png"/><p>二手车服务</p></nuxt-link>
+    <nuxt-link tag="a" to="/partner" target="_blank"><img src="/img/menu-icon/车辆保险.png"/><p>保险数据服务</p></nuxt-link>
   </div>
 </div>
 </template>
-
 <script>
 	export default {
 		name: "icon-block",

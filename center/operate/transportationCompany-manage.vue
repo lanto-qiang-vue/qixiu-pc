@@ -237,7 +237,9 @@
                     this.showModal = false
                     this.getList()
                   }else{
-                    this.$Modal.error({title:'系统提示',content:res.data.status});
+                    setTimeout(()=>{
+                      this.$Modal.error({title:'系统提示',content:res.data.status});
+                    },300)
                   }
                   // console.log(JSON.stringify(res.data));
                 })
