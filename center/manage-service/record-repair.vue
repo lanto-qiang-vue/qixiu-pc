@@ -31,13 +31,13 @@
         </FormItem>
         
             <FormItem :label-width="0" style="width: 90px;">
-                <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
                 
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
     </div>
     <record-repair-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></record-repair-detail>
 </common-table>
@@ -48,12 +48,14 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "record-repair",
     components: {
       CommonTable,
       recordRepairDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,

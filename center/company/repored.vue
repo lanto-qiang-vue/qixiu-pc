@@ -13,7 +13,7 @@
             <Input type="text" v-model="search.vehicleplatenumber" placeholder="请输入维修车牌"></Input>
           </FormItem>
           <FormItem :label-width="0" style="width: 100px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
           </FormItem>
         </Form>
       </div>
@@ -23,12 +23,13 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'repored',
     components: {
       CommonTable
     },
+    mixins: [funMixin],
     data() {
       return {
         loading: false,

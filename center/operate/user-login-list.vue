@@ -9,7 +9,7 @@
                   <DatePicker type="daterange" v-model="search.dateArr" placement="bottom-start" placeholder="请选择"></DatePicker>
               </FormItem>
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
@@ -24,12 +24,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { formatDate } from '@/static/tools'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "user-login-list",
     components: {
       CommonTable,
       
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

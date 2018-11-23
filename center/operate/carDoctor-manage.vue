@@ -15,14 +15,14 @@
                   <Input type="text" v-model="search.empUnit" placeholder="请输入就职企业"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="info" v-if="" :disabled="!detailData" @click="showDetail=Math.random();">查看|编辑</Button>
-      <Button type="error" v-if="" :disabled="!detailData"  @click="delFun">删除</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="info" v-if="accessBtn('view')" :disabled="!detailData" @click="showDetail=Math.random();">查看|编辑</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="delFun">删除</Button>
     </div>
     <carDoctor-manage-add :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></carDoctor-manage-add>
   </common-table>
@@ -32,12 +32,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import carDoctorManageAdd from './carDoctor-manage-add'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "carDoctor-manage",
     components: {
       CommonTable,
       carDoctorManageAdd
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,

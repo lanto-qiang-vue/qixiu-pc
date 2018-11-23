@@ -17,14 +17,14 @@
             </Select>
         </FormItem>
         <FormItem :label-width="0" style="width: 90px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('list')" @click="searchFun">搜索</Button>
         </FormItem>
 
     </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" @click="showAdd=Math.random();">新增</Button>
-        <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
+        <Button type="primary" v-if="accessBtn('add')" @click="showAdd=Math.random();">新增</Button>
+        <Button type="info" v-if="accessBtn('detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
     </div>
 <quality-manage-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></quality-manage-detail>
 <quality-manage-add :showDetail="showAdd" @closeDetail="closeDetail"></quality-manage-add>
@@ -37,6 +37,7 @@
 import CommonTable from '~/components/common-table.vue'
 import qualityManageDetail from './quality-manage-detail.vue'
 import qualityManageAdd from './quality-manage-add.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "quality-manage",
     components: {
@@ -44,6 +45,7 @@ export default {
       qualityManageDetail,
       qualityManageAdd
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,

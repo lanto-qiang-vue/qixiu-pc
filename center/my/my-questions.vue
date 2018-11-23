@@ -16,13 +16,13 @@
                   <Input type="text" v-model="search.input" placeholder="请输入关键字"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" :disabled="!detailData" @click="searchFun">查看</Button>
-      <Button type="error" v-if="" :disabled="!detailData"  @click="delquestion">删除</Button>
+      <Button type="info" v-if="accessBtn('view')" :disabled="!detailData" @click="searchFun">查看</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="delquestion">删除</Button>
     </div>
   </common-table>
 </div>
@@ -30,11 +30,13 @@
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "my-questions",
     components: {
       CommonTable,
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:false,

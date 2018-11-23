@@ -14,12 +14,12 @@
                                 <DatePicker type="daterange" v-model="receiveList.startDate" placement="bottom-start" placeholder="请选择时间"></DatePicker>
                             </FormItem>
                             <FormItem :label-width="0" style="width: 70px;">
-                                <Button type="primary" v-if="" @click="closeDetail1">搜索</Button>
+                                <Button type="primary" v-if="accessBtn('query')" @click="closeDetail1">搜索</Button>
                             </FormItem>
                 </Form>
             </div>
             <div slot="operate">
-            <Button type="info" v-if="" @click="showDetail1=Math.random();" :disabled="!detailData1">查看</Button>
+            <Button type="info" v-if="accessBtn('view')" @click="showDetail1=Math.random();" :disabled="!detailData1">查看</Button>
             </div>
             <common-notes-detail :showDetail="showDetail1" :detailData="detailData1" @closeDetail="closeDetail1" ></common-notes-detail>
 
@@ -29,6 +29,7 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
 import CommonNotesDetail from '~/components/common-notes-detail.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 
 	export default {
 		name: "company-note-manage",
@@ -36,6 +37,7 @@ import CommonNotesDetail from '~/components/common-notes-detail.vue'
       CommonTable,
       CommonNotesDetail,
     },
+    mixins: [funMixin],
     data(){
 		  return{
               typeList: [

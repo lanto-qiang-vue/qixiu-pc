@@ -6,7 +6,7 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
     <div  slot="search"  >
-        <Form :label-width="70" class="common-form">
+        <Form :label-width="90" class="common-form">
             <FormItem label="联系人:">
                 <Input type="text" v-model="search.input" placeholder="请输入联系人"></Input>
             </FormItem>
@@ -14,18 +14,18 @@
                 <Input type="text" v-model="search.select" placeholder="请输入联系方式"></Input>
             </FormItem>
             <FormItem label="服务地址:">
-                <Input type="text" v-model="search.select" placeholder="请输入上门服务地址"></Input>
+                <Input type="text" v-model="search.addr" placeholder="请输入上门服务地址"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
-        <Button type="primary" v-if="" :disabled="updateFlag"  @click="updateFun">已回复</Button>
+        <Button type="primary" v-if="accessBtn('query')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="accessBtn('update')" :disabled="updateFlag"  @click="updateFun">已回复</Button>
         
-      <Button type="error" v-if="" :disabled="!detailData"  @click="deleteFun">删除</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
   </common-table>
@@ -35,6 +35,7 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import selectRepairCompany from '~/components/select-repair-company.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 
 export default {
 	name: "visit-manage",
@@ -42,6 +43,7 @@ export default {
       CommonTable,
       selectRepairCompany
     },
+    mixins: [funMixin],
     data(){
 	    return{
         loading:true,
@@ -66,6 +68,7 @@ export default {
         search:{
           input: '',
           select: '',
+          addr:''
         },
         page: 1,
         limit: 10,
@@ -89,7 +92,9 @@ export default {
         getList(){
           this.loading=true;
             this.$axios.post('/service/list', {
-                     
+                     "contactAddress": this.search.addr,
+                        "contactMobile": this.search.select,
+                        "ownerName": this.search.input,
                       "pageNo": this.page,
                       "pageSize": this.limit,
                       

@@ -1,3 +1,4 @@
+<!--  修改用户信息   -->
 <template>
     <div style="height: 100%;overflow: auto;">
         <div style="margin-top: 40px;">
@@ -12,7 +13,7 @@
                     <Input type="text" v-model="formData.userEmail" placeholder="请使用常用邮箱" style="width: 250px;"></Input>
                 </FormItem>
                 <FormItem :label-width="0" style="width: 100%">
-                    <Button type="primary" long style="width: 100px; margin-left: 120px;" @click="handleSubmit('formData')">确认修改</Button>
+                    <Button type="primary" long style="width: 100px; margin-left: 120px;" @click="handleSubmit('formData')" v-if="accessBtn('edit')">确认修改</Button>
                 </FormItem>
                 <FormItem label="头像:"   style="width: 100%">
                     <Card class="pic-card" >
@@ -32,11 +33,8 @@
                     :before-upload="handleBeforeUpload"
                     :on-success="handleSuccess"
                     type="select"
-<<<<<<< HEAD
-                    action="http://118.25.81.63:8888/file/image/add"
-=======
                     action="/proxy/file/image/add"
->>>>>>> a22a43725d47b59ea82f47165eb7933ba5a4bf71
+                    v-if="accessBtn('uploadImage')"
                     >
                         <Button icon="ios-cloud-upload-outline">上传头像</Button>
                         <span>仅支持PNG、JPG、JPEG、BMP</span>
@@ -50,9 +48,11 @@
 <script>
 
   import {  getUser, deepClone } from '@/static/util'
+  import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "account-info",
         // layout: 'common',
+        mixins: [funMixin],
         data () {
             return {
                 formData: {
