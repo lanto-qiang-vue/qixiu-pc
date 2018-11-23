@@ -51,6 +51,7 @@ module.exports = {
     { src: '~/plugins/browser-util.js', ssr: false },
     { src: '~/plugins/swiper', ssr: false },
     { src: '~/plugins/lightbox', ssr: false },
+    { src: '~/plugins/router-refresh', ssr: false },
   ],
 
   /*

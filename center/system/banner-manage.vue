@@ -29,7 +29,7 @@
     <Modal
       v-model="showModal"
       :mask-closable="false"
-      title="广告管理"
+      title="banner详情"
       width="70"
       :scrollable="true"
       :transfer="false"

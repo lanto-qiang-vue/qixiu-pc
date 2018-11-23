@@ -134,15 +134,6 @@ export default {
   mounted(){
     // console.log(this.$route)
   },
-  watch:{
-    ask(item){
-      console.log('ask',item)
-      if(!this.$store.state.user.token) this.$router.push({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-    }
-  },
   methods:{
     getList(page){
       if(page) this.search.pageNo= page
@@ -166,15 +157,22 @@ export default {
       this.ask.images.splice(index, 1)
     },
     toAsk(){
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.$axios.$post('/question/add', this.ask).then( (res) => {
-            if(res.code==='0') this.$Message.success('提问成功！审核后可显示。');
-          })
-        } else {
-          this.$Message.error('请输入必填项!');
-        }
-      })
+      if(!this.$store.state.user.token){
+        this.$router.push({
+          path: '/login',
+          query: { redirect: this.$route.fullPath }
+        })
+      }else {
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.$axios.$post('/question/add', this.ask).then( (res) => {
+              if(res.code==='0') this.$Message.success('提问成功！审核后可显示。');
+            })
+          } else {
+            this.$Message.error('请输入必填项!');
+          }
+        })
+      }
     }
   }
 }

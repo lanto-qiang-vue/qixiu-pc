@@ -9,7 +9,7 @@
     <div  slot="search"  >
       <Form :label-width="100" class="common-form">
           <FormItem label="区域:">
-            <Select v-model="searchList.area" clearable>
+            <Select v-model="searchList.area.key" clearable>
                 <Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
             </Select>
         </FormItem>
@@ -114,7 +114,9 @@ export default {
         ],
         tableData: [],
         searchList:{
-            "area": "",//区域
+            "area": {
+              key: ''
+            },//区域
             "businessStatus": "",//企业状态
             "buttJoin": "",//是否对接
             "companyCategory": '',//维修企业类型
@@ -172,7 +174,8 @@ export default {
                 }else if(this.searchList[i]=="否"){
                     upData[i]=false;
                 }else{
-                    upData[i]=this.searchList[i];
+                  if(i=='area' &&!this.searchList[i].key) upData[i]= null
+                  else upData[i]=this.searchList[i];
                 }
             }
             console.log(upData["uploadMonth"],this.manageArr);
@@ -249,7 +252,7 @@ export default {
                 // console.log('res',res)
 
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
-                
+
 
                 let a = document.createElement('a');
                     a.download = '导出.xlsx';
@@ -325,7 +328,7 @@ export default {
                 this.searchList.sortOrder="'"+value+"' "+type;
                 this.getList();
             }
-            
+
         },
         //搜索按钮----
         searchFun(){

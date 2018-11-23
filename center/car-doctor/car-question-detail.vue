@@ -26,7 +26,7 @@
                     <div class="pic-body">
                         <img  class="pic" :src="item" @click="showImg(item)"/>
                     </div>
-                    
+
                 </Card>
             </FormItem>
             <FormItem label="回答内容:" style="width: 80%;" prop="answerdata">
@@ -48,7 +48,7 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" style="margin-right: 10px;" @click="addanswerFun('answerDetail')" v-if="accessBtn('add')">提交回答内容</Button>
+        <Button size="large" type="primary" style="margin-right: 10px;" @click="addanswerFun('answerDetail')" v-if="accessBtn('answer')">提交回答内容</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -79,7 +79,7 @@ export default {
                     { required: true, message: '请填写', },
                 ],
             },//规则验证
-        
+
         }
     },
     watch:{
@@ -166,7 +166,7 @@ export default {
     span{
         float: right;
     }
-    
+
 }
 .content-p{
     padding-left: 55px;
@@ -182,7 +182,7 @@ export default {
   .r-list-search{
     width: 100%;
     padding: 10px 0;
-    
+
 
   }
 
@@ -191,7 +191,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 200px;
       min-width: 200px;
-      
+
       .red{
         color: red;
       }

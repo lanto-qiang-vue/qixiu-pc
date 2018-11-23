@@ -60,7 +60,7 @@ export default {
       }
       // this.openedNames= arr
       return arr
-    }
+    },
   },
   mounted(){
     // console.log('main-mounted', this.$route)
@@ -75,7 +75,8 @@ export default {
       }
 
       if(meta && meta.href){
-        window.location.href= name
+        // window.location.href= name
+        window.open(meta.href)
       }else{
         this.$router.push({
           path: name

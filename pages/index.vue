@@ -19,7 +19,8 @@
         <p>关注微信</p>
         <img src="../assets/img/index/qrcode_weixin.jpg">
       </div>
-      <a href="/czzn"><img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></a>
+      <uxt-link tag="a" to="/article/guide">
+        <img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></uxt-link>
     </div>
 
     <login-status :isIndex="true"></login-status>
@@ -29,11 +30,12 @@
       <!-- slides -->
       <swiper-slide v-for="(item, index) in banners" :key="index">
         <div class='dummy'></div>
-        <div class='content'>
-          <a :href="item.url" class="banner-body">
-            <img :src="item.img">
-          </a>
-        </div>
+        <ul class='content'>
+          <li class="banner-body" :style="(item.linkUrl&&item.linkUrl!='/')?'cursor: pointer;':''"
+             @click="clickBanner(item.linkUrl, item.linkTarget)">
+            <img :src="item.imageUrl">
+          </li>
+        </ul>
       </swiper-slide>
 
       <!-- Optional controls -->
@@ -80,7 +82,8 @@
     <div class="right">
       <div class="title"><div><h1>维修服务查询</h1><p>快速定位，为您提供满意的服务</p></div></div>
       <div class="query">
-        <div><Input v-model="search.q" size="large" placeholder="输入维修企业名称/地址" /></div>
+        <div><Input v-model="search.q" size="large" placeholder="输入维修企业名称/地址"
+                    @on-enter="query" @on-change="$refs.hot.clearSingleSelect()"/></div>
         <div class="select">
           <Select v-model="search.sort" size="large" placeholder="企业排序" clearable style="width:19%;">
             <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
@@ -91,7 +94,8 @@
           <Select v-model="search.area" size="large" placeholder="企业区域" clearable style="width:19%;">
             <Option v-for="(item, index) in area" :value="item.key" :key="index">{{item.name}}</Option>
           </Select>
-          <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;">
+          <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;" ref="hot"
+                  @on-change='selectHot' >
             <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
           <Button size="large" type="primary" style="" @click="query">查询</Button>
@@ -293,7 +297,7 @@ export default {
       let latest= res10281013.concat(res10281020)
       let hottest= deepClone(latest)
       latest.sort(function (a,b) {
-        return (new Date(a.CREATE_TIME|| 0) > new Date(b.CREATE_TIME || 0))? -1: 1
+        return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
       })
       for (let i in hottest){
         let temp={}
@@ -336,11 +340,11 @@ export default {
       // if(err.response && err.response.config && err.response.data){
 
         setData.error=  {
-          url: err.response.config.url,
+          url: err.response.config?err.response.config.url: '',
           // headers: JSON.stringify(err.response.config.headers),
           status: err.response.status,
           statusText: err.response.statusText,
-          headers: err.response.config.headers,
+          headers: err.response.config?err.response.config.headers: '',
           data: err.response.config.data,
           response: JSON.stringify(err.response.data),
           // response: err.response.data
@@ -358,13 +362,7 @@ export default {
   },
   data () {
     return {
-      banners:[
-        {url: '/', img: '/img/banner/banner-4.jpg'},
-        {url: '/', img: '/img/banner/banner-5.jpg'},
-        {url: '/', img: '/img/banner/banner-6.jpg'},
-        {url: '/', img: '/img/banner/banner-7.jpg'},
-        {url: '/', img: '/img/banner/banner-8.jpg'},
-      ],
+      banners:[],
       swiperOption: {
         // slidesPerView : 3,
         centeredSlides : true,
@@ -388,8 +386,12 @@ export default {
       },
       showSwiper: false,
       search:{
+        type: '1',
         q: '',
+        sort:'',
         area: '',
+        is4s: '',
+        hot: '',
       },
       area: [],
       sort:[
@@ -399,8 +401,8 @@ export default {
       ],
       maintainType:[
         {name: '全部', value: ''},
-        {name: '4S店', value: 1},
-        {name: '维修厂', value: 0},
+        {name: '4S店', value: 'yes'},
+        {name: '维修厂', value: 'no'},
       ],
       hot:[
         {name: '默认', value: ''},
@@ -428,7 +430,7 @@ export default {
   mounted(){
 
     let self= this
-    this.showSwiper= true
+    this.getBanner()
 
     $(".service .left ul li, .service .left .icon-block").hover(function () {
       self.iconBlockShow= true
@@ -457,12 +459,44 @@ export default {
 
 
     this.error? console.error('error: ', this.error) : console.log('no-error')
-
+    this.getArea()
   },
   methods:{
     query(){
-      window.location.href= '/service-map'
-      // this.$router.push('/service-map')
+      this.$router.push({path:'/service-map', query: this.search})
+    },
+    selectHot(val){
+      if(val) this.search.q= val
+    },
+    getArea(){
+      this.$axios.$post('/area/list', {
+        parentCode: '310000'
+      }).then( (res) => {
+        this.area= res.items
+      })
+    },
+    getBanner(){
+      this.$axios.$post('/banner/query', {
+        terminal: 'P'
+      }).then( (res) => {
+        this.banners= res.items
+        this.showSwiper= true
+      })
+    },
+    clickBanner(url, target){
+      if(url){
+        if(url=='/'){
+          return
+        }else{
+          if(target== '_blank'){
+            window.open(url, "_blank")
+          }else if(url.indexOf('http')>=0){
+            window.location.href= url
+          }else{
+            this.$router.push(url)
+          }
+        }
+      }
     }
   }
 }

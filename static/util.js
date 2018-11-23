@@ -135,7 +135,8 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
     if( menuItem.uri && menuItem.uri.indexOf('http')>=0){
       res.push({
         meta: {
-          title: menuItem.name
+          title: menuItem.name,
+          href: menuItem.uri
         },
         path: menuItem.uri
       })
@@ -177,14 +178,14 @@ export const matchItem = ( routers, menuItem, path) => {
       arr.push(item)
     }
   }
-  if(!arr.length && menuItem.uri && menuItem.uri.indexOf('http')>=0){
-    arr.push({
-      meta: {
-        title: menuItem.name
-      },
-      path: menuItem.uri
-    })
-  }
+  // if(!arr.length && menuItem.uri && menuItem.uri.indexOf('http')>=0){
+  //   arr.push({
+  //     meta: {
+  //       title: menuItem.name
+  //     },
+  //     path: menuItem.uri
+  //   })
+  // }
   // console.log('matchItem',arr)
   return arr
 }

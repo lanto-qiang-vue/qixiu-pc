@@ -22,7 +22,7 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="accessBtn('add')" @click="showDetail=Math.random();" :disabled="!detailData">回答</Button>
+      <Button type="info" v-if="accessBtn('answer')" @click="showDetail=Math.random();" :disabled="!detailData">回答</Button>
     </div>
     <car-question-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></car-question-detail>
 </common-table>
@@ -43,9 +43,9 @@ export default {
     data(){
 		  return{
               loading:false,
-              
+
         columns: [
-          
+
           {title: '问题内容', key: 'content', sortable: true, minWidth: 200,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
@@ -57,10 +57,10 @@ export default {
           {title: '提问用户', key: 'userName', sortable: true, minWidth: 110},
           {title: '回答专家', key: 'lastAnswerName', sortable: true, minWidth: 110},
           {title: '回答时间', key: 'lastAnswerTime', sortable: true, minWidth: 150},
-          
+
         ],
         tableData: [],
-        
+
         searchList:{
             category:"",
             content:""
@@ -77,8 +77,8 @@ export default {
       }
     },
     mounted () {
-      
-      
+
+
       this.getType(1040);
       this.getList();
     },
@@ -131,11 +131,11 @@ export default {
         searchFun(){
             this.closeDetail();
         },
-        
-        
-      
 
-        
+
+
+
+
     },
 	}
 </script>

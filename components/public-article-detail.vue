@@ -2,7 +2,7 @@
 <div class="article-detail">
   <p class="title">{{title}}</p>
   <div v-html="detail"></div>
-  <BackTop></BackTop>
+  <BackTop v-if="$route.fullPath.indexOf('center')<0 "></BackTop>
 </div>
 </template>
 

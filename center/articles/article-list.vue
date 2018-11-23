@@ -140,8 +140,8 @@
           this.getList();
         },
       goDetail(isNew){
-          window.location.href= '/center/article-manage/detail' + (isNew ? '?id='+null : ('?id='+this.selectRow.id))
-        // this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew}})
+          // window.location.href= '/center/article-manage/detail' + (isNew ? '?id='+null : ('?id='+this.selectRow.id))
+        this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew? undefined: this.selectRow.id}})
         // this.$router.push({path:'/test', query:{ id: isNew}})
       },
       changeStatus(){
