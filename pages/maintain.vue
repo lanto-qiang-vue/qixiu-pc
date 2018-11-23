@@ -46,10 +46,10 @@
         companyName:'',
         formData:{
           companyId:null,
-          contactMobile:'联系电话',
-          onSiteTime:'2018-11-06',
-          ownerName:'联系人',
-          serviceContent:'服务内容',
+          contactMobile:'',
+          onSiteTime:'',
+          ownerName:'',
+          serviceContent:'',
         },
         rules:{
           contactMobile:{required:true,message:'手机号必填'},
@@ -68,7 +68,7 @@
               onOk: () => {
                 this.$axios.post('/service/order/add', this.formData).then((res) => {
                   if(res.data.code == 0){
-                    window.location.href = "center/my-order";
+                    window.location.href = "/center/my-order";
                   }else{
                     setTimeout(()=>{
                       this.$Modal.error({

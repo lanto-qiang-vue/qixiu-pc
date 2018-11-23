@@ -45,9 +45,9 @@ export default {
       checkId:[],
       formData:{
         companyId:null,
-        contactAddress:'联系地址',
-        contactMobile:'联系电话',
-        ownerName:'联系人',
+        contactAddress:'',
+        contactMobile:'',
+        ownerName:'',
         serviceType:'',
       },
       rules:{
