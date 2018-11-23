@@ -424,7 +424,7 @@ export default [
       },
     ]
   },
-<<<<<<< HEAD
+
       {
     path: '/menu30',
     alias: '/center',
@@ -455,9 +455,6 @@ export default [
       },]
   },
  
-=======
->>>>>>> 1ed3b2a00a23cdea326f3223f8c72f60543d8516
-
   {
     path: '/menu18',
     alias: '/center',

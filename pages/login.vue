@@ -253,7 +253,7 @@
 					this.mobileFlag = true;
 				}
 			},
-<<<<<<< HEAD
+
 			handleFun(name){
 				if(name=="tel"){
 					
@@ -261,8 +261,7 @@
 				}else if(name=="tenant"){
 					this.handleSubmit();
 				}
-			}
-=======
+			},
       uniteLogin(type){
 			  let url='', location= encodeURIComponent(window.location.href)
 			  switch (type){
@@ -275,7 +274,6 @@
             url= ''
           }
           case 'zfb':{
->>>>>>> 1ed3b2a00a23cdea326f3223f8c72f60543d8516
 
           }
         }
