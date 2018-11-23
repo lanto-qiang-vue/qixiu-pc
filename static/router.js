@@ -236,6 +236,15 @@ export default [
         },
         component: resolve('center/account/change-phone.vue'),
       },
+      {
+        path: 'change-password',
+        meta: {
+          icon: '',
+          title: '更换手机号码',
+          accessId: '/center/updatePass',
+        },
+        component: resolve('center/account/change-password.vue'),
+      },
     ]
   },
   {

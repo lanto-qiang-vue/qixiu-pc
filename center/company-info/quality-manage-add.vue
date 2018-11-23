@@ -62,7 +62,7 @@ export default {
             search:{
                 "content":"",
                 "title":"",
-                docPath:'',
+                "docPath":'',
             },
             ruleValidate: {
                 content:[
@@ -108,10 +108,8 @@ export default {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$axios.post('/reputation-assessmant/add', {
-
-
                                 "description": this.search.content,
-                                "fileurl": this.search.docPath,
+                                "fileUrl": this.search.docPath,
                                 "status": "1",
                                 "title": this.search.title,
                         }).then( (res) => {
@@ -120,7 +118,7 @@ export default {
                                 this.showModal=false;
 
                             }else{
-                                this.$Message.error(res.data.status);
+                                // this.$Message.error(res.data.status);
                             }
                     })
 
@@ -150,10 +148,10 @@ export default {
         handleSuccess(res,file,fileList){
             console.log(res,file,fileList);
             if(res.code=="0"){
-                this.search.docPath=res.data.docPath;
+                this.search.docPath=res.item.path;
                 this.$Message.info("上传成功");
             }else{
-                this.$Message.error(res.status);
+                // this.$Message.error(res.status);
             }
         }
 

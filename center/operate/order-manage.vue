@@ -15,7 +15,7 @@
             </FormItem>
             
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="accessBtn('list')" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
             </FormItem>
         </Form>
     </div>
@@ -49,7 +49,7 @@ export default {
         {title: '序号',  minWidth: 80,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1)
           },
-          {title: '预约联系人', key: 'ownerName', sortable: true, minWidth: 120,
+          {title: '预约联系人', key: 'ownerName', sortable: true, minWidth: 130,
           },
           {title: '预约状态', key: 'handleStatus', sortable: true, minWidth: 120,
             render: (h, params) => h('span',  (params.row.handleStatus&&params.row.handleStatus.name)||'')
@@ -131,7 +131,7 @@ export default {
         closeDetail(){
           this.detailData= null;
           this.clearTableSelect= Math.random();
-          this.page=1;
+          
           this.getList();
         },
         //删除按钮----------

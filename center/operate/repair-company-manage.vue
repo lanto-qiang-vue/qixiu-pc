@@ -13,14 +13,14 @@
               </FormItem>
               
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
-      <Button type="error" v-if="" @click="delFun" :disabled="!detailData">删除</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="info" v-if="accessBtn('edit')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+      <Button type="error" v-if="accessBtn('delete')" @click="delFun" :disabled="!detailData">删除</Button>
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
   </common-table>
@@ -30,13 +30,14 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import repairCompanyInfo from './repair-company-info.vue'
-
+import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "repair-company-manage",
     components: {
       CommonTable,
       repairCompanyInfo
     },
+    mixins: [funMixin],
     data(){
 		  return{
         loading:true,
@@ -115,7 +116,7 @@
         closeDetail(){
           this.detailData= null;
           this.clearTableSelect= Math.random();
-          this.page=1;
+          
           this.getList();
         },
         //删除按钮数据--------

@@ -12,10 +12,10 @@
       <!--head? -->
       <div class="head">
         <!--<div class="left">-->
-            <h1>{{ info.companyName }}<span id="status">{{info.status}}</span></h1>
+            <h1>{{ info.name }}<span id="status">{{info.status}}</span></h1>
             <div class="icon"><img src="/img/garage-info/营业执照.png"><img src="/img/garage-info/认证.png"></div>
-            <div class="address"><span>{{info.companyAddress}}</span><a >导航地图</a></div>
-            <div class="tel"><span>{{info.companyTel}}</span></div>
+            <div class="address"><span>{{info.addr}}</span><a >导航地图</a></div>
+            <div class="tel"><span>{{info.tel}}</span></div>
             <div class="button"><a >上门服务</a><a >预约服务</a></div>
         <!--</div>-->
         
@@ -23,15 +23,15 @@
         <div class="right" v-show="info.avgCompany">
           <div class="point"><span>{{info.avgCompany}}</span>分</div>
           <div class="avg"><span id="average"></span>低于同类平均水平</div>
-          <div class="star">
-            <img src="/img/garage-info/yellow.png" v-for="i in parseInt(info.avgCompany)" :key="i">
+          <div class="star" v-if="info.avgCompany">
+            <img src="/img/garage-info/yellow.png"  v-for="i in parseInt(info.avgCompany)" :key="i">
           </div>
         </div>
       </div>
       <div class="info">
         <h1>企业档案</h1>
         <div class="block">
-          <p class="p1">企业性质：<span>{{info.companyProperty}}</span></p>
+          <p class="p1">企业性质：<span>{{info.bizScope}}</span></p>
           <p class="p1">行业信誉评级：<span>{{info.crediRating}}</span></p>
           <p class="p1">评分：<span>{{info.avgCompany?info.avgCompany:'暂无'}}</span></p>
         </div>
@@ -42,7 +42,7 @@
         <div class="block">
           <label>服务支持</label>
           <ul>
-            <!--<li  v-for="item in info.serveSupports" >{{item}}</li>-->
+            <li v-if="info.serveSupports" v-for="item in info.serveSupports" :key="item">{{item}}</li>
           </ul>
         </div>
         <div class="block">
@@ -54,12 +54,12 @@
       </div>
       <div class="appraise">
         <h1>服务评价</h1>
-        <!--<div class="tag">
+        <div class="tag">
           <ul>
-            <li  v-for="item in info.companyShowWors">{{item}}</li>
+            <li v-if="info.companyShowWors"  v-for="item in info.companyShowWors">{{item}}</li>
           </ul>
           <span>共<em id="number"></em>条评价</span>
-        </div>-->
+        </div>
         <div class="stars">
           <span>履约情况 <i v-html="getStars(info.avgKeepAppointment)"></i>
             <em>{{ getGrade(info.avgKeepAppointment)}}</em></span>
@@ -72,14 +72,33 @@
           <span>维修价格 <i v-html="getStars(info.avgPrice)"></i>
             <em>{{ getGrade(info.avgPrice)}}</em></span>
         </div>
+
         <ul id="list">
+          <li v-for="item in tableData">
+            <div class="left">
+              <img :src="item.photo">
+            </div>
+            <div class="right">
+                <p class="black">
+                  <span>车友：{{item.vehicleNum}}</span>
+                  <span>点评日期：{{item.createDate}}</span>
+                  <span>评分：{{item.userAvgScore}}</span>
+                </p>
+                <p class="gray">评分详情：
+                    <span>履约：{{item.keepAppointment}}</span>
+                    <span>态度：{{item.attitude}}</span>
+                    <span>质量：{{item.quality}}</span>
+                    <span>速度：{{item.speed}}</span>
+                    <span>价格：{{item.price}}</span>
+                </p>
+            </div>
+          </li>
         </ul>
+
         <div id="pagebar">
           
-          <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
-                @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page" :showOperate=false :showSearch=false >
-          </common-table>
+         <Page :current="page" :page-size="10" show-sizer show-elevator show-total :page-size-opts="[10, 20, 50]"
+    placement="top" :total="total" @on-change="changePage" @on-page-size-change="changePageSize"/>
         </div>
       </div>
 
@@ -90,7 +109,7 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
-const pkg = require('../../package')
+import config from '../../config.js'
 export default {
   name: "garage-info",
   layout: 'common',
@@ -103,7 +122,7 @@ export default {
   },
   // asyncData ({ app, params, error }) {
   //   return app.$axios({
-  //     baseURL: 'http://127.0.0.1:'+ pkg.config.nuxt.port+'/repair',
+  //     baseURL: 'http://127.0.0.1:'+config.port+'/repair',
   //     url: '/micro/search/company/repair/'+ params.id,
   //     method: 'get',
   //   }).then((res) => {
@@ -151,7 +170,7 @@ export default {
           {title: '评分详情', key: 'scopes', sortable: true, minWidth: 120},
         ],
         tableData: [],
-        page: 0,
+        page: 1,
         limit: 10,
         total: 0,
         showTable:false,
@@ -166,8 +185,15 @@ export default {
       baseURL: '/repair',
       url: '/micro/search/company/repair/'+ this.$route.params.id,
       method: 'get',
+    }).then((res) => {
+      console.log(res.data)
+        // for(let i in res.data){
+        //   this.info[i]=res.data[i]
+        // }
+        this.info= res.data
+      
     });
-
+    this.getList();
     
   },
   methods:{
@@ -204,10 +230,10 @@ export default {
         },
 
       getList(){
-        console.log('开始进行');
-        this.$axios.get('/comment/maintain/query/companyId?size='+this.limit+'&page='+this.page+'&companyId=1196', {
+        let page=this.page-1;
+        this.$axios.get('/comment/maintain/query/companyId?size='+this.limit+'&page='+page+'&companyId='+this.$route.params.id, {
         }).then( (res) => {
-          console.log(res);
+
           if(res.status===200){
               this.tableData=res.data.content;
               this.total=res.data.totalElements;
@@ -219,6 +245,7 @@ export default {
           
         })
     },
+
   }
 }
 </script>
@@ -388,6 +415,56 @@ export default {
             
           }
         }
+        /*评价样式*/
+        #list{
+          margin-top: 20px;
+          li{
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 15px;
+            .left{
+              position: absolute;
+              width: 45px;
+              height: 45px;
+              border-radius: 100%;
+              background-color: #eeeeee;
+              overflow: hidden;
+              img{
+                    width: 100%;
+                    height: 100%;
+              }
+            }
+            .right{
+              padding-left: 50px;
+              p{
+                margin: 0;
+                padding: 0;
+                border: 0;
+                list-style: none;
+                box-sizing: border-box;
+              }
+              .black{
+                span{
+                  margin-right: 20px;
+                }
+              }
+              .gray {
+                  margin-top: 5px;
+                  color: #a6a6a6;
+                  span {
+                      margin-right: 15px;
+                  }
+              }
+
+            }
+
+          }
+        }
+        /*翻页样式*/
+        #pagebar{
+          margin: 10px 0;
+        }
+
       }
     }
     

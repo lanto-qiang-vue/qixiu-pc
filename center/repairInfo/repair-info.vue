@@ -13,7 +13,7 @@
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="accessBtn('query')" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
@@ -112,7 +112,7 @@
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
-          this.page=1;
+          
           this.getList();
         },
         //解绑按钮-------
@@ -133,8 +133,16 @@
             })
         },
         searchFun(){
-          var query={vehicleplatenumber:this.detailData.vehicleplatenumber,vin:this.detailData.vin};
-          this.$router.push({path:'/center/repair-info-detail',query:query});
+          if(this.detailData.status==2){
+              var query={vehicleplatenumber:this.detailData.vehicleplatenumber,vin:this.detailData.vin};
+              this.$router.push({path:'/center/repair-info-detail',query:query});
+          }else{
+              this.$Modal.confirm({
+                title:"系统提示!",
+                content:"绑定车辆信息正在审核中，请审核通过后再查看",
+            })
+          }
+          
         }
 
         
