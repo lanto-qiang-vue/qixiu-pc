@@ -64,19 +64,10 @@ export default {
         {id:"300006",title:'上门泵电'},
         {id:"300007",title:'其它'},
       ],
-      // checkBoxList:[
-      //   {id:"上门故障诊断",title:'上门故障诊断'},
-      //   {id:"上门取送车服务",title:'上门取送车服务'},
-      //   {id:"上门更换备胎",title:'上门更换备胎'},
-      //   {id:"上门更换灯泡",title:'上门更换灯泡'},
-      //   {id:"上门更换雨刮器",title:'上门更换雨刮器'},
-      //   {id:"上门泵电",title:'上门泵电'},
-      //   {id:"其它",title:'其它'},
-      // ],
     }
   },
   mounted(){
-    this.formData.companyId = this.$route.query.id;
+    this.formData.companyId = this.$route.query.id || null;
   },
   methods:{
     submit(name){
@@ -91,6 +82,13 @@ export default {
               this.$axios.post('/service/add', this.formData).then((res) => {
                 if(res.data.code == 0){
                   window.location.href = "/center/my-visit";
+                }else{
+                  setTimeout(()=>{
+                    this.$Modal.error({
+                      title:'系统提示',
+                      content:res.data.status
+                    });
+                  },200);
                 }
               })
             }

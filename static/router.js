@@ -386,6 +386,23 @@ export default [
         component: resolve('center/company/repored.vue'),
       },
       {
+        path: 'staff-query',
+        meta: {
+          icon: '',
+          title: '企业员工查询',
+          accessId: '/center/staff-query',
+        },
+        component: resolve('center/company/staff-query.vue'),
+      },
+      {
+        path: 'staff-detail',
+        meta: {
+          icon: '',
+          title: '企业员工详情',
+        },
+        component: resolve('center/company/staff-detail.vue'),
+      },
+      {
         path: 'company-repair-qualify',
         meta: {
           icon: '',
