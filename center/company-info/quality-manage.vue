@@ -24,10 +24,39 @@
     </div>
     <div slot="operate">
         <Button type="primary" v-if="accessBtn('add')" @click="showAdd=Math.random();">新增</Button>
+        <Button type="primary" v-if="accessBtn('updateStatus')" @click="updateFun" :disabled="showStatus">修改状态</Button>
         <Button type="info" v-if="accessBtn('detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
     </div>
 <quality-manage-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></quality-manage-detail>
 <quality-manage-add :showDetail="showAdd" @closeDetail="closeDetail"></quality-manage-add>
+
+<Modal
+    v-model="showModal"
+    title="状态修改"
+    width="400"
+    @on-visible-change="visibleChange"
+    :scrollable="true"
+    :transfer= "true"
+    :footer-hide="false"
+    :mask-closable="false"
+    class="table-modal-detail"
+    :styles="{height:'300px'}"
+    :transition-names="['', '']">
+
+    <div style="height: 100%;overflow: auto;">
+        <Form :label-width="120" class="common-form">
+            <FormItem label="状态:" style="width: 80%;">
+                <Select v-model="searchStatus" clearable>
+                    <Option v-for="item in statusList" :value="item.code" :key="item.code">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+        </Form>
+    </div>
+    <div slot="footer">
+        <Button type="primary" v-if="accessBtn('add')" @click="updateStatus">确定</Button>
+        <Button  size="large" type="default" @click="showModal=false;">返回</Button>
+    </div>
+  </Modal>
 </common-table>
 
 
@@ -52,7 +81,9 @@ export default {
         columns: [
           {title: '标题', key: 'title', sortable: true, minWidth: 120,},
           {title: '描述', key: 'description', sortable: true, minWidth: 120},
-          {title: '状态', key: 'status', sortable: true, minWidth: 135},
+          {title: '状态', key: 'status', sortable: true, minWidth: 135,
+            render: (h, params) => h('span', params.row.status.name)
+            },
         ],
         tableData: [],
 
@@ -75,25 +106,19 @@ export default {
             {code:'3',name:'已撤销'},
         ],
         showAdd:false,//显示新增界面
-
+        showStatus:true,
+        showModal:false,
+        statusList:[],
+        searchStatus:'',
       }
     },
     mounted () {
       this.getList();
-    //   this.getType();
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         getList(){
             this.loading=true;
             this.$axios.post('/reputation-assessmant/list', {
-
-
                     "status": this.searchList.status,
                     "title": this.searchList.title,
                     "pageNo": this.page,
@@ -125,16 +150,22 @@ export default {
         },
         onRowClick( row, index){
             console.log('row：',row);
-          this.detailData=row
+          this.detailData=row;
+          if(row.status.id==3){
+              this.showStatus=true;
+          }else{
+              this.showStatus=false;
+          }
         },
         closeDetail(){
           this.detailData= null
-          this.page= 1;
+          
           this.clearTableSelect= Math.random();
           this.getList();
         },
         //搜索按钮----
         searchFun(){
+            this.page= 1;
             this.closeDetail();
         },
         //解绑按钮-------
@@ -154,7 +185,34 @@ export default {
                 }
             })
         },
-        
+        updateFun(){
+            this.searchStatus='';
+            this.showModal=true;
+            if(this.detailData.status.id=='1'){
+                this.statusList=[
+                        {code:'2',name:'已发布'},
+                        {code:'3',name:'已撤销'},
+                    ]
+            }else if(this.detailData.status.id=='2'){
+                this.statusList=[
+                        {code:'3',name:'已撤销'},
+                    ]
+            }
+        },
+        updateStatus(){
+            this.$axios.post('/reputation-assessmant/update-status/'+this.detailData.id+'/'+this.searchStatus,{
+            } ).then( (res) => {
+                if(res.data.code=='0'){
+                    this.showModal=false;
+                }
+            })
+        },
+        visibleChange(status){
+          if(status === false){
+            this.closeDetail();
+            this.showStatus=true;
+          }
+        },
 
         
     },

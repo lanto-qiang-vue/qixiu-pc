@@ -331,6 +331,15 @@
 					this.mobileFlag = true;
 				}
 			},
+
+			handleFun(name){
+				if(name=="tel"){
+					
+					this.handleCaptcha('formMobile');
+				}else if(name=="tenant"){
+					this.handleSubmit();
+				}
+			},
       uniteLogin(type){
 			  let url='', location= encodeURIComponent(window.location.href)
 			  switch (type){
@@ -346,6 +355,7 @@
           case 'zfb':{
             url= 'https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=2018042002584289&scope=auth_user&redirect_uri='+location+'&state=zfb'
             break
+
           }
         }
         window.location.href= url

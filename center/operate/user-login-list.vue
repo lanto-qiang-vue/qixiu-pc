@@ -9,7 +9,7 @@
                   <DatePicker type="daterange" v-model="search.dateArr" placement="bottom-start" placeholder="请选择"></DatePicker>
               </FormItem>
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="accessBtn('query')" @click="closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
@@ -100,7 +100,7 @@
         closeDetail(){
           this.detailData= null;
           this.clearTableSelect= Math.random();
-          this.page=1;
+          
           this.getList();
         },
 

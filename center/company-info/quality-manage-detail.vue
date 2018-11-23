@@ -18,7 +18,7 @@
                 <Input type="text" disabled v-model="listSearch.title" placeholder=""> </Input>
             </FormItem>
             <FormItem label="考核状态:" style="width: 80%;">
-                <Input type="text" disabled v-model="listSearch.status" placeholder=""> </Input>
+                <Input type="text" disabled v-model="listSearch.status.name" placeholder=""> </Input>
             </FormItem>
             <FormItem label="考核描述:" style="width: 80%;">
                 <Input type="text" disabled v-model="listSearch.description" placeholder=""> </Input>
@@ -47,7 +47,7 @@ export default {
                 description:"",
                 fileurl:"",
                 id:"",
-                status:"",
+                status:{name:''},
                 title:"",
             },
             isFile:true,
@@ -61,14 +61,14 @@ export default {
     },
     methods:{
         getDetail(){
-            this.$axios.post('/reputation-assessmant/detail',{
-                        "id":this.detailData.id,
+            this.$axios.get('/reputation-assessmant/detail/'+this.detailData.id,{
+                        
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         for(let i in res.data.item){
                             this.listSearch[i]=res.data.item[i];
                         }
-                        if(this.listSearch['fileurl']){
+                        if(this.listSearch['fileUrl']){
                             this.isFile=false;
                         }else{
                             this.isFile=true;

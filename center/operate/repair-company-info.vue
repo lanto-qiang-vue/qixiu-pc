@@ -407,7 +407,7 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" @click="testChange">提交</Button>
+        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="testChange">提交</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -416,9 +416,11 @@
 <script>
 import {  imgToBase64,getName } from '@/static/util.js'
   import { formatDate } from '@/static/tools'
+  import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "repair-company-info",
     props:['showDetail', 'detailData'],
+    mixins: [funMixin],
     data(){
 		return{
             spinShow:false,

@@ -64,6 +64,7 @@
       handleSuccess(res, file) {
         if(res.code == 0){
           this.uploadList.push({
+            'imageId':res.item.id,
             'url': res.item.path,
           });
           this.$emit(this.callback,this.uploadList);

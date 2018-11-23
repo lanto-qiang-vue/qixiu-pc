@@ -11,7 +11,7 @@
                 <Input type="text" v-model="searchList.companyName" placeholder="请输入维修企业"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="" @click="page=1,closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
@@ -43,7 +43,7 @@ export default {
           {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 120},
+          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 140},
           {title: '送修日期', key: 'repairDate', sortable: true, minWidth: 135},
           {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 120},
           {title: '维修企业', key: 'companyName', sortable: true, minWidth: 120},
@@ -53,7 +53,6 @@ export default {
           companyName: '',
           vehicleplatenumber: '',
           vin: '',
-          
         },
         page: 1,
         limit: 10,
@@ -72,6 +71,7 @@ export default {
         var queryData=this.$route.query;
         this.searchList.vehicleplatenumber=queryData.vehicleplatenumber;
         this.searchList.vin=queryData.vin;
+
         this.getList();
         
     },
@@ -84,6 +84,7 @@ export default {
                     "pageSize": this.limit,
                     "vehicleplatenumber":this.searchList.vehicleplatenumber,
                     "vin":this.searchList.vin,
+                    
             }).then( (res) => {
                 console.log(res.data);
                 if(res.data.code=='0'){
@@ -109,7 +110,7 @@ export default {
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
-          this.page=1;
+          
           this.getList();
         },
         lastFun(){

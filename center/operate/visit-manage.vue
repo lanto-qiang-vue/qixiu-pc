@@ -17,7 +17,7 @@
                 <Input type="text" v-model="search.addr" placeholder="请输入上门服务地址"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="accessBtn('list')" @click="closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail">搜索</Button>
             </FormItem>
         </Form>
     </div>
@@ -57,7 +57,7 @@ export default {
           },
           {title: '联系人', key: 'ownerName', sortable: true, minWidth: 120},
           {title: '联系方式', key: 'contactMobile', sortable: true, minWidth: 135},
-          {title: '上门服务地址', key: 'contactAddress', sortable: true, minWidth: 120},
+          {title: '上门服务地址', key: 'contactAddress', sortable: true, minWidth: 140},
           {title: '维修公司', key: 'company', sortable: true, minWidth: 120,
             render: (h, params) => h('span',  (params.row.company&&params.row.company.name)||'')
           },
@@ -134,7 +134,7 @@ export default {
           this.detailData= null
           this.clearTableSelect= Math.random()
           this.showFlag=true;
-          this.page=1;
+          
           this.getList();
         },
         //删除按钮----------

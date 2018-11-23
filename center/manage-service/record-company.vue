@@ -316,7 +316,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          this.page= 1;
+          
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -332,6 +332,7 @@ export default {
         },
         //搜索按钮----
         searchFun(){
+            this.page= 1;
             this.closeDetail();
         },
         //解绑按钮-------
