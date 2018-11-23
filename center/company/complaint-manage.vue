@@ -7,10 +7,10 @@
     <div  slot="search"  >
         <Form :label-width="80" class="common-form">
                 <FormItem label="车牌号:">
-                    <Input type="text" v-model="searchList.vehicleNum" placeholder="请输入许可证号"></Input>
+                    <Input type="text" v-model="searchList.vehicleNum" placeholder="请输入车牌号"></Input>
                 </FormItem>
                 <FormItem label="反馈日期:">
-                    <Input type="text" v-model="searchList.createDate" placeholder="请输入企业名称"></Input>
+                    <DatePicker type="date" placeholder="请选择" v-model="searchList.createDate" clearable></DatePicker>
                 </FormItem>
                 <FormItem label="有无凭证:">
                     <Select v-model="searchList.hasEvidence" clearable>
@@ -24,7 +24,7 @@
                 </FormItem>
                 
                 <FormItem :label-width="0" style="width: 60px;">
-                    <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                    <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
                 </FormItem>
         </Form>
     </div>
@@ -139,12 +139,19 @@
             let page=this.page-1;
             
             let strUrl="";
+            this.searchList.createDate=formatDate(this.searchList.createDate);
             for(let i in this.searchList){
                 if(i=="hasEvidence"){
                     if(this.searchList[i]=="0"){
                         strUrl+='&'+i+'=true';
                     }else if(this.searchList[i]=="1"){
                         strUrl+='&'+i+'=false';
+                    }
+                }else if(i=="type"){
+                    if(this.searchList[i]==0){
+                        strUrl+='&'+i+'=0';
+                    }else if(this.searchList[i]==1){
+                        strUrl+='&'+i+'=1';
                     }
                 }else if(this.searchList[i]){
                     strUrl+='&'+i+'='+this.searchList[i];
@@ -192,7 +199,6 @@
           this.detailData= null
           this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
-          this.page=1;
           this.getList();
         },
         searchFun(){

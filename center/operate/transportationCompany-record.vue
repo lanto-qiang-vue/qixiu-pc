@@ -41,9 +41,9 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="add">新增</Button>
+      <Button type="primary"  @click="add">新增</Button>
       <Button type="info" v-if="" :disabled="canDo" @click="edit">查看/修改</Button>
-      <Button type="error" v-if="" :disabled="canDo" @click="del">删除</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="canDo" @click="del">删除</Button>
     </div>
     <!--添加-->
     <Modal
@@ -280,8 +280,8 @@
                         :columns="columns3"
                         v-show="indexName == 'm3'">
             <div slot="operate">
-              <Button type="primary" v-if="" @click="add3">新增</Button>
-              <Button type="primary" v-if="" @click="addPost('车辆变更登记',3)">保存</Button>
+              <Button type="primary" v-if="accessBtn('changeSave')" @click="add3">新增</Button>
+              <Button type="primary" v-if="accessBtn('changeSave')" @click="addPost('车辆变更登记',3)">保存</Button>
               <Button type="error" v-if="" :disabled="canDo3" @click="del3">删除</Button>
             </div>
           </common-table>
@@ -291,8 +291,8 @@
                         :columns="columns4"
                         v-show="indexName == 'm4'">
             <div slot="operate">
-              <Button type="primary" v-if="" @click="add4">新增</Button>
-              <Button type="primary" v-if="" @click="addPost('车辆使用登记',4)">保存</Button>
+              <Button type="primary" v-if="accessBtn('usesSave')" @click="add4">新增</Button>
+              <Button type="primary" v-if="accessBtn('usesSave')" @click="addPost('车辆使用登记',4)">保存</Button>
               <Button type="error" v-if="" :disabled="canDo4" @click="del4">删除</Button>
             </div>
           </common-table>
@@ -302,8 +302,8 @@
                         :columns="columns5"
                         v-show="indexName == 'm5'">
             <div slot="operate">
-              <Button type="primary" v-if="" @click="add5">新增</Button>
-              <Button type="primary" v-if="" @click="addPost('车辆交通事故登记',5)">保存</Button>
+              <Button type="primary" v-if="accessBtn('accidentSave')" @click="add5">新增</Button>
+              <Button type="primary" v-if="accessBtn('accidentSave')" @click="addPost('车辆交通事故登记',5)">保存</Button>
               <Button type="error" v-if="" :disabled="canDo5" @click="del5">删除</Button>
             </div>
           </common-table>
@@ -313,16 +313,16 @@
                         :columns="columns6"
                         v-show="indexName == 'm6'">
             <div slot="operate">
-              <Button type="primary" v-if="" @click="add6">新增</Button>
-              <Button type="primary" v-if="" @click="addPost('车辆驾驶员登记',6)">保存</Button>
+              <Button type="primary" v-if="accessBtn('driverSave')" @click="add6">新增</Button>
+              <Button type="primary" v-if="accessBtn('driverSave')" @click="addPost('车辆驾驶员登记',6)">保存</Button>
               <Button type="error" v-if="" :disabled="canDo6" @click="del6">删除</Button>
             </div>
           </common-table>
         </TabPane>
       </Tabs>
       <div slot="footer">
-        <Button type="success" v-show="indexName == 'm1'" @click="addPost('formData',1)">提交</Button>
-        <Button type="success" v-show="indexName == 'm2'" @click="addPost('formData2',2)">提交</Button>
+        <Button type="success" v-if="accessBtn('save')" v-show="indexName == 'm1'" @click="addPost('formData',1)">提交</Button>
+        <Button type="success" v-if="accessBtn('paramSave')" v-show="indexName == 'm2'" @click="addPost('formData2',2)">提交</Button>
         <Button @click="showModal=false">返回</Button>
       </div>
     </Modal>
@@ -335,10 +335,12 @@
   import uploadImg from '~/components/uploadImg.vue'
   import SelectCompany from '~/components/select-company.vue'
   import { deepClone } from '../../static/util'
+import funMixin from '~/components/fun-auth-mixim.js'
 
   export default {
     name: 'transportationCompany-record',
     components: { CommonTable, uploadImg, SelectCompany },
+    mixins: [funMixin],
     data() {
       const validateColor = (rule, value, callback) => {
         if (this.formData.plateColor == 0) {

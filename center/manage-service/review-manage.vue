@@ -29,7 +29,7 @@
                 </FormItem>
                 
                 <FormItem :label-width="0" style="width: 60px;">
-                    <Button type="primary" v-if="" @click="closeDetail()">搜索</Button>
+                    <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
                 </FormItem>
         </Form>
     </div>
@@ -199,7 +199,7 @@
           this.detailData= null
           this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
-          this.page=1;
+          
           this.getList();
         },
         searchFun(){

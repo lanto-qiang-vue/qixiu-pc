@@ -29,8 +29,8 @@
     </div>
     <div slot="operate">
       <Button type="primary" v-if="" @click="add">新增</Button>
-      <Button type="info" v-if="" :disabled="canDo" @click="edit">查看/修改</Button>
-      <Button type="error" v-if="" :disabled="canDo" @click="del">删除</Button>
+      <Button type="info" v-if="accessBtn('save')" :disabled="canDo" @click="edit">查看/修改</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="canDo" @click="del">删除</Button>
     </div>
     <Modal
       v-model="showModal"
@@ -92,7 +92,7 @@
         </FormItem>
       </Form>
       <div slot="footer">
-        <Button type="success" @click="confirm('formData')">提交</Button>
+        <Button v-if="accessBtn('save')" type="success" @click="confirm('formData')">提交</Button>
         <Button @click="showModal=false">返回</Button>
       </div>
     </Modal>
@@ -102,10 +102,11 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { deepClone } from '../../static/util'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'transportationCompany-manage',
     components: { CommonTable },
+    mixins: [funMixin],
     data() {
       const validateChange = (rule, value, callback) => {
         if (value == 0) {
