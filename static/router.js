@@ -454,7 +454,6 @@ export default [
         component: resolve('center/operate/order-manage.vue'),
       },]
   },
- 
   {
     path: '/menu18',
     alias: '/center',
