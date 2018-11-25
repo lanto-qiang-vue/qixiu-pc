@@ -3,11 +3,11 @@
   <div class="common-content">
     <div class="sub-title">
       <Breadcrumb>
-        <BreadcrumbItem to="/">Home</BreadcrumbItem>
-        <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+        <BreadcrumbItem to="/">主页</BreadcrumbItem>
+        <BreadcrumbItem>{{title}}</BreadcrumbItem>
       </Breadcrumb>
     </div>
-    <nuxt-child/>
+    <nuxt-child @title="showTitle"/>
   </div>
 </div>
 </template>
@@ -16,6 +16,16 @@
   export default {
     name: "single-article",
     layout: 'common',
+    data(){
+      return{
+        title: ''
+      }
+    },
+    methods:{
+      showTitle(val){
+        this.title= val
+      }
+    }
   }
 </script>
 

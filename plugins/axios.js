@@ -24,7 +24,7 @@ export default function ({ $axios, redirect, store, route, app }) {
           store.commit('user/setUser', '')
           redirect({
             path: '/login',
-            // query: { redirect: route.fullPath }
+            query: { redirect: route.fullPath }
           })
           if (process.client) {
             Message.destroy()

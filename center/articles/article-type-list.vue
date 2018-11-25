@@ -18,7 +18,7 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" v-if=""  @click="selectRow={},showDetail= true">新增</Button>
+      <Button type="success" v-if=""  @click="create">新增</Button>
       <Button type="primary" v-if=""  @click="showDetail=true" :disabled="!selectRow.codeId">修改</Button>
       <Button type="error" v-if=""  @click="del" :disabled="!selectRow.codeId">删除</Button>
     </div>
@@ -35,7 +35,7 @@
   >
     <Form ref="form" :model="detail" :label-width="110"  class="common-form">
       <FormItem label="文章类型名" prop="name">
-        <Input type="text" v-model="detail.codeDesc" ></Input>
+        <Input type="text" v-model="selectRow.codeDesc" ></Input>
       </FormItem>
     </Form>
     <div slot="footer">
@@ -51,6 +51,7 @@
   import CommonTable from '~/components/common-table.vue'
   const initData= {
     codeDesc: '',
+    type: '1028',
   }
 	export default {
 		name: "menu-manage",
@@ -75,10 +76,6 @@
         showTable:false,
         showDetail: false,
         selectRow: {},
-        detail:{
-          codeDesc: '',
-          type: '1028',
-        },
         clearTableSelect: null,
       }
     },
@@ -89,6 +86,7 @@
     },
     methods:{
       getList(){
+        this.selectRow=deepClone(initData)
         this.$axios.$post('/article/category/list', {
           "pageNo": this.page,
           "pageSize": this.limit,
@@ -124,10 +122,24 @@
         this.getList();
       },
       del(){
-
+        this.$Modal.confirm({
+          title: '确定删除“'+this.selectRow.codeDesc+'”吗？',
+          onOk: () => {
+            this.$axios.post('/article/category/delete/'+this.selectRow.codeId ,this.formData).then((res) => {
+              if (res.data.code == '0') {
+                this.$Message.success('删除成功')
+                this.getList();
+              }
+            })
+          }
+        })
+      },
+      create(){
+        this.selectRow=deepClone(initData)
+        this.showDetail= true
       },
       save(){
-        this.$axios.$post('/article/category/add', this.detail).then( (res) => {
+        this.$axios.$post('/article/category/add', this.selectRow).then( (res) => {
           if(res.code=='0'){
             this.showDetail=false
             this.getList();

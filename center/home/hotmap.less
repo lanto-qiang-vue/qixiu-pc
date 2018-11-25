@@ -1,0 +1,295 @@
+@font-face {
+    font-family: 'mnypjt';
+    src: url('/img/hotmap/font/mnypjt.ttf');
+}
+@font-face {
+    font-family: 'verdana';
+    src: url('/img/hotmap/font/Verdana.ttf');
+}
+@font-face {
+    font-family: 'lq';
+    src: url('/img/hotmap/font/lq.otf');
+}
+
+.mnypjt{
+    font-family: 'mnypjt';
+}
+.verdana{
+    font-family: 'verdana';
+}
+.lq{
+    font-family: 'lq';
+}
+
+.operator-home{
+    background: url("/img/hotmap/bg.png") no-repeat center center;
+    background-size: cover;
+    position: relative;
+    //overflow: hidden;
+    height: 70vh;
+}
+.allscreen{
+    top: 0;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    z-index: 9999;
+    margin: 0;
+    border: 0;
+}
+
+.point {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    /*width: 6vw;*/
+    /*height: 6vw;*/
+    transform: translate(-50%,-50%);
+}
+.dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    /*width: 2vw;*/
+    /*height: 2vw;*/
+    background: radial-gradient(circle,  #00ffc6 4px, transparent 10px);
+    /*background: radial-gradient(circle,  #00ffc6 .4vw, transparent 1vw);*/
+    border-radius: 50%;
+    z-index: 2;
+    margin: auto;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border: 3px solid #00ffc6;
+    /*border: .1vw solid #00ffc6;*/
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0;
+    animation: warn 1s linear infinite;
+    box-shadow: 0 0 10px #00ffc6 inset,0 0 30px #00ffc6;
+    /*box-shadow: 0 0 1.6vw #00ffc6 inset,0 0 4vw #00ffc6;*/
+}
+.point.yellow .dot{
+    background: radial-gradient(circle,  #ffdd00 4px, transparent 10px);
+    /*background: radial-gradient(circle,  #ffdd00 .4vw, transparent 1vw);*/
+}
+.point.yellow .pulse{
+    border-color: #ffdd00;
+    box-shadow: 0 0 10px #ffdd00 inset,0 0 30px #ffdd00;
+    /*box-shadow: 0 0 1.6vw #ffdd00 inset,0 0 4vw #ffdd00;*/
+}
+@keyframes warn {
+    0% {
+        transform: scale(0);
+        opacity: .2;
+    }
+    75% {
+        transform: scale(0.8);
+        opacity: .7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+.hxxlogo{
+    position: absolute;
+    left: 3%;
+    top:3%;
+    width: 15%;
+}
+.hxxlogo .hxx-logo{
+    width: 100%;
+}
+.hxxlogo .logostar{
+    position: absolute;
+    opacity: .5;
+    width: 30%;
+    right: -7%;
+    bottom: -14%;
+}
+.mark{
+    position: absolute;
+    top:5%;
+    right: 3%;
+    width: 15%;
+}
+.slogan{
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+    width: 20%;
+}
+
+.shanghai{
+    width: 20%;
+    position: absolute;
+    left: 25%;
+    top: 6%;
+}
+
+.total{
+    position: absolute;
+    left: 5%;
+    bottom: 10%;
+    color: #00c0ff;
+    font-size: 1.9vw;
+    width: 23%;
+    letter-spacing: .1vw
+}
+.total label{
+    display: block;
+    width: 100%;
+    margin-bottom: 15%;
+}
+.total label:first-child{
+    margin-bottom: 10%;
+}
+.total label.hasbg{
+    /*background: url("/img/hotmap/kuang.png") no-repeat left center;*/
+    /*background-size: 105% 100%;*/
+    background: url("/img/hotmap/kuang.png") no-repeat -.3vw center;
+    background-size: cover;
+}
+.total label span{
+    width: 100%;
+    height: 4vw;
+    line-height: 4vw;
+    padding-left: 55%;
+    display: block;
+}
+.total label:nth-child(1) span{
+    background: url("/img/hotmap/label1.png") no-repeat left center;
+    background-size: 45% auto;
+}
+.total label:nth-child(2) span{
+    background: url("/img/hotmap/label2.png") no-repeat 1.5vw center;
+    background-size: 45% auto;
+}
+.total label:nth-child(3) span{
+    background: url("/img/hotmap/label3.png") no-repeat 1.5vw center;
+    background-size: 50% auto;
+    padding-left: 60%;
+}
+
+.hotmap{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 60%;
+    left: 30%;
+}
+.hotmap .mainmap{
+    width: 100%;
+}
+.hotmap .star, .hotmap .star2{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.hotmap .star2{
+    animation: star 5s ease-in-out infinite;
+    opacity: 0;
+}
+@keyframes star {
+    50%{
+        opacity: 1;
+        filter: brightness(2.5)
+    }
+    100%{
+        opacity: 0;
+        filter: brightness(0)
+    }
+}
+.hotmap .line{
+    width: 50%;
+    position: absolute;
+    top: 30%;
+    left: -30%;
+}
+.hotmap .times{
+    width: 60%;
+    position: absolute;
+    left: -40%;
+    top:27.5%;
+    text-align: center;
+}
+.underline{
+    border-bottom: 2px solid #00c0ff;
+}
+.hotmap .times img{
+    width: 12%;
+}
+.hotmap .times span{
+    color: #00c0ff;
+    font-size: 2vw;
+}
+.hotmap .times span span{
+    padding-bottom: 3px;
+}
+
+
+.hotmap .block{
+    width: 8vw;
+    position: absolute;
+    /*top:50%;*/
+    /*left: 50%;*/
+    background-color: white;
+    transition: all .5s;
+}
+.hotmap .block.disappear{
+    opacity: 0;
+}
+.hotmap .block .card{
+    width: 100%;
+    color: #ffdd00;
+    font-size: 1vw;
+    position: absolute;
+    left: -50%;
+    bottom: 1.5vw;
+    z-index: 1;
+    transform: scale(.1);
+    opacity: 0;
+    transition: all .5s;
+}
+.hotmap .block .card.on{
+    transform: scale(1);
+    opacity: 1;
+}
+.hotmap .block .card .car{
+    width: 100%;
+}
+.hotmap .block .card span{
+    width: 100%;
+    text-align: center;
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    transform: scale(0.8);
+}
+.hotmap .block .card .carpoint{
+    width: 12%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -1.5vw;
+    z-index: 1;
+}
+
+.hotmap .area{
+    position: absolute;
+    /*background-color: white;*/
+}

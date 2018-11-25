@@ -33,6 +33,10 @@
         error: null
       }
     },
+    mounted(){
+      this.$emit('title', this.title)
+      // this.$axios.$post('/infopublic/detail/'+ this.$route.params.id,{})
+    }
   }
 </script>
 

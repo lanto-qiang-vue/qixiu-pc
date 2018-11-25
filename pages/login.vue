@@ -10,7 +10,7 @@
 
         </p>-->
 				<Tabs value="name1">
-					<TabPane label="手机验证登录" name="name1">
+					<TabPane label="手机注册登录" name="name1">
 						<div class="login-con-in">
 
 
@@ -114,7 +114,7 @@
 
 
       <div class="form-con">
-        <Form ref="phone" :rules="rulePhone"  :model="formBind">
+        <Form ref="bind" :rules="rulePhone"  :model="formBind">
           <FormItem prop="userMobile">
             <Input v-model="formBind.userMobile" :maxlength="11" placeholder="请输入手机号">
             <span slot="prepend">
@@ -209,7 +209,7 @@
 		methods: {
 			//获取短信验证码----
 			getCaptcha(isBind){
-				this.$refs[isBind?'formBind':'formPhone'].validateField('userMobile');
+				this.$refs[isBind?'bind':'phone'].validateField('userMobile');
 				var pattern = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 				if (!pattern.test(this[isBind?'formBind':'formPhone'].userMobile)) {
 					return false;
@@ -304,7 +304,7 @@
             this.$store.commit('user/setMenu', res.data.item.menus)
             this.$store.commit('user/setUser', res.data.item)
             this.redirect()
-          }else if(1==0){
+          }else if(res.data.code==='141010'){
             this.showBind= true
           }
         })

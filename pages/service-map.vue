@@ -3,12 +3,9 @@
   <div class="map-body">
     <div class="sub-title">
       <Breadcrumb>
-        <BreadcrumbItem to="/">Home</BreadcrumbItem>
-        <BreadcrumbItem>Breadcrumb</BreadcrumbItem>
+        <BreadcrumbItem to="/">主页</BreadcrumbItem>
+        <BreadcrumbItem>维修查选</BreadcrumbItem>
       </Breadcrumb>
-
-      <a href="/">11111111111</a>
-      <nuxt-link to="/">222222222</nuxt-link>
     </div>
     <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
     <div class="map-frame high">
@@ -21,8 +18,8 @@
         <Option value="5">施救牵引企业</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
-      <Input v-model="search.q" placeholder="输入企业名称/地址" class="inline search"
-             @on-enter="getCompList" clearable>
+      <Input v-model="search.q" placeholder="输入企业名称/地址" class="inline search" clearable
+             @on-enter="getCompList"  @on-change="$refs.hot.clearSingleSelect()" >
       <Button slot="append" icon="ios-search" @click="getCompList"></Button>
       </Input>
       <div class="select-bar" v-show="search.type=='1'">
@@ -35,7 +32,7 @@
         <Select v-model="search.area" placeholder="企业区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.key" :key="key">{{item.name}}</Option>
         </Select>
-        <Select v-model="search.hot" placeholder="热门搜索" clearable class="brand">
+        <Select v-model="search.hot" placeholder="热门搜索" clearable class="brand" @on-change='selectHot' ref="hot">
           <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
       </div>
@@ -159,28 +156,29 @@ export default {
       this.getLocation()
     });
 
+    for(let key in this.$route.query){
+      this.search[key]= this.$route.query[key]
+    }
+    // console.log(this.$route.query)
     this.getArea()
 
   },
-  beforeRouteLeave (to, from, next) {
-    // 导航离开该组件的对应路由时调用
-    // 可以访问组件实例 `this`
-    // console.log(to)
-    //
-    // console.log('beforeRouteLeave-this.markerClusterer', this.markerClusterer)
-    // this.markerClusterer.clearMarkers();
-    // this.markerClusterer.setMap(null);
-    // this.markerClusterer= null
-    // this.map.clearMap()
-    // this.map.destroy()
-    // this.map= null
-    next(false)
-    window.location.href= to.fullPath
-  },
+  // beforeRouteLeave (to, from, next) {
+  //   // 导航离开该组件的对应路由时调用
+  //   // 可以访问组件实例 `this`
+  //   // console.log(to)
+  //   //
+  //   // console.log('beforeRouteLeave-this.markerClusterer', this.markerClusterer)
+  //   // this.markerClusterer.clearMarkers();
+  //   // this.markerClusterer.setMap(null);
+  //   // this.markerClusterer= null
+  //   // this.map.clearMap()
+  //   // this.map.destroy()
+  //   // this.map= null
+  //   next(false)
+  //   window.location.href= to.fullPath
+  // },
   methods:{
-    dropIn(){
-      alert(1);
-    },
     getLocation(){
       if(this.map){
         // console.log('AMap.plugin(\'AMap.Geolocation\'')
@@ -189,7 +187,7 @@ export default {
             buttonPosition: 'RB',
             timeout: 2000,
           });
-          this.map.addControl(this.geolocation);
+          // this.map.addControl(this.geolocation);
           this.geolocation.getCurrentPosition((status,result)=>{
             if( status== 'complete'){
               this.map.setCenter(result.position)
@@ -370,6 +368,9 @@ export default {
     },
     changeSelectAll(){
 
+    },
+    selectHot(val){
+      if(val) this.search.q= val
     },
     openMapInfo(id){
       for (let i in this.markers){
