@@ -49,6 +49,7 @@
     props:['description','callback','data'],
     watch:{
       data(data){
+        alert(1);
         this.uploadList = data;
       }
     },

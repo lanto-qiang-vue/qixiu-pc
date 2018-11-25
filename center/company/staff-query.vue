@@ -1,7 +1,7 @@
 <template>
   <common-table v-model="tableData" :columns="columns" :total="total"
                 @changePage="changePage" @changePageSize="changePageSize"
-                :show="showTable" :page="page" :loading="loading">
+                :show="showTable" :clearSelect="clearTableSelect" :page="page" @onRowClick="rowClick" :loading="loading">
     <div slot="search">
       <Form :label-width="80" class="common-form">
         <FormItem label="姓名:">
@@ -32,7 +32,8 @@
     </div>
     <div slot="operate">
       <Button type="success" @click="add">新增</Button>
-      <Button type="primary" @click="edit">修改</Button>
+      <Button type="primary" :disabled="canDo" @click="edit">修改</Button>
+      <Button type="error"  @click="del" :disabled="canDo">删除</Button>
     </div>
   </common-table>
 </template>
@@ -50,6 +51,8 @@
     },
     data: function() {
       return {
+        list:'',
+        clearTableSelect:false,
         educationList: [
           { id: 0, name: '全部' },
           { id: 1, name: '小学' },
@@ -124,8 +127,34 @@
       }
     },
     methods: {
+      del(){
+        this.$Modal.confirm({
+          title:'系统提示',
+          content:'确认要删除吗',
+          onOk:()=>{
+            this.$axios.post('/staff/delete/'+this.list.id, {
+            }).then((res) => {
+              console.log(JSON.stringify(res));
+              if (res.data.code == '0') {
+               this.$Message.success("删除成功");
+               this.getList();
+              }
+            })
+          }
+        });
+      },
+      clearSection(){
+        this.list = "";
+        this.clearTableSelect = Math.random();
+      },
+      rowClick(row){
+        this.list = row;
+      },
       add() {
         window.location.href = '/center/staff-detail/?id=' + null
+      },
+      edit(){
+        window.location.href = "/center/staff-detail/?id="+this.list.id;
       },
       getName(list,id){
        let data = "";
@@ -146,6 +175,7 @@
         this.getList()
       },
       getList() {
+        this.clearSection();
         this.loading = true
         this.$axios.post('/staff/list', {
           'companyId': null,
@@ -163,6 +193,11 @@
             this.loading = false
           }
         })
+      }
+    },
+    computed:{
+      canDo(){
+        return this.list == "";
       }
     },
     mounted() {
