@@ -39,7 +39,7 @@
     <nuxt-link tag="a" to="/gov-article/10281016" target="_blank"><img src="/img/menu-icon/质量信誉考核.png"/><p>质量信誉考核</p></nuxt-link>
   </div>
   <div class="block" v-show="type==4">
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/汽车配件.png"/><p>汽车配件</p></nuxt-link>
+    <nuxt-link tag="a" to="/article/accessoriesUnit" target="_blank"><img src="/img/menu-icon/汽车配件.png"/><p>汽车配件</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/人才需求.png"/><p>人才需求</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/相关培训.png"/><p>相关培训</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/商务合作.png"/><p>商务合作</p></nuxt-link>

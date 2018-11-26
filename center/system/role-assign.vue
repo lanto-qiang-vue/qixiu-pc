@@ -54,12 +54,14 @@ export default {
       // }
     },
     roleChange(role){
-      console.log(role)
       this.resRole= role
     },
     save(){
       let arr= this.calcRole(this.resRole, true)
-      console.log( arr)
+      if(arr.length == 0){
+        this.$Message.error("请选择菜单");
+        return false;
+      }
       this.$Modal.confirm({
         title: '确定保存权限吗？',
         onOk: ()=> {
@@ -100,6 +102,7 @@ export default {
       this.$axios.$get('/menu/query/'+ this.selectRow.id,).then( (res) => {
         // console.log(res)
         this.roleData= res.items
+        this.resRole= res.items;
       })
 
     }
