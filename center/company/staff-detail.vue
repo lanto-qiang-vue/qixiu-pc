@@ -39,11 +39,11 @@
           :format="['jpg','jpeg','png']"
           accept="image/png,image/jpeg"
           :max-size="3072"
-          :on-success="success"
+          :on-success="handleSuccess"
           action="/proxy/file/image/add">
           <div style="height:250px;width:250px;border-radius:50%;position:absolute;left:50%;margin-left:-125px;">
-            <img style="height:250px;width:250px;background: gray;border-radius:50%;"
-                 :src="(formData.staffImageList[0].url || '')"/>
+            <img style="height:250px;width:250px;background: white;border-radius:50%;border:1px solid black;"
+                 :src="(formData.staffImageList.length > 0 ? formData.staffImageList[0].url : '')"/>
           </div>
         </Upload>
         <div style="height:250px;"></div>
@@ -256,18 +256,18 @@
         indexName: 's0',
         formData: {
           id: null,
-          name: 'name',
+          name: '',
           gender: '1',
           education: 0,
           position: '1',
           onDuty: 'true',
-          professionalTitle: 'professionalTitle',
+          professionalTitle: '',
           staffImageList: [{ url: '' }],
-          nationalHonor: '1',
-          provincialHonor: '2',
-          districtHonor: '3',
-          industryLevelHonor: '4',
-          otherHonor: '5',
+          nationalHonor: '',
+          provincialHonor: '',
+          districtHonor: '',
+          industryLevelHonor: '',
+          otherHonor: '',
           staffCertList: []
         },
         rule: {
@@ -327,7 +327,6 @@
     },
     methods: {
       handleView(name) {
-        alert(name)
         this.imgName = name
         this.visible = true
       },
@@ -400,6 +399,7 @@
       },
       beforeRemove(index) {
         this.formData.staffCertList.splice(index, 1)
+        this.indexName = "s0";
         return new Promise(function(resolve, reject) {
 
         })
