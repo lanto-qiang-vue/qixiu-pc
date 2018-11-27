@@ -21,7 +21,7 @@
       </FormItem>
       <FormItem label="服务内容:" style="width:80%;" >
         <CheckboxGroup v-model="checkId">
-          <Checkbox v-for="item in checkBoxList" :label="item.id">
+          <Checkbox v-for="(item, key) in checkBoxList" :label="item.id" :key="key">
             <span>{{item.title}}</span>
           </Checkbox>
         </CheckboxGroup>

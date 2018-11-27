@@ -26,7 +26,7 @@
           </FormItem>
           <FormItem label="岗位:" style="width:80%;" prop="position">
             <RadioGroup v-model="formData.position">
-              <Radio v-for="item in positionList" :label="item.id">{{item.name}}</Radio>
+              <Radio v-for="(item, key) in positionList" :label="item.id" :key="key">{{item.name}}</Radio>
             </RadioGroup>
           </FormItem>
         </Form>
@@ -134,7 +134,7 @@
           </FormItem>
           <FormItem label="职业(等级)" prop="level" style="width:80%;">
             <RadioGroup v-model="item.level">
-              <Radio v-for="item in levelList" :label="item.id">{{item.name}}</Radio>
+              <Radio v-for="(item, key) in levelList" :label="item.id" :key="key">{{item.name}}</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="证书编号" prop="certCode" style="width:80%;">
@@ -170,7 +170,7 @@
           <div style="clear: both;"></div>
           <FormItem style="width:100%;">
             <div>
-              <div style="float:left;" class="demo-upload-list" v-for="im in item.staffCertImageList">
+              <div style="float:left;" class="demo-upload-list" v-for="(im, key) in item.staffCertImageList" :key="key">
                 <img :src="im.url">
                 <div class="demo-upload-list-cover">
                   <Icon type="ios-eye-outline" @click.native="handleView(im.url)"></Icon>

@@ -30,13 +30,13 @@
             <FormItem label="回答时间:" style="width: 80%;">
                 <Input type="text" disabled v-model="listSearch.answerTime" placeholder=""></Input>
             </FormItem>
-            
+
         </Form>
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" :disabled="listButton.edit" @click="updateStatus(2)" v-if="accessBtn('edit')">审核通过</Button>
-        <Button size="large" type="primary" :disabled="listButton.out" @click="updateStatus(3)" v-if="accessBtn('edit')">驳回</Button>
+        <Button size="large" type="primary" :disabled="listButton.edit" @click="updateStatus(2)" v-if="accessBtn('audit')">审核通过</Button>
+        <Button size="large" type="primary" :disabled="listButton.out" @click="updateStatus(3)" v-if="accessBtn('audit')">驳回</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -65,7 +65,7 @@ export default {
                 edit:true,
                 out:true,
             }
-        
+
         }
     },
     watch:{
@@ -149,7 +149,7 @@ export default {
     span{
         float: right;
     }
-    
+
 }
 .content-p{
     padding-left: 55px;
@@ -165,7 +165,7 @@ export default {
   .r-list-search{
     width: 100%;
     padding: 10px 0;
-    
+
 
   }
 
@@ -174,7 +174,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 200px;
       min-width: 200px;
-      
+
       .red{
         color: red;
       }

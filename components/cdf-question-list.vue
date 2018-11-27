@@ -132,7 +132,7 @@ export default {
     this.getList()
   },
   mounted(){
-    // console.log(this.$route)
+    console.log(this.$route)
   },
   methods:{
     getList(page){

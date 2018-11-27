@@ -6,9 +6,6 @@
           <div class="login-con">
 
 			<Card>
-				<!--<p slot="title">
-
-        </p>-->
 				<Tabs value="name1">
 					<TabPane label="手机注册登录" name="name1">
 						<div class="login-con-in">
