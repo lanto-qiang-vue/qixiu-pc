@@ -10,19 +10,19 @@
     <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
     <div class="map-frame high">
     <div class="left">
-      <Select v-model="search.type" placeholder="企业类别" @on-change="changeSelectAll" class="type">
-        <Option value="1">维修企业</Option>
-        <Option value="2">综合检测站</Option>
-        <Option value="3">危运车辆维修</Option>
-        <Option value="4">新能源汽车维修</Option>
-        <Option value="5">施救牵引企业</Option>
+      <Select v-model="search.type" placeholder="企业类别" @on-change="changeType" class="type">
+        <Option value="164">维修企业</Option>
+        <Option value="166">综合检测站</Option>
+        <Option value="214">危运车辆维修</Option>
+        <Option value="215">新能源汽车维修</Option>
+        <Option value="213">施救牵引企业</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
       <Input v-model="search.q" placeholder="输入企业名称/地址" class="inline search" clearable
              @on-enter="getCompList"  @on-change="$refs.hot.clearSingleSelect()" >
       <Button slot="append" icon="ios-search" @click="getCompList"></Button>
       </Input>
-      <div class="select-bar" v-show="search.type=='1'">
+      <div class="select-bar" v-show="search.type=='164'">
         <Select v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
@@ -45,7 +45,7 @@
             <span>地址：{{item.addr}}</span>
             <span>电话：{{item.tel}}</span>
             <!--<span>电话：******</span>-->
-            <span>距离：{{calcApart(item.apart)}}</span>
+            <span>距离：{{calcApart(item.distance)}}</span>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
@@ -76,16 +76,12 @@ export default {
       script: [
         { type: 'text/javascript', src: "https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2"},
       ],
-      // changed (newInfo, addedTags, removedTags) {
-      //   console.log('addedTags:', addedTags)
-      //   console.log('removedTags:', removedTags)
-      // }
     }
   },
   data(){
     return{
       search:{
-        type: '1',
+        type: '164',
         q: '',
         sort:'',
         area: '',
@@ -192,6 +188,7 @@ export default {
             if( status== 'complete'){
               this.map.setCenter(result.position)
               this.map.add(new AMap.Marker(result.position))
+              this.map.setZoom(11)
               this.search.lng= result.position.lng
               this.search.lat= result.position.lat
               this.getCompList()
@@ -213,6 +210,7 @@ export default {
               let center= this.map.getCenter()
               // console.log('this.map.getCenter()', center)
               this.map.add(new AMap.Marker( center))
+              this.map.setZoom(11)
               // console.log('this.map.add(new AMap.Marker( center))')
               this.search.lng= center.lng
               this.search.lat= center.lat
@@ -243,18 +241,21 @@ export default {
       })
     },
     calcQuery(limit){
-      let query='?fl=distance&q='+ this.search.q + '&sort='+ (this.search.sort||'') +
+      console.log('calcQuery')
+      let is164= this.pointList[i].type== 164
+      let query='?fl=type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category'+
+        '&q='+ this.search.q +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
-      if(this.search.lng) query+='&point='+this.search.lat+','+this.search.lng
-      let fq='', is4s=''
-      if(this.search.area) fq= '&fq=areaKey:'+ this.search.area
-      if(this.search.is4s){
+      if(is164) query+= ('&sort='+ (this.search.sort||'distance'))
+      if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
+      let fq='&fq=type:'+ this.search.type, is4s=''
+      if(this.search.area && is164) fq+= '+AND+areaKey:'+ this.search.area
+      if(this.search.is4s && is164){
         is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
-        if(fq) fq+= '+AND+' + is4s
-        else fq= '&fq='+ is4s
+        fq+= '+AND+' + is4s
       }
       query += fq
-
+console.log(query)
       return query
     },
     initPiontList(){
@@ -305,6 +306,7 @@ export default {
 
       AMap.plugin('AMap.AdvancedInfoWindow', () => {
         for (let i in this.pointList){
+          let is164= this.pointList[i].type== 164
           let lngLat= new AMap.LngLat(this.pointList[i].lon|| this.search.lng, this.pointList[i].lat|| this.search.lat)
           let content = '<div class="map-content">'+
             '<div class="title">'+ this.pointList[i].name+'</div>'+
@@ -312,16 +314,16 @@ export default {
             '<ul>' +
             '<li><span>企业名称：</span>'+this.pointList[i].name+'</li>' +
             '<li><span>经营地址：</span>'+this.pointList[i].addr+'</li>' +
-            '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>' +
-            '<li><span>联系电话：</span>'+this.pointList[i].tel+'</li>' +
-            '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>' +
-            '<li><span>业户类别：</span>'+ this.formatCategory(this.pointList[i].category)+'</li>' +
+            '<li><span>联系电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
+            (is164? '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>':'' )+
+            (is164? '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>':'' )+
+            (is164? '<li><span>业户类别：</span>'+this.formatCategory(this.pointList[i].category)+'</li>':'' )+
             '</ul>'+
-            '<div class="button-block">' +
+            (is164? ('<div class="button-block">' +
             '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
             '<a href="/maintain/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
             '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
-            '</div>'+
+            '</div>') :'')+
             '</div>'+
             '</div>'
 
@@ -366,6 +368,12 @@ export default {
         // console.log('renderMap() over')
       });
     },
+    changeType(){
+      this.page= 1
+      this.pointList=[]
+      this.getCompList()
+      this.initPiontList()
+    },
     changeSelectAll(){
 
     },
@@ -380,12 +388,12 @@ export default {
       }
     },
     calcApart(ap){
-      let flap= parseFloat(ap)
+      let flap= parseFloat(ap)*1000
       if(flap){
         if(flap>=1000){
           return (flap/1000).toFixed(1)+' km'
         }else{
-          return ap+' 米'
+          return flap.toFixed(1)+' 米'
         }
       }else return ''
 
