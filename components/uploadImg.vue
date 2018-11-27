@@ -49,7 +49,6 @@
     props:['description','callback','data'],
     watch:{
       data(data){
-        alert(1);
         this.uploadList = data;
       }
     },
@@ -84,7 +83,7 @@
         })
       },
       handleBeforeUpload() {
-        const check = this.uploadList.length < 4
+        const check = this.uploadList.length <= 2
         if (!check) {
           this.$Notice.warning({
             title:'最多只能上传'+ this.uploadList.length+'张图片',

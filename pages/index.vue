@@ -19,8 +19,8 @@
         <p>关注微信</p>
         <img src="../assets/img/index/qrcode_weixin.jpg">
       </div>
-      <uxt-link tag="a" to="/article/guide">
-        <img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></uxt-link>
+      <nuxt-link tag="a" to="/article/guide">
+        <img class="czzn" src="../assets/img/index/czzn.png" title="操作指南"></nuxt-link>
     </div>
 
     <login-status :isIndex="true"></login-status>

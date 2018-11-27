@@ -1270,7 +1270,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
           'productionPlace': '',
           'qtpz': '',
           'retarder': '',
-          'seatArrangement': '',
+          'seatArrangement': '0',
           'steeringGear': '',
           'suspensionType': '',
           'totalMass': 0,
@@ -1392,7 +1392,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
       },
       getParameter(id){
         ///manage/vehicle/vehiclebase/vehicleParam
-        this.$axios.post('/manage/vehicle/param/get/'+id).then((res) => {
+        this.$axios.get('/manage/vehicle/param/get/'+id).then((res) => {
           this.formData2 = res.data.item || deepClone(this.storeData2);
           // console.log(JSON.stringify(res.data.item));
         })

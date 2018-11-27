@@ -17,7 +17,7 @@
             <Input type="text" v-model="search.corp_num" placeholder="请输入企业编号"></Input>
           </FormItem>
           <FormItem label="企业名称:" prop="corp_name">
-            <Input type="text" v-model="search.corp_name" :readonly="true" placeholder="请输入企业名称"></Input>
+            <Input type="text" v-model="search.corp_name" placeholder="请输入企业名称"></Input>
           </FormItem>
           <FormItem label="所属辖区:" prop="corp_area">
             <Select v-model="search.corp_area">

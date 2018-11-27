@@ -453,7 +453,36 @@ export default [
       },
     ]
   },
-
+  {
+    path: '/menu22',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '企业员工人才管理',
+      accessId: '/menu122',
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'by-company',
+        meta: {
+          icon: '',
+          title: '按维修企业查询',
+          accessId: '/center/by-company',
+        },
+        component: resolve('center/company/by-company.vue'),
+      },
+      {
+        path: 'employees-query',
+        meta: {
+          icon: '',
+          title: '按维修企业员工查询',
+          accessId: '/center/employees-query',
+        },
+        component: resolve('center/company/staff-query.vue'),
+      },
+    ]
+  },
       {
     path: '/menu30',
     alias: '/center',
