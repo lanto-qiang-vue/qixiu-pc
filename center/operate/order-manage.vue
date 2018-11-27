@@ -22,10 +22,31 @@
     <div slot="operate">
         <Button type="primary" v-if="accessBtn('query')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
         <Button type="primary" v-if="accessBtn('update')" :disabled="showStatus"  @click="updateOrderFun(true)">接受</Button>
-        <Button type="error" v-if="accessBtn('update')" :disabled="showStatus"  @click="updateOrderFun(false)">拒绝</Button>
+        <Button type="error" v-if="accessBtn('update')" :disabled="showStatus"  @click="showModal=true;">拒绝</Button>
       <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
+    <Modal
+      v-model="showModal"
+      title="填写拒绝原因"
+      width="450"
+      :styles="{height:'300px'}"
+      @on-visible-change="visibleChange"
+      :scrollable="true"
+      :transfer= "true"
+      :footer-hide="false"
+      :mask-closable="false"
+      class="table-modal-detail"
+      :transition-names="['', '']">
+          <Form :label-width="120" class="common-form" ref="searchList" :rules="ruleCard"  :model="searchList">
+              <FormItem label="拒绝原因:" style="width: 80%;" prop="reason">
+                  <Input type="text" v-model="searchList.reason" placeholder="请填写原因(必填)"></Input>
+              </FormItem>
+          </Form>
+      <div slot="footer">
+          <Button  size="large" type="primary" style="margin-right: 10px;" @click="refuseFun('searchList')">确定</Button>
+      </div>
+    </Modal>
   </common-table>
 </div>
 </template>
@@ -79,6 +100,15 @@ export default {
         showType:null,
         typeFlag:null,
         showStatus:true,
+        searchList:{
+          reason:'',
+        },
+        ruleCard:{
+            reason:[
+                { required: true, message: '请填写信息', },
+            ],
+        },
+        showModal:false,
       }
     },
     mounted () {
@@ -175,10 +205,33 @@ export default {
                 this.showStatus=true;
                 this.closeDetail();
               }
-               
-              
             })
+      },
+      refuseFun(name){
+          this.$refs[name].validate((valid) => {
+                if (valid) {
+                    this.$axios.post('/service/onSiteOrderHandle', {
+                        "accept": false,
+                        "onSiteOrderId": this.detailData.id,
+                        "reason": this.searchList.reason
+                    }).then( (res) => {
+                      this.loading=false;
+                      if(res.data.code=='0'){
+                        this.showModal=false;
+                        this.showStatus=true;
+                        this.closeDetail();
+                      }
+                    })
+                }
+            });
+          
+      },
+
+      visibleChange(status){
+        if(status === false){
+          this.$refs['searchList'].resetFields();
         }
+      },
         
     },
 	}

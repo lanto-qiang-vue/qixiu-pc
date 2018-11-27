@@ -20,7 +20,7 @@
     <div slot="operate">
       <Button type="info" v-if="accessBtn('view')" @click="searchFun" :disabled="!detailData">查看</Button>
       <Button type="error" v-if="accessBtn('removeBind')"  @click="removeBindFun" :disabled="!detailData">解绑</Button>
-      <Button type="primary" v-if="accessBtn('myBind')"  @click="showDetail=Math.random()" >绑定本人车辆</Button>
+      <Button type="primary" v-if="accessBtn('bind')"  @click="showDetail=Math.random()" >绑定本人车辆</Button>
       <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
     </div>
     

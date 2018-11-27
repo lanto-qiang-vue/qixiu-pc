@@ -71,7 +71,7 @@
     mounted () {
 
       this.getList();
-        this.getType(1040);
+        this.getType();
     },
     methods:{
         getList(){
@@ -95,8 +95,8 @@
           this.detailData= null;
         },
         //获取问题分类---------
-        getType(id){
-            this.$axios.get('/question/typelist/'+id, {
+        getType(){
+            this.$axios.get('/question/typelist', {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.typeList=res.data.items;
