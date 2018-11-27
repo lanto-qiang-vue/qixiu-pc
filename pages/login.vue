@@ -1,102 +1,69 @@
 <template>
-
-<div style="width:100%;height:100%;">
-    <div class="login-content">
-        <div class="login-wrap">
-          <div class="login-con">
-
-			<Card>
-				<Tabs value="name1">
-					<TabPane label="手机注册登录" name="name1">
-						<div class="login-con-in">
-
-
-						<div class="form-con">
-
-							<Form ref="phone" :rules="rulePhone"  :model="formPhone"  @keydown.enter.native="toLogin('phone')">
-								<FormItem prop="userMobile">
-									<Input v-model="formPhone.userMobile" :maxlength="11" placeholder="请输入手机号">
+<div class="login-page">
+  <div class="login-box">
+    <Card>
+      <Tabs value="name1">
+        <TabPane label="验证码登录" name="name1">
+          <Form ref="phone" :rules="rulePhone"  :model="formPhone"  @keydown.enter.native="toLogin('phone')">
+            <FormItem prop="userMobile">
+              <Input v-model="formPhone.userMobile" :maxlength="11" size="large" placeholder="请输入手机号">
+                <span slot="prepend">
+                  <Icon :size="16" type="ios-person"></Icon>
+                </span>
+              </Input>
+            </FormItem>
+            <FormItem prop="captcha">
+                  <Input v-model="formPhone.captcha" placeholder="请输入验证码" size="large">
                     <span slot="prepend">
-                      <Icon :size="16" type="ios-person"></Icon>
+                      <Icon :size="14" type="md-lock"></Icon>
                     </span>
-									</Input>
-								</FormItem>
-								<FormItem prop="captcha">
-											<Input v-model="formPhone.captcha" placeholder="请输入验证码">
-												<span slot="prepend">
-													<Icon :size="14" type="md-lock"></Icon>
-												</span>
-												<span slot="append"><Button  type="primary" @click='getCaptcha(false)'>
-                          {{description}}</Button></span>
-											</Input>
-								</FormItem>
-								<FormItem>
-									<div class="login-rember">
-										<span style="font-weight: 400">新用户完成注册，代表同意</span>
-										<a href="/phone/agreement" target="_blank" style="color: #1E9FFF">《上海汽修平台用户协议》</a>
-									</div>
-								</FormItem>
-								<FormItem>
-									<Button type="primary" long @click="toLogin('phone')">验证并登录</Button>
-								</FormItem>
-							</Form>
-						</div>
-						</div>
-					</TabPane>
-					<TabPane label="账号密码登录" name="name2">
-						<div class="login-con-in">
-							<div class="form-con">
-
-								<Form ref="pass" :model="formPass" @keydown.enter.native="toLogin('pass')">
-								<FormItem prop="userName">
-									<Input v-model="formPass.userName" placeholder="请输入用户名">
-									  <span slot="prepend">
-										  <Icon :size="16" type="ios-person"></Icon>
-										</span>
+                    <span slot="append"><Button  type="primary" @click='getCaptcha(false)'>
+                      {{description}}</Button></span>
                   </Input>
-								</FormItem>
-								<FormItem prop="password">
-                  <Input type="password" v-model="formPass.password" placeholder="请输入密码">
-                    <span slot="prepend">
-										  <Icon :size="14" type="md-lock"></Icon>
-									  </span>
-									</Input>
+            </FormItem>
+            <FormItem style="margin-bottom: 10px">
+              <Button type="primary" long size="large" @click="toLogin('phone')">验证并登录</Button>
+            </FormItem>
+            <div class="deal">
+              <p>新用户完成注册，代表同意</p>
+              <a>《上海汽修平台用户协议》</a>
+            </div>
+            </Form>
+        </TabPane>
+        <TabPane label="密码登录" name="name2">
+          <Form ref="pass" :model="formPass" @keydown.enter.native="toLogin('pass')">
+            <FormItem prop="userName">
+              <Input v-model="formPass.userName" size="large" placeholder="请输入用户名">
+                <span slot="prepend">
+                  <Icon :size="16" type="ios-person"></Icon>
+                </span>
+              </Input>
+            </FormItem>
+            <FormItem prop="password">
+              <Input type="password" v-model="formPass.password" size="large" placeholder="请输入密码">
+                <span slot="prepend">
+                  <Icon :size="14" type="md-lock"></Icon>
+                </span>
+              </Input>
+            </FormItem>
+            <FormItem style="margin-bottom: 10px">
+              <Button type="primary" long size="large" @click="toLogin('pass')">登录</Button>
+            </FormItem>
+            <div class="deal">
+              <a style="float: right" @click="showFind= true">忘记密码?</a>
+            </div>
 
-
-								</FormItem>
-								<FormItem>
-									<div class="login-rember">
-										<div class="login-rember-left">
-											<Checkbox v-model="single">记住密码</Checkbox>
-										</div>
-										<div class="login-rember-right" title="请联系客服">
-											<span>忘记密码?</span>
-										</div>
-
-									</div>
-								</FormItem>
-								<FormItem>
-									<Button type="primary" long @click="toLogin('pass')">登录</Button>
-								</FormItem>
-
-
-								</Form>
-							</div>
-						</div>
-					</TabPane>
-				</Tabs>
-				<div>
-					<span>其他方式登录:</span>
-
-					<img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 28px;margin-right: 10px;cursor: pointer;">
-					<img src="../assets/img/login_img/zhifu_logo.png" @click="uniteLogin('zfb')" style="width: 25px;margin-right: 10px;cursor: pointer;">
-				</div>
-            </Card>
-
-          </div>
+          </Form>
+        </TabPane>
+      </Tabs>
+      <div class="other-way">
+        <span>使用其他方式登录:</span>
+        <img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">
+        <img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 27px">
+        <img src="../assets/img/login_img/zhifu_logo.png" @click="uniteLogin('zfb')" style="width: 24px">
       </div>
-    </div>
+    </Card>
+  </div>
 
   <Modal
     v-model="showBind"
@@ -107,48 +74,84 @@
     class=""
     :mask-closable="false"
   >
-    <div class="login-con-in">
+      <Form ref="bind" :rules="rulePhone"  :model="formBind">
+        <FormItem prop="userMobile">
+          <Input v-model="formBind.userMobile" :maxlength="11" placeholder="请输入手机号">
+          <span slot="prepend">
+                  <Icon :size="16" type="ios-person"></Icon>
+                </span>
 
+          </Input>
+        </FormItem>
+        <FormItem prop="captcha">
+          <Input v-model="formBind.captcha" placeholder="请输入验证码">
+          <span slot="prepend">
+                        <Icon :size="14" type="md-lock"></Icon>
+                      </span>
+          <span slot="append"><Button  type="primary" @click='getCaptcha(true)'>{{description}}</Button></span>
+          </Input>
+        </FormItem>
+        <FormItem style="margin-bottom: 10px">
+          <Button type="primary" long @click="toLogin(bindParam.type, bindParam.openId, true)">绑定并登录</Button>
+        </FormItem>
+        <div class="deal">
+          <p>新用户完成注册，代表同意</p>
+          <a>《上海汽修平台用户协议》</a>
+        </div>
+      </Form>
+  </Modal>
 
-      <div class="form-con">
-        <Form ref="bind" :rules="rulePhone"  :model="formBind">
-          <FormItem prop="userMobile">
-            <Input v-model="formBind.userMobile" :maxlength="11" placeholder="请输入手机号">
-            <span slot="prepend">
-										<Icon :size="16" type="ios-person"></Icon>
-									</span>
+  <Modal
+    v-model="showFind"
+    title="重置密码"
+    width="350px"
+    @on-visible-change=""
+    :footer-hide="true"
+    class=""
+    :mask-closable="false"
+  >
+    <Form ref="reset" :rules="ruleReset" :model="formReset">
+      <FormItem prop="mobileNo">
+        <Input v-model="formReset.mobileNo" :maxlength="11" placeholder="请输入手机号">
+        <span slot="prepend">
+                  <Icon :size="16" type="ios-person"></Icon>
+                </span>
 
-            </Input>
-          </FormItem>
-          <FormItem prop="captcha">
-            <Input v-model="formBind.captcha" placeholder="请输入验证码">
-            <span slot="prepend">
-													<Icon :size="14" type="md-lock"></Icon>
-												</span>
-            <span slot="append"><Button  type="primary" @click='getCaptcha(true)'>{{description}}</Button></span>
-            </Input>
-          </FormItem>
-          <FormItem>
-            <div class="login-rember">
-              <span style="font-weight: 400">新用户完成注册，代表同意</span>
-              <a href="/phone/agreement" target="_blank" style="color: #1E9FFF">《上海汽修平台用户协议》</a>
-            </div>
-          </FormItem>
-          <FormItem>
-            <Button type="primary" long @click="toLogin(bindParam.type, bindParam.openId, true)">绑定并登录</Button>
-          </FormItem>
-        </Form>
-      </div>
-    </div>
+        </Input>
+      </FormItem>
+      <FormItem prop="smsCode">
+        <Input v-model="formReset.smsCode" placeholder="请输入验证码">
+        <span slot="prepend">
+                        <Icon :size="14" type="md-lock"></Icon>
+                      </span>
+        <span slot="append"><Button  type="primary" @click='getResetCaptcha'>{{description}}</Button></span>
+        </Input>
+      </FormItem>
+      <FormItem prop="pass">
+        <Input type="password" v-model="formReset.pass" size="large" placeholder="请输入密码">
+        <span slot="prepend">
+                  <Icon :size="14" type="md-lock"></Icon>
+                </span>
+        </Input>
+      </FormItem>
+      <FormItem prop="confirmPass">
+        <Input type="password" v-model="formReset.confirmPass" size="large" placeholder="请确认密码">
+        <span slot="prepend">
+                  <Icon :size="14" type="md-lock"></Icon>
+                </span>
+        </Input>
+      </FormItem>
+      <FormItem style="margin-bottom: 10px">
+        <Button type="primary" long @click="toReset">重置密码</Button>
+      </FormItem>
+    </Form>
   </Modal>
 </div>
-
-
 </template>
 
 <script>
-  import config from '../config.js'
-	export default {
+import config from '../config.js'
+export default {
 		name: "login",
     layout: 'common',
 		data () {
@@ -192,10 +195,27 @@
 				time: 60,
 				timing: null,
 
-        showBind:false,
+        showBind: false,
         bindParam:{
           type: '',
           openId: ''
+        },
+
+        showFind: false,
+        formReset:{
+          mobileNo:'',
+          smsCode:'',
+          pass:'',
+          confirmPass:'',
+        },
+        ruleReset: {
+          mobileNo:[
+            { required: true, message: '请输入正确的号码', },
+            { validator: validatePass, trigger: 'blur'},
+          ],
+          smsCode:[{ required: true,  message: '请填写验证码',}],
+          pass:[{ required: true,  message: '请输入密码',}],
+          confirmPass:[{ required: true,  message: '请输入密码',}],
         }
 			}
 		},
@@ -203,7 +223,7 @@
 		  // console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
-      console.log('config.apiUrl=', config.apiUrl)
+      console.log('baseUrl:', config.apiUrl)
     },
 		methods: {
 			//获取短信验证码----
@@ -229,10 +249,23 @@
 						}
 					})
 				}else{
-
 				}
-
 			},
+      getResetCaptcha(){
+			  let pass= true
+        this.$refs.reset.validateField('mobileNo',(res)=>{
+          if(res) pass=false
+        });
+        if(pass && this.mobileFlag){
+          this.$axios.post('/user/pass/reset/'+ this.formReset.mobileNo, {}).then( (res) => {
+            if(res.data.code==='0'){
+              this.timing = setInterval(this.decrTime, 1000);
+              this.mobileFlag = false;
+              this.$Message.success('短信发送成功')
+            }
+          })
+        }
+      },
       toLogin(type, openId, toBind){
 			  let param= {}
         switch (type){
@@ -392,69 +425,79 @@
           })
           history.replaceState(null, null, window.location.origin + window.location.pathname)
         }
+      },
+      toReset(){
+        this.$refs.reset.validate((valid)=>{
+          if(valid){
+            this.$axios.$post('/user/pass/reset', this.formReset).then( (res) => {
+              if(res.code==='0'){
+                this.$Message.success('重置成功')
+                this.showFind= false
+              }
+            })
+          }
+        })
       }
 		}
 	}
 </script>
 
 <style scoped lang="less">
-.login-content{
-	width: 100%;
-	height: 600px;
-	background: #055fe8;
-	.login-wrap{
-		width: 100%;
-		height:600px;
-		margin:0 auto;
-		position: relative;
-		.login-con{
-			position: absolute;
-			right: 10%;
-			top: 50%;
-			transform: translateY(-50%);
-			width: 350px;
-
-			.login-con-in{
-				width: 300px;
-				margin:0 auto;
-				.form-con{
-					padding: 10px 0 0;
-				}
-				.login-tip{
-					font-size: 10px;
-					text-align: center;
-					color: #c3c3c3;
-				}
-				.login-rember{
-					width: 100%;
-					overflow: hidden;
-
-
-					.login-rember-left{
-						float: left;
-					}
-					.login-rember-right{
-						float: right;
-					}
-				}
-			}
-		}
-	}
-
-
+.login-page{
+  min-height: 600px;
+  height: 70vh;
+  position: relative;
+  .login-box{
+    width: 360px;
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    .other-way{
+      text-align: center;
+      font-size: 12px;
+      img{
+        cursor: pointer;
+      }
+    }
+    .other-way>*{
+      vertical-align: middle;
+      margin: 0 5px;
+    }
+  }
+  .deal{
+    height: 40px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 12px;
+  }
 }
 </style>
 <style lang="less">
-  .login-content {
-    .ivu-tabs-nav-scroll {
-      text-align: center;
-    }
-    .ivu-tabs-nav {
-      float: none;
-      display: inline-block;
-    }
-	.ivu-card{
-      font-size: 16px;
+.login-page{
+  .login-box{
+    .ivu-card-body{
+      padding: 15px 40px;
+      height: 334px;
+      .ivu-tabs-bar{
+        border: 0;
+        .ivu-tabs-nav-container{
+          font-size: 16px;
+          .ivu-tabs-nav-wrap{
+            margin: 0;
+            .ivu-tabs-nav-scroll{
+              text-align: center;
+              .ivu-tabs-nav{
+                display: inline-block;
+                float: none;
+              }
+            }
+          }
+
+        }
+      }
     }
   }
+}
 </style>
+

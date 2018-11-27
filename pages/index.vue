@@ -234,7 +234,7 @@ export default {
         }).then(res => {
           if (res.code === '0') {
             resolve(res.items)
-          } else reject( res.status)
+          } else reject( res)
         },err => {
           reject(err)
         })
@@ -247,7 +247,7 @@ export default {
       }).then(res => {
         if (res.code === '0') {
           resolve( res.items)
-        } else reject( res.status)
+        } else reject( res)
       },err => {
         reject(err)
       })
@@ -256,7 +256,7 @@ export default {
       app.$axios.$get('/expert/nostate/list' ).then(res => {
         if (res.code === '0') {
           resolve( res.items)
-        } else reject( res.status)
+        } else reject( res)
       },err => {
         reject(err)
       })
@@ -318,7 +318,7 @@ export default {
       }
     },(err)=>{
 
-      // console.log('err1:', err)
+      console.log('is-err',err)
       // for(let key in err){
       //   console.log('err:',key)
       // }
@@ -338,7 +338,8 @@ export default {
       }
 
       // if(err.response && err.response.config && err.response.data){
-
+      //   console.log('err',err.response)
+      if(err.response){
         setData.error=  {
           url: err.response.config?err.response.config.url: '',
           // headers: JSON.stringify(err.response.config.headers),
@@ -349,6 +350,10 @@ export default {
           response: JSON.stringify(err.response.data),
           // response: err.response.data
         }
+      }else{
+        setData.error= err
+      }
+
       // }else{
         // setData.error= JSON.stringify(err)
       // }
