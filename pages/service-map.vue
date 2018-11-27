@@ -243,7 +243,7 @@ export default {
       })
     },
     calcQuery(limit){
-      let query='?q='+ this.search.q + '&sort='+ (this.search.sort||'') +
+      let query='?fl=distance&q='+ this.search.q + '&sort='+ (this.search.sort||'') +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
       if(this.search.lng) query+='&point='+this.search.lat+','+this.search.lng
       let fq='', is4s=''
