@@ -106,7 +106,7 @@
           })
         },
         delList(){
-            this.$axios.post('/expert/detele/'+this.detailData.id,{
+            this.$axios.delete('/expert/delete/'+this.detailData.id,{
                         
                 }).then( (res) => {
                     if(res.data.code=='0'){

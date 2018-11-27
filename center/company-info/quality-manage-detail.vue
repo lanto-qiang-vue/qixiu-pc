@@ -79,7 +79,7 @@ export default {
             })
         },
         downFile(){
-            window.location.href = this.listSearch.fileurl;
+            window.location.href = this.listSearch.fileUrl;
         },
         visibleChange(status){
           if(status === false){
