@@ -7,10 +7,10 @@
                     <Input type="password" v-model="formData.oldPassword" placeholder="请输入旧密码"></Input>
                 </FormItem>
                 <FormItem label="新密码:"style="width: 350px;">
-                    <Input type="password" v-model="formData.newPassword" placeholder="请输入新密码"></Input>
+                    <Input type="password" v-model="formData.newPassword" placeholder="请输入6-12位密码"></Input>
                 </FormItem>
                 <FormItem label="确认新密码:"style="width: 350px;">
-                    <Input type="password" v-model="formData.confirmPassword" placeholder="请输入确认新密码"></Input>
+                    <Input type="password" v-model="formData.confirmPassword" placeholder="请输入6-12位密码"></Input>
                 </FormItem>
                 <FormItem :label-width="0">
                     <Button type="primary" @click="updatePassword" long style="width: 100px; margin-left: 120px;" v-if="">确认修改</Button>
@@ -56,7 +56,9 @@
 						console.log(res)
 						if(res.data.code==='0'){
 							this.$Message.info('修改成功');
-                           
+                            for(let i in this.formData){
+                                this.formData[i]="";
+                            }
 						}else{
                             // this.$Message.error(res.data.status);
                         }

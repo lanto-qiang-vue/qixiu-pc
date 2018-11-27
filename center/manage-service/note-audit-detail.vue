@@ -17,8 +17,8 @@
         </div>
     </div>
     <div slot="footer">
-        <Button v-if="accessBtn('check')"  @click="updateStatus" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.audit">审核</Button>
-        <Button v-if="accessBtn('check')"   @click="updateStatus1" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.out">驳回</Button>
+        <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.audit">审核</Button>
+        <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.out">驳回</Button>
         <Button  @click="exportFun" size="large" type="success"  style="margin-right: 10px;">附件下载</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
