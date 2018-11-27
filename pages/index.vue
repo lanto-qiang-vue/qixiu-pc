@@ -92,7 +92,7 @@
             <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
           <Select v-model="search.area" size="large" placeholder="企业区域" clearable style="width:19%;">
-            <Option v-for="(item, index) in area" :value="item.key" :key="index">{{item.name}}</Option>
+            <Option v-for="(item, index) in area" :value="item.code" :key="index">{{item.name}}</Option>
           </Select>
           <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;" ref="hot"
                   @on-change='selectHot' >
@@ -469,9 +469,7 @@ export default {
       if(val) this.search.q= val
     },
     getArea(){
-      this.$axios.$post('/area/list', {
-        parentCode: '310000'
-      }).then( (res) => {
+      this.$axios.$get('/area/query').then( (res) => {
         this.area= res.items
       })
     },

@@ -636,7 +636,7 @@ export const checkAuth = ({ route, store},redirect, error) =>{
       }
     }else{
       // console.log('not login')
-      if(meta && meta.accessId){
+      if(meta && (meta.accessId || meta.needLogin)){
         redirect({
           path: '/login',
           query: { redirect: route.fullPath }

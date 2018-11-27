@@ -16,9 +16,12 @@
             <div class="icon"><img src="/img/garage-info/营业执照.png"><img src="/img/garage-info/认证.png"></div>
             <div class="address"><span>{{info.addr}}</span><a >导航地图</a></div>
             <div class="tel"><span>{{info.tel}}</span></div>
-            <div class="button"><a >上门服务</a><a >预约服务</a></div>
+            <div class="button">
+              <nuxt-link tag="a" :to="'/visit-service/?id='+$route.params.id">上门服务</nuxt-link>
+              <nuxt-link tag="a" :to="'/appointment/?id='+$route.params.id+'&name='+info.name">预约服务</nuxt-link>
+            </div>
         <!--</div>-->
-        
+
 
         <div class="right" v-show="info.rating">
           <div class="point"><span>{{info.rating}}</span>分</div>
@@ -96,7 +99,7 @@
         </ul>
 
         <div id="pagebar">
-          
+
          <Page :current="page" :page-size="10" show-sizer show-elevator show-total :page-size-opts="[10, 20, 50]"
                 placement="top" :total="total" @on-change="changePage" @on-page-size-change="changePageSize"/>
         </div>
@@ -115,7 +118,7 @@ export default {
   layout: 'common',
   components: {
       CommonTable,
-      
+
     },
   validate ({ app, params, store }) {
     return params.id? true: false
@@ -162,7 +165,7 @@ export default {
 
       },
       columns: [
-          
+
         {title: '车友', key: 'corpName', sortable: true, minWidth: 120,
         },
         {title: '点评日期', key: 'licence', sortable: true, minWidth: 120},
@@ -189,10 +192,10 @@ export default {
       console.log(res.data)
 
         this.info= res.data
-      
+
     });
     this.getList();
-    
+
   },
   methods:{
     getStars( val) {
@@ -243,7 +246,7 @@ export default {
 
             // this.$Message.error(res.statusText);
           }
-          
+
         })
     },
 
@@ -363,16 +366,16 @@ export default {
               .avg {
                   margin-bottom: 5px;
               }
-              
+
               .star{
                 img{
                   width: 20px;
                 }
               }
-          
+
         }
       }
-      
+
       .info{
         padding:20px 12px;
         border-bottom: 1px dashed #eeeeee;
@@ -411,9 +414,9 @@ export default {
             i{
               white-space: nowrap;
               margin: 0 10px;
-              
+
             }
-            
+
           }
         }
         /*评价样式*/
@@ -468,8 +471,8 @@ export default {
 
       }
     }
-    
-    
+
+
   }
-  
+
 </style>
