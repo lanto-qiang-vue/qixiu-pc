@@ -102,6 +102,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
     },
     mounted () {
       this.getReceiveNotify();
+      this.getRouterData();
     },
     methods:{
         getSendNotify(){
@@ -216,7 +217,20 @@ import funMixin from '~/components/fun-auth-mixim.js'
             this.detailData1= null
             this.clearTableSelect1= Math.random();
             this.getReceiveNotify();
-        }
+        },
+        //监听传过来的数据值-----------，
+        getRouterData(){
+            var queryData=this.$route.query;
+            if(queryData.flag){
+                console.log("有值",queryData.listSearch);
+                this.detailData1=queryData.listSearch;
+                this.showDetail1=Math.random();
+                
+            }else{
+                console.log("没有值");
+            }
+            
+        },
 
         
     },

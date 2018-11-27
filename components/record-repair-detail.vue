@@ -1,5 +1,6 @@
 <!--车辆档案详情  2018-10-30 -->
 <template>
+  <div>
 <Modal
     v-model="showModal"
     title="车辆档案详情"
@@ -70,9 +71,35 @@
           ></Table>
     </div>
     <div slot="footer">
+        <Button type="primary" @click="comment">点评</Button>
+        <Button type="info">反馈</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
+    <!--点评-->
+    <Modal
+      v-model="commentModal"
+      title="点评"
+      width="500"
+      @on-visible-change="visibleChange"
+      :scrollable="true"
+      :transfer= "true"
+      :footer-hide="false"
+      :mask-closable="false"
+      class="table-modal-detail"
+      :transition-names="['', '']">
+      <div class="remarkhead">
+        <h1>您对该次服务满意吗？</h1>
+        <p>以下反馈是匿名的，便于我们记录并沟通改进</p>
+        <img src="/statics/img/maintain/chartico.png">
+      </div>
+      <div>
+        <img v-for="item in startList" :src="item.url" @mouseover="hClick(item.id)" @mouseout="resetStart" @click="changeStart(item)" style="float:left;height:20px;cursor:pointer;margin-left:5px;"/>
+        <div style="line-height:20px;margin-left:150px;">{{description}}</div>
+      </div>
+    </Modal>
+    <!---->
+  </div>
 </template>
 
 <script>
@@ -83,6 +110,17 @@ export default {
     data(){
 		return{
             showModal:false,
+            commentModal:false,
+            description:"一般",
+            startLength:5,
+            startLevel:3,
+            startList:[
+              {url:'/img/garage-info/yellow.png',id:1,description:'极差'},
+              {url:'/img/garage-info/yellow.png',id:2,description:'失望'},
+              {url:'/img/garage-info/yellow.png',id:3,description:'一般'},
+              {url:'/img/garage-info/gray.png',id:4,description:'满意'},
+              {url:'/img/garage-info/gray.png',id:5,description:'惊喜'},
+            ],
             collapse: '1',
             listSearch:{
                 companyName:"",
@@ -121,6 +159,25 @@ export default {
         },
     },
     methods:{
+      hClick(id){
+        for(let i in this.startList){
+          if(parseInt(i) < id){
+            this.startList[i].url = "/img/garage-info/yellow.png";
+          }else{
+            this.startList[i].url = "/img/garage-info/gray.png";
+          }
+        }
+      },
+      resetStart(){
+         this.hClick(this.startLevel);
+      },
+      changeStart(item){
+        this.startLevel = item.id;
+        this.description = item.description;
+      },
+	  comment(){
+      this.commentModal = true;
+    },
         getDetail(){
             this.$axios.post('/vehicle/carfile/queryDetail',{
                 "repairbasicinfoId":this.detailData.id,

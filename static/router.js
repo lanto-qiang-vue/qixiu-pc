@@ -210,6 +210,15 @@ export default [
         component: resolve('center/company-info/company-qualify-manage.vue'),
       },
       {
+        path: 'operate-complaint',
+        meta: {
+          icon: '',
+          title: '反馈管理',
+          accessId: '/center/operate-complaint',
+        },
+        component: resolve('center/operate/operate-complaint.vue'),
+      },
+      {
         path: 'unaccess',
         meta: {
           icon: '',

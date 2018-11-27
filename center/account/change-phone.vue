@@ -13,7 +13,7 @@
                     <Input type="text" v-model="formData.newTelphone" placeholder="请输入手机号码"></Input>
                 </FormItem>
                 <FormItem label="手机验证码:"style="width: 350px;">
-                    <Input v-model="formData.randCode" placeholder="请输入手机验证码" >
+                    <Input v-model="formData.randCode" placeholder="请输入手机验证码" :maxlength="11">
                         <span slot="append" ><Button  type="primary" @click='getCaptcha' >{{description}}</Button></span>
                     </Input>
                 </FormItem>
@@ -74,7 +74,7 @@
                             localStorage.setItem('USERINFO', JSON.stringify(this.userInfo))
                             this.$store.commit('user/setUser', deepClone(this.userInfo))
 						}else{
-                            this.$Message.error(res.data.status);
+                            // this.$Message.error(res.data.status);
                         }
 						
 					})
@@ -86,6 +86,7 @@
 				// this.$refs['formData'].validateField('newTelphone');
 				var pattern = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
 				if (!pattern.test(this.formData.newTelphone)) {
+                    this.$Message.error('输入正确手机号码');
 					return false;
 				}
 				if(this.mobileFlag){
@@ -101,7 +102,7 @@
 							this.mobileFlag = false;
 							this.$Modal.info({title:'系统提示!',content:"短信已发送,请及时查收"});
 						}else{
-							this.$Message.info(res.data.status);
+							// this.$Message.info(res.data.status);
 						}
 
 					})

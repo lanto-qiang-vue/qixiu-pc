@@ -99,7 +99,7 @@
     methods:{
         getList(){
             this.loading=true;
-            this.$axios.post('/company/repaircompany/company/login/records', {
+            this.$axios.post('/company/loginRecords/list', {
                     areaKey:this.searchList.areaKey,
                     companyName:this.searchList.companyName,
                     endDate:formatDate(this.searchList.startDate[1])||'',

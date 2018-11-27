@@ -45,12 +45,12 @@ export default {
               
         columns: [
           
-          {title: '单位名称', key: 'companyname', sortable: true, minWidth: 120,
+          {title: '单位名称', key: 'companyName', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '许可证号', key: 'companyroadtransportationlicense', sortable: true, minWidth: 120},
+          {title: '许可证号', key: 'license', sortable: true, minWidth: 120},
 
-          {title: '经营范围', key: 'companybusinessscope', sortable: true, minWidth: 120},
+          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120},
           {title: '当年累计发放量', key: 'thisYearNum', sortable: true, minWidth: 120},
           {title: '去年累计发放量', key: 'lastYearNum', sortable: true, minWidth: 135},
           {title: '去年累计销证量', key: 'lastYearSalesVolume', sortable: true, minWidth: 120},
@@ -105,21 +105,21 @@ export default {
             // this.loading=true;
             this.$axios.post('/company/repaircompany/query/company/detail', {
                     "area": "",
-  "businessaddress": "",
-  "companyName": "",
-  "companyaddress": "",
-  "companylinkmantel": "",
-  "companyroadtransportationlicense": "",
-  "companysuperintendentphone": "",
-  "corporate": "",
-  "inDays": 0,
+                    "businessaddress": "",
+                    "companyName": this.searchList.companyName,
+                    "companyaddress": "",
+                    "companylinkmantel": "",
+                    "license": this.searchList.companyroadtransportationlicense,
+                    "companysuperintendentphone": "",
+                    "corporate": "",
+                    "inDays": 0,
 
                     "pageNo": this.page,
                     "pageSize": this.limit,
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    this.tableData=res.data.item.data;
-                    this.total=res.data.item.total;
+                    this.tableData=res.data.items;
+                    this.total=res.data.total;
                     // this.loading=false;
                 }
            })

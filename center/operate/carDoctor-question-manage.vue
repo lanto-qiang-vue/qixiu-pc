@@ -19,7 +19,7 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="accessBtn('view')" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
+      <Button type="info" v-if="accessBtn('auditDetail')" :disabled="!detailData" @click="showDetail=Math.random();">查看详情</Button>
     </div>
     <carDoctor-question-detail :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></carDoctor-question-detail>
   </common-table>
