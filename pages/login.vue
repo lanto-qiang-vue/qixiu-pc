@@ -150,6 +150,7 @@
 </template>
 
 <script>
+  import config from '../config.js'
 	export default {
 		name: "login",
     layout: 'common',
@@ -205,6 +206,7 @@
 		  // console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
+      console.log('config.apiUrl=', config.apiUrl)
     },
 		methods: {
 			//获取短信验证码----
@@ -334,7 +336,7 @@
 
 			handleFun(name){
 				if(name=="tel"){
-					
+
 					this.handleCaptcha('formMobile');
 				}else if(name=="tenant"){
 					this.handleSubmit();

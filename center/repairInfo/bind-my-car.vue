@@ -70,7 +70,7 @@
         </Form>
         <Form :label-width="140" v-show="imgFlag">
             <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton">
-                <div class="pic-card" v-if="accessBtn('upload')">
+                <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
@@ -107,7 +107,7 @@
         </Form>
         <Form :label-width="140" v-show="busineFlag">
             <FormItem label="上传营业执照:" style="margin-bottom: 12px;">
-                <div class="pic-card" v-if="accessBtn('upload')">
+                <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
                             <div class="up-img">
@@ -588,9 +588,11 @@ export default {
             if(val==1){
                 this.imgFlag=true;
                 this.busineFlag=false;
+
             }else if(val==2){
                 this.imgFlag=false;
                 this.busineFlag=true;
+                this.infoData.id='';
             }
 
         },

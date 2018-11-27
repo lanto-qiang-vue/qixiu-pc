@@ -1,7 +1,7 @@
 <template>
-<div>
+<div style="position: relative;">
+  <Button type="primary" @click="fullscreen" style="position: absolute;right: 10px;top: -36px;">全屏</Button>
   <div class="operator-home">
-    <Button type="primary" @click="fullscreen" style="position: absolute;right: 10px;top: -36px;">全屏</Button>
     <div class="hxxlogo">
       <img class="hxx-logo" src="/img/hotmap/logo.png"/>
       <img class="logostar" src="/img/hotmap/logostar.png"/>

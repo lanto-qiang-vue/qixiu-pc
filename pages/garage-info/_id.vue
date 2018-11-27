@@ -12,7 +12,7 @@
       <!--head? -->
       <div class="head">
         <!--<div class="left">-->
-            <h1>{{ info.name }}<span id="status">{{info.status}}</span></h1>
+            <h1>{{ info.name }}<span id="status">{{getStatus(info.status)}}</span></h1>
             <div class="icon"><img src="/img/garage-info/营业执照.png"><img src="/img/garage-info/认证.png"></div>
             <div class="address"><span>{{info.addr}}</span><a >导航地图</a></div>
             <div class="tel"><span>{{info.tel}}</span></div>
@@ -20,11 +20,11 @@
         <!--</div>-->
         
 
-        <div class="right" v-show="info.avgCompany">
-          <div class="point"><span>{{info.avgCompany}}</span>分</div>
+        <div class="right" v-show="info.rating">
+          <div class="point"><span>{{info.rating}}</span>分</div>
           <div class="avg"><span id="average"></span>低于同类平均水平</div>
-          <div class="star" v-if="info.avgCompany">
-            <img src="/img/garage-info/yellow.png"  v-for="i in parseInt(info.avgCompany)" :key="i">
+          <div class="star" v-if="info.rating">
+            <img src="/img/garage-info/yellow.png"  v-for="i in parseInt(info.rating)" :key="i">
           </div>
         </div>
       </div>
@@ -32,8 +32,8 @@
         <h1>企业档案</h1>
         <div class="block">
           <p class="p1">企业性质：<span>{{info.bizScope}}</span></p>
-          <p class="p1">行业信誉评级：<span>{{info.crediRating}}</span></p>
-          <p class="p1">评分：<span>{{info.avgCompany?info.avgCompany:'暂无'}}</span></p>
+          <p class="p1">行业信誉评级：<span>{{info.grade}}</span></p>
+          <p class="p1">评分：<span>{{info.rating?info.rating:'暂无'}}</span></p>
         </div>
         <div class="block">
           <label>企业认证</label>
@@ -55,22 +55,22 @@
       <div class="appraise">
         <h1>服务评价</h1>
         <div class="tag">
-          <ul>
+          <!--<ul>
             <li v-if="info.companyShowWors"  v-for="item in info.companyShowWors">{{item}}</li>
           </ul>
-          <span>共<em id="number"></em>条评价</span>
+          <span>共<em id="number">{{total}}</em>条评价</span>-->
         </div>
         <div class="stars">
-          <span>履约情况 <i v-html="getStars(info.avgKeepAppointment)"></i>
-            <em>{{ getGrade(info.avgKeepAppointment)}}</em></span>
-          <span>服务态度 <i v-html="getStars(info.avgStatus)"></i>
-            <em>{{ getGrade(info.avgStatus)}}</em></span>
-          <span>维修质量 <i v-html="getStars(info.avgQuality)"></i>
-            <em>{{ getGrade(info.avgQuality)}}</em></span>
-          <span>维修速度 <i v-html="getStars(info.avgSpeed)"></i>
-            <em>{{ getGrade(info.avgSpeed)}}</em></span>
-          <span>维修价格 <i v-html="getStars(info.avgPrice)"></i>
-            <em>{{ getGrade(info.avgPrice)}}</em></span>
+          <span>履约情况 <i v-html="getStars(info.keepApp)"></i>
+            <em>{{ getGrade(info.keepApp)}}</em></span>
+          <span>服务态度 <i v-html="getStars(info.attitude)"></i>
+            <em>{{ getGrade(info.attitude)}}</em></span>
+          <span>维修质量 <i v-html="getStars(info.quality)"></i>
+            <em>{{ getGrade(info.quality)}}</em></span>
+          <span>维修速度 <i v-html="getStars(info.speed)"></i>
+            <em>{{ getGrade(info.speed)}}</em></span>
+          <span>维修价格 <i v-html="getStars(info.price)"></i>
+            <em>{{ getGrade(info.price)}}</em></span>
         </div>
 
         <ul id="list">
@@ -98,7 +98,7 @@
         <div id="pagebar">
           
          <Page :current="page" :page-size="10" show-sizer show-elevator show-total :page-size-opts="[10, 20, 50]"
-    placement="top" :total="total" @on-change="changePage" @on-page-size-change="changePageSize"/>
+                placement="top" :total="total" @on-change="changePage" @on-page-size-change="changePageSize"/>
         </div>
       </div>
 
@@ -145,38 +145,38 @@ export default {
         companyShowWors:[],
         serveSupports:[],
         status:'营业',
-        avgCompany:'3',
-        companyName:'上海汽修',
-        companyAddress:'明基广场',
-        companyTel:'021-1234567',
+        rating:'3',
+        name:'上海汽修',
+        addr:'明基广场',
+        tel:'021-1234567',
 
         companyProperty:'二类维修企业',
-        crediRating:'未考核',
+        grade:'',
 
         servePreponderance:'',
-        avgKeepAppointment:2,
-        avgStatus:2,
-        avgQuality:2,
-        avgSpeed:2,
-        avgPrice:2,
+        keepApp:2,
+        attitude:2,
+        quality:2,
+        speed:2,
+        price:2,
 
       },
       columns: [
           
-          {title: '车友', key: 'corpName', sortable: true, minWidth: 120,
-          },
-          {title: '点评日期', key: 'licence', sortable: true, minWidth: 120},
-          {title: '评分', key: 'businessAddress', sortable: true, minWidth: 135},
-          {title: '评分详情', key: 'scopes', sortable: true, minWidth: 120},
-        ],
-        tableData: [],
-        page: 1,
-        limit: 10,
-        total: 0,
-        showTable:false,
-        showDetail: false,
-        detailData: null,
-        clearTableSelect: null,
+        {title: '车友', key: 'corpName', sortable: true, minWidth: 120,
+        },
+        {title: '点评日期', key: 'licence', sortable: true, minWidth: 120},
+        {title: '评分', key: 'businessAddress', sortable: true, minWidth: 135},
+        {title: '评分详情', key: 'scopes', sortable: true, minWidth: 120},
+      ],
+      tableData: [],
+      page: 1,
+      limit: 10,
+      total: 0,
+      showTable:false,
+      showDetail: false,
+      detailData: null,
+      clearTableSelect: null,
       error: null
     }
   },
@@ -187,9 +187,7 @@ export default {
       method: 'get',
     }).then((res) => {
       console.log(res.data)
-        // for(let i in res.data){
-        //   this.info[i]=res.data[i]
-        // }
+
         this.info= res.data
       
     });
@@ -209,6 +207,9 @@ export default {
     },
     getGrade(val){
       return val ?val.toFixed(1):0
+    },
+    getStatus(val){
+      return val ?'营业':'非营业'
     },
     changePage(page){
           this.page= page
@@ -240,7 +241,7 @@ export default {
 
           }else{
 
-            this.$Message.error(res.statusText);
+            // this.$Message.error(res.statusText);
           }
           
         })

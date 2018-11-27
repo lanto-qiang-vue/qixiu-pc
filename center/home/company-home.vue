@@ -20,6 +20,15 @@
 
     </div>
 
+    <div class="dblock">
+      <h1 class="dtitle">区域对接状况</h1>
+      <div class="center">
+        <div class="inline-box">
+          <div id="bar1" style="width: 800px;height: 350px"></div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
@@ -60,6 +69,54 @@
       this.$axios.$post('/company/repaircompany/detailInfo',{}).then( (res) => {
         if(res.code== '0') this.infoData= [res.item]
       })
+
+
+      let bar1 = echarts.init(document.getElementById('bar1'));
+
+      let option = {
+          color: ['#6eb4f2'],
+          tooltip : {
+              trigger: 'axis',
+              axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                  type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+              }
+          },
+          grid: {
+          },
+          xAxis : [
+              {
+                  type : 'category',
+                  data : ['2017/10/12', '2017/10/13', '2017/10/14', '2017/10/15', '2017/10/16', '2017/10/17', '2017/10/18'],
+                  axisTick: {
+                      alignWithLabel: true
+                  },
+                  axisLabel: {
+                      interval: 0,
+                      rotate: 40
+                  },
+              }
+          ],
+          yAxis : [
+              {
+                  type : 'value'
+              }
+          ],
+          series : [
+              {
+                  label: {
+                      normal: {
+                          show: true,
+                          position: 'top'
+                      }
+                  },
+                  name:'上传数',
+                  type:'bar',
+                  data:[4, 3, 4, 2, 3, 5, 1]
+              }
+          ]
+      };
+
+      bar1.setOption(option);
     },
     methods:{
 
