@@ -9,7 +9,7 @@
       <div>
         <Form class="common-form" :label-width="120" ref="formData" :model="formData" :rules="rules" style="padding-top:20px;">
           <FormItem label="预约公司名称:" style="width:70%;">
-            <Input placeholder="请输入" v-model="companyName"></Input>
+            <Input placeholder="请输入" :readonly="true" v-model="companyName"></Input>
           </FormItem>
           <FormItem label="车主姓名:" style="width:70%;" prop="ownerName">
             <Input placeholder="请输入(必填)" v-model="formData.ownerName"></Input>
@@ -18,10 +18,10 @@
             <Input placeholder="请输入(必填)" v-model="formData.contactMobile"></Input>
           </FormItem>
           <FormItem label="预约时间:" style="width:70%;" prop="onSiteTime">
-              <DatePicker type="date" style="width:100%;" v-model="formData.onSiteTime"></DatePicker>
+              <DatePicker type="datetime" style="width:100%;" transfer="true" :options="options1" v-model="formData.onSiteTime"></DatePicker>
           </FormItem>
           <FormItem label="预约维修内容:" style="width:70%;">
-            <Input type="textarea" placeholder="请输入内容(可选)" v-model="formData.serviceContent"></Input>
+            <Input type="textarea" placeholder="请输入内容(可选)"  v-model="formData.serviceContent"></Input>
           </FormItem>
           <div style="clear:both;"></div>
           <FormItem>
@@ -43,6 +43,11 @@
     },
     data(){
       return {
+        options1:{
+          disabledDate (date) {
+            return date && date.valueOf() < Date.now() - 86400000;
+          }
+        },
         companyName:'',
         formData:{
           companyId:null,
@@ -52,7 +57,7 @@
           serviceContent:'',
         },
         rules:{
-          contactMobile:{required:true,message:'手机号必填'},
+          contactMobile:{required: true, pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请输入有效手机号码', trigger: 'change,blur'},
           onSiteTime:{required:true,message:'预约时间必填'},
           ownerName:{required:true,message:'联系人必填'},
         }
