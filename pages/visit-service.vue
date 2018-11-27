@@ -53,7 +53,7 @@ export default {
       rules:{
         ownerName:[{required:true,message:'联系人必填'}],
         contactAddress:[{required:true,message:'联系地址必填'}],
-        contactMobile:[{required:true,message:'联系电话必填'}],
+        contactMobile:[{required: true, pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请输入有效手机号码', trigger: 'change,blur'}],
       },
       checkBoxList:[
         {id:"300001",title:'上门故障诊断'},

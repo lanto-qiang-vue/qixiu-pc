@@ -126,15 +126,15 @@
       <TabPane v-for="(item,tab) in formData.staffCertList" :closable="true" :key="tab" :name="'s'+(tab)"
                :label="'证书' + (tab+1)">
         <Form class="common-form" :model="item" ref="s1" :rules="rules" :label-width="120">
-          <FormItem label="名称" prop="certName" style="width:80%;">
-            <Input type="text" v-model="item.certName"></Input>
-          </FormItem>
+          <!--<FormItem label="名称" prop="certName" style="width:80%;">-->
+            <!--<Input type="text" v-model="item.certName"></Input>-->
+          <!--</FormItem>-->
           <FormItem label="职业(工种)" prop="trade" style="width:80%;">
             <Input type="text" v-model="item.trade"></Input>
           </FormItem>
           <FormItem label="职业(等级)" prop="level" style="width:80%;">
             <RadioGroup v-model="item.level">
-              <Radio v-for="item in positionList" :label="item.id">{{item.name}}</Radio>
+              <Radio v-for="item in levelList" :label="item.id">{{item.name}}</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="证书编号" prop="certCode" style="width:80%;">
@@ -279,7 +279,7 @@
         },
         rule1: {},
         rules: {
-          certName: [{ required: true, message: '名称必填' }],
+          // certName: [{ required: true, message: '名称必填' }],
           trade: [{ required: true, message: '工种必填' }],
           certCode: [{ required: true, message: '工种必填' }],
           issueDate: [{ required: true, message: '工种必填' }],
@@ -406,12 +406,12 @@
       },
       handleTabsAdd() {
         this.formData.staffCertList.push({
-          certName: '',
-          trade: '职业工种',
+          // certName: '',
+          trade: '',
           level: '1',
-          certCode: '证书编号',
-          issueDate: '2018-10-01',
-          issuingAuthority: '鉴定机构',
+          certCode: '',
+          issueDate: '',
+          issuingAuthority: '',
           staffCertImageList: [],
           token: this.$store.state.user.token,
         })
@@ -437,10 +437,10 @@
         console.log(JSON.stringify(data))
         for (let i in data) {
           let code = parseInt(i) + 1
-          if (data[i].certName == '') {
-            this.$Message.info('请填写证书' + code + '名称')
-            return
-          }
+          // if (data[i].certName == '') {
+          //   this.$Message.info('请填写证书' + code + '名称')
+          //   return
+          // }
           if (data[i].trade == '') {
             this.$Message.info('请填写证书' + code + '职业工种')
             return

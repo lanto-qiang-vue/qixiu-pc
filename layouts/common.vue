@@ -147,6 +147,7 @@ export default {
       height: 40px;
       line-height: 40px;
       padding: 0 18px;
+      white-space: nowrap;
     }
   }
   .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-selected{

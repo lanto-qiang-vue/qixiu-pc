@@ -365,28 +365,6 @@ export default [
     ]
   },
 
-
-//   {
-//     path: '/menu16',
-//     alias: '/center',
-//     meta: {
-//       icon: '',
-//       title: '0级',
-//       accessId: 0,
-//     },
-//     component: resolve('components/main.vue'),
-//     children: [
-//       {
-//         path: 'company-index',
-//         meta: {
-//           icon: '',
-//           title: '企业中心首页',
-//           accessId: 101,
-//         },
-//         component: resolve('center/company/company-index.vue'),
-//       },
-// ]
-//   },
   {
     path: '/menu17',
     alias: '/center',
