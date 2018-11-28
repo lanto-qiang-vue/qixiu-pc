@@ -8,6 +8,17 @@
           <BreadcrumbItem>车大夫门诊</BreadcrumbItem>
         </Breadcrumb>
       </div>
+      <Card class="expert-info" v-if="$route.params.id">
+        <p slot="title">专家简介</p>
+        <Form :label-width="80">
+          <FormItem><img class="expert-head" :src="expertInfo.photo"/></FormItem>
+          <FormItem label="姓名：">{{expertInfo.name}}</FormItem>
+          <FormItem label="职称：">{{expertInfo.professor}}</FormItem>
+          <FormItem label="就职企业：">{{expertInfo.empUnit}}</FormItem>
+          <FormItem label="专业擅长：">{{expertInfo.goodAt}}</FormItem>
+          <FormItem label="主要荣誉：">{{expertInfo.honor}}</FormItem>
+        </Form>
+      </Card>
       <div class="to-question" v-show="flag">
         <p class="title">问题咨询</p>
         <Form ref="form" :rules="ruleValidate" :model="ask">
@@ -101,17 +112,13 @@ export default {
   data(){
     let rule= [{ required: true, message:'必填项不能为空'}]
     return{
+      expertInfo:{},
       ask:{
         "anonymous": 'false',
         "category": "",
         "content": "",
-        "expertId": "",
-        "images": [
-          // '/img/cdf/user.png',
-          // '/img/cdf/user.png',
-          // '/img/cdf/user.png',
-          // '/img/cdf/user.png',
-        ]
+        "expertId": this.$route.params.id||'',
+        "images": []
       },
       ruleValidate : {
         content: rule,
@@ -130,11 +137,23 @@ export default {
   created(){
     this.getType()
     this.getList()
+    this.getExpert()
+    console.log('cdf-question-list: created')
   },
   mounted(){
-    // console.log(this.$route)
+    console.log('cdf-question-list: mounted')
   },
   methods:{
+    getExpert(){
+      let id= this.$route.params.id
+      if(id){
+        this.$axios.$get('/expert/detail/'+ id).then((res) => {
+          if(res.code==='0'){
+            this.expertInfo= res.item
+          }
+        })
+      }
+    },
     getList(page){
       if(page) this.search.pageNo= page
       this.$axios.$post('/question/nostate/list', this.search).then((res) => {
@@ -292,6 +311,18 @@ export default {
 </style>
 <style lang="less">
 .cdf-question-list{
+  .expert-info{
+    margin-top: 10px;
+    .ivu-form-item{
+      margin-bottom: 0;
+      .ivu-form-item-label{
+        font-weight: 900;
+      }
+      .expert-head{
+        width: 100px;
+      }
+    }
+  }
   .question-list{
     .ivu-cell{
       border-bottom: 1px solid #eaeaea;

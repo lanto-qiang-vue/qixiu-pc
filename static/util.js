@@ -636,13 +636,44 @@ export const checkAuth = ({ route, store},redirect, error) =>{
       }
     }else{
       // console.log('not login')
-      if(meta && meta.accessId){
-        redirect({
-          path: '/login',
-          query: { redirect: route.fullPath }
-        })
+      if(meta && (meta.accessId || meta.needLogin)){
+        // redirect({
+        //   path: '/login',
+        //   query: { redirect: route.fullPath }
+        // })
         redirect()
       }
+    }
+  }
+}
+
+export const signIn = ({ route, store, $axios, Message, Modal, Spin},toRedirect) =>{
+  if (process.client) {
+    let userInfo= store.state.user.userInfo, isComp= false
+    if( userInfo && userInfo.roles){
+      for(let i in userInfo.roles){
+        if(userInfo.roles[i].code== 'weixiuqiye') isComp= true
+      }
+    }
+    if(route.fullPath.indexOf('/center')>=0 && isComp){
+      Spin.show()
+      $axios.$get('/user/loginRecords/isCheckin').then((res)=>{
+        if(!res.item){
+          Modal.confirm({
+            title: '每日签到',
+            content: '是否签到？',
+            onOk:()=>{
+              $axios.$post('/user/loginRecords/checkin', {}).then((res)=>{
+                if(res.code==='0') Message.success('签到成功')
+              })
+            },
+            onCancel:()=>{
+              toRedirect()
+            },
+          })
+        }
+        Spin.hide()
+      })
     }
   }
 }

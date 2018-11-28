@@ -92,7 +92,7 @@
             <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
           </Select>
           <Select v-model="search.area" size="large" placeholder="企业区域" clearable style="width:19%;">
-            <Option v-for="(item, index) in area" :value="item.key" :key="index">{{item.name}}</Option>
+            <Option v-for="(item, index) in area" :value="item.code" :key="index">{{item.name}}</Option>
           </Select>
           <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable style="width:19%;" ref="hot"
                   @on-change='selectHot' >
@@ -207,6 +207,10 @@
 </div>
 <common-footer></common-footer>
 
+  <nuxt-link tag="div" class="float-icon" to="/center/staff-query">
+    <Icon type="ios-people" size="40" style="line-height: 50px"/>
+    <p>企业员工信息</p>
+  </nuxt-link>
 </div>
 </template>
 
@@ -234,7 +238,7 @@ export default {
         }).then(res => {
           if (res.code === '0') {
             resolve(res.items)
-          } else reject( res.status)
+          } else reject( res)
         },err => {
           reject(err)
         })
@@ -247,7 +251,7 @@ export default {
       }).then(res => {
         if (res.code === '0') {
           resolve( res.items)
-        } else reject( res.status)
+        } else reject( res)
       },err => {
         reject(err)
       })
@@ -256,7 +260,7 @@ export default {
       app.$axios.$get('/expert/nostate/list' ).then(res => {
         if (res.code === '0') {
           resolve( res.items)
-        } else reject( res.status)
+        } else reject( res)
       },err => {
         reject(err)
       })
@@ -318,7 +322,7 @@ export default {
       }
     },(err)=>{
 
-      // console.log('err1:', err)
+      console.log('is-err',err)
       // for(let key in err){
       //   console.log('err:',key)
       // }
@@ -338,7 +342,8 @@ export default {
       }
 
       // if(err.response && err.response.config && err.response.data){
-
+      //   console.log('err',err.response)
+      if(err.response){
         setData.error=  {
           url: err.response.config?err.response.config.url: '',
           // headers: JSON.stringify(err.response.config.headers),
@@ -349,6 +354,10 @@ export default {
           response: JSON.stringify(err.response.data),
           // response: err.response.data
         }
+      }else{
+        setData.error= err
+      }
+
       // }else{
         // setData.error= JSON.stringify(err)
       // }
@@ -469,9 +478,7 @@ export default {
       if(val) this.search.q= val
     },
     getArea(){
-      this.$axios.$post('/area/list', {
-        parentCode: '310000'
-      }).then( (res) => {
+      this.$axios.$get('/area/query').then( (res) => {
         this.area= res.items
       })
     },
@@ -1090,6 +1097,23 @@ export default {
           background-size: 22px auto;
         }
       }
+    }
+  }
+
+  .float-icon{
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 1000;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    background-color: orangered;
+    border-radius: 100%;
+    p{
+      color: orangered;
     }
   }
 }

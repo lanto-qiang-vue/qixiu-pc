@@ -30,23 +30,29 @@
     :footer-hide="false"
     :mask-closable="false"
     :transition-names="['', '']">
+      <Form :model="uploadData" :label-width="60">
+        <FormItem label="文件">
+          <Upload
+            ref="upload"
+            :headers="token"
+            :format="['doc','xls','xlsx']"
+            accept=".doc, .xls, .xlsx"
+            :on-format-error="handleFormatError"
+            :before-upload="handleBeforeUpload"
+            :on-success="handleSuccess"
+            type="select"
+            action="/proxy/file/add"
 
-    <Upload
-    ref="upload"
-    :headers="token"
-    :format="['doc','xls','xlsx']"
-    accept=".doc, .xls, .xlsx"
-    :on-format-error="handleFormatError"
-    :before-upload="handleBeforeUpload"
-    :on-success="handleSuccess"
-    type="select"
-    action="/proxy/file/add"
-    
-    v-if="accessBtn('upload')"
-    >
-        <Button type="primary">上传文件</Button>
-        <span>(仅支持doc, xls, xlsx)</span>
-    </Upload>
+            v-if="accessBtn('upload')">
+            <Button type="primary">上传文件</Button>
+            <span>(仅支持doc, xls, xlsx)</span>
+          </Upload>
+        </FormItem>
+        <FormItem label="文件名" :required="true" prop="fileName">
+          <Input v-model="uploadData.fileName"></Input>
+        </FormItem>
+      </Form>
+
     <div slot="footer">
         <Button  @click="uploadFile" size="large" type="success"  >确定</Button>
         <Button  size="large" type="default"  @click="showModal=false;">返回</Button>
@@ -70,11 +76,10 @@ export default {
             token: {token: ''},
             loading:false,
             columns: [
-                {title: '序号',  minWidth: 80,
-                    render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-                },
-                {title: '文件名', key: 'filename', sortable: true, minWidth: 120,
-                },
+                {title: 'id',  key: 'id',width: 60,},
+                {title: '文件名', key: 'fileName',  minWidth: 120,},
+                {title: '分类', key: 'category',  width: 80,},
+                {title: '地址', key: 'url',  minWidth: 300,},
 
 
             ],
@@ -95,8 +100,8 @@ export default {
             showList:null,//是否显示收件人
             showModal:false,//是否显示上传页
             uploadData:{
-                info:null,
-                fileUrl:null,
+              fileName:'',
+              url: ''
             }
         }
     },
@@ -140,7 +145,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -180,10 +185,7 @@ export default {
         },
         //新增文件接口-------
         uploadFile(){
-            this.$axios.post('/file/upload', {
-                    "fileName": this.uploadData.info,
-                    "url": this.uploadData.fileUrl,
-            }).then( (res) => {
+            this.$axios.post('/file/upload',this.uploadData).then( (res) => {
                 if(res.data.code=='0'){
                     this.showModal=false;
 
@@ -210,12 +212,10 @@ export default {
             return true;
         },
         handleSuccess(res,file,fileList){
-            // consolelog(res,file,fileList);
+            console.log(res,file,fileList);
             if(res.code=="0"){
-                // this.search.docPath=res.data.docPath;
-                this.uploadData.info=res.data.info;
-                this.uploadData.fileUrl=res.data.fileUrl;
-
+               this.uploadData.fileName= res.item.info
+               this.uploadData.url= res.item.path
                 this.$Message.info("上传成功");
             }else{
                 this.$Message.error(res.status);

@@ -11,9 +11,9 @@
           |
           <a href="http://www.shjtzf.com/" target="_Blank">上海市交通委执法总队</a>
           |
-          <a>蓝途共享</a>
+          <a href="http://www.hoxiuxiu.com/" target="_Blank">好修修</a>
         </p>
-        <p>copyright 2017 上海蓝速汽车技术有限公司 All rights reserved. 沪ICP备17039665号-1.
+        <p>copyright© 2018 上海蓝速汽车技术有限公司 All rights reserved. 沪ICP备17039665号-1.
           <span> 沪公网安备 310000039060-18001. </span>
         </p>
       </div>

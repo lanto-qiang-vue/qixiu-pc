@@ -42,6 +42,18 @@ export default [
       },
     ]
   },{
+    path: '/appointment',
+    component: resolve('center/public-service/appointment.vue'),
+    meta: {
+      needLogin: true
+    }
+  },{
+    path: '/visit-service',
+    component: resolve('center/public-service/visit-service.vue'),
+    meta: {
+      needLogin: true
+    }
+  },{
     path: '/menu0',
     alias: '/center',
     meta: {

@@ -1,8 +1,10 @@
 //图片压缩上传按钮
 <template>
-  <Button class="compress-upload-button" :type="buttonType" >{{buttonText}}
+  <div class="compress-upload-button">
+    <Button  :type="buttonType" >{{buttonText}}</Button>
     <input ref="file" @change="getImg()" type="file" :accept="accept">
-  </Button>
+  </div>
+
 </template>
 
 <script>
@@ -50,6 +52,9 @@
 .compress-upload-button{
   position: relative;
   cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: middle;
   input{
     position: absolute;
     left: 0;
