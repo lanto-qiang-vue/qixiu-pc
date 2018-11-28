@@ -207,6 +207,10 @@
 </div>
 <common-footer></common-footer>
 
+  <nuxt-link tag="div" class="float-icon" to="/center/staff-query">
+    <Icon type="ios-people" size="40" style="line-height: 50px"/>
+    <p>企业员工信息</p>
+  </nuxt-link>
 </div>
 </template>
 
@@ -1093,6 +1097,23 @@ export default {
           background-size: 22px auto;
         }
       }
+    }
+  }
+
+  .float-icon{
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 1000;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    background-color: orangered;
+    border-radius: 100%;
+    p{
+      color: orangered;
     }
   }
 }

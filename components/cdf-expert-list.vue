@@ -11,9 +11,10 @@
           <img :src="item.photo">
         </a>
         <div class="info">
-          <a class="name" href="/cdf/expert/1">{{item.name}}<span></span></a>
+          <a class="name">{{item.name}}<span></span></a>
           <p>{{item.professor}}</p>
-          <a class="ivu-btn ivu-btn-default ivu-btn-small" href="/cdf/expert/1">向TA提问</a>
+          <nuxt-link tag="a" class="ivu-btn ivu-btn-default ivu-btn-small"
+          :to="'/cdf/expert/'+ item.id">向TA提问</nuxt-link>
         </div>
       </li>
     </ul>
@@ -140,6 +141,9 @@ export default {
             display: block;
             line-height: 20px;
             margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           p{
             color: #c2c2c2;

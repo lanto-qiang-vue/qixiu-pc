@@ -99,7 +99,7 @@ module.exports = {
   },
 
   router:{
-    middleware: ['set-store', 'check-auth'],
+    middleware: ['set-store', 'check-auth', 'company-sign-in'],
     extendRoutes (routes,resolve) {
       routes.push(...router)
     }
