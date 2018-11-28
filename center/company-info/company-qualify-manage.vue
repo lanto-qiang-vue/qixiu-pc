@@ -16,15 +16,15 @@
         </FormItem>
         
         <FormItem :label-width="0" style="width: 90px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('list')" @click="searchFun">搜索</Button>
         </FormItem>
 
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="showDetail=Math.random();" >查看</Button>
+      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
     </div>
-    <!--<company-qualify-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></company-qualify-detail>-->
+    <company-qualify-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></company-qualify-detail>
 </common-table>
 
 
@@ -32,13 +32,15 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
-// import companyQualifyDetail from './company-qualify-detail.vue'
+import companyQualifyDetail from './company-qualify-detail.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "company-qualify-manage",
     components: {
       CommonTable,
-    //   companyQualifyDetail
+      companyQualifyDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:false,
@@ -77,16 +79,9 @@ export default {
       }
     },
     mounted () {
-        // this.getAreaInfo();
       this.getList();
       
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         //获取区域数据-------
         getAreaInfo(){
@@ -102,7 +97,7 @@ export default {
            
         },
         getList(){
-            // this.loading=true;
+            this.loading=true;
             this.$axios.post('/company/repaircompany/query/company/detail', {
                     "area": "",
                     "businessaddress": "",
@@ -120,7 +115,7 @@ export default {
                 if(res.data.code=='0'){
                     this.tableData=res.data.items;
                     this.total=res.data.total;
-                    // this.loading=false;
+                    this.loading=false;
                 }
            })
            this.detailData= null;

@@ -45,7 +45,6 @@ export default {
               loading:false,
 
         columns: [
-
           {title: '问题内容', key: 'content', sortable: true, minWidth: 200,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },

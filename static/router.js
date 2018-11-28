@@ -500,6 +500,35 @@ export default [
       },]
   },
   {
+    path: '/menu31',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '企业服务管理',
+      accessId: '/menu31',
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'visit-company',
+        meta: {
+          icon: '',
+          title: '上门服务管理',
+          accessId: '/center/visit-company',
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-company',
+        meta: {
+          icon: '',
+          title: '预约服务管理',
+          accessId: '/center/order-company',
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },]
+  },
+  {
     path: '/menu18',
     alias: '/center',
     meta: {

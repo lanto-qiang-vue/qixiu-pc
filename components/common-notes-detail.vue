@@ -49,6 +49,7 @@ export default {
     watch:{
         showDetail(){
             this.showModal=true;
+            
             this.getNotify();
             // this.updateStatus();
         },

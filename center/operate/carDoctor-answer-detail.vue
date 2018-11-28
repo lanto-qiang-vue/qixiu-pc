@@ -35,8 +35,8 @@
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button size="large" type="primary" :disabled="listButton.edit" @click="updateStatus(2)" v-if="accessBtn('edit')">审核通过</Button>
-        <Button size="large" type="primary" :disabled="listButton.out" @click="updateStatus(3)" v-if="accessBtn('edit')">驳回</Button>
+        <Button size="large" type="primary" :disabled="listButton.edit" @click="updateStatus(2)" v-if="accessBtn('audit')">审核通过</Button>
+        <Button size="large" type="primary" :disabled="listButton.out" @click="updateStatus(3)" v-if="accessBtn('audit')">驳回</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
   </Modal>

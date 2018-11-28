@@ -20,9 +20,9 @@
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="accessBtn('query')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
-        <Button type="primary" v-if="accessBtn('update')" :disabled="showStatus"  @click="updateOrderFun(true)">接受</Button>
-        <Button type="error" v-if="accessBtn('update')" :disabled="showStatus"  @click="showModal=true;">拒绝</Button>
+        <Button type="primary" v-if="accessBtn('update')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="accessBtn('handle')" :disabled="showStatus"  @click="updateOrderFun(true)">接受</Button>
+        <Button type="error" v-if="accessBtn('handle')" :disabled="showStatus"  @click="showModal=true;">拒绝</Button>
       <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
