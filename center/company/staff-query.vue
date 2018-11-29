@@ -54,6 +54,34 @@
     },
     data: function() {
       return {
+        educationList: [
+          { id: 0, name: '请选择' },
+          { id: 1, name: '小学' },
+          { id: 2, name: '初中' },
+          { id: 3, name: '高中' },
+          { id: 7, name: '技校' },
+          { id: 8, name: '中专' },
+          { id: 9, name: '高职' },
+          { id: 5, name: '本科' },
+          { id: 6, name: '硕士' },
+          { id: 10, name: '博士' }
+        ],
+        positionList: [
+          { id: 0, name: '请选择' },
+          { id: 1, name: '技术负责人' },
+          { id: 2, name: '质量检验员' },
+          { id: 3, name: '汽车维修机工' },
+          { id: 4, name: '汽车维修电工' },
+          { id: 5, name: '汽车维修钣金工' },
+          { id: 6, name: '汽车维修漆工' },
+          { id: 7, name: '焊工' },
+          { id: 8, name: '轮胎维修工' },
+          { id: 9, name: '气缸镗磨工' },
+          { id: 10, name: '曲轴修磨工' },
+          { id: 11, name: '汽车美容装潢工' },
+          { id: 12, name: '摩托车修理工' },
+          { id: 13, name: '车身清洁工' }
+        ],
         type:'',
         list:'',
         clearTableSelect:false,
@@ -186,8 +214,8 @@
       }
       if(roles[0].code == 'weixiuqiye'){
         this.type = 3;
-        let nickname = this.$store.state.user.userInfo.nickname;
-        this.search.companyName = nickname;
+        // let nickname = this.$store.state.user.userInfo.nickname;
+        // this.search.companyName = nickname;
       }
       this.showTable = Math.random()
       this.getList()
