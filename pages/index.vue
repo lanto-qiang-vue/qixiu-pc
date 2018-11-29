@@ -395,7 +395,7 @@ export default {
       },
       showSwiper: false,
       search:{
-        type: '1',
+        type: '164',
         q: '',
         sort:'',
         area: '',

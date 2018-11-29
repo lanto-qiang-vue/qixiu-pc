@@ -393,8 +393,8 @@ export default {
       ]
       pie3.setOption(option3);
 
-      $("#pie1").append("<div class='pie1' style='position: absolute;left: 115px;top: 100px;font-size: 28px'><p style='text-align:center;font-size:medium;margin-bottom:15px'>总数</p><p style='text-align:center'>"+this.res.corpcount+"</p></div>")
-      $("#pie3").append("<div class='pie3' style='position: absolute;left: 100px;top: 100px;font-size: 28px'><p style='text-align:center;font-size:medium;margin-bottom:15px'>总数</p><p style='text-align:center'>"+this.res.currentuploadcount+"</p></div>")
+      $("#pie1").append("<div class='pie-num'><p>总数</p><p>"+this.res.corpcount+"</p></div>")
+      $("#pie3").append("<div class='pie-num'><p>总数</p><p>"+this.res.currentuploadcount+"</p></div>")
 
       let datas = data.areaItems;
       let area=[], num=[], num2=[], sum=[]
@@ -445,4 +445,18 @@ export default {
     }
   }
 }
+
+</style>
+<style lang="less">
+  .pie-num{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    p{
+      /*margin: 8px 0;*/
+      text-align: center;
+      font-size: 22px;
+    }
+  }
 </style>

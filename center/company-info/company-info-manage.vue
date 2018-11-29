@@ -53,20 +53,21 @@ export default {
     data(){
 		  return{
               loading:false,
-              
+
         columns: [
-          
-          {title: '企业名称', key: 'companyname', sortable: true, minWidth: 150,
+
+          {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '许可证号', key: 'companyroadtransportationlicense', sortable: true, minWidth: 120},
-          {title: '经营地址', key: 'businessaddress', sortable: true, minWidth: 140},
-          {title: '经营范围', key: 'companybusinessscope', sortable: true, minWidth: 180},
-          {title: '联系电话', key: 'companysuperintendentphone', sortable: true, minWidth: 120},
-          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110},
-          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110},
-          {title: '收费标准', key: 'hourprice', sortable: true, minWidth: 110},
-          
+          {title: '许可证号', key: 'license', sortable: true, minWidth: 120},
+          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 140},
+          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 180},
+          {title: '联系电话', key: 'phone', sortable: true, minWidth: 120},
+          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110,},
+          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', params.row.creditLevel.name)},
+          {title: '收费标准', key: 'hourPrice', sortable: true, minWidth: 110},
+
         ],
         tableData: [],
         searchList:{
@@ -90,7 +91,7 @@ export default {
     mounted () {
         this.getAreaInfo();
       this.getList();
-      
+
     },
     // beforeMount(){
     //   this.$axios.post('/menu/list', {
@@ -102,7 +103,7 @@ export default {
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai" 
+                   "areaName": "shanghai"
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
@@ -110,11 +111,11 @@ export default {
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
         getList(){
             this.loading=true;
-            this.$axios.post('/company/repaircompany/query/detail', {
+            this.$axios.post('/company/list', {
                     "area": this.searchList.area,
                     "businessaddress": this.searchList.businessaddress,
                     "companyName": this.searchList.companyName,
@@ -124,8 +125,8 @@ export default {
                     "pageSize": this.limit,
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    this.tableData=res.data.item.data;
-                    this.total=res.data.item.total;
+                    this.tableData=res.data.items;
+                    this.total=res.data.total;
                     this.loading=false;
                 }
            })
@@ -135,7 +136,7 @@ export default {
             this.$axios.get('/dict/getValuesByTypeId/1', {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    
+
                 }
            })
         },
@@ -153,7 +154,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -179,9 +180,9 @@ export default {
                 }
             })
         },
-        
 
-        
+
+
     },
 	}
 </script>
