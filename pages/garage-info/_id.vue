@@ -16,9 +16,12 @@
             <div class="icon"><img src="/img/garage-info/营业执照.png"><img src="/img/garage-info/认证.png"></div>
             <div class="address"><span>{{info.addr}}</span><a >导航地图</a></div>
             <div class="tel"><span>{{info.tel}}</span></div>
-            <div class="button"><a >上门服务</a><a >预约服务</a></div>
+            <div class="button">
+              <nuxt-link tag="a" :to="'/visit-service/?id='+$route.params.id">上门服务</nuxt-link>
+              <nuxt-link tag="a" :to="'/appointment/?id='+$route.params.id+'&name='+info.name">预约服务</nuxt-link>
+            </div>
         <!--</div>-->
-        
+
 
         <div class="right" v-show="info.rating">
           <div class="point"><span>{{info.rating}}</span>分</div>
@@ -39,7 +42,7 @@
           <label>企业认证</label>
           <ul></ul>
         </div>
-        <div class="block">
+        <div class="block" v-show="info.serveSupports">
           <label>服务支持</label>
           <ul>
             <li v-if="info.serveSupports" v-for="item in info.serveSupports" :key="item">{{item}}</li>
@@ -85,18 +88,18 @@
                   <span>评分：{{item.userAvgScore}}</span>
                 </p>
                 <p class="gray">评分详情：
-                    <span>履约：{{item.keepAppointment}}</span>
-                    <span>态度：{{item.attitude}}</span>
-                    <span>质量：{{item.quality}}</span>
-                    <span>速度：{{item.speed}}</span>
-                    <span>价格：{{item.price}}</span>
+                  <span>履约：{{item.keepAppointment}}</span>
+                  <span>态度：{{item.attitude}}</span>
+                  <span>质量：{{item.quality}}</span>
+                  <span>速度：{{item.speed}}</span>
+                  <span>价格：{{item.price}}</span>
                 </p>
             </div>
           </li>
         </ul>
 
         <div id="pagebar">
-          
+
          <Page :current="page" :page-size="10" show-sizer show-elevator show-total :page-size-opts="[10, 20, 50]"
                 placement="top" :total="total" @on-change="changePage" @on-page-size-change="changePageSize"/>
         </div>
@@ -115,7 +118,7 @@ export default {
   layout: 'common',
   components: {
       CommonTable,
-      
+
     },
   validate ({ app, params, store }) {
     return params.id? true: false
@@ -149,10 +152,8 @@ export default {
         name:'上海汽修',
         addr:'明基广场',
         tel:'021-1234567',
-
         companyProperty:'二类维修企业',
         grade:'',
-
         servePreponderance:'',
         keepApp:2,
         attitude:2,
@@ -162,9 +163,8 @@ export default {
 
       },
       columns: [
-          
-        {title: '车友', key: 'corpName', sortable: true, minWidth: 120,
-        },
+        {title: '车友', key: 'corpName', sortable: true, minWidth: 120,},
+
         {title: '点评日期', key: 'licence', sortable: true, minWidth: 120},
         {title: '评分', key: 'businessAddress', sortable: true, minWidth: 135},
         {title: '评分详情', key: 'scopes', sortable: true, minWidth: 120},
@@ -187,12 +187,12 @@ export default {
       method: 'get',
     }).then((res) => {
       console.log(res.data)
-
         this.info= res.data
-      
+
+
     });
     this.getList();
-    
+
   },
   methods:{
     getStars( val) {
@@ -243,7 +243,7 @@ export default {
 
             // this.$Message.error(res.statusText);
           }
-          
+
         })
     },
 
@@ -363,16 +363,16 @@ export default {
               .avg {
                   margin-bottom: 5px;
               }
-              
+
               .star{
                 img{
                   width: 20px;
                 }
               }
-          
+
         }
       }
-      
+
       .info{
         padding:20px 12px;
         border-bottom: 1px dashed #eeeeee;
@@ -411,9 +411,9 @@ export default {
             i{
               white-space: nowrap;
               margin: 0 10px;
-              
+
             }
-            
+
           }
         }
         /*评价样式*/
@@ -468,8 +468,8 @@ export default {
 
       }
     }
-    
-    
+
+
   }
-  
+
 </style>

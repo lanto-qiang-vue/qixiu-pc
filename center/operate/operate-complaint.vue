@@ -1,6 +1,4 @@
-<!--管理中心-反馈管理 2018-11-14  -->
-
-
+<!--运营中心-反馈管理 2018-11-27  -->
 <template>
   <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
       @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
@@ -46,7 +44,7 @@
   import { formatDate } from '@/static/tools.js'
   import { getName } from '@/static/util.js'
 	export default {
-		name: "review-manage",
+		name: "operate-complaint",
     components: {
       CommonTable,
     },
@@ -59,6 +57,8 @@
           },
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120},
           {title: '企业联系人电话', key: 'companyPhone', sortable: true, minWidth: 150,
+          },
+          {title: '企业联系人电话', key: 'userMobile', sortable: true, minWidth: 150,
           },
           {title: '车牌号', key: 'vehicleNum', sortable: true, minWidth: 120},
           {title: '反馈类型', key: 'type', sortable: true, minWidth: 120,
@@ -136,47 +136,11 @@
     },
     mounted () {
       this.showTable= Math.random();
-    //   var queryData=this.$route;
-    //   console.log("取到的路由",queryData);
-    //   if(queryData.){
-
-    //   }
-      this.getList();
+      this.getOperate();
 
     },
 
     methods:{
-        getList(){
-            this.loading=true;
-            let page=this.page-1;
-            
-            let strUrl="";
-            for(let i in this.searchList){
-                if(i=="hasEvidence"){
-                    if(this.searchList[i]=="0"){
-                        strUrl+='&'+i+'=true';
-                    }else if(this.searchList[i]=="1"){
-                        strUrl+='&'+i+'=false';
-                    }
-                }else if(this.searchList[i]){
-                    strUrl+='&'+i+'='+this.searchList[i];
-                }
-            }
-
-            this.$axios.get('/comment/complaint/maintain/query?size='+this.limit+'&page='+page+strUrl, {
-            }).then( (res) => {
-              console.log(res);
-              if(res.status===200){
-                  this.tableData=res.data.content;
-                  this.total=res.data.totalElements;
-                  this.loading=false;
-              }else{
-                this.loading=false;
-                this.$Message.error(res.statusText);
-              }
-              
-            })
-        },
         getOperate(){
             this.loading=true;
             let page=this.page-1;

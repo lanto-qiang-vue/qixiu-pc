@@ -35,7 +35,7 @@
 
 <script>
   export default {
-    name: "visit-service",
+    name: "appointment",
     layout: 'common',
     mounted(){
       this.companyName = this.$route.query.name || '';

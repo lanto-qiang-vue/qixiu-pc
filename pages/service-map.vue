@@ -30,7 +30,7 @@
           <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
         <Select v-model="search.area" placeholder="企业区域" clearable @on-change="changeSelectAll">
-          <Option v-for="(item, key) in area" :value="item.key" :key="key">{{item.name}}</Option>
+          <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
         <Select v-model="search.hot" placeholder="热门搜索" clearable class="brand" @on-change='selectHot' ref="hot">
           <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
@@ -188,7 +188,6 @@ export default {
             if( status== 'complete'){
               this.map.setCenter(result.position)
               this.map.add(new AMap.Marker(result.position))
-              this.map.setZoom(11)
               this.search.lng= result.position.lng
               this.search.lat= result.position.lat
               this.getCompList()
@@ -210,7 +209,6 @@ export default {
               let center= this.map.getCenter()
               // console.log('this.map.getCenter()', center)
               this.map.add(new AMap.Marker( center))
-              this.map.setZoom(11)
               // console.log('this.map.add(new AMap.Marker( center))')
               this.search.lng= center.lng
               this.search.lat= center.lat
@@ -222,9 +220,7 @@ export default {
       });
     },
     getArea(){
-      this.$axios.$post('/area/list', {
-        parentCode: '310000'
-      }).then( (res) => {
+      this.$axios.$get('/area/query').then( (res) => {
         this.area= res.items
       })
     },
@@ -241,8 +237,7 @@ export default {
       })
     },
     calcQuery(limit){
-      console.log('calcQuery')
-      let is164= this.pointList[i].type== 164
+      let is164= this.search.type== 164
       let query='?fl=type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category'+
         '&q='+ this.search.q +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
@@ -255,7 +250,7 @@ export default {
         fq+= '+AND+' + is4s
       }
       query += fq
-console.log(query)
+
       return query
     },
     initPiontList(){
@@ -321,7 +316,7 @@ console.log(query)
             '</ul>'+
             (is164? ('<div class="button-block">' +
             '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
-            '<a href="/maintain/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
+            '<a href="/appointment/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
             '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
             '</div>') :'')+
             '</div>'+
@@ -367,6 +362,13 @@ console.log(query)
         this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{styles:[style, style, style]});
         // console.log('renderMap() over')
       });
+
+      let is164= this.search.type== 164
+      if(is164){
+        this.map.setZoom(13)
+      } else{
+        this.map.setZoom(10)
+      }
     },
     changeType(){
       this.page= 1

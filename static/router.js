@@ -42,6 +42,18 @@ export default [
       },
     ]
   },{
+    path: '/appointment',
+    component: resolve('center/public-service/appointment.vue'),
+    meta: {
+      needLogin: true
+    }
+  },{
+    path: '/visit-service',
+    component: resolve('center/public-service/visit-service.vue'),
+    meta: {
+      needLogin: true
+    }
+  },{
     path: '/menu0',
     alias: '/center',
     meta: {
@@ -196,6 +208,15 @@ export default [
           accessId: '/center/company-qualify-manage',
         },
         component: resolve('center/company-info/company-qualify-manage.vue'),
+      },
+      {
+        path: 'operate-complaint',
+        meta: {
+          icon: '',
+          title: '反馈管理',
+          accessId: '/center/operate-complaint',
+        },
+        component: resolve('center/operate/operate-complaint.vue'),
       },
       {
         path: 'unaccess',
@@ -486,6 +507,35 @@ export default [
           icon: '',
           title: '预约服务管理',
           accessId: '/center/order-manage',
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },]
+  },
+  {
+    path: '/menu31',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '企业服务管理',
+      accessId: '/menu31',
+    },
+    component: resolve('components/main.vue'),
+    children: [
+      {
+        path: 'visit-company',
+        meta: {
+          icon: '',
+          title: '上门服务管理',
+          accessId: '/center/visit-company',
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-company',
+        meta: {
+          icon: '',
+          title: '预约服务管理',
+          accessId: '/center/order-company',
         },
         component: resolve('center/operate/order-manage.vue'),
       },]

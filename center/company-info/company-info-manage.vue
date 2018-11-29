@@ -56,16 +56,18 @@ export default {
               
         columns: [
           
-          {title: '企业名称', key: 'companyname', sortable: true, minWidth: 150,
+          {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
-          {title: '许可证号', key: 'companyroadtransportationlicense', sortable: true, minWidth: 120},
-          {title: '经营地址', key: 'businessaddress', sortable: true, minWidth: 140},
-          {title: '经营范围', key: 'companybusinessscope', sortable: true, minWidth: 180},
-          {title: '联系电话', key: 'companysuperintendentphone', sortable: true, minWidth: 120},
+          {title: '许可证号', key: 'license', sortable: true, minWidth: 120},
+          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 140},
+          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 180},
+          {title: '联系电话', key: 'companyLinkMantel', sortable: true, minWidth: 120},
           {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110},
-          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110},
-          {title: '收费标准', key: 'hourprice', sortable: true, minWidth: 110},
+          {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', params.row.creditLevel.name||'')
+            },
+          {title: '收费标准', key: 'hourPrice', sortable: true, minWidth: 110},
           
         ],
         tableData: [],
@@ -92,12 +94,6 @@ export default {
       this.getList();
       
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         //获取区域数据-------
         getAreaInfo(){
@@ -114,18 +110,18 @@ export default {
         },
         getList(){
             this.loading=true;
-            this.$axios.post('/company/repaircompany/query/detail', {
+            this.$axios.post('/company/list', {
                     "area": this.searchList.area,
-                    "businessaddress": this.searchList.businessaddress,
+                    "businessAddress": this.searchList.businessaddress,
                     "companyName": this.searchList.companyName,
-                    "companyroadtransportationlicense": this.searchList.companyroadtransportationlicense,
-                    "companysuperintendentphone": this.searchList.companysuperintendentphone,
+                    "license": this.searchList.companyroadtransportationlicense,
+                    "phone": this.searchList.companysuperintendentphone,
                     "pageNo": this.page,
                     "pageSize": this.limit,
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    this.tableData=res.data.item.data;
-                    this.total=res.data.item.total;
+                    this.tableData=res.data.items;
+                    this.total=res.data.total;
                     this.loading=false;
                 }
            })

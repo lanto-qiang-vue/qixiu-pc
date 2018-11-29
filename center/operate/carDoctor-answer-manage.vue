@@ -12,7 +12,7 @@
                   </Select>
               </FormItem>
               <FormItem :label-width="0" style="width: 120px;">
-                  <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>

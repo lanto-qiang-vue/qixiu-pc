@@ -4,28 +4,28 @@
     <nuxt-link tag="a" to="/center/my-car-record"><img src="/img/menu-icon/爱车档案.png"/><p>爱车档案</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/维修服务查选.png"/><p>维修服务查选</p></nuxt-link>
     <nuxt-link tag="a" to="/cdf"><img src="/img/menu-icon/车大夫门诊.png"/><p>车大夫门诊</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/上门服务.png"/><p>上门服务</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/预约服务.png"/><p>预约服务</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/道路救援.png"/><p>道路救援</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/上门服务.png"/><p>上门服务</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/预约服务.png"/><p>预约服务</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=213"><img src="/img/menu-icon/道路救援.png"/><p>道路救援</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/车辆保险.png"/><p>车辆保险</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/检测站.png"/><p>综合检测站</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/危运车辆维修.png"/><p>危运车辆维修</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/新能源汽车维修.png"/><p>新能源汽车维修</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=166"><img src="/img/menu-icon/检测站.png"/><p>综合检测站</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=214"><img src="/img/menu-icon/危运车辆维修.png"/><p>危运车辆维修</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=215"><img src="/img/menu-icon/新能源汽车维修.png"/><p>新能源汽车维修</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/道路救援.png"/><p>施救牵引企业</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>
     <a href="/file/tips.pdf" target="_blank"><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></a>
   </div>
   <div class="block" v-show="type==2">
     <a href="http://hxx.hoxiuxiu.com" target="_blank"><img src="/img/menu-icon/门店管理.png"/><p>门店管理</p></a>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/电子健康档案上传情况.png"/><p>维修记录</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/维修合格证.png"/><p>维修合格证</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/开业停业咨询.png"/><p>开业停业咨询</p></nuxt-link>
+    <nuxt-link tag="a" to="/center/repored"><img src="/img/menu-icon/电子健康档案上传情况.png"/><p>维修记录</p></nuxt-link>
+    <nuxt-link tag="a" to="/center/company-repair-qualify"><img src="/img/menu-icon/维修合格证.png"/><p>维修合格证</p></nuxt-link>
+    <nuxt-link tag="a" to="/gov-article/10281005"><img src="/img/menu-icon/开业停业咨询.png"/><p>开业停业咨询</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/配件需求.png"/><p>配件需求</p></nuxt-link>
     <nuxt-link tag="a" to="/"><img src="/img/menu-icon/汽保设备需求.png"/><p>汽保设备需求</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/技术信息.png"/><p>技术需求</p></nuxt-link>
+    <nuxt-link tag="a" to="/cdf"><img src="/img/menu-icon/技术信息.png"/><p>技术需求</p></nuxt-link>
   </div>
   <div class="block" v-show="type==3">
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/电子健康档案.png"/><p>电子健康档案</p></nuxt-link>
+    <nuxt-link tag="a" to="/center/record-company"><img src="/img/menu-icon/电子健康档案.png"/><p>电子健康档案</p></nuxt-link>
     <nuxt-link tag="a" to="/gov-article/10281001" target="_blank"><img src="/img/menu-icon/法律法规.png"/><p>法律法规</p></nuxt-link>
     <nuxt-link tag="a" to="/gov-article/10281002" target="_blank"><img src="/img/menu-icon/管理规范.png"/><p>管理规范</p></nuxt-link>
     <nuxt-link tag="a" to="/gov-article/10281003" target="_blank"><img src="/img/menu-icon/行业政策.png"/><p>行业政策</p></nuxt-link>

@@ -12,7 +12,7 @@
       <Card class="ask-block">
         <div slot="title" class="title">
           <div class="head">
-            <img :src="detail.questionerPhoto || '/img/cdf/user.png'"/>
+            <img :src="detail.photo || '/img/cdf/user.png'"/>
             <div>
               <p>{{detail.userName}}</p>
               <span>{{detail.createTime | FormatDate}}</span>
@@ -41,6 +41,11 @@
                 <span>{{item.answerTime | FormatDate}}</span>
               </div>
             </div>
+            <div class="views">
+              <Tag v-if="item.adopt" color="green">已采纳</Tag>
+              <Button v-if="detail.login &&!isAdopt" type="success" size="large"
+              @click="toAdopt(item.id)">采纳回答</Button>
+            </div>
           </div>
           <div class="answer-content">
             <p>{{item.answerContent}}</p>
@@ -63,9 +68,14 @@ export default {
   asyncData ({ app, params, error }) {
     // console.log('asyncData')
     return app.$axios.$get('/question/detail/'+ params.id).then((res) => {
+      let list= res.item.answerDetailDtos, isAdopt= false
+      for(let i in list){
+        if(list[i].adopt) isAdopt= true
+      }
       return {
         detail: res.item,
-        answerList: res.item.answerDetailDtos,
+        answerList: list,
+        isAdopt: isAdopt
       }
     },(err)=>{
       console.log('err:', err.response.data)
@@ -80,11 +90,38 @@ export default {
     return{
       detail: {},
       answerList: [],
-      error: null
+      error: null,
+
+      isAdopt: false
     }
   },
   mounted(){
     // this.$axios.$get('/question/detail/'+ this.$route.params.id)
+  },
+  methods:{
+    toAdopt(id){
+      this.$Modal.confirm({
+        title: '确定采纳此回答吗？',  onOk: () => {
+          this.$axios.$post('/question/cnanswer/'+id,{}).then((res) => {
+            if (res.code == '0') {
+              this.$Message.success('采纳成功')
+              this.getData()
+            }
+          })
+        }
+      })
+    },
+    getData(){
+      this.$axios.$get('/question/detail/'+ this.$route.params.id).then((res) => {
+        let list= res.item.answerDetailDtos, isAdopt= false
+        for(let i in list){
+          if(list[i].adopt) isAdopt= true
+        }
+        this.detail=res.item
+        this.answerList= list
+        this.isAdopt= isAdopt
+      })
+    }
   }
 }
 </script>
@@ -165,6 +202,15 @@ export default {
       .answers:last-child{
         border: 0;
       }
+    }
+  }
+}
+</style>
+<style lang="less">
+.cdf-question-detail{
+  .ask-block{
+    .ivu-card-body{
+      min-height: 100px;
     }
   }
 }
