@@ -13,7 +13,7 @@
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
             </FormItem>
         </Form>
     </div>

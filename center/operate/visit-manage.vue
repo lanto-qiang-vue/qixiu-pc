@@ -17,13 +17,13 @@
                 <Input type="text" v-model="search.addr" placeholder="请输入上门服务地址"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 80px;">
-                <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail">搜索</Button>
+                <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="accessBtn('query')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
-        <Button type="primary" v-if="accessBtn('update')" :disabled="updateFlag"  @click="updateFun">已回复</Button>
+        <Button type="primary" v-if="accessBtn('update')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
+        <Button type="primary" v-if="accessBtn('edit')" :disabled="updateFlag"  @click="updateFun">已回复</Button>
         
       <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>

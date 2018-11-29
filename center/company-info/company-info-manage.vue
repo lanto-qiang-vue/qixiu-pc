@@ -55,7 +55,6 @@ export default {
               loading:false,
 
         columns: [
-
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
@@ -65,9 +64,8 @@ export default {
           {title: '联系电话', key: 'phone', sortable: true, minWidth: 120},
           {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110,},
           {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110,
-            render: (h, params) => h('span', params.row.creditLevel.name)},
+            render: (h, params) => h('span', params.row.creditLevel.name|| '')},
           {title: '收费标准', key: 'hourPrice', sortable: true, minWidth: 110},
-
         ],
         tableData: [],
         searchList:{
@@ -93,12 +91,6 @@ export default {
       this.getList();
 
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
     methods:{
         //获取区域数据-------
         getAreaInfo(){
@@ -117,10 +109,10 @@ export default {
             this.loading=true;
             this.$axios.post('/company/list', {
                     "area": this.searchList.area,
-                    "businessaddress": this.searchList.businessaddress,
+                    "businessAddress": this.searchList.businessaddress,
                     "companyName": this.searchList.companyName,
-                    "companyroadtransportationlicense": this.searchList.companyroadtransportationlicense,
-                    "companysuperintendentphone": this.searchList.companysuperintendentphone,
+                    "license": this.searchList.companyroadtransportationlicense,
+                    "phone": this.searchList.companysuperintendentphone,
                     "pageNo": this.page,
                     "pageSize": this.limit,
             }).then( (res) => {

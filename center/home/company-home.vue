@@ -259,20 +259,17 @@
               "pageSize": 25,
           } ).then( (res) => {
               if(res.data.code=='0'){
-                  
                   for(let i in res.data.items){
                       if(res.data.items[i]['read']=="未读"){
                           this.notifyData.push(res.data.items[i]);
                       }
                   }
-                  
-                  
               }
           })
         },
         onRowClick( row, index){
-            // console.log('row：',row);
-            var query={flag:true,listSearch:row};
+            
+            var query={flag:true,listSearch:row['id']};
             this.$router.push({path:'/center/company-note-manage',query:query});
         
         },

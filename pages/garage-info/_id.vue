@@ -42,7 +42,7 @@
           <label>企业认证</label>
           <ul></ul>
         </div>
-        <div class="block">
+        <div class="block" v-show="info.serveSupports">
           <label>服务支持</label>
           <ul>
             <li v-if="info.serveSupports" v-for="item in info.serveSupports" :key="item">{{item}}</li>
@@ -88,11 +88,11 @@
                   <span>评分：{{item.userAvgScore}}</span>
                 </p>
                 <p class="gray">评分详情：
-                    <span>履约：{{item.keepAppointment}}</span>
-                    <span>态度：{{item.attitude}}</span>
-                    <span>质量：{{item.quality}}</span>
-                    <span>速度：{{item.speed}}</span>
-                    <span>价格：{{item.price}}</span>
+                  <span>履约：{{item.keepAppointment}}</span>
+                  <span>态度：{{item.attitude}}</span>
+                  <span>质量：{{item.quality}}</span>
+                  <span>速度：{{item.speed}}</span>
+                  <span>价格：{{item.price}}</span>
                 </p>
             </div>
           </li>
@@ -152,10 +152,8 @@ export default {
         name:'上海汽修',
         addr:'明基广场',
         tel:'021-1234567',
-
         companyProperty:'二类维修企业',
         grade:'',
-
         servePreponderance:'',
         keepApp:2,
         attitude:2,
@@ -165,9 +163,8 @@ export default {
 
       },
       columns: [
+        {title: '车友', key: 'corpName', sortable: true, minWidth: 120,},
 
-        {title: '车友', key: 'corpName', sortable: true, minWidth: 120,
-        },
         {title: '点评日期', key: 'licence', sortable: true, minWidth: 120},
         {title: '评分', key: 'businessAddress', sortable: true, minWidth: 135},
         {title: '评分详情', key: 'scopes', sortable: true, minWidth: 120},
@@ -190,8 +187,8 @@ export default {
       method: 'get',
     }).then((res) => {
       console.log(res.data)
-
         this.info= res.data
+
 
     });
     this.getList();
