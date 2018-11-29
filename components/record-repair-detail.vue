@@ -69,19 +69,40 @@
           stripe
           border
         ></Table>
-        <Collapse v-model="collapse" style="margin-top:5px;" v-show="false">
+        <Collapse v-model="collapse" style="margin-top:5px;" v-show="commentData.id > 0">
           <Panel name="2">维修评价
            <Form slot="content" :label-width="120" class="common-form">
            <FormItem label="车牌">
-             <Input :value="commentData.cp"></Input>
+             <Input :value="commentData.vehicleNum" :readonly="true"></Input>
            </FormItem>
+             <FormItem label="点评日期">
+               <Input :value="commentData.cmCreateDate" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="评分">
+               <Input :value="commentData.avgScore" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="履约">
+               <Input :value="commentData.keepAppointment	" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="态度">
+               <Input :value="commentData.attitude" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="质量">
+               <Input :value="commentData.quality" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="速度">
+               <Input :value="commentData.speed" :readonly="true"></Input>
+             </FormItem>
+             <FormItem label="价格">
+               <Input :value="commentData.price	" :readonly="true"></Input>
+             </FormItem>
            </Form>
           </Panel>
         </Collapse>
         <div style="height:10px;"></div>
       </div>
       <div slot="footer">
-        <Button type="primary" @click="comment">点评</Button>
+        <Button type="primary" @click="comment" v-show="!(commentData.id > 0)">点评</Button>
         <Button type="info" @click="feedback">反馈</Button>
         <Button size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
       </div>
@@ -336,10 +357,10 @@
           }
         }
         this.formData.tags = data;
-        console.log(JSON.stringify(this.formData));
         this.$axios.post('/comment/maintain',this.formData).then((res) => {
           if (res.data.code == '0') {
-
+            this.$Message.info("点评成功");
+            this.getComment();
           } else {
             this.$Message.error(res.data.status)
           }
@@ -366,10 +387,13 @@
       getComment(){
         this.$axios.get('/comment/maintain/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
-          // console.log(JSON.stringify(res));
-        }).catch(function(error){
-          // alert(error);
-        });
+          if(res.data.id > 1){
+             this.commentData = res.data;
+          }
+           // this.formData = res.data;
+        }).catch(()=>{
+          this.commentData = {};
+        })
       },
       getDetail() {
         this.$axios.post('/vehicle/carfile/queryDetail', {

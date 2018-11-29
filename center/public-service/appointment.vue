@@ -18,7 +18,7 @@
             <Input placeholder="请输入(必填)" v-model="formData.contactMobile"></Input>
           </FormItem>
           <FormItem label="预约时间:" style="width:70%;" prop="onSiteTime">
-              <DatePicker type="datetime" style="width:100%;" transfer="true" :options="options1" v-model="formData.onSiteTime"></DatePicker>
+              <DatePicker type="datetime" style="width:100%;" :transfer="true" :options="options1" v-model="formData.onSiteTime"></DatePicker>
           </FormItem>
           <FormItem label="预约维修内容:" style="width:70%;">
             <Input type="textarea" placeholder="请输入内容(可选)"  v-model="formData.serviceContent"></Input>
@@ -38,6 +38,14 @@
     name: "appointment",
     layout: 'common',
     mounted(){
+      // console.log(this.$route.query.name);
+      // console.log(this.$route);
+        this.$refs.formData.resetFields();
+        this.companyName = this.$route.query.name || '';
+        this.formData.companyId = this.$route.query.id || null;
+    },
+    activated(){
+      this.$refs.formData.resetFields();
       this.companyName = this.$route.query.name || '';
       this.formData.companyId = this.$route.query.id || null;
     },
