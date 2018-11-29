@@ -119,7 +119,7 @@
       </div>
       <div slot="footer">
         <Button type="primary" @click="comment" v-show="!(commentData.id > 0)">点评</Button>
-        <Button type="info" @click="feedback">反馈</Button>
+        <Button type="info" @click="feedback" v-show="!(feedData.id > 0)">反馈</Button>
         <Button size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
       </div>
     </Modal>
@@ -352,9 +352,9 @@
         this.feedData.photoUrl = this.feedData.url;
         this.$axios.post('/comment/complaint/maintain/repairId',this.feedData).then((res) => {
           if (res.data.code == '0') {
-            // this.$Message.info("点评成功");
-            // this.commentModal = false;
-            // this.getComment();
+            this.$Message.info("反馈成功");
+            this.feedbackModal = false;
+            this.getFeedBack();
           } else {
             this.$Message.error(res.data.status)
           }

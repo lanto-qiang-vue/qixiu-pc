@@ -76,7 +76,7 @@
           <img style="width: 70px" src="/img/menu-icon/大数据服务中心.png"><p>大数据</p><p>服务中心</p>
         </li>
       </ul>
-      <div class="record" onclick="goToPage('/center/repairInfo')"><img src="/img/menu-icon/电子健康档案系统.png">电子健康档案系统</div>
+      <nuxt-link class="record" tag="div" to="'/center/my-car-record'"><img src="/img/menu-icon/电子健康档案系统.png">电子健康档案系统</nuxt-link>
       <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
     </div>
     <div class="right">
@@ -135,9 +135,10 @@
 
           <div class="doctor_content" id="professor_content" v-show="!showCdfFlag">
             <ul>
-              <li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>
+              <!--<li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>-->
+              <nuxt-link tag="li" v-for="item in cdfList" :key="'cdfList-'+item.id" :to="'/cdf/expert/'+item.id">{{item.name}}</nuxt-link>
             </ul>
-            <a onclick="goToPage('/specialist', true)" class="list_button">浏览更多</a>
+            <nuxt-link tag="a" :to="'/article/specialist'" class="list_button">浏览更多</nuxt-link>
           </div>
         </div>
       </div>
@@ -200,8 +201,8 @@
     </div>
   </div>
   <ul class="cooperator">
-    <li><a class="guide">指导部门：上海市城市交通运输管理处</a></li>
-    <li><a class="hold">主办单位：上海市汽车维修行业协会</a></li>
+    <li><a class="guide" style="cursor:Default;">指导部门：上海市城市交通运输管理处</a></li>
+    <li><a class="hold" style="cursor:Default;">主办单位：上海市汽车维修行业协会</a></li>
     <li><a class="us" href="/aboutUs">承办单位：上海蓝速汽车技术有限公司</a></li>
   </ul>
 </div>
