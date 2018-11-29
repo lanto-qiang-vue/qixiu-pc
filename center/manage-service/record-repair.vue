@@ -20,12 +20,12 @@
         </FormItem>
          
         <FormItem label="车牌正确:">
-            <Select v-model="searchList.byVehicleNumberStandard" >
+            <Select v-model="searchList.byVehicleNumberStandard" clearable>
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
         <FormItem label="VIN正确:">
-            <Select v-model="searchList.byVinStandard" >
+            <Select v-model="searchList.byVinStandard" clearable>
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
@@ -64,10 +64,17 @@ export default {
                   {code:'no',name:'未登录'},
               ],//问题分类--------
         columns: [
-          {title: '结算日期', key: 'repairDate', sortable: true, minWidth: 110,},
-          {title: '维修单号', key: 'costlistcode', sortable: true, minWidth: 110},
-          {title: '维修内容', key: 'settleDate', sortable: true, minWidth: 150},
-          {title: '维修车牌', key: 'plateNumber', sortable: true, minWidth: 100},
+          
+          {title: '序号',  minWidth: 80,
+            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
+          },
+          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
+          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
+          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
+          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,},
+          {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
+          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150},
+          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150},
         ],
         tableData: [],
         searchList:{

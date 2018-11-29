@@ -99,11 +99,27 @@
            </Form>
           </Panel>
         </Collapse>
+        <!--维修反馈-->
+        <Collapse v-model="collapse" style="margin-top:5px;" v-show="feedData.id > 0">
+          <Panel name="3">维修反馈
+            <Form slot="content" :label-width="120" class="common-form">
+              <FormItem label="反馈原因">
+                <Input value="维修记录不正确" :readonly="true"></Input>
+              </FormItem>
+              <FormItem label="凭据">
+                <Input :value="feedData.hasEvidence ? '有' : '没有'" :readonly="true"></Input>
+              </FormItem>
+              <FormItem label="反馈时间">
+                <Input :value="feedData.createDate" :readonly="true"></Input>
+              </FormItem>
+            </Form>
+          </Panel>
+        </Collapse>
         <div style="height:10px;"></div>
       </div>
       <div slot="footer">
         <Button type="primary" @click="comment" v-show="!(commentData.id > 0)">点评</Button>
-        <Button type="info" @click="feedback">反馈</Button>
+        <Button type="info" @click="feedback" v-show="!(feedData.id > 0)">反馈</Button>
         <Button size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
       </div>
     </Modal>
@@ -181,7 +197,7 @@
       <div style="height:100%;width:100%;overflow:auto;">
       <h1 style="text-align: center;font-size:16px;margin: 10px 0;">反馈原因：维修记录不正确</h1>
       <div class="above">
-        <div style="font-size: 14px;font-weight: 300;height: 24px;line-height: 24px;display: flex;justify-content: center;align-items: center;"><i></i>请上传维修凭证（可选）<i></i></div>
+        <div style="font-size: 14px;font-weight: 300;height: 24px;line-height: 24px;display: flex;justify-content: center;align-items: center;"><i></i>请上传维修凭证（必填）<i></i></div>
         <div style="width:200px;height:auto;margin: 20px auto 0 auto;border-radius: 5px;overflow: hidden;">
           <div class="pic" style="width:200px;height:150px;background:#f2f7fd url('/img/garage-info/nopic.png') center center no-repeat;background-size:50%;">
             <!--<div class="pic">-->
@@ -214,7 +230,7 @@
       </div>
       </div>
       <div slot="footer">
-        <Button type="primary">提交</Button>
+        <Button type="primary" @click="submitFeedBack">提交</Button>
       </div>
     </Modal>
   </div>
@@ -243,6 +259,7 @@
         repairId:0,
         storeFeedData:{
           url:'',
+          repairId:0,
         },
         feedData:{
 
@@ -279,7 +296,7 @@
           {name:'维修区杂乱',select:false},
           {name:'需要返工',select:false},
         ],
-        collapse: [1,2],
+        collapse: [1,2,3],
         listSearch: {
           companyName: '',
           costlistcode: '',
@@ -316,11 +333,33 @@
       showDetail() {
         this.showModal = true
         this.repairId = this.detailData.id;
+        this.getFeedBack();
         this.getComment();
         this.getDetail()
       }
     },
     methods: {
+      submitFeedBack(){
+        //提交反馈...../complaint/maintain/repairId
+        if(this.feedData.url == ''){
+          this.$Modal.error({
+            title:'系统提示',
+            content:'请上传反馈图片',
+          });
+          return false;
+        }
+        this.feedData.repairId = this.repairId;
+        this.feedData.photoUrl = this.feedData.url;
+        this.$axios.post('/comment/complaint/maintain/repairId',this.feedData).then((res) => {
+          if (res.data.code == '0') {
+            this.$Message.info("反馈成功");
+            this.feedbackModal = false;
+            this.getFeedBack();
+          } else {
+            this.$Message.error(res.data.status)
+          }
+        })
+      },
       handleSuccess(res){
         this.feedData.url = res.item.path;
       },
@@ -360,6 +399,7 @@
         this.$axios.post('/comment/maintain',this.formData).then((res) => {
           if (res.data.code == '0') {
             this.$Message.info("点评成功");
+            this.commentModal = false;
             this.getComment();
           } else {
             this.$Message.error(res.data.status)
@@ -389,10 +429,20 @@
         }).then((res) => {
           if(res.data.id > 1){
              this.commentData = res.data;
+          }else{
+            this.commentData = {};
           }
            // this.formData = res.data;
         }).catch(()=>{
           this.commentData = {};
+        })
+      },
+      getFeedBack(){
+        this.$axios.get('/comment/complaint/maintain/repairId/'+this.detailData.id, {
+        }).then((res) => {
+              this.feedData = res.data;
+        }).catch(()=>{
+             this.feedData = {};
         })
       },
       getDetail() {

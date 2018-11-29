@@ -62,7 +62,7 @@ export default {
           {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 140},
           {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 180},
           {title: '联系电话', key: 'phone', sortable: true, minWidth: 120},
-          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110,},
+          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110},
           {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110,
             render: (h, params) => h('span', params.row.creditLevel.name|| '')},
           {title: '收费标准', key: 'hourPrice', sortable: true, minWidth: 110},

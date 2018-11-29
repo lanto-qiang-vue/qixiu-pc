@@ -8,7 +8,7 @@
           <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
         </FormItem>
         <FormItem label="姓名:">
-          <Input type="text" v-model="search.name" placeholder="请输入企业编号"></Input>
+          <Input type="text" v-model="search.name" placeholder="请输入姓名"></Input>
         </FormItem>
         <FormItem label="学历:">
           <Select v-model="search.education">
@@ -21,7 +21,7 @@
           </Select>
         </FormItem>
         <FormItem label="职称:">
-          <Input type="text" v-model="search.professionalTitle" placeholder="请输入企业名称"></Input>
+          <Input type="text" v-model="search.professionalTitle" placeholder="请输入职称"></Input>
         </FormItem>
         <!--<FormItem label="所属辖区:" prop="corp_area">-->
         <!--<Select v-model="search.corp_area">-->

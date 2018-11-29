@@ -92,7 +92,7 @@
               }
             
             },
-          {title: '企业是否已读', key: 'hasRead', sortable: true, minWidth: 130,
+          {title: '企业是否已读', key: 'hasRead', sortable: true, minWidth: 140,
                 render: (h, params) => {
                   if(params.row.hasRead){
                     return h('div', [
@@ -172,7 +172,7 @@
                   this.loading=false;
               }else{
                 this.loading=false;
-                this.$Message.error(res.statusText);
+                // this.$Message.error(res.statusText);
               }
               
             })
@@ -203,7 +203,7 @@
                   this.loading=false;
               }else{
                 this.loading=false;
-                this.$Message.error(res.statusText);
+                // this.$Message.error(res.statusText);
               }
               
             })
