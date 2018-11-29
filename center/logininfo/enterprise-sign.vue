@@ -30,46 +30,25 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="showModal=true" :disabled="!detailData.id">查看</Button>
+      <Button type="info" v-if="" @click="showModal=Math.random()" :disabled="!detailData.id">查看</Button>
     </div>
 
 </common-table>
-  <Modal
-    v-model="showModal"
-    :mask-closable="false"
-    title="签到详情"
-    width="740px"
-    :scrollable="true"
-    :transfer="false"
-    :footer-hide="false"
-    :transition-names="['', '']">
-    <div style="overflow: hidden">
-      <h1 style="text-align: center;margin-bottom: 10px">{{detailData.name}}</h1>
-      <div id="calendar"></div>
-    </div>
-  </Modal>
+<sign-in-calendar :data="detailData" :show="showModal" type="company"></sign-in-calendar>
 
 </div>
 </template>
 
 <script>
 import CommonTable from '~/components/common-table.vue'
+import SignInCalendar from '~/components/sign-in-calendar.vue'
 import { formatDate } from '@/static/tools'
 export default {
 		name: "enterprise-sign",
     components: {
       CommonTable,
+      SignInCalendar
     },
-  head () {
-    return {
-      script: [
-        { type: 'text/javascript', src: '/libs/calendar/simple-calendar.js'},
-      ],
-      link: [
-        {rel:"stylesheet", href: '/libs/calendar/simple-calendar.css'}
-      ]
-    }
-  },
     data(){
 		  return{
         typeList: [
@@ -112,18 +91,7 @@ export default {
       }
     },
     mounted () {
-      var myCalendar = new SimpleCalendar('#calendar',{
-        width: '700px',
-        height: '500px',
-        showLunarCalendar: false, //阴历
-        showHoliday: true, //休假
-        showFestival: true, //节日
-        showLunarFestival: true, //农历节日
-        showSolarTerm: true, //节气
-        showMark: true, //标记
-        mark: {
-        }
-      });
+
       this.getList();
       this.getAreaInfo();
     },

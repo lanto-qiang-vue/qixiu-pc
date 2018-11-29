@@ -73,6 +73,7 @@ import mixin from '~/components/page-mount-mixin.js'
 
 export default {
   name: "common-layout",
+  layout: 'layout-root',
   components: {
     CommonFooter,
     LoginStatus,
