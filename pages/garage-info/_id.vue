@@ -13,9 +13,9 @@
       <div class="head">
         <!--<div class="left">-->
             <h1>{{ info.name }}<span id="status">{{getStatus(info.status)}}</span></h1>
-            <div class="icon"><img src="/img/garage-info/营业执照.png"><img src="/img/garage-info/认证.png"></div>
-            <div class="address"><span>{{info.addr}}</span><a >导航地图</a></div>
-            <div class="tel"><span>{{info.tel}}</span></div>
+            <div class="icon"><img src="/img/garage-info/business.png"><img src="/img/garage-info/certification.png"></div>
+            <div class="address"><span>{{info.addr}}</span><nuxt-link tag="a" :to="'/service-map?type=1&q='+info.name">导航地图</nuxt-link></div>
+            <div class="tel" v-show="info.tel"><span>{{info.tel}}</span></div>
             <div class="button">
               <nuxt-link tag="a" :to="'/visit-service/?id='+$route.params.id">上门服务</nuxt-link>
               <nuxt-link tag="a" :to="'/appointment/?id='+$route.params.id+'&name='+info.name">预约服务</nuxt-link>
@@ -35,10 +35,10 @@
         <h1>企业档案</h1>
         <div class="block">
           <p class="p1">企业性质：<span>{{info.bizScope}}</span></p>
-          <p class="p1">行业信誉评级：<span>{{info.grade}}</span></p>
-          <p class="p1">评分：<span>{{info.rating?info.rating:'暂无'}}</span></p>
+          <p class="p2">行业信誉评级：<span>{{info.grade}}</span></p>
+          <p class="p3">评分：<span>{{info.rating?info.rating:'暂无'}}</span></p>
         </div>
-        <div class="block">
+        <div class="block" v-show="false">
           <label>企业认证</label>
           <ul></ul>
         </div>
@@ -48,14 +48,14 @@
             <li v-if="info.serveSupports" v-for="item in info.serveSupports" :key="item">{{item}}</li>
           </ul>
         </div>
-        <div class="block">
+        <div class="block" v-show="info.servePreponderance">
           <label>服务优势</label>
           <ul>
             <li>{{info.servePreponderance}}</li>
           </ul>
         </div>
       </div>
-      <div class="appraise">
+      <div class="appraise" >
         <h1>服务评价</h1>
         <div class="tag">
           <!--<ul>
@@ -147,12 +147,12 @@ export default {
       info: {
         companyShowWors:[],
         serveSupports:[],
-        status:'营业',
-        rating:'3',
-        name:'上海汽修',
-        addr:'明基广场',
-        tel:'021-1234567',
-        companyProperty:'二类维修企业',
+        status:'',
+        rating:'',
+        name:'',
+        addr:'',
+        tel:'',
+        companyProperty:'',
         grade:'',
         servePreponderance:'',
         keepApp:2,
@@ -209,7 +209,7 @@ export default {
       return val ?val.toFixed(1):0
     },
     getStatus(val){
-      return val ?'营业':'非营业'
+      return val ?'营业':'休息中'
     },
     changePage(page){
           this.page= page
@@ -305,24 +305,25 @@ export default {
            a{
               margin-left: 10px;
               padding-left: 15px;
-              background: url(/statics/img/maintain/导航.png) no-repeat left center;
+              background: url(/img/garage-info/navigation.png) no-repeat left center;
               /* background-size: 12px auto; */
               color: #4ba6f5;
           }
           span{
             padding-left: 15px;
-            background: url(/statics/img/maintain/map.png) no-repeat left center;
+            background: url(/img/garage-info/map.png) no-repeat left center;
             /* background-size: 12px auto; */
           }
         }
         .tel {
             padding-left: 15px;
-            background: url(/statics/img/maintain/phone.png) no-repeat left center;
+            background: url(/img/garage-info/phone.png) no-repeat left center;
             span {
                 margin-right: 10px;
             }
         }
         .button{
+          padding: 10px 0px;
           a{
               height: 30px;
               line-height: 30px;
@@ -381,14 +382,37 @@ export default {
         }
         .block{
           margin-top: 20px;
-          overflow: hidden;
+          
+          p {
+              padding-left: 15px;
+              margin-right: 15px;
+              display: inline-block;
+          }
           .p1{
+            background: url(/img/garage-info/store.png) no-repeat left center;
             font-size: 16px;
-            float:left;
-            padding-right:20px;
+            
             span{
               font-size: 14px;
-              color: red;
+              color: #ff8327;
+            }
+          }
+          .p2{
+            background: url(/img/garage-info/discount.png) no-repeat left center;
+            font-size: 16px;
+            
+            span{
+              font-size: 14px;
+              color: #ff8327;
+            }
+          }
+          .p3{
+            background: url(/img/garage-info/star.png) no-repeat left center;
+            font-size: 16px;
+            
+            span{
+              font-size: 14px;
+              color: #ff8327;
             }
           }
         }

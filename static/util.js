@@ -133,11 +133,11 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
     let menuItem = accessMenu[i];
 
     if( menuItem.uri && menuItem.uri.indexOf('http')>=0){
+      let meta= deepClone(menuItem)
+      meta.title= menuItem.name
+      meta.href= menuItem.uri
       res.push({
-        meta: {
-          title: menuItem.name,
-          href: menuItem.uri
-        },
+        meta: meta,
         path: menuItem.uri
       })
     }
@@ -153,7 +153,10 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
 
         if( route.meta.accessId== menuItem.uri){
           let item={}
-          item.meta= route.meta
+          item.meta= deepClone(menuItem)
+          for( let key in route.meta){
+            item.meta[key]= route.meta[key]
+          }
           item.meta.title= menuItem.name
           item.children= matchList(route.children, menuItem.children, route.alias)
           res.push(item)
@@ -172,7 +175,10 @@ export const matchItem = ( routers, menuItem, path) => {
   for(let i in routers)  {
     let route= routers[i], item={}
     if(route.meta.accessId== menuItem.uri){
-      item.meta= route.meta
+      item.meta= deepClone(menuItem)
+      for( let key in route.meta){
+        item.meta[key]= route.meta[key]
+      }
       item.meta.title= menuItem.name
       item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
       arr.push(item)
@@ -195,17 +201,21 @@ export const matchList = ( routers, accessMenu, path) => {
   for(let i in accessMenu) {
     let menuItem = accessMenu[i];
     if (menuItem.uri && menuItem.uri.indexOf('http') >= 0) {
+      let meta= deepClone(menuItem)
+      meta.title= menuItem.name
+      meta.href= menuItem.uri
       arr.push({
-        meta: {
-          title: menuItem.name
-        },
+        meta: meta,
         path: menuItem.uri
       })
     }
     for (let j in routers) {
       let route = routers[j], item={}
       if(route.meta.accessId== menuItem.uri){
-        item.meta= route.meta
+        item.meta= deepClone(menuItem)
+        for( let key in route.meta){
+          item.meta[key]= route.meta[key]
+        }
         item.meta.title= menuItem.name
         item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
         arr.push(item)

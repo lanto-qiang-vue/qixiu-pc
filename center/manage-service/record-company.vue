@@ -251,16 +251,17 @@ export default {
             }).then( (res) => {
                 // console.log('res',res)
 
+// for(let key in res.data) console.log('res-key',key)
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
 
-
+                // console.log(blob);
                 let a = document.createElement('a');
-                    a.download = '导出.xlsx';
+                a.download = '导出.xlsx';
 
-                    a.href = window.URL.createObjectURL(blob);
-                    $("body").append(a);
-                    a.click();
-                    $(a).remove();
+                a.href = window.URL.createObjectURL(blob);
+                $("body").append(a);
+                a.click();
+                $(a).remove();
 
            })
            this.detailData= null;

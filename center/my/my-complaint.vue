@@ -121,7 +121,7 @@
                   this.loading=false;
               }else{
                 this.loading=false;
-                this.$Message.error(res.statusText);
+                // this.$Message.error(res.statusText);
               }
             })
         },
