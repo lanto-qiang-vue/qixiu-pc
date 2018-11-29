@@ -22,6 +22,16 @@
     </div>
 
   </div>
+  <div class="dblock">
+    <h1 class="dtitle">用户反馈</h1>
+    <div class="center">
+      <div class="inline-box">
+        <Table :columns="notifyColumns" :data="notifyData" ref="table2"
+                 stripe border @on-row-click="onRowClick"></Table>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 </template>
@@ -45,7 +55,18 @@ export default {
         {title: '已对接数量', key: 'uploadCount',  minWidth: 100},
         {title: '完成率', key: 'rate',  minWidth: 100},
       ],
-      recordData: []
+      recordData: [],
+      notifyColumns: [
+          {title: '通知标题', key: 'title',  minWidth: 100,},
+          {title: '通知内容', key: 'content',  minWidth: 100,
+            render: (h, params) => h('span', JSON.parse(params.row.content).content)
+          },
+          {title: '通知发送人', key: 'nickname',  minWidth: 100},
+          {title: '通知日期', key: 'sendTime',  minWidth: 100,
+            // render: (h, params) => h('span', formatDate(params.row.sendtime, 'yyyy-MM-dd hh:mm:ss'))
+          },
+      ],
+      notifyData: [],
     }
   },
   mounted() {

@@ -326,7 +326,7 @@ export default {
                 this.searchList.sortOrder='';
                 this.getList();
             }else{
-                this.searchList.sortOrder="'"+value+"' "+type;
+                this.searchList.sortOrder=value+" "+type;
                 this.getList();
             }
 
