@@ -14,6 +14,7 @@ export default function ({ $axios, redirect, store, route, app }) {
       let code= response.data.code
       switch (code){
         case '0': break;
+        case '2000':
         case '100':{
           $axios.$get('/user/useraccount/logout')
           localStorage.removeItem('ACCESSTOKEN')

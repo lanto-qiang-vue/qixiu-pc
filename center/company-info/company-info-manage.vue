@@ -53,9 +53,8 @@ export default {
     data(){
 		  return{
               loading:false,
-              
+
         columns: [
-          
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
@@ -63,12 +62,14 @@ export default {
           {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 140},
           {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 180},
           {title: '联系电话', key: 'phone', sortable: true, minWidth: 120},
+<<<<<<< HEAD
           {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110},
+=======
+          {title: '主修品牌', key: 'brand', sortable: true, minWidth: 110,},
+>>>>>>> 49bb81cb95d567647cd8ddaee0816e00accda098
           {title: '信誉等级', key: 'creditLevel', sortable: true, minWidth: 110,
-            render: (h, params) => h('span', params.row.creditLevel.name||'')
-            },
+            render: (h, params) => h('span', params.row.creditLevel.name|| '')},
           {title: '收费标准', key: 'hourPrice', sortable: true, minWidth: 110},
-          
         ],
         tableData: [],
         searchList:{
@@ -92,13 +93,13 @@ export default {
     mounted () {
         this.getAreaInfo();
       this.getList();
-      
+
     },
     methods:{
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai" 
+                   "areaName": "shanghai"
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
@@ -106,7 +107,7 @@ export default {
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
         getList(){
             this.loading=true;
@@ -131,7 +132,7 @@ export default {
             this.$axios.get('/dict/getValuesByTypeId/1', {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    
+
                 }
            })
         },
@@ -149,7 +150,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -175,9 +176,9 @@ export default {
                 }
             })
         },
-        
 
-        
+
+
     },
 	}
 </script>

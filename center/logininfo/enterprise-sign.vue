@@ -1,5 +1,5 @@
 <template>
-<div class="menu-manage">
+<div class="enterprise-sign">
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
@@ -10,7 +10,7 @@
                 <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间" :options="options"></DatePicker>
             </FormItem>
             <FormItem label="是否签到:">
-                  
+
                   <Select v-model="searchList.isLogin" >
                       <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
                   </Select>
@@ -19,7 +19,7 @@
                   <Input type="text" v-model="searchList.companyName" placeholder="请输入关键字"></Input>
               </FormItem>
               <FormItem label="所属辖区:">
-                  
+
                   <Select v-model="searchList.areaKey" clearable>
                       <Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                   </Select>
@@ -30,65 +30,102 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="" @click="showModal=true" :disabled="!detailData.id">查看</Button>
     </div>
-    
+
 </common-table>
+  <Modal
+    v-model="showModal"
+    :mask-closable="false"
+    title="签到详情"
+    width="740px"
+    :scrollable="true"
+    :transfer="false"
+    :footer-hide="false"
+    :transition-names="['', '']">
+    <div style="overflow: hidden">
+      <h1 style="text-align: center;margin-bottom: 10px">{{detailData.name}}</h1>
+      <div id="calendar"></div>
+    </div>
+  </Modal>
+
 </div>
 </template>
 
 <script>
-  import CommonTable from '~/components/common-table.vue'
-  import { formatDate } from '@/static/tools'
-	export default {
+import CommonTable from '~/components/common-table.vue'
+import { formatDate } from '@/static/tools'
+export default {
 		name: "enterprise-sign",
     components: {
       CommonTable,
     },
+  head () {
+    return {
+      script: [
+        { type: 'text/javascript', src: '/libs/calendar/simple-calendar.js'},
+      ],
+      link: [
+        {rel:"stylesheet", href: '/libs/calendar/simple-calendar.css'}
+      ]
+    }
+  },
     data(){
 		  return{
-              typeList: [
-                  {code:'yes',name:'已签到'},
-                  {code:'no',name:'未签到'},
-              ],//问题分类--------
-              loading:false,
-                columns: [
-                    {title: '名称', key: 'name', sortable: true, minWidth: 120,
-                    },
-                    {title: '区域', key: 'areaName', sortable: true, minWidth: 120},
-                    {title: '经营许可证', key: 'roadPermit', sortable: true, minWidth: 135},
-                    {title: '最后登录时间', key: 'lastLogin', sortable: true, minWidth: 120,
-                        render: (h, params) => h('span', params.row.lastLogin||'无')
-                    },
-                ],
-                tableData: [],
-                searchSelectOption:[],
-                searchList:{
-                    areaKey:"",
-                    companyName:"",
-                    isLogin:"yes",
-                    startDate:"",
-                },
-                page: 1,
-                limit: 10,
-                total: 0,
-                showTable:false,
-                showDetail: false,
-                showOtherDetail:false,
-                detailData: null,
-                clearTableSelect: null,
-                options: {
-                    disabledDate (date) {
-                        
-                        return date && date.valueOf() > Date.now();
-                    }
-                },
-                
-            }
+        typeList: [
+            {code:'yes',name:'已签到'},
+            {code:'no',name:'未签到'},
+        ],//问题分类--------
+        loading:false,
+          columns: [
+              {title: '名称', key: 'name', sortable: true, minWidth: 120,
+              },
+              {title: '区域', key: 'areaName', sortable: true, minWidth: 120},
+              {title: '经营许可证', key: 'roadPermit', sortable: true, minWidth: 135},
+              {title: '最后登录时间', key: 'lastLogin', sortable: true, minWidth: 120,
+                  render: (h, params) => h('span', params.row.lastLogin||'无')
+              },
+          ],
+          tableData: [],
+          searchSelectOption:[],
+          searchList:{
+              areaKey:"",
+              companyName:"",
+              isLogin:"yes",
+              startDate:"",
+          },
+          page: 1,
+          limit: 10,
+          total: 0,
+          showTable:false,
+          showDetail: false,
+          showOtherDetail:false,
+          detailData: {},
+          clearTableSelect: null,
+          options: {
+              disabledDate (date) {
+
+                  return date && date.valueOf() > Date.now();
+              }
+          },
+        showModal:false
+      }
     },
     mounted () {
+      var myCalendar = new SimpleCalendar('#calendar',{
+        width: '700px',
+        height: '500px',
+        showLunarCalendar: false, //阴历
+        showHoliday: true, //休假
+        showFestival: true, //节日
+        showLunarFestival: true, //农历节日
+        showSolarTerm: true, //节气
+        showMark: true, //标记
+        mark: {
+        }
+      });
       this.getList();
-        this.getAreaInfo();
+      this.getAreaInfo();
     },
     // beforeMount(){
     //   this.$axios.post('/menu/list', {
@@ -115,12 +152,12 @@
                     this.loading=false;
                 }
            })
-           this.detailData= null;
-           
+           this.detailData= {};
+
         },
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai" 
+                   "areaName": "shanghai"
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.searchSelectOption=res.data.items;
@@ -128,7 +165,7 @@
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
         changePage(page){
           this.page= page
@@ -143,8 +180,8 @@
           this.detailData=row
         },
         closeDetail(){
-          this.detailData= null;
-          
+          this.detailData= {};
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -170,17 +207,15 @@
                 }
             })
         },
-        
 
-        
+
+
     },
 	}
 </script>
 
 <style scoped lang="less">
-.menu-manage{
 
-}
 .search-block{
   display: inline-block;
   width: 200px;

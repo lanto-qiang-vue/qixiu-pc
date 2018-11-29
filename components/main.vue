@@ -68,13 +68,13 @@ export default {
   },
   methods: {
     turnToPage (name, meta) {
-      // console.log('click', name, meta)
+      console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return
       }
 
-      if(meta && meta.href){
+      if(meta && (meta.href || meta.extInfo=='target=_blank')){
         // window.location.href= name
         window.open(meta.href)
       }else{
