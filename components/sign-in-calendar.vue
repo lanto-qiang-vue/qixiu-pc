@@ -83,7 +83,7 @@
           "companyId": this.type=='company'? this.data.id : '',
           "userId": this.type=='company'? '' : this.data.id,
           "id": '',
-          "loginMethod": "",
+          "loginMethod": this.type=='company'? 'checkin' : '',
           "loginTime": month,
           "pageNo": 1,
           "pageSize": 31

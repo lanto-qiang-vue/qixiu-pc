@@ -69,7 +69,7 @@ export default [
           icon: '',
           title: '管理中心首页',
           accessId: '/center/gov-home',
-          refresh: true
+
         },
         component: resolve('center/home/government-home.vue'),
       },
@@ -79,7 +79,7 @@ export default [
           icon: '',
           title: '企业中心首页',
           accessId: '/center/company-home',
-          refresh: true
+
         },
         component: resolve('center/home/company-home.vue'),
       },
@@ -89,7 +89,7 @@ export default [
           icon: '',
           title: '运营中心首页',
           accessId: '/center/operator-home',
-          refresh: true
+
         },
         component: resolve('center/home/operator-home.vue'),
       },
@@ -107,7 +107,7 @@ export default [
         meta: {
           icon: '',
           title: '电子健康档案详情',
-          accessId: '/center/my-car-record',
+          accessId: '/center/car-record-detail',
         },
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
@@ -370,7 +370,7 @@ export default [
         meta: {
           icon: '',
           title: '文章详情',
-          refresh: true
+
           // accessId: 59,
         },
         component: resolve('center/articles/article-detail.vue'),
@@ -651,6 +651,7 @@ export default [
           icon: '',
           title: '根据维修企业查找',
           accessId: '/center/record-company',
+          keepAlive: true
         },
         component: resolve('center/manage-service/record-company.vue'),
       },
@@ -660,6 +661,7 @@ export default [
           icon: '',
           title: '根据维修记录查找',
           accessId: '/center/record-repair',
+          keepAlive: true
         },
         component: resolve('center/manage-service/record-repair.vue'),
       },
@@ -729,7 +731,7 @@ export default [
           icon: '',
           title: '企业签到信息',
           accessId: '/center/enterprise-sign',
-          refresh: true
+
         },
         component: resolve('center/logininfo/enterprise-sign.vue'),
       },
@@ -739,7 +741,7 @@ export default [
           icon: '',
           title: '管理部门登录信息',
           accessId: '/center/manage-sign',
-          refresh: true
+
         },
         component: resolve('center/logininfo/manage-sign.vue'),
       },
