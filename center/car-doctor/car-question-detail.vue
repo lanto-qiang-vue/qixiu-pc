@@ -58,7 +58,7 @@
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 export default {
-	name: "note-audit-detail",
+	name: "car-question-detail",
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
     data(){

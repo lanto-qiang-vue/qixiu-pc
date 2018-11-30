@@ -13,17 +13,17 @@
             <Input type="text" v-model="search.nickname" ></Input>
         </FormItem>
         <FormItem label="通过审核:">
-          <Select v-model="search.disabled">
+          <Select v-model="search.disabled" clearable>
             <Option value="" selected>全部</Option>
             <Option value="true">是</Option>
             <Option value="false">否</Option>
           </Select>
         </FormItem>
-        <FormItem >
-          <ButtonGroup size="small">
-            <Button type="primary" @click="page=1;getList()"><Icon type="ios-search" size="24"/></Button>
-            <Button type="primary" @click="clear()"><Icon type="ios-undo" size="24"/></Button>
-          </ButtonGroup>
+        <FormItem :label-width="0">
+          
+            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            
+          
         </FormItem>
       </Form>
     </div>

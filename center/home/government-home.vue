@@ -25,15 +25,18 @@
   <div class="dblock">
     <h1 class="dtitle">用户反馈</h1>
     <div class="center">
-      <div class="inline-box">
-        <div style="width: 150px; height: 50px;">
+      <div >
+        <div style="width: 150px; height: 50px;" class="inline-box">
           <Select v-model="searchType" @on-change="onChange">
               <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
           </Select>
         </div>
+          <div>
+            <Table :columns="notifyColumns" :data="notifyData" ref="table2"
+                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
+          </div>
+        
 
-        <Table :columns="notifyColumns" :data="notifyData" ref="table2"
-                 stripe border @on-row-click="onRowClick"></Table>
       </div>
     </div>
 
@@ -49,6 +52,7 @@ export default {
   data(){
     return{
       res:{},
+      loading:false,
       recordColumns: [
         {title: '类型', key: 'type',  minWidth: 100,},
         {title: '总数', key: 'count',  minWidth: 100,},
@@ -341,13 +345,16 @@ export default {
       }else if(this.searchType==1){
         strUrl+='&type=1';
       }
+      this.loading=true;
       this.$axios.get('/comment/complaint/maintain/query/statistics?size=10&page=0'+strUrl, {
       }).then( (res) => {
 
         if(res.status===200){
             this.notifyData=res.data.content;
+            this.loading=false;
         }else{
           // this.$Message.error(res.statusText);
+          this.loading=false;
         }
 
       })

@@ -13,17 +13,17 @@
             <Input type="text" v-model="search.name" ></Input>
         </FormItem>
         <FormItem label="启用状态:">
-          <Select v-model="search.state">
+          <Select v-model="search.state" clearable>
             <Option value="" selected>全部</Option>
             <Option value="true">启用</Option>
             <Option value="false">禁用</Option>
           </Select>
         </FormItem>
-        <FormItem >
-          <ButtonGroup size="small">
-            <Button type="primary" @click="page=1;getList()"><Icon type="ios-search" size="24"/></Button>
-            <Button type="primary" @click="clear()"><Icon type="ios-undo" size="24"/></Button>
-          </ButtonGroup>
+        <FormItem :label-width="0">
+          
+            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            
+          
         </FormItem>
       </Form>
     </div>

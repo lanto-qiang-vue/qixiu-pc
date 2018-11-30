@@ -83,7 +83,7 @@ export default {
 
             this.showModal=true;
             this.token.token = this.$store.state.user.token;
-
+            this.handleBeforeUpload();
 
 
         },

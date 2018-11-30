@@ -57,8 +57,8 @@
           {title: '反馈类型', key: 'type', sortable: true, minWidth: 120,
                 render: (h, params) => h('span', getName(this.typeList,params.row.type)||'')
             },
-          {title: '事件发生日期', key: 'cmCreateDate', sortable: true, minWidth: 150,
-            render: (h, params) => h('span', formatDate(params.row.cmCreateDate)||'')
+          {title: '事件发生日期', key: 'billCreateDate', sortable: true, minWidth: 150,
+            // render: (h, params) => h('span', formatDate(params.row.cmCreateDate)||'')
             },
           {title: '凭证', key: 'photoUrl', sortable: true, minWidth: 130,
                 render: (h, params) => {
@@ -117,8 +117,8 @@
         detailData: null,
         clearTableSelect: null,
         typeList:[
-            {code:0,name:"维修记录未上传"},
-            {code:1,name:"维修记录不正确"},
+            {code:"0",name:"维修记录未上传"},
+            {code:"1",name:"维修记录不正确"},
         ],
         evidenceList:[
             {code:"0",name:"有"},
@@ -148,9 +148,9 @@
                         strUrl+='&'+i+'=false';
                     }
                 }else if(i=="type"){
-                    if(this.searchList[i]==0){
+                    if(this.searchList[i]=="0"){
                         strUrl+='&'+i+'=0';
-                    }else if(this.searchList[i]==1){
+                    }else if(this.searchList[i]=="1"){
                         strUrl+='&'+i+'=1';
                     }
                 }else if(this.searchList[i]){

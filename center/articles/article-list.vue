@@ -15,15 +15,15 @@
           </Select>
         </FormItem>
         <FormItem label="发布状态:">
-          <Select v-model="search.publishStatus">
+          <Select v-model="search.publishStatus" clearable>
             <Option v-for="(item, index) in statusList" :key="index" :value="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
-        <FormItem >
-          <ButtonGroup size="small">
-            <Button type="primary" @click="page=1;getList()"><Icon type="ios-search" size="24"/></Button>
-            <Button type="primary" @click="clear()"><Icon type="ios-undo" size="24"/></Button>
-          </ButtonGroup>
+        <FormItem :label-width="0">
+          
+            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            
+          
         </FormItem>
       </Form>
     </div>

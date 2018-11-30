@@ -60,8 +60,8 @@ export default {
 		  return{
               loading:false,
               typeList: [
-                  {code:'yes',name:'有登录'},
-                  {code:'no',name:'未登录'},
+                  {code:'yes',name:'正确'},
+                  {code:'no',name:'错误'},
               ],//问题分类--------
         columns: [
           
