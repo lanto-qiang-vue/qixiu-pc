@@ -35,8 +35,8 @@ export default {
     accessBtn(){
       return (name)=>{
         let flag= this.isMounted && access(name, this.$route, this.$store)
-        if(flag) console.log(name,'accessBtn: true')
-        else console.log(name,'accessBtn: false')
+        // if(flag) console.log(name,'accessBtn: true')
+        // else console.log(name,'accessBtn: false')
         return flag
       }
     }

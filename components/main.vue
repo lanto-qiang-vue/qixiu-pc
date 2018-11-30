@@ -11,7 +11,10 @@
       <div class="sub-title">
         <my-bread-crumb></my-bread-crumb>
       </div>
-      <nuxt-child />
+      <no-ssr v-if="!pageName">
+        <nuxt-child keep-alive/>
+      </no-ssr>
+      <nuxt-child v-else keep-alive/>
     </Content>
   </Layout>
 </template>
@@ -68,7 +71,7 @@ export default {
   },
   methods: {
     turnToPage (name, meta) {
-      console.log('click', name, meta)
+      // console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return

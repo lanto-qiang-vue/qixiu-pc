@@ -27,13 +27,13 @@
           <div id="bar1" style="width: 500px;height: 350px"></div>
         </div>
         <div class="inline-box">
-					<h2 class="stitle">预约维修申请</h2>
+					<h2 class="stitle">上门服务维修申请</h2>
 					<div class="list">
 						<div class="group">
               <div class="item" v-for="item in visitData"> 姓名：{{item.ownerName}} 电话：{{item.contactMobile}}&nbsp;{{item.serviceType}}</div>
             </div>
 
-					</div>
+			</div>
 				
         </div>
       </div>
@@ -183,7 +183,7 @@
                                 position: 'top'
                             }
                         },
-                        name:'上传数',
+                        name:'上门服务申请数',
                         type:'bar',
                         data:count
                     }
@@ -243,7 +243,7 @@
                                 position: 'top'
                             }
                         },
-                        name:'上传数',
+                        name:'预约服务申请数',
                         type:'bar',
                         data:count
                     }

@@ -222,6 +222,7 @@ import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
 import mixin from '~/components/page-mount-mixin.js'
 export default {
+  layout: 'layout-root',
   components: {
     CommonFooter,
     IconBlock,
