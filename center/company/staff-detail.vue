@@ -42,8 +42,8 @@
           :on-success="handleSuccess"
           action="/proxy/file/image/add">
           <div style="height:250px;width:250px;border-radius:50%;position:absolute;left:50%;margin-left:-125px;">
-            <img style="height:250px;width:250px;background: white;border-radius:50%;border:1px solid black;"
-                 :src="(formData.staffImageList.length > 0 ? formData.staffImageList[0].url : '')"/>
+            <img style="height:250px;width:250px;background: white;border-radius:50%;"
+                 :src="(formData.staffImageList.length > 0 ? formData.staffImageList[0].url : '/img/garage-info/defaultUser.png')"/>
           </div>
         </Upload>
         <div style="height:250px;"></div>
@@ -262,7 +262,7 @@
           position: '1',
           onDuty: 'true',
           professionalTitle: '',
-          staffImageList: [{ url: '' }],
+          staffImageList: [],
           nationalHonor: '',
           provincialHonor: '',
           districtHonor: '',

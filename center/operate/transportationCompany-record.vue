@@ -1556,7 +1556,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                         } else {
                           this.$Message.success('修改成功')
                         }
-                        this.formData.vehicleId = res.id
+                        this.formData.vehicleId = res.data.id;
                         this.getList()
                       }
                     })
@@ -1675,6 +1675,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.indexName = 'm1'
         this.formData = deepClone(this.storeData)
         this.formData2 = deepClone(this.storeData2)
+        this.imgData1 = [];
+        this.imgData2 = [];
+        this.imgData3 = [];
+        this.imgData4 = [];
         this.$refs.formData.resetFields()
         this.showModal = true
       },

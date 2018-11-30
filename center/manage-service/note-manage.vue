@@ -72,6 +72,7 @@
 import CommonNotesDetail from '~/components/common-notes-detail.vue'
 import noteRecipientList from './note-recipient-list.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import { formatDate } from '@/static/tools.js'
     import noteIssued from './note-issued.vue'
 	export default {
 		name: "note-manage",
@@ -151,10 +152,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         getSendNotify(){
             this.loading=true;
             this.$axios.post('/message/notify/getSendNotify', {
-                    endDate:this.searchList.startDate[1]||'',
+                    endDate:formatDate(this.searchList.startDate[1])||'',
                     pageSize:this.limit,
                     pageNo:this.page,
-                    startDate:this.searchList.startDate[0]||'',
+                    startDate:formatDate(this.searchList.startDate[0])||'',
                     title:this.searchList.title,
 
             }).then( (res) => {
@@ -173,10 +174,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         getReceiveNotify(){
             this.loading1=true;
             this.$axios.post('/message/notify/getReceiveNotify', {
-                    endDate:this.receiveList.startDate[1]||'',
+                    endDate:formatDate(this.receiveList.startDate[1])||'',
                     pageSize:this.limit1,
                     pageNo:this.page1,
-                    startDate:this.receiveList.startDate[0]||'',
+                    startDate:formatDate(this.receiveList.startDate[0])||'',
                     title:this.receiveList.title,
             }).then( (res) => {
                 if(res.data.code=='0'){

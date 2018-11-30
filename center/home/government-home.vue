@@ -26,6 +26,12 @@
     <h1 class="dtitle">用户反馈</h1>
     <div class="center">
       <div class="inline-box">
+        <div style="width: 150px; height: 50px;">
+          <Select v-model="searchType" @on-change="onChange">
+              <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
+          </Select>
+        </div>
+
         <Table :columns="notifyColumns" :data="notifyData" ref="table2"
                  stripe border @on-row-click="onRowClick"></Table>
       </div>
@@ -51,16 +57,23 @@ export default {
       ],
       recordData: [],
       notifyColumns: [
-          {title: '通知标题', key: 'title',  minWidth: 100,},
-          {title: '通知内容', key: 'content',  minWidth: 100,
-            render: (h, params) => h('span', JSON.parse(params.row.content).content)
+          {title: '排名', minWidth: 100,type: "index",},
+          {title: '企业名称', key: 'companyName',  minWidth: 100,
           },
-          {title: '通知发送人', key: 'nickname',  minWidth: 100},
-          {title: '通知日期', key: 'sendTime',  minWidth: 100,
-            // render: (h, params) => h('span', formatDate(params.row.sendtime, 'yyyy-MM-dd hh:mm:ss'))
+          {title: '反馈总量(次)', key: 'allCount',  minWidth: 100},
+          {title: '有凭证数量(次)', key: 'hasCount',  minWidth: 100,
+
+          },
+          {title: '无凭证数量(次)', key: 'noCount',  minWidth: 100,
+
           },
       ],
       notifyData: [],
+      typeList:[
+            {code:0,name:"维修记录未上传"},
+            {code:1,name:"维修记录不正确"},
+        ],
+        searchType:0,
     }
   },
   mounted() {
@@ -70,7 +83,7 @@ export default {
   },
   methods:{
     getData(){
-      this.$axios.$get('/mgmtdept/statistics/shanghai').then( (res) => {
+      this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
         this.res= res.item
         this.showChart(res.item)
       })
@@ -317,6 +330,30 @@ export default {
       optionBar.series[2].data=sum;
       bar1.setOption(optionBar);
 
+    },
+    onRowClick(){
+
+    },
+    getList(){
+      let strUrl="";
+      if(this.searchType==0){
+        strUrl+='&type=0';
+      }else if(this.searchType==1){
+        strUrl+='&type=1';
+      }
+      this.$axios.get('/comment/complaint/maintain/query/statistics?size=10&page=0'+strUrl, {
+      }).then( (res) => {
+
+        if(res.status===200){
+            this.notifyData=res.data.content;
+        }else{
+          // this.$Message.error(res.statusText);
+        }
+
+      })
+    },
+    onChange(value){
+      this.getList();
     }
   },
 }

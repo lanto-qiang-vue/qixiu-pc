@@ -40,12 +40,12 @@
   </div>
   <div class="block" v-show="type==4">
     <nuxt-link tag="a" to="/article/accessoriesUnit" target="_blank"><img src="/img/menu-icon/汽车配件.png"/><p>汽车配件</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/人才需求.png"/><p>人才需求</p></nuxt-link>
+    <nuxt-link tag="a" to="/center/staff-query"><img src="/img/menu-icon/人才需求.png"/><p>人才需求</p></nuxt-link>
     <nuxt-link tag="a" to="/gov-article/10281030" target="_blank"><img src="/img/menu-icon/相关培训.png"/><p>相关培训</p></nuxt-link>
     <nuxt-link tag="a" to="/partner" target="_blank"><img src="/img/menu-icon/商务合作.png"/><p>商务合作</p></nuxt-link>
     <nuxt-link tag="a" to="/partner" target="_blank"><img src="/img/menu-icon/数据需求.png"/><p>数据需求</p></nuxt-link>
     <nuxt-link tag="a" to="/article/books" target="_blank"><img src="/img/menu-icon/汽车读物.png"/><p>汽车读物</p></nuxt-link>
-    <nuxt-link tag="a" to="/"><img src="/img/menu-icon/汽车保险.png"/><p>汽车保险</p></nuxt-link>
+    <nuxt-link tag="a" to="/article/insure"><img src="/img/menu-icon/汽车保险.png"/><p>汽车保险</p></nuxt-link>
     <nuxt-link tag="a" to="/article/consum" target="_blank"><img src="/img/menu-icon/汽车用品.png"/><p>汽车用品</p></nuxt-link>
     <nuxt-link tag="a" to="/article/equip" target="_blank"><img src="/img/menu-icon/汽保设备.png"/><p>汽保设备</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281032" target="_blank"><img src="/img/menu-icon/汽车销售.png"/><p>汽车销售</p></nuxt-link>

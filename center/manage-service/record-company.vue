@@ -78,6 +78,7 @@
 import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
+import { getName } from '@/static/util.js'
 export default {
 	name: "record-company",
     components: {
@@ -128,7 +129,8 @@ export default {
             "show": "",//是否前台显示
             "special": "",//是否特约
             "uploadMonth": "",//按月查询
-            sortOrder:''//排序查询
+            order:'',//排序查询
+            index:''
         },
         manageArr:[],
         page: 1,
@@ -141,7 +143,13 @@ export default {
         clearTableSelect: null,
         areaOption:[],//区域数据集合----
         companyType:[],//企业类型集合----
-        businessType:[],//经营状态类型集合------
+        businessType:[
+            {key:1,name:'营业'},
+            {key:2,name:'歇业'},
+            {key:3,name:'注销'},
+            {key:4,name:'空壳'},
+            {key:11,name:'内修'},
+        ],//经营状态类型集合------
         manageType:[],//管理部门数据集合--------
         isFlagType:[
             {code:"是",name:'是'},
@@ -152,6 +160,23 @@ export default {
             {code:"7",name:'大于7天'},
             {code:"15",name:'大于15天'},
             {code:"30",name:'大于30天'},
+        ],
+        typeArr:[
+            {code:"shortName",name:0},
+            {code:"category",name:1},
+            {code:"companyName",name:2},
+            {code:"businessAddress",name:3},
+            {code:"buttJoin",name:4},
+            {code:"count",name:5},
+            {code:"license",name:6},
+            {code:"businessScope",name:7},
+            {code:"noUpdateDays",name:8},
+
+            {code:"minister",name:9},
+            {code:"special",name:10},
+            {code:"businessStatus",name:11},
+            {code:"show",name:12},
+            {code:"firstUploadTime",name:13},
         ],
       }
     },
@@ -176,7 +201,7 @@ export default {
       this.getList();
       this.getAreaInfo();
       this.getType('1');
-      this.getType('24');
+    //   this.getType('24');
       this.getCompanyArea();
 
     },
@@ -216,7 +241,8 @@ export default {
                     "show": upData["show"],
                     "special": upData["special"],
                     "uploadMonth": upData["uploadMonth"],
-                    sortOrder:upData["sortOrder"]
+                    order:upData["order"],
+                    index:upData["index"],
 
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -265,14 +291,18 @@ export default {
                 },
               responseType: 'arraybuffer'
             }).then( (res) => {
-                // console.log('res',res)
+                console.log('res',res)
 
-// for(let key in res.data) console.log('res-key',key)
+                let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+                let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+                console.log(headerData,headerName);
+                
+
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
 
                 // console.log(blob);
                 let a = document.createElement('a');
-                a.download = '导出.xlsx';
+                a.download = headerName;
 
                 a.href = window.URL.createObjectURL(blob);
                 $("body").append(a);
@@ -290,7 +320,7 @@ export default {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
 
@@ -302,10 +332,10 @@ export default {
                     if(id=="1"){
                         this.companyType=res.data.items;
                     }else if(id=='24'){
-                        this.businessType=res.data.items;
+                        // this.businessType=res.data.items;
                     }
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
@@ -315,7 +345,7 @@ export default {
                 if(res.data.code=='0'){
                     this.manageType=res.data.items;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
@@ -339,10 +369,18 @@ export default {
         },
         onSortChange(type,value){
             if(type=="normal"){
-                this.searchList.sortOrder='';
+                this.searchList.order='';
+                this.searchList.index='';
                 this.getList();
             }else{
-                this.searchList.sortOrder=value+" "+type;
+                
+                if(type=="asc"){
+                    this.searchList.order=0;
+                }else if(type=="desc"){
+                    this.searchList.order=1;
+                }
+
+                this.searchList.index=getName(this.typeArr,value);
                 this.getList();
             }
 
