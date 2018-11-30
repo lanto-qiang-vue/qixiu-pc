@@ -1,4 +1,5 @@
 <template>
+<basic-container>
 <div style="background-color: #f5f7f9;text-align: center;padding: 10px;">
   <div class="common-content">
     <div class="sub-title">
@@ -108,18 +109,20 @@
     </div>
   </div>
 </div>
+</basic-container>
 </template>
 
 <script>
+import BasicContainer from '~/components/basic-container.vue'
 import CommonTable from '~/components/common-table.vue'
 import config from '../../config.js'
 export default {
   name: "garage-info",
-  layout: 'common',
+  layout: 'layout-root',
   components: {
-      CommonTable,
-
-    },
+    CommonTable,
+    BasicContainer
+  },
   validate ({ app, params, store }) {
     return params.id? true: false
   },
@@ -382,7 +385,7 @@ export default {
         }
         .block{
           margin-top: 20px;
-          
+
           p {
               padding-left: 15px;
               margin-right: 15px;
@@ -391,7 +394,7 @@ export default {
           .p1{
             background: url(/img/garage-info/store.png) no-repeat left center;
             font-size: 16px;
-            
+
             span{
               font-size: 14px;
               color: #ff8327;
@@ -400,7 +403,7 @@ export default {
           .p2{
             background: url(/img/garage-info/discount.png) no-repeat left center;
             font-size: 16px;
-            
+
             span{
               font-size: 14px;
               color: #ff8327;
@@ -409,7 +412,7 @@ export default {
           .p3{
             background: url(/img/garage-info/star.png) no-repeat left center;
             font-size: 16px;
-            
+
             span{
               font-size: 14px;
               color: #ff8327;

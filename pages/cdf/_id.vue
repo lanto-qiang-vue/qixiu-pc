@@ -1,4 +1,5 @@
 <template>
+  <basic-container>
 <div class="cdf-question-detail">
   <div class="center">
     <div class="sub-title">
@@ -59,12 +60,17 @@
     </div>
   </div>
 </div>
+  </basic-container>
 </template>
 
 <script>
+import BasicContainer from '~/components/basic-container.vue'
 export default {
   name: "cdf-question-detail",
-  layout: 'common',
+  layout: "layout-root",
+  components: {
+    BasicContainer
+  },
   asyncData ({ app, params, error }) {
     // console.log('asyncData')
     return app.$axios.$get('/question/detail/'+ params.id).then((res) => {

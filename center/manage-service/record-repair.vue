@@ -8,7 +8,7 @@
                  :show="showTable" :page="page" :loading="loading">
     <div  slot="search"  >
       <Form :label-width="80" class="common-form">
-         
+
         <FormItem label="车牌号:">
             <Input type="text" v-model="searchList.vehicleplatenumber" placeholder="请输入车牌号"></Input>
         </FormItem>
@@ -18,7 +18,7 @@
         <FormItem label="维修企业:">
             <Input type="text" v-model="searchList.companyName" placeholder="请输入维修企业"></Input>
         </FormItem>
-         
+
         <FormItem label="车牌正确:">
             <Select v-model="searchList.byVehicleNumberStandard" clearable>
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
@@ -29,10 +29,10 @@
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
-        
+
             <FormItem :label-width="0" style="width: 90px;">
                 <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
-                
+
             </FormItem>
         </Form>
     </div>
@@ -49,6 +49,46 @@
 import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+
+if(!thisData) {
+  var thisData= {
+    loading:false,
+    typeList: [
+      {code:'yes',name:'有登录'},
+      {code:'no',name:'未登录'},
+    ],//问题分类--------
+    columns: [
+
+      {title: '序号',  minWidth: 80,
+        render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
+      },
+      {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
+      {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
+      {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
+      {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,},
+      {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
+      {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150},
+      {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150},
+    ],
+    tableData: [],
+    searchList:{
+      byVehicleNumberStandard:"all",
+      byVinStandard:"all",
+      companyName:"",
+      vehicleplatenumber:"",
+      vin:'',
+    },
+    page: 1,
+    limit: 10,
+    total: 0,
+    showTable:false,
+    showDetail: false,
+    showOtherDetail:false,
+    detailData: null,
+    clearTableSelect: null,
+
+  }
+}
 export default {
 	name: "record-repair",
     components: {
@@ -95,9 +135,9 @@ export default {
 
       }
     },
-    
+
     mounted () {
-      
+
       this.getRouterData();
     //   this.getType();
     },
@@ -107,19 +147,19 @@ export default {
     //     "pageSize": 10,
     //   })
     // },
-    
+
     methods:{
         getList(){
             this.loading=true;
             this.$axios.post('/vehicle/carfile/query4manager', {
                     "byVehicleNumberStandard":this.searchList.byVehicleNumberStandard,
                     "byVinStandard":this.searchList.byVinStandard,
-                    
+
                     "companyName":this.searchList.companyName,
-                    
+
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    
+
                     "vehicleplatenumber":this.searchList.vehicleplatenumber,
                     "vin":this.searchList.vin,
             }).then( (res) => {
@@ -135,7 +175,7 @@ export default {
             this.$axios.get('/dict/getValuesByTypeId/1', {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    
+
                 }
            })
         },
@@ -153,7 +193,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -183,7 +223,7 @@ export default {
       getRouterData(){
         var queryData=this.$route.query;
         if(queryData&&queryData.flag){
-            
+
             this.searchList.companyName=queryData.name;
             console.log(this.searchList.companyName);
             this.getList();
@@ -192,10 +232,16 @@ export default {
             console.log("没有值");
             this.getList();
         }
-        
+
       },
 
-        
+      beforeRouteLeave (to, from, next) {
+        // 导航离开该组件的对应路由时调用
+        // 可以访问组件实例 `this`
+        thisData= this.$data
+        // console.log('beforeRouteLeave:', thisData)
+        next()
+      }
     },
 	}
 </script>

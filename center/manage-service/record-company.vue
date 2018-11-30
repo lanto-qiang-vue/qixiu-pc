@@ -79,6 +79,102 @@ import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { getName } from '@/static/util.js'
+
+if(!thisData) {
+  var thisData= {
+    loading:false,
+    typeList: [
+      {code:'yes',name:'有登录'},
+      {code:'no',name:'未登录'},
+    ],//问题分类--------
+    columns: [
+      {title: '区域', key: 'shortName', sortable: true, minWidth: 80,
+        // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
+      },
+      {title: '企业类型', key: 'category', sortable: true, minWidth: 120},
+      {title: '企业名称', key: 'companyName', sortable: true, minWidth: 135},
+      {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150},
+      {title: '是否对接', key: 'buttJoin', sortable: true, minWidth: 110},
+      {title: '上传数量', key: 'count', sortable: true, minWidth: 110},
+      {title: '许可证', key: 'license', sortable: true, minWidth: 120},
+      {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 150},
+      {title: '未上传天数', key: 'noUpdateDays', sortable: true, minWidth: 120},
+      {title: '总对总', key: 'minister', sortable: true, minWidth: 100},
+      {title: '特约维修', key: 'special', sortable: true, minWidth: 110},
+      {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 110,
+        // render: (h, params) => h('span', params.row.businessStatus.name)
+      },
+      {title: '前台显示', key: 'show', sortable: true, minWidth: 110},
+      {title: '对接时间', key: 'firstUploadTime', sortable: true, minWidth: 110},
+    ],
+    tableData: [],
+    searchList:{
+      "area": {
+        key: ''
+      },//区域
+      "businessStatus": "",//企业状态
+      "buttJoin": "",//是否对接
+      "companyCategory": '',//维修企业类型
+      "companyName": "",//企业名称
+      "dept": '',//管理部门
+      "inDays": "",//未上传天数
+      "license": "",//许可证号
+      "minister": "",//是否总对总
+      "org": '',//管理部门
+      "show": "",//是否前台显示
+      "special": "",//是否特约
+      "uploadMonth": "",//按月查询
+      order:'',//排序查询
+      index:''
+    },
+    manageArr:[],
+    page: 1,
+    limit: 10,
+    total: 0,
+    showTable:false,
+    showDetail: false,
+    showOtherDetail:false,
+    detailData: null,
+    clearTableSelect: null,
+    areaOption:[],//区域数据集合----
+    companyType:[],//企业类型集合----
+    businessType:[
+      {key:1,name:'营业'},
+      {key:2,name:'歇业'},
+      {key:3,name:'注销'},
+      {key:4,name:'空壳'},
+      {key:11,name:'内修'},
+    ],//经营状态类型集合------
+    manageType:[],//管理部门数据集合--------
+    isFlagType:[
+      {code:"是",name:'是'},
+      {code:"否",name:'否'},
+    ],
+    idaysType:[
+
+      {code:"7",name:'大于7天'},
+      {code:"15",name:'大于15天'},
+      {code:"30",name:'大于30天'},
+    ],
+    typeArr:[
+      {code:"shortName",name:0},
+      {code:"category",name:1},
+      {code:"companyName",name:2},
+      {code:"businessAddress",name:3},
+      {code:"buttJoin",name:4},
+      {code:"count",name:5},
+      {code:"license",name:6},
+      {code:"businessScope",name:7},
+      {code:"noUpdateDays",name:8},
+
+      {code:"minister",name:9},
+      {code:"special",name:10},
+      {code:"businessStatus",name:11},
+      {code:"show",name:12},
+      {code:"firstUploadTime",name:13},
+    ],
+  }
+}
 export default {
 	name: "record-company",
     components: {
@@ -86,116 +182,24 @@ export default {
     },
     mixins: [funMixin],
     data(){
-	return{
-              loading:false,
-              typeList: [
-                  {code:'yes',name:'有登录'},
-                  {code:'no',name:'未登录'},
-              ],//问题分类--------
-        columns: [
-          {title: '区域', key: 'shortName', sortable: true, minWidth: 80,
-            // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
-          },
-          {title: '企业类型', key: 'category', sortable: true, minWidth: 120},
-          {title: '企业名称', key: 'companyName', sortable: true, minWidth: 135},
-          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150},
-          {title: '是否对接', key: 'buttJoin', sortable: true, minWidth: 110},
-          {title: '上传数量', key: 'count', sortable: true, minWidth: 110},
-          {title: '许可证', key: 'license', sortable: true, minWidth: 120},
-          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 150},
-          {title: '未上传天数', key: 'noUpdateDays', sortable: true, minWidth: 120},
-          {title: '总对总', key: 'minister', sortable: true, minWidth: 100},
-          {title: '特约维修', key: 'special', sortable: true, minWidth: 110},
-          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 110,
-            // render: (h, params) => h('span', params.row.businessStatus.name)
-            },
-          {title: '前台显示', key: 'show', sortable: true, minWidth: 110},
-          {title: '对接时间', key: 'firstUploadTime', sortable: true, minWidth: 110},
-        ],
-        tableData: [],
-        searchList:{
-            "area": {
-              key: ''
-            },//区域
-            "businessStatus": "",//企业状态
-            "buttJoin": "",//是否对接
-            "companyCategory": '',//维修企业类型
-            "companyName": "",//企业名称
-            "dept": '',//管理部门
-            "inDays": "",//未上传天数
-            "license": "",//许可证号
-            "minister": "",//是否总对总
-            "org": '',//管理部门
-            "show": "",//是否前台显示
-            "special": "",//是否特约
-            "uploadMonth": "",//按月查询
-            order:'',//排序查询
-            index:''
-        },
-        manageArr:[],
-        page: 1,
-        limit: 10,
-        total: 0,
-        showTable:false,
-        showDetail: false,
-        showOtherDetail:false,
-        detailData: null,
-        clearTableSelect: null,
-        areaOption:[],//区域数据集合----
-        companyType:[],//企业类型集合----
-        businessType:[
-            {key:1,name:'营业'},
-            {key:2,name:'歇业'},
-            {key:3,name:'注销'},
-            {key:4,name:'空壳'},
-            {key:11,name:'内修'},
-        ],//经营状态类型集合------
-        manageType:[],//管理部门数据集合--------
-        isFlagType:[
-            {code:"是",name:'是'},
-            {code:"否",name:'否'},
-        ],
-        idaysType:[
-
-            {code:"7",name:'大于7天'},
-            {code:"15",name:'大于15天'},
-            {code:"30",name:'大于30天'},
-        ],
-        typeArr:[
-            {code:"shortName",name:0},
-            {code:"category",name:1},
-            {code:"companyName",name:2},
-            {code:"businessAddress",name:3},
-            {code:"buttJoin",name:4},
-            {code:"count",name:5},
-            {code:"license",name:6},
-            {code:"businessScope",name:7},
-            {code:"noUpdateDays",name:8},
-
-            {code:"minister",name:9},
-            {code:"special",name:10},
-            {code:"businessStatus",name:11},
-            {code:"show",name:12},
-            {code:"firstUploadTime",name:13},
-        ],
-      }
+	return thisData
     },
-  watch:{
-    total(n, o, b){
-      console.log('watch.total: ',o, n, b)
-    }
-  },
-  activated(){
-	  console.log('activated')
-  },
-  beforeRouteEnter(to, from, next){
-    console.log('beforeRouteEnter')
-    next()
-  },
-  beforeRouteUpdate(to, from, next){
-    console.log('beforeRouteUpdate')
-    next()
-  },
+  // watch:{
+  //   total(n, o, b){
+  //     console.log('watch.total: ',o, n, b)
+  //   }
+  // },
+  // activated(){
+	//   console.log('activated')
+  // },
+  // beforeRouteEnter(to, from, next){
+  //   console.log('beforeRouteEnter')
+  //   next()
+  // },
+  // beforeRouteUpdate(to, from, next){
+  //   console.log('beforeRouteUpdate')
+  //   next()
+  // },
   mounted () {
 	    console.log('record-company: mounted')
       this.getList();
@@ -299,7 +303,7 @@ export default {
                 let headerData=res.headers["content-disposition"].split(';')[1].split('=');
                 let headerName=headerData[1].substring(1,(headerData[1].length)-1)
                 console.log(headerData,headerName);
-                
+
 
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
 
@@ -376,7 +380,7 @@ export default {
                 this.searchList.index='';
                 this.getList();
             }else{
-                
+
                 if(type=="asc"){
                     this.searchList.order=0;
                 }else if(type=="desc"){
@@ -417,7 +421,14 @@ export default {
         }
 
     },
-	}
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    thisData= this.$data
+    // console.log('beforeRouteLeave:', thisData)
+    next()
+  }
+}
 </script>
 
 <style scoped lang="less">

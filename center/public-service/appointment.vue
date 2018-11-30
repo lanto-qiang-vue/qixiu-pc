@@ -1,4 +1,5 @@
 <template>
+<basic-container>
   <div class="single-page">
     <div class="center">
       <div class="sub-title">
@@ -31,12 +32,17 @@
       </div>
     </div>
   </div>
+</basic-container>
 </template>
 
 <script>
+  import BasicContainer from '~/components/basic-container.vue'
   export default {
     name: "appointment",
-    layout: 'common',
+    layout: "layout-root",
+    components: {
+      BasicContainer
+    },
     mounted(){
       // console.log(this.$route.query.name);
       // console.log(this.$route);

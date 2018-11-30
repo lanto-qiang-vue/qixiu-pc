@@ -1,4 +1,5 @@
 <template>
+<basic-container>
 <div class="single-page">
   <div class="center">
     <div class="sub-title">
@@ -34,12 +35,17 @@
     </div>
   </div>
 </div>
+</basic-container>
 </template>
 
 <script>
+import BasicContainer from '~/components/basic-container.vue'
 export default {
   name: "visit-service",
-  layout: 'common',
+  layout: "layout-root",
+  components: {
+    BasicContainer
+  },
   data(){
     return {
       checkId:[],
