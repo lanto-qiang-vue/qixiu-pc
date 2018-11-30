@@ -5,7 +5,6 @@
       <div class="sub-title">
         <Breadcrumb>
           <BreadcrumbItem to="/">首页</BreadcrumbItem>
-          <BreadcrumbItem to="/service-map">公众监督</BreadcrumbItem>
           <BreadcrumbItem>维修反馈</BreadcrumbItem>
         </Breadcrumb>
       </div>

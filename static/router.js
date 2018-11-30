@@ -107,7 +107,7 @@ export default [
         meta: {
           icon: '',
           title: '电子健康档案详情',
-          accessId: '/center/car-record-detail',
+          // accessId: '/center/car-record-detail',
         },
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
