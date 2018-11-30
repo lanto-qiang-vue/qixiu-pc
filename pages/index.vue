@@ -551,7 +551,7 @@ export default {
     min-width: 900px;
     display: inline-block;
     position: relative;
-    padding: 0 10px;
+    /*padding: 0 10px;*/
     .head{
       padding: 20px 10px;
       background-color: #6091b7;
@@ -1123,6 +1123,10 @@ export default {
           background-size: 22px auto;
         }
       }
+    }
+    .service, .news, .cooperator{
+      margin-left: 10px;
+      margin-right: 10px;
     }
   }
 

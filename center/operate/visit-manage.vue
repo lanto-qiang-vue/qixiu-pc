@@ -23,7 +23,7 @@
     </div>
     <div slot="operate">
         <Button type="primary" v-if="accessBtn('update')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
-        <Button type="primary" v-if="accessBtn('edit')" :disabled="updateFlag"  @click="updateFun">已回复</Button>
+        <Button type="primary" v-if="accessBtn('edit')" :disabled="updateFlag"  @click="updateFun">回复</Button>
         
       <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
@@ -86,7 +86,7 @@ export default {
     mounted () {
       this.showTable= Math.random();
       this.getList();
-    
+
     },
     methods:{
         getList(){
@@ -97,14 +97,14 @@ export default {
                         "ownerName": this.search.input,
                       "pageNo": this.page,
                       "pageSize": this.limit,
-                      
+
             }).then( (res) => {
 					      if(res.data.code=='0'){
                   this.tableData=res.data.items;
                   this.total=res.data.total;
                   this.loading=false;
                 }
-					
+
 				    })
             this.detailData= null;
         },
@@ -119,7 +119,7 @@ export default {
 
         onRowClick( row, index){
             console.log('row：',row);
-            
+
           this.detailData=row;
           this.typeFlag="visit";
           if(this.detailData.status!="已回复"){
@@ -127,14 +127,14 @@ export default {
           }else{
               this.updateFlag=true;
           }
-          
+
         },
-        
+
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random()
           this.showFlag=true;
-          
+
           this.getList();
         },
         //删除按钮----------
@@ -144,7 +144,7 @@ export default {
                 content:"确定要删除吗？",
                 onOk:this.deleteFuncion,
             })
-            
+
         },
         deleteFuncion(){
             this.$axios.delete('/service/delete/'+this.detailData.id,).then(
@@ -170,7 +170,7 @@ export default {
                 }
             })
         }
-        
+
     },
 	}
 </script>

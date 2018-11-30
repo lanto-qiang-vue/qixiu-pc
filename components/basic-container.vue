@@ -171,5 +171,8 @@ export default {
       overflow: visible;
     }
   }
+  .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item{
+    white-space: nowrap;
+  }
 }
 </style>

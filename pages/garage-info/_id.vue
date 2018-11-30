@@ -4,7 +4,8 @@
   <div class="common-content">
     <div class="sub-title">
       <Breadcrumb>
-        <BreadcrumbItem to="/">首页</BreadcrumbItem>
+        <BreadcrumbItem to="/">主页</BreadcrumbItem>
+        <BreadcrumbItem to="/service-map">维修查选</BreadcrumbItem>
         <BreadcrumbItem>维修企业详情</BreadcrumbItem>
       </Breadcrumb>
     </div>
@@ -15,7 +16,7 @@
         <!--<div class="left">-->
             <h1>{{ info.name }}<span id="status">{{getStatus(info.status)}}</span></h1>
             <div class="icon"><img src="/img/garage-info/business.png"><img src="/img/garage-info/certification.png"></div>
-            <div class="address"><span>{{info.addr}}</span><nuxt-link tag="a" :to="'/service-map?type=1&q='+info.name">导航地图</nuxt-link></div>
+            <div class="address"><span>{{info.addr}}</span><nuxt-link tag="a" :to="'/service-map?type=164&q='+info.name">导航地图</nuxt-link></div>
             <div class="tel" v-show="info.tel"><span>{{info.tel}}</span></div>
             <div class="button">
               <nuxt-link tag="a" :to="'/visit-service/?id='+$route.params.id">上门服务</nuxt-link>
@@ -126,25 +127,25 @@ export default {
   validate ({ app, params, store }) {
     return params.id? true: false
   },
-  // asyncData ({ app, params, error }) {
-  //   return app.$axios({
-  //     baseURL: 'http://127.0.0.1:'+config.port+'/repair',
-  //     url: '/micro/search/company/repair/'+ params.id,
-  //     method: 'get',
-  //   }).then((res) => {
-  //     return {
-  //       info: res.data
-  //     }
-  //   }, (err)=>{
-  //     console.log(err)
-  //     // if(process.client)
-  //     console.log('err:', err.response.data)
-  //     return {
-  //       info: {},
-  //       error: err.response.data
-  //     }
-  //   });
-  // },
+  asyncData ({ app, params, error }) {
+    return app.$axios({
+      baseURL: 'http://127.0.0.1:'+config.port+'/repair',
+      url: '/micro/search/company/repair/'+ params.id,
+      method: 'get',
+    }).then((res) => {
+      return {
+        info: res.data
+      }
+    }, (err)=>{
+      console.log(err)
+      // if(process.client)
+      console.log('err:', err.response.data)
+      return {
+        info: {},
+        error: err.response.data
+      }
+    });
+  },
   data(){
     return{
       info: {
@@ -180,20 +181,20 @@ export default {
       showDetail: false,
       detailData: null,
       clearTableSelect: null,
-      error: null
+      error: null,
+      isMounted: false
     }
   },
   mounted(){
-    this.$axios({
-      baseURL: '/repair',
-      url: '/micro/search/company/repair/'+ this.$route.params.id,
-      method: 'get',
-    }).then((res) => {
-      console.log(res.data)
-        this.info= res.data
+    // this.$axios({
+    //   baseURL: '/repair',
+    //   url: '/micro/search/company/repair/'+ this.$route.params.id,
+    //   method: 'get',
+    // }).then((res) => {
+    //   console.log(res.data)
+    //     this.info= res.data
+    // });
 
-
-    });
     this.getList();
 
   },

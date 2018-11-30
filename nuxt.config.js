@@ -17,7 +17,7 @@ module.exports = {
     title: '上海市机动车维修公共服务平台',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'user-scalable=no' },
       { hid: 'description', name: 'description', content: '机动车维修公共服务平台' }
     ],
     link: [
