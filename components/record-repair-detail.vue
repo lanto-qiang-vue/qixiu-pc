@@ -348,7 +348,7 @@
           });
           return false;
         }
-        this.feedData.repairId = this.repairId;
+        this.feedData.repairId = parseInt(this.repairId);
         this.feedData.photoUrl = this.feedData.url;
         this.$axios.post('/comment/complaint/maintain/repairId',this.feedData).then((res) => {
           if (res.data.code == '0') {
@@ -425,7 +425,8 @@
         this.commentModal = true
       },
       getComment(){
-        this.$axios.get('/comment/maintain/repairId?repairId='+this.detailData.id, {
+        // /comment/maintain/repairId?repairId
+        this.$axios.get('/comment/maintain/query/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
           if(res.data.id > 1){
              this.commentData = res.data;
@@ -438,7 +439,7 @@
         })
       },
       getFeedBack(){
-        this.$axios.get('/comment/complaint/maintain/repairId/'+this.detailData.id, {
+        this.$axios.get('/comment/complaint/maintain/query/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
               this.feedData = res.data;
         }).catch(()=>{

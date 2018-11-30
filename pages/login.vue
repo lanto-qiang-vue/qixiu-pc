@@ -27,7 +27,7 @@
             </FormItem>
             <div class="deal">
               <p>新用户完成注册，代表同意</p>
-              <a>《上海汽修平台用户协议》</a>
+              <a href="/article/protocol" target="_blank">《上海汽修平台用户协议》</a>
             </div>
             </Form>
         </TabPane>
