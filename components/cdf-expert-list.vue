@@ -2,7 +2,8 @@
 <div class="cdf-expert-list" ref="expertList">
   <div class="head">
     <span><Icon type="ios-pie" /> 问答专家团</span>
-    <span class="more">更多<Icon type="ios-arrow-forward" /></span>
+    <!--<span class="more">更多<Icon type="ios-arrow-forward" /></span>-->
+    <nuxt-link tag="a" class="more" :to="'/guild-article/10281024/211'">更多<Icon type="ios-arrow-forward" /></nuxt-link>
   </div>
   <div id="expert-list">
     <ul>
@@ -11,7 +12,7 @@
           <img :src="item.photo">
         </a>
         <div class="info">
-          <a class="name">{{item.name}}<span></span></a>
+          <span>{{item.name}}</span>
           <p>{{item.professor}}</p>
           <nuxt-link tag="a" class="ivu-btn ivu-btn-default ivu-btn-small"
           :to="'/cdf/expert/'+ item.id">向TA提问</nuxt-link>

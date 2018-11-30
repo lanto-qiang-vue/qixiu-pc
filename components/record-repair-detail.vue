@@ -118,8 +118,8 @@
         <div style="height:10px;"></div>
       </div>
       <div slot="footer">
-        <Button type="primary" @click="comment" v-show="!(commentData.id > 0)">点评</Button>
-        <Button type="info" @click="feedback" v-show="!(feedData.id > 0)">反馈</Button>
+        <Button type="primary" @click="comment" v-if="accessBtn('addMaintain')" v-show="!(commentData.id > 0)" >点评</Button>
+        <Button type="info" @click="feedback" v-if="accessBtn('addComplaint')" v-show="!(feedData.id > 0)">反馈</Button>
         <Button size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
       </div>
     </Modal>
@@ -178,7 +178,7 @@
         </div>
       </div>
       <div slot="footer">
-        <Button type="primary" @click="submit">提交</Button>
+        <Button  type="primary" @click="submit">提交</Button>
       </div>
     </Modal>
     <!---->
@@ -230,7 +230,7 @@
       </div>
       </div>
       <div slot="footer">
-        <Button type="primary" @click="submitFeedBack">提交</Button>
+        <Button  type="primary" @click="submitFeedBack">提交</Button>
       </div>
     </Modal>
   </div>
@@ -241,11 +241,12 @@
   import selectStart from '~/components/select-start.vue'
   import SelectStart from './select-start'
   import { deepClone } from '../static/util'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'record-repair-detail',
     components: { SelectStart },
     props: ['showDetail', 'detailData','selectStart'],
+    mixins: [funMixin],
     data() {
       return {
         showModal: false,
@@ -348,7 +349,7 @@
           });
           return false;
         }
-        this.feedData.repairId = this.repairId;
+        this.feedData.repairId = parseInt(this.repairId);
         this.feedData.photoUrl = this.feedData.url;
         this.$axios.post('/comment/complaint/maintain/repairId',this.feedData).then((res) => {
           if (res.data.code == '0') {
@@ -425,7 +426,8 @@
         this.commentModal = true
       },
       getComment(){
-        this.$axios.get('/comment/maintain/repairId?repairId='+this.detailData.id, {
+        // /comment/maintain/repairId?repairId
+        this.$axios.get('/comment/maintain/query/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
           if(res.data.id > 1){
              this.commentData = res.data;
@@ -438,7 +440,7 @@
         })
       },
       getFeedBack(){
-        this.$axios.get('/comment/complaint/maintain/repairId/'+this.detailData.id, {
+        this.$axios.get('/comment/complaint/maintain/query/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
               this.feedData = res.data;
         }).catch(()=>{

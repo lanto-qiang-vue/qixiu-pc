@@ -97,7 +97,43 @@ export default {
     },
     mixins: [funMixin],
     data(){
-		  return thisData
+		  return{
+              loading:false,
+              typeList: [
+                  {code:'yes',name:'正确'},
+                  {code:'no',name:'错误'},
+              ],//问题分类--------
+        columns: [
+          
+          {title: '序号',  minWidth: 80,
+            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
+          },
+          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
+          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
+          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
+          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,},
+          {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
+          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150},
+          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150},
+        ],
+        tableData: [],
+        searchList:{
+            byVehicleNumberStandard:"all",
+            byVinStandard:"all",
+            companyName:"",
+            vehicleplatenumber:"",
+            vin:'',
+        },
+        page: 1,
+        limit: 10,
+        total: 0,
+        showTable:false,
+        showDetail: false,
+        showOtherDetail:false,
+        detailData: null,
+        clearTableSelect: null,
+
+      }
     },
 
     mounted () {

@@ -12,11 +12,11 @@
         <FormItem label="系统类型代号:">
             <Input type="text" v-model="search.code" ></Input>
         </FormItem>
-        <FormItem >
-          <ButtonGroup size="small">
-            <Button type="primary" @click="page=1;getList()"><Icon type="ios-search" size="24"/></Button>
-            <Button type="primary" @click="clear()"><Icon type="ios-undo" size="24"/></Button>
-          </ButtonGroup>
+        <FormItem :label-width="0">
+          
+            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            
+          
         </FormItem>
       </Form>
     </div>

@@ -69,6 +69,7 @@
     methods:{
         getList(){
           this.loading=true;
+          
             this.$axios.post('/service/list', {
                      
                       "pageNo": this.page,
