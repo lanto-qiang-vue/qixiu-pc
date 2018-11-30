@@ -142,11 +142,27 @@
     //   if(queryData.){
 
     //   }
-      this.getList();
+    //   this.getList();
+    this.getRouterData();
 
     },
-
+activated(){
+    this.getRouterData();
+},
     methods:{
+        getRouterData(){
+            
+        var queryData=this.$route.query;
+        if(queryData.name=="clp"){
+            
+            this.searchList.companyName=queryData.companyName;
+            this.searchList.type=queryData.type+'';
+            this.getList();
+        }else{
+            this.getList();
+        }
+        
+      },
         getList(){
             this.loading=true;
             let page=this.page-1;

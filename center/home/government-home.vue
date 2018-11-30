@@ -5,7 +5,7 @@
     <div class="center">
       <div class="inline-box">
         <Table :columns="recordColumns" :data="recordData" ref="table" width="600"
-               stripe border></Table>
+               stripe border @on-row-click="onRowClickTop"></Table>
       </div>
       <div class="inline-box">
         <div id="pie1" style="width: 300px;height: 300px;position: relative"></div>
@@ -78,6 +78,7 @@ export default {
             {code:1,name:"维修记录不正确"},
         ],
         searchType:0,
+        areaType:[],
     }
   },
   mounted() {
@@ -101,6 +102,8 @@ export default {
         {category: 47, type: '汽车快修业户', count: data.class5corpcount, uploadCount: data.class5uploadcorpcount, rate: data.class5corprate.toFixed(2)+'%'},
         {category: 46, type: '摩托车维修业户', count: data.class4corpcount, uploadCount: data.class4uploadcorpcount, rate: data.class4corprate.toFixed(2)+'%'},
       ]
+      this.areaType=this.res.areaItems;
+
       let pie1 = echarts.init(document.getElementById('pie1'));
       let pie3 = echarts.init(document.getElementById('pie3'));
       let bar1 = echarts.init(document.getElementById('bar1'));
@@ -334,9 +337,30 @@ export default {
       optionBar.series[2].data=sum;
       bar1.setOption(optionBar);
 
+      bar1.on('click', (params)=>{
+          console.log(params)
+          let areaData='';
+          for(let i in this.areaType){
+                    if(this.areaType[i].areaname==params.name){
+                        areaData=this.areaType[i].areakey;
+                        break;
+                    }
+                }
+         this.$router.push({path:'/center/record-company', query:{ minister: params.seriesIndex,id:areaData,name:'zdz'}})
+      });
     },
-    onRowClick(){
-
+    onRowClickTop(row){
+      // console.log(row);
+      let rowData='';
+      if(row.category){
+        rowData=row.category;
+      }
+      this.$router.push({path:'/center/record-company', query:{ category: rowData,name:'top'}})
+    },
+    onRowClick(row){
+      // console.log(row);
+      
+      this.$router.push({path:'/center/review-manage', query:{ companyName: row.companyName,type:this.searchType,name:'clp'}})
     },
     getList(){
       let strUrl="";

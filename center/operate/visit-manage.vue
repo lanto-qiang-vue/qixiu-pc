@@ -91,7 +91,10 @@ export default {
     methods:{
         getList(){
           this.loading=true;
-            this.$axios.post('/service/list', {
+          let routerData=this.$route;
+          console.log(routerData);
+          if(routerData.fullPath=="/center/visit-company"){
+                          this.$axios.post('/service/company/list', {
                      "contactAddress": this.search.addr,
                         "contactMobile": this.search.select,
                         "ownerName": this.search.input,
@@ -106,6 +109,24 @@ export default {
                 }
 					
 				    })
+          }else{
+              this.$axios.post('/service/yy/list', {
+                     "contactAddress": this.search.addr,
+                        "contactMobile": this.search.select,
+                        "ownerName": this.search.input,
+                      "pageNo": this.page,
+                      "pageSize": this.limit,
+                      
+            }).then( (res) => {
+					      if(res.data.code=='0'){
+                  this.tableData=res.data.items;
+                  this.total=res.data.total;
+                  this.loading=false;
+                }
+					
+				    })
+          } 
+
             this.detailData= null;
         },
         changePage(page){

@@ -202,14 +202,46 @@ export default {
   // },
   mounted () {
 	    console.log('record-company: mounted')
-      this.getList();
-      this.getAreaInfo();
-      this.getType('1');
+        this.getAreaInfo();
+        this.getType('1');
+        this.getCompanyArea();
+    //   this.getList();
+      
+      
+      
     //   this.getType('24');
-      this.getCompanyArea();
+      
 
-    },
+      this.getRouterData();
+
+},
+activated(){
+    this.getRouterData();
+},
     methods:{
+        getRouterData(){
+            
+        var queryData=this.$route.query;
+        if(queryData.name=="top"){
+            
+            this.searchList.companyCategory=queryData.category;
+            this.getList();
+        }else if(queryData.name=="zdz"){
+            this.searchList.area.key=queryData.id;
+            if(queryData.minister==1){
+                this.searchList.minister="是";
+                this.searchList.buttJoin="是";
+                
+            }else{
+                this.searchList.minister="否";
+                this.searchList.buttJoin="是";
+            }
+            this.getList();
+        }else{
+            this.getList();
+        }
+        
+      },
         getList(){
             this.loading=true;
             let upData={};
