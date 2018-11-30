@@ -10,7 +10,7 @@
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
-        <my-bread-crumb></my-bread-crumb>
+        <my-bread-crumb :name="pageName"></my-bread-crumb>
       </div>
 
       <nuxt-child v-if="keepAlive" keep-alive/>

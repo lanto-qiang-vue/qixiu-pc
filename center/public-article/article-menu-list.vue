@@ -1,12 +1,15 @@
 <template>
+<!--<basic-container>-->
   <main-body :paraMenu="menuList" pageName="公共管理"></main-body>
+<!--</basic-container>-->
 </template>
 
 <script>
   import MainBody from '~/components/main.vue'
+  // import BasicContainer from '~/components/basic-container.vue'
   export default {
     name: "public-article-menu-list",
-    layout: 'common',
+    // layout: "layout-root",
     data () {
       return {
         menuList: [],
@@ -15,6 +18,7 @@
     },
     components: {
       MainBody,
+      // BasicContainer
     },
     watch: {
       '$route' (to, from) {
@@ -72,13 +76,15 @@
               path: "/gov-article/10281007"
             },{
               meta: {title: '管理动态', accessId:'管理动态'},
-              children: [{
-                meta: {title: '电子维修档案', accessId: '电子维修档案'},
-                path: "/"
-              },{
-                meta: {title: '企业合格证使用信息管理', accessId: '企业合格证使用信息管理'},
-                path: "/"
-              },{
+              children: [
+              //   {
+              //   meta: {title: '电子维修档案', accessId: '电子维修档案'},
+              //   path: "/"
+              // },{
+              //   meta: {title: '企业合格证使用信息管理', accessId: '企业合格证使用信息管理'},
+              //   path: "/"
+              // },
+                {
                 meta: {title: '质量信誉考核信息', accessId: 10281016},
                 path: "/gov-article/10281016"
               },{

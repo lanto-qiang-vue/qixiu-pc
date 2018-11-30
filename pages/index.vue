@@ -122,7 +122,7 @@
             <li class="button" @mouseover="showCdfFlag=true">问题集锦</li>
             <li class="button" @mouseover="showCdfFlag=false">专家团</li>
             <li class="cdf" style="background-color: #e86d1c;">
-              <a href="/cdf" target="_blank">在线咨询</a>
+              <a href="/cdf">在线咨询</a>
             </li>
           </ul>
           <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
@@ -308,7 +308,7 @@ export default {
   mixins: [mixin],
   asyncData ({ app, error }) {
     if(process.client && thisData && thisData.isGetData) {
-      console.log('cache!')
+      console.log('cache')
       return thisData
     }
     let getNews= (infoType, pageSize) => {

@@ -1,4 +1,5 @@
 <template>
+<basic-container>
   <div class="single-page">
     <div class="center">
       <div style="background:url('/img/garage-info/about_bg.jpg');width:100%;height:auto;">
@@ -32,12 +33,17 @@
       </div>
     </div>
   </div>
+</basic-container>
 </template>
 
 <script>
+  import BasicContainer from '~/components/basic-container.vue'
   export default {
     name: 'partner',
-    layout: 'common',
+    layout: 'layout-root',
+    components: {
+      BasicContainer
+    },
     data() {
       return {}
     }

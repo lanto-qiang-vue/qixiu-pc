@@ -1,8 +1,8 @@
 <template>
 <div class="bread-crumb">
   <Breadcrumb v-if="show">
-    <BreadcrumbItem :to="centerHref">首页</BreadcrumbItem>
-    <BreadcrumbItem>{{$route.meta.title}}</BreadcrumbItem>
+    <BreadcrumbItem :to="name? '/':centerHref">{{name? '主页': '首页'}}</BreadcrumbItem>
+    <BreadcrumbItem>{{name|| $route.meta.title}}</BreadcrumbItem>
   </Breadcrumb>
 </div>
 </template>
@@ -12,6 +12,7 @@ import mixin from '~/components/home-path-mixin.js'
 export default {
   name: "bread-crumb",
   mixins: [mixin],
+  props: ['name'],
   data(){
     return{
       show: false
