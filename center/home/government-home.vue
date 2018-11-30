@@ -35,7 +35,7 @@
             <Table :columns="notifyColumns" :data="notifyData" ref="table2"
                   stripe border @on-row-click="onRowClick" :loading="loading"></Table>
           </div>
-        
+
 
       </div>
     </div>
@@ -82,6 +82,7 @@ export default {
     }
   },
   mounted() {
+    this.$Spin.show();
     $.getScript('/libs/echarts.common.min.js',()=>{
       this.getData()
     })
@@ -91,6 +92,7 @@ export default {
       this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
         this.res= res.item
         this.showChart(res.item)
+        this.$Spin.hide();
       })
     },
     showChart(data){
@@ -346,7 +348,7 @@ export default {
                         break;
                     }
                 }
-         this.$router.push({path:'/center/record-company', query:{ minister: params.seriesIndex,id:areaData,name:'zdz'}})
+         this.$router.push({path:'/center/record-company', query:{ minister: params.seriesIndex, area:areaData,name:'zdz'}})
       });
     },
     onRowClickTop(row){
@@ -359,7 +361,7 @@ export default {
     },
     onRowClick(row){
       // console.log(row);
-      
+
       this.$router.push({path:'/center/review-manage', query:{ companyName: row.companyName,type:this.searchType,name:'clp'}})
     },
     getList(){

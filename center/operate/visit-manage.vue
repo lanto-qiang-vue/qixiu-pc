@@ -24,7 +24,7 @@
     <div slot="operate">
         <Button type="primary" v-if="accessBtn('update')" :disabled="!detailData"  @click="showType=Math.random()">指派维修企业</Button>
         <Button type="primary" v-if="accessBtn('edit')" :disabled="updateFlag"  @click="updateFun">回复</Button>
-        
+
       <Button type="error" v-if="accessBtn('delete')" :disabled="!detailData"  @click="deleteFun">删除</Button>
     </div>
     <select-repair-company :showType="showType" :detailData="detailData" @closeDetail="closeDetail" :typeFlag="typeFlag"></select-repair-company>
@@ -116,16 +116,16 @@ export default {
                         "ownerName": this.search.input,
                       "pageNo": this.page,
                       "pageSize": this.limit,
-                      
+
             }).then( (res) => {
 					      if(res.data.code=='0'){
                   this.tableData=res.data.items;
                   this.total=res.data.total;
                   this.loading=false;
                 }
-					
+
 				    })
-          } 
+          }
 
             this.detailData= null;
         },

@@ -213,9 +213,10 @@ export default {
       return isFull;
     }
   },
-  // beforeRouteLeave (to, from, next) {
-  //
-  // },
+  beforeRouteLeave (to, from, next) {
+    this.stompClient.disconnect()
+    next()
+  }
 }
 </script>
 
