@@ -34,7 +34,7 @@
             </div>
 
 					</div>
-				
+
         </div>
       </div>
 
@@ -65,13 +65,13 @@
   import { formatDate } from '~/static/tools.js'
 	export default {
 		name: "company-home",
-    head () {
-      return {
-        script: [
-          { type: 'text/javascript', src: "/libs/echarts.common.min.js"},
-        ],
-      }
-    },
+    // head () {
+    //   return {
+    //     script: [
+    //       { type: 'text/javascript', src: "/libs/echarts.common.min.js"},
+    //     ],
+    //   }
+    // },
     data(){
       return{
         infoColumns: [
@@ -99,6 +99,10 @@
       }
 		},
     mounted(){
+      $.getScript('/libs/echarts.common.min.js',()=>{
+        this.getVisit();
+        this.getOrder();
+      })
       this.$axios.$post('/company/repaircompany/detailInfo',{}).then( (res) => {
         if(res.code== '0') this.infoData= [res.item]
       })
@@ -112,8 +116,7 @@
       }
       console.log(this.visitDate);
 
-      this.getVisit();
-      this.getOrder();
+
       // this.getServerDate();
 
       this.getNotify();
@@ -121,7 +124,7 @@
     methods:{
         getServerDate(){
           this.$axios.get('/statistics/admin/comStatistics',{
-              
+
           } ).then( (res) => {
               if(res.data.code=='0'){
                   console.log(res.data.items);
@@ -268,10 +271,10 @@
           })
         },
         onRowClick( row, index){
-            
+
             var query={flag:true,listSearch:row['id']};
             this.$router.push({path:'/center/company-note-manage',query:query});
-        
+
         },
     }
 	}

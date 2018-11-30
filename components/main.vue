@@ -1,4 +1,5 @@
 <template>
+<basic-container>
   <Layout style="flex-direction: row;">
     <Sider hide-trigger class="common-sider">
       <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
@@ -11,15 +12,20 @@
       <div class="sub-title">
         <my-bread-crumb></my-bread-crumb>
       </div>
-      <no-ssr v-if="!pageName">
-        <nuxt-child keep-alive/>
-      </no-ssr>
-      <nuxt-child v-else keep-alive/>
+
+      <!--<no-ssr v-if="!pageName">-->
+        <!--<nuxt-child keep-alive/>-->
+      <!--</no-ssr>-->
+      <!--<nuxt-child v-else keep-alive/>-->
+
+      <nuxt-child/>
     </Content>
   </Layout>
+</basic-container>
 </template>
 
 <script>
+import BasicContainer from '~/components/basic-container.vue'
 import SideMenu from './menu/side-menu.vue'
 import MyBreadCrumb from '~/components/bread-crumb.vue'
 import {  getMenuByRouter2 } from '@/static/util'
@@ -28,8 +34,10 @@ import router from '@/static/router'
 
 export default {
   name: "common-main",
-  layout: 'common',
+  layout: "layout-root",
+  // layout: 'common',
   components: {
+    BasicContainer,
     SideMenu,
     MyBreadCrumb
   },
@@ -66,7 +74,7 @@ export default {
     },
   },
   mounted(){
-    // console.log('main-mounted', this.$route)
+    // console.log('main-mounted', )
     // this.funAuth('sss')
   },
   methods: {

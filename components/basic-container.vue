@@ -57,7 +57,8 @@
           </Menu>
 
      <!--<nuxt />-->
-     <nuxt keep-alive/>
+     <!--<nuxt keep-alive/>-->
+    <slot></slot>
     <!--页脚-->
     <common-footer></common-footer>
     <!--页脚end-->
@@ -73,7 +74,7 @@ import mixin from '~/components/page-mount-mixin.js'
 
 export default {
   name: "common-layout",
-  // layout: 'layout-root',
+  layout: 'layout-root',
   components: {
     CommonFooter,
     LoginStatus,

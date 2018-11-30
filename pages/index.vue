@@ -221,6 +221,82 @@ import IconBlock from '~/components/menu/icon-block.vue'
 import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
 import mixin from '~/components/page-mount-mixin.js'
+
+if(!thisData) {
+  var thisData= {
+    banners:[],
+    swiperOption: {
+      // slidesPerView : 3,
+      centeredSlides : true,
+      loop : true,
+      // loopAdditionalSlides: 3,
+      // loopedSlides: 3,
+
+      // width: window.innerWidth*2.4,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      autoplay: {
+        delay: 8000,
+        disableOnInteraction: false,
+      },
+    },
+    showSwiper: false,
+    search:{
+      type: '164',
+      q: '',
+      sort:'',
+      area: '',
+      is4s: '',
+      hot: '',
+    },
+    area: [],
+    sort:[
+      {name: '默认', value: ''},
+      {name: '距离优先', value: 'distance'},
+      {name: '好评优先', value: 'rating desc,distance asc'},
+    ],
+    maintainType:[
+      {name: '全部', value: ''},
+      {name: '4S店', value: 'yes'},
+      {name: '维修厂', value: 'no'},
+    ],
+    hot:[
+      {name: '默认', value: ''},
+      {name: '宝马', value: '宝马'},
+      {name: '奥迪', value: '奥迪'},
+      {name: '迈巴赫', value: '迈巴赫'},
+      {name: '保时捷', value: '保时捷'},
+      {name: '玛莎拉蒂', value: '玛莎拉蒂'},
+      {name: '年检', value: '年检'},
+      {name: '保养', value: '保养'},
+      {name: '车轮', value: '车轮'},
+      {name: '发动机', value: '发动机'},
+      {name: '汽车美容', value: '汽车美容'},
+    ],
+    iconBlockType: 0,
+    iconBlockLeft: 128,
+    iconBlockShow: false,
+    showCdfFlag: true,
+
+    questionList: [],
+    cdfList: [],
+    articleBanner: [],
+    articleMiddle: {
+      latest: [],
+      hottest: [],
+    },
+    articleRight: [],
+
+    error: null,
+  }
+}
+
 export default {
   layout: 'layout-root',
   components: {
@@ -230,7 +306,7 @@ export default {
   },
   mixins: [mixin],
   asyncData ({ app, error }) {
-
+    if(process.client && thisData) return thisData
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
@@ -372,74 +448,12 @@ export default {
     // });
   },
   data () {
-    return {
-      banners:[],
-      swiperOption: {
-        // slidesPerView : 3,
-        centeredSlides : true,
-        loop : true,
-        // loopAdditionalSlides: 3,
-        // loopedSlides: 3,
-
-        // width: window.innerWidth*2.4,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        autoplay: {
-          delay: 8000,
-          disableOnInteraction: false,
-        },
-      },
-      showSwiper: false,
-      search:{
-        type: '164',
-        q: '',
-        sort:'',
-        area: '',
-        is4s: '',
-        hot: '',
-      },
-      area: [],
-      sort:[
-        {name: '默认', value: ''},
-        {name: '距离优先', value: 'distance'},
-        {name: '好评优先', value: 'rating desc,distance asc'},
-      ],
-      maintainType:[
-        {name: '全部', value: ''},
-        {name: '4S店', value: 'yes'},
-        {name: '维修厂', value: 'no'},
-      ],
-      hot:[
-        {name: '默认', value: ''},
-        {name: '宝马', value: '宝马'},
-        {name: '奥迪', value: '奥迪'},
-        {name: '迈巴赫', value: '迈巴赫'},
-        {name: '保时捷', value: '保时捷'},
-        {name: '玛莎拉蒂', value: '玛莎拉蒂'},
-        {name: '年检', value: '年检'},
-        {name: '保养', value: '保养'},
-        {name: '车轮', value: '车轮'},
-        {name: '发动机', value: '发动机'},
-        {name: '汽车美容', value: '汽车美容'},
-      ],
-      iconBlockType: 0,
-      iconBlockLeft: 128,
-      iconBlockShow: false,
-      showCdfFlag: true,
-
-      error: null
-    }
+    return thisData
   },
   beforeMount(){
   },
   mounted(){
-
+    console.log('index.mounted')
     let self= this
     this.getBanner()
 
@@ -471,6 +485,8 @@ export default {
 
     this.error? console.error('error: ', this.error) : console.log('no-error')
     this.getArea()
+
+    this.keepAlive= true
   },
   methods:{
     query(){
@@ -507,6 +523,13 @@ export default {
         }
       }
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    thisData= this.$data
+    // console.log('beforeRouteLeave:', thisData)
+    next()
   }
 }
 </script>

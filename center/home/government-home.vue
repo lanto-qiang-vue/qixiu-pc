@@ -39,13 +39,7 @@
 <script>
 export default {
   name: "government-center",
-  head () {
-    return {
-      script: [
-        { type: 'text/javascript', src: "/libs/echarts.common.min.js"},
-      ],
-    }
-  },
+
   data(){
     return{
       res:{},
@@ -70,119 +64,9 @@ export default {
     }
   },
   mounted() {
-    let bar1 = echarts.init(document.getElementById('bar1'));
-    let optionBar = {
-      color: ['#C14DE8'],
-      tooltip : {
-        trigger: 'axis',
-        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-          type : 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
-          label:{show: true}
-        }
-      },
-      grid: {
-      },
-      legend: {
-        data:['非总对总数', '总对总数量', '全部'],
-      },
-      xAxis : [
-        {
-          type : 'category',
-          data : ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区',  '虹口区', '杨浦区', '闵行区', '宝山区', '嘉定区', '浦东新区', '金山区', '松江区', '青浦区',  '奉贤区', '崇明区'],
-          axisTick: {
-            alignWithLabel: true
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: 40
-          },
-        }
-      ],
-      yAxis : [
-        {
-          type : 'value'
-        }
-      ],
-      series : [
-        {
-          barGap: 0,
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-              // offset: [-25,-2]
-            }
-          },
-          //配置样式
-          itemStyle: {
-            //通常情况下：
-            normal:{
-              //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-              color: '#6761FF'
-            }
-          },
-          name:'非总对总数',
-          type:'bar',
-          barWidth: '60%',
-          data:[],
-          stack: '数量',
-          z: 3,
-        },
-        {
-          label: {
-            normal: {
-              show: true,
-              position: 'inside',
-              // offset: [25,-2]
-            }
-          },
-          //配置样式
-          itemStyle: {
-            //通常情况下：
-            normal:{
-              color: '#4DB2E8'
-            }
-          },
-          name:'总对总数量',
-          type:'bar',
-          //barWidth: '60%',
-          data:[],
-          stack: '数量',
-        },
-        {
-          name:'全部',
-          type:'line',
-          data:[],
-          label: {
-            normal: {
-              show: true,
-              position: 'top',
-            }
-          },
-          itemStyle: {
-            //通常情况下：
-            normal:{
-              color: '#C14DE8'
-            }
-          },
-          z: 4,
-        }
-      ],
-      // dataZoom: [
-      // {
-      //     show: true,
-      //     yAxisIndex: 0,
-      //     filterMode: 'none',
-      //     width: 30,
-      //     height: '70%',
-      //     showDataShadow: false,
-      //     left: '93%',
-      //     minSpan:10
-      // }
-      // ],
-    };
-    bar1.setOption(optionBar);
-    this.getData()
+    $.getScript('/libs/echarts.common.min.js',()=>{
+      this.getData()
+    })
   },
   methods:{
     getData(){
@@ -434,10 +318,6 @@ export default {
       bar1.setOption(optionBar);
 
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    next(false)
-    window.location.href= to.fullPath
   },
 }
 </script>
