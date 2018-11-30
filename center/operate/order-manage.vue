@@ -119,7 +119,10 @@ export default {
     methods:{
         getList(){
           this.loading=true;
-            this.$axios.post('/service/order/list', {
+          let routerData=this.$route;
+          console.log(routerData);
+          if(routerData.fullPath=="/center/order-company"){
+              this.$axios.post('/service/company/order/list', {
 
   "contactMobile": this.search.select,
   "ownerName": this.search.input,
@@ -135,6 +138,25 @@ export default {
                
               
             })
+          }else{
+              this.$axios.post('/service/order/list/yy', {
+
+  "contactMobile": this.search.select,
+  "ownerName": this.search.input,
+                    "pageNo": this.page,
+                    "pageSize": this.limit,
+
+            }).then( (res) => {
+              this.loading=false;
+              if(res.data.code=='0'){
+                this.tableData=res.data.items;
+                this.total=res.data.total;
+              }
+               
+              
+            })
+          }
+            
             this.detailData= null;
         },
         changePage(page){
