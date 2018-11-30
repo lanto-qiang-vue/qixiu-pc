@@ -174,10 +174,10 @@
     mounted() {
 		  let self= this
       // self.resize(1000)
-      window.onresize = function(){
-		    if(window.innerHeight!= self.windowInnerHeight)
-          self.resize(200)
-      }
+      // window.onresize = function(){
+		//     if(window.innerHeight!= self.windowInnerHeight)
+      //     self.resize(200)
+      // }
     },
     methods:{
       resize(time){
@@ -235,7 +235,7 @@
       }
     },
     activated(){
-      this.resize(500)
+      // this.resize(500)
     }
 	}
 </script>

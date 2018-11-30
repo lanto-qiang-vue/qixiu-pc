@@ -2,7 +2,6 @@
 
 <template>
 
-
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading" @onSortChange="onSortChange">
@@ -175,9 +174,26 @@ export default {
         ],
       }
     },
-    mounted () {
+  watch:{
+    total(n, o, b){
+      console.log('watch.total: ',o, n, b)
+    }
+  },
+  activated(){
+	  console.log('activated')
+  },
+  beforeRouteEnter(to, from, next){
+    console.log('beforeRouteEnter')
+    next()
+  },
+  beforeRouteUpdate(to, from, next){
+    console.log('beforeRouteUpdate')
+    next()
+  },
+  mounted () {
+	    console.log('record-company: mounted')
       this.getList();
-        this.getAreaInfo();
+      this.getAreaInfo();
       this.getType('1');
       this.getType('24');
       this.getCompanyArea();
@@ -337,7 +353,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },

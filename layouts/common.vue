@@ -39,20 +39,20 @@
                   <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
                 </ul>
             </Submenu>
-            <MenuItem name="head-menu-3">
+            <MenuItem name="head-menu-3" to="/center/repair-info-detail">
                 电子健康档案系统
             </MenuItem>
             <MenuItem name="head-menu-4" to="/cdf">
                 车大夫门诊
             </MenuItem>
-            <MenuItem name="head-menu-5">
-                上门服务
+            <MenuItem name="head-menu-5" to="/visit-service">
+              上门服务
             </MenuItem>
-            <MenuItem name="head-menu-6">
-                预约维修
+            <MenuItem name="head-menu-6" to="/service-map">
+              预约维修
             </MenuItem>
-            <MenuItem name="head-menu-7">
-                维修反馈
+            <MenuItem name="head-menu-7" to="/feedback">
+              维修反馈
             </MenuItem>
           </Menu>
 
@@ -73,6 +73,7 @@ import mixin from '~/components/page-mount-mixin.js'
 
 export default {
   name: "common-layout",
+  layout: 'layout-root',
   components: {
     CommonFooter,
     LoginStatus,

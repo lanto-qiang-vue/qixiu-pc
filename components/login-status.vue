@@ -62,6 +62,7 @@ export default {
     logout(){
       this.$Modal.confirm({
         title: '确定退出登录吗？',
+        content:'',
         onOk: ()=> {
           this.$axios.$get('/user/useraccount/logout').then(res => {
             localStorage.removeItem('ACCESSTOKEN')

@@ -67,6 +67,11 @@ export default {
     }
   },
   mounted(){
+    this.$refs.formData.resetFields();
+    this.formData.companyId = this.$route.query.id || null;
+  },
+  activated(){
+    this.$refs.formData.resetFields();
     this.formData.companyId = this.$route.query.id || null;
   },
   methods:{

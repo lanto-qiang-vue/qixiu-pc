@@ -10,14 +10,14 @@
                 <DatePicker type="daterange" v-model="searchList.startDate" placement="bottom-start" placeholder="请选择时间" :options="options"></DatePicker>
             </FormItem>
             <FormItem label="是否登录:">
-                  
+
                   <Select v-model="searchList.isLogin" >
                       <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
                   </Select>
               </FormItem>
-              
+
               <FormItem label="所属辖区:">
-                  
+
                   <Select v-model="searchList.areaKey" clearable>
                       <Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                   </Select>
@@ -28,20 +28,23 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="" @click="showModal=Math.random()" :disabled="!detailData.id">查看</Button>
     </div>
-    
+
 </common-table>
+  <sign-in-calendar :data="detailData" :show="showModal" type="manager"></sign-in-calendar>
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+  import SignInCalendar from '~/components/sign-in-calendar.vue'
   import { formatDate } from '@/static/tools'
 	export default {
 		name: "manage-sign",
     components: {
       CommonTable,
+      SignInCalendar
     },
     data(){
 		  return{
@@ -73,15 +76,15 @@
                 showTable:false,
                 showDetail: false,
                 showOtherDetail:false,
-                detailData: null,
+                detailData: {},
                 clearTableSelect: null,
                 options: {
                     disabledDate (date) {
-                        
+
                         return date && date.valueOf() > Date.now();
                     }
                 },
-                
+        showModal:false
             }
     },
     mounted () {
@@ -108,11 +111,11 @@
                     this.loading=false;
                 }
            })
-           this.detailData= null
+           this.detailData= {}
         },
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai" 
+                   "areaName": "shanghai"
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.searchSelectOption=res.data.items;
@@ -120,7 +123,7 @@
                     this.$Message.error(res.data.status);
                 }
            })
-           
+
         },
         changePage(page){
           this.page= page
@@ -135,8 +138,8 @@
           this.detailData=row
         },
         closeDetail(){
-          this.detailData= null
-          
+          this.detailData= {}
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -145,11 +148,11 @@
             this.page= 1
             this.closeDetail();
         },
-        
 
-        
 
-        
+
+
+
     },
 	}
 </script>
