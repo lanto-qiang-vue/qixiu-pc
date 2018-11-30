@@ -1679,6 +1679,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.imgData2 = [];
         this.imgData3 = [];
         this.imgData4 = [];
+        this.tableData3 = [];
+        this.tableData4 = [];
+        this.tableData5 = [];
+        this.tableData6 = [];
         this.$refs.formData.resetFields()
         this.showModal = true
       },
