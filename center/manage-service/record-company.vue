@@ -79,6 +79,7 @@
 import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
+import { getName } from '@/static/util.js'
 export default {
 	name: "record-company",
     components: {
@@ -129,7 +130,8 @@ export default {
             "show": "",//是否前台显示
             "special": "",//是否特约
             "uploadMonth": "",//按月查询
-            sortOrder:''//排序查询
+            order:'',//排序查询
+            index:''
         },
         manageArr:[],
         page: 1,
@@ -153,6 +155,23 @@ export default {
             {code:"7",name:'大于7天'},
             {code:"15",name:'大于15天'},
             {code:"30",name:'大于30天'},
+        ],
+        typeArr:[
+            {code:"shortName",name:0},
+            {code:"category",name:1},
+            {code:"companyName",name:2},
+            {code:"businessAddress",name:3},
+            {code:"buttJoin",name:4},
+            {code:"count",name:5},
+            {code:"license",name:6},
+            {code:"businessScope",name:7},
+            {code:"noUpdateDays",name:8},
+
+            {code:"minister",name:9},
+            {code:"special",name:10},
+            {code:"businessStatus",name:11},
+            {code:"show",name:12},
+            {code:"firstUploadTime",name:13},
         ],
       }
     },
@@ -200,7 +219,8 @@ export default {
                     "show": upData["show"],
                     "special": upData["special"],
                     "uploadMonth": upData["uploadMonth"],
-                    sortOrder:upData["sortOrder"]
+                    order:upData["order"],
+                    index:upData["index"],
 
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -323,10 +343,18 @@ export default {
         },
         onSortChange(type,value){
             if(type=="normal"){
-                this.searchList.sortOrder='';
+                this.searchList.order='';
+                this.searchList.index='';
                 this.getList();
             }else{
-                this.searchList.sortOrder=value+" "+type;
+                
+                if(type=="asc"){
+                    this.searchList.order=0;
+                }else if(type=="desc"){
+                    this.searchList.order=1;
+                }
+
+                this.searchList.index=getName(this.typeArr,value);
                 this.getList();
             }
 
