@@ -158,6 +158,12 @@
                     }else if(this.searchList[i]=="1"){
                         strUrl+='&'+i+'=false';
                     }
+                }else if(i=="type"){
+                    if(this.searchList[i]==0){
+                        strUrl+='&'+i+'=0';
+                    }else if(this.searchList[i]==1){
+                        strUrl+='&'+i+'=1';
+                    }
                 }else if(this.searchList[i]){
                     strUrl+='&'+i+'='+this.searchList[i];
                 }

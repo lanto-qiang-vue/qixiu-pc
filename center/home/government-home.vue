@@ -63,15 +63,14 @@ export default {
       ],
       recordData: [],
       notifyColumns: [
-          {title: '排名', key: 'title',  minWidth: 100,},
-          {title: '企业名称', key: 'content',  minWidth: 100,
-            render: (h, params) => h('span', JSON.parse(params.row.content).content)
+          {title: '排名', minWidth: 100,type: "index",},
+          {title: '企业名称', key: 'companyName',  minWidth: 100,
           },
-          {title: '反馈总量(次)', key: 'nickname',  minWidth: 100},
-          {title: '有凭证数量(次)', key: 'sendTime',  minWidth: 100,
+          {title: '反馈总量(次)', key: 'allCount',  minWidth: 100},
+          {title: '有凭证数量(次)', key: 'hasCount',  minWidth: 100,
             
           },
-          {title: '无凭证数量(次)', key: 'sendTime',  minWidth: 100,
+          {title: '无凭证数量(次)', key: 'noCount',  minWidth: 100,
             
           },
       ],
@@ -463,18 +462,15 @@ export default {
       }).then( (res) => {
         
         if(res.status===200){
-            this.tableData=res.data.content;
-            this.total=res.data.totalElements;
-            
+            this.notifyData=res.data.content;
         }else{
-          
           // this.$Message.error(res.statusText);
         }
         
       })
     },
     onChange(value){
-      alert(value);
+      this.getList();
     }
   },
   beforeRouteLeave (to, from, next) {

@@ -143,7 +143,13 @@ export default {
         clearTableSelect: null,
         areaOption:[],//区域数据集合----
         companyType:[],//企业类型集合----
-        businessType:[],//经营状态类型集合------
+        businessType:[
+            {key:1,name:'营业'},
+            {key:2,name:'歇业'},
+            {key:3,name:'注销'},
+            {key:4,name:'空壳'},
+            {key:11,name:'内修'},
+        ],//经营状态类型集合------
         manageType:[],//管理部门数据集合--------
         isFlagType:[
             {code:"是",name:'是'},
@@ -195,7 +201,7 @@ export default {
       this.getList();
       this.getAreaInfo();
       this.getType('1');
-      this.getType('24');
+    //   this.getType('24');
       this.getCompanyArea();
 
     },
@@ -285,14 +291,18 @@ export default {
                 },
               responseType: 'arraybuffer'
             }).then( (res) => {
-                // console.log('res',res)
+                console.log('res',res)
 
-// for(let key in res.data) console.log('res-key',key)
+                let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+                let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+                console.log(headerData,headerName);
+                
+
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});
 
                 // console.log(blob);
                 let a = document.createElement('a');
-                a.download = '导出.xlsx';
+                a.download = headerName;
 
                 a.href = window.URL.createObjectURL(blob);
                 $("body").append(a);
@@ -310,7 +320,7 @@ export default {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
 
@@ -322,10 +332,10 @@ export default {
                     if(id=="1"){
                         this.companyType=res.data.items;
                     }else if(id=='24'){
-                        this.businessType=res.data.items;
+                        // this.businessType=res.data.items;
                     }
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
@@ -335,7 +345,7 @@ export default {
                 if(res.data.code=='0'){
                     this.manageType=res.data.items;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
