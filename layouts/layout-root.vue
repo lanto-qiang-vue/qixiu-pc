@@ -1,7 +1,16 @@
 <template>
-    <nuxt keep-alive/>
+  <nuxt v-if="!isKeepAlive" keep-alive/>
+  <nuxt v-else/>
 </template>
 
-<style>
 
-</style>
+<script>
+export default {
+  computed:{
+    isKeepAlive(){
+      // console.log('isKeepAlive',this.$route)
+      return this.$route.fullPath.indexOf('/center')>=0
+    }
+  }
+}
+</script>

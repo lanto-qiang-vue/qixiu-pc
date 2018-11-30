@@ -1,4 +1,5 @@
 <template>
+<basic-container>
 <div style="text-align: center">
   <div class="map-body">
     <div class="sub-title">
@@ -63,21 +64,31 @@
   </div>
   </div>
 </div>
+</basic-container>
 </template>
 
 <script>
+import BasicContainer from '~/components/basic-container.vue'
 export default {
   name: "service-map",
-  layout: 'common',
-  // props:['type','tolimit'],
-  head () {
-    // console.log('head!!!')
-    return {
-      script: [
-        { type: 'text/javascript', src: "https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2"},
-      ],
-    }
+  layout: 'layout-root',
+  components: {
+    BasicContainer
   },
+  // props:['type','tolimit'],
+  // head () {
+  //   // console.log('head!!!')
+  //   return {
+  //     script: [
+  //       { type: 'text/javascript', src: "https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2"},
+  //     ],
+  //     changed (newInfo, addedTags, removedTags) {
+  //       console.log('head.changed.addedTags', addedTags)
+  //
+  //       this.init()
+  //     }
+  //   }
+  // },
   data(){
     return{
       search:{
@@ -129,35 +140,9 @@ export default {
     }
   },
   mounted(){
-
-    // console.log('this.map', this.map)
-    // console.log('map1', window.map1)
-    this.map= new AMap.Map('comp-map',{
-      zoom: 10,
+    $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2',()=>{
+      this.init()
     });
-    // console.log('this.map2', this.map)
-    // window.map1= this.map
-
-    // 同时引入工具条插件，比例尺插件和鹰眼插件
-    AMap.plugin(['AMap.ToolBar',], () => {
-      // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
-      this.map.addControl(new AMap.ToolBar({
-        locate: false,
-      }));
-    });
-
-    this.map.on('complete', () => {
-      // 地图图块加载完成后触发
-      // console.log('this.map.on(complete)')
-      this.getLocation()
-    });
-
-    for(let key in this.$route.query){
-      this.search[key]= this.$route.query[key]
-    }
-    // console.log(this.$route.query)
-    this.getArea()
-
   },
   // beforeRouteLeave (to, from, next) {
   //   // 导航离开该组件的对应路由时调用
@@ -175,6 +160,36 @@ export default {
   //   window.location.href= to.fullPath
   // },
   methods:{
+    init(){
+
+      // console.log('this.map', this.map)
+      // console.log('map1', window.map1)
+      this.map= new AMap.Map('comp-map',{
+        zoom: 10,
+      });
+      // console.log('this.map2', this.map)
+      // window.map1= this.map
+
+      // 同时引入工具条插件，比例尺插件和鹰眼插件
+      AMap.plugin(['AMap.ToolBar',], () => {
+        // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+        this.map.addControl(new AMap.ToolBar({
+          locate: false,
+        }));
+      });
+
+      this.map.on('complete', () => {
+        // 地图图块加载完成后触发
+        // console.log('this.map.on(complete)')
+        this.getLocation()
+      });
+
+      for(let key in this.$route.query){
+        this.search[key]= this.$route.query[key]
+      }
+      // console.log(this.$route.query)
+      this.getArea()
+    },
     getLocation(){
       if(this.map){
         // console.log('AMap.plugin(\'AMap.Geolocation\'')

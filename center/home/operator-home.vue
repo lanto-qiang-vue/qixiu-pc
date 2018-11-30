@@ -70,15 +70,15 @@
 import config from '../../config.js'
 export default {
   name: "operator-home",
-  head () {
-    return {
-      script: [
-        { type: 'text/javascript', src: "/libs/websocket/sockjs.min.js"},
-        { type: 'text/javascript', src: "/libs/websocket/stomp.min.js"},
-
-      ],
-    }
-  },
+  // head () {
+  //   return {
+  //     script: [
+  //       { type: 'text/javascript', src: "/libs/websocket/sockjs.min.js"},
+  //       { type: 'text/javascript', src: "/libs/websocket/stomp.min.js"},
+  //
+  //     ],
+  //   }
+  // },
   data(){
     return{
       areaKeys: ['310000','310112','310113','310114','310115','310116','310117','310118','310120','310130'],
@@ -92,7 +92,13 @@ export default {
         document.querySelector('.operator-home').classList.remove("allscreen")
       }
     }
-    this.connect()
+
+    $.getScript('/libs/websocket/sockjs.min.js',()=>{
+      $.getScript('/libs/websocket/stomp.min.js',()=>{
+        this.connect()
+      })
+    })
+
 
     // setInterval( ()=> {
     //    var card= parseInt(100*Math.random())>40?'沪A88888':''

@@ -54,16 +54,16 @@
       CompressUploadButton,
       PublicArticleDetail
     },
-    head () {
-      return {
-        script: [
-          { type: 'text/javascript', src: '/ueditor/ueditor.config.js'},
-          { type: 'text/javascript', src: '/ueditor/ueditor.all.js' },
-          { type: 'text/javascript', src: '/ueditor/lang/zh-cn/zh-cn.js'},
-          { type: 'text/javascript', src: '/ueditor/addCustomizeDialog.js'},
-        ],
-      }
-    },
+    // head () {
+    //   return {
+    //     script: [
+    //       { type: 'text/javascript', src: '/ueditor/ueditor.config.js'},
+    //       { type: 'text/javascript', src: '/ueditor/ueditor.all.js' },
+    //       { type: 'text/javascript', src: '/ueditor/lang/zh-cn/zh-cn.js'},
+    //       { type: 'text/javascript', src: '/ueditor/addCustomizeDialog.js'},
+    //     ],
+    //   }
+    // },
     data(){
       let rule= [{ required: true, message:'必填项不能为空'}]
       return{
@@ -85,30 +85,43 @@
       }
     },
     mounted(){
-      let width= document.querySelector("#articlecontainer").offsetWidth
-      UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-      UE.Editor.prototype.getActionUrl = function(action) {
-        if (action == 'uploadimage' ) {
-          return '/proxy/file/image/add'
-        } else if(action == 'uploadfile'){
-          return '/proxy/file/add'
-        }else{
-          return this._bkGetActionUrl.call(this, action);
-        }
-      };
-      UE.Editor.prototype.token= this.$store.state.user.token
-      this.ue = UE.getEditor('articlecontainer',{
-        initialFrameWidth: width,
-        scaleEnabled: false,
-        zIndex: 1,
-        catchRemoteImageEnable:false
-      });
+      $.getScript('/ueditor/ueditor.config.js',()=>{
+        $.getScript('/ueditor/ueditor.all.js',()=>{
+          $.getScript('/ueditor/lang/zh-cn/zh-cn.js',()=>{
+            $.getScript('/ueditor/addCustomizeDialog.js',()=>{
+              this.init()
+            })
+          })
+        })
+      })
 
-      let id= this.$route.query.id
-      if(id) this.getDetail(id)
-      this.getType()
+
     },
     methods:{
+		  init(){
+        let width= document.querySelector("#articlecontainer").offsetWidth
+        UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+        UE.Editor.prototype.getActionUrl = function(action) {
+          if (action == 'uploadimage' ) {
+            return '/proxy/file/image/add'
+          } else if(action == 'uploadfile'){
+            return '/proxy/file/add'
+          }else{
+            return this._bkGetActionUrl.call(this, action);
+          }
+        };
+        UE.Editor.prototype.token= this.$store.state.user.token
+        this.ue = UE.getEditor('articlecontainer',{
+          initialFrameWidth: width,
+          scaleEnabled: false,
+          zIndex: 1,
+          catchRemoteImageEnable:false
+        });
+
+        let id= this.$route.query.id
+        if(id) this.getDetail(id)
+        this.getType()
+      },
 		  getType(){
         this.$axios.$get('/infopublic/public/info/category').then( (res) => {
           this.typeList= res.items
@@ -169,11 +182,11 @@
         })
       },
     },
-    beforeRouteLeave(to, from, next){
-      this.ue.destroy()
-      this.ue= null
-      next();
-    }
+    // beforeRouteLeave(to, from, next){
+    //   this.ue.destroy()
+    //   this.ue= null
+    //   next();
+    // }
 	}
 </script>
 

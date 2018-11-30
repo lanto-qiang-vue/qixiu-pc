@@ -1,4 +1,5 @@
 <template>
+<basic-container>
 <div class="login-page">
   <div class="login-box">
     <Card>
@@ -147,13 +148,18 @@
     </Form>
   </Modal>
 </div>
+</basic-container>
 </template>
 
 <script>
 import config from '../config.js'
+import BasicContainer from '~/components/basic-container.vue'
 export default {
 		name: "login",
-    layout: 'common',
+    layout: 'layout-root',
+  components: {
+    BasicContainer
+  },
 		data () {
 			// 联系电话验证
             const validatePass = (rule, value, callback) => {

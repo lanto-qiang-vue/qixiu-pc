@@ -52,6 +52,7 @@ module.exports = {
     { src: '~/plugins/swiper', ssr: false },
     { src: '~/plugins/lightbox', ssr: false },
     { src: '~/plugins/router-refresh', ssr: false },
+    { src: '~/plugins/browser-preprocess', ssr: false },
   ],
 
   /*

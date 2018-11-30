@@ -19,16 +19,16 @@
 	export default {
 		name: "sign-in-calendar",
     props: ['data', 'show', 'type'],
-    head () {
-      return {
-        script: [
-          { type: 'text/javascript', src: '/libs/calendar/simple-calendar.js'},
-        ],
-        link: [
-          {rel:"stylesheet", href: '/libs/calendar/simple-calendar.css'}
-        ]
-      }
-    },
+    // head () {
+    //   return {
+    //     script: [
+    //       { type: 'text/javascript', src: '/libs/calendar/simple-calendar.js'},
+    //     ],
+    //     link: [
+    //       {rel:"stylesheet", href: '/libs/calendar/simple-calendar.css'}
+    //     ]
+    //   }
+    // },
     data(){
 		  return{
         showModal: false,
@@ -46,7 +46,10 @@
       }
     },
     mounted(){
-      this.createCalendar()
+      $("head").append("<link rel='stylesheet'  href='/libs/calendar/simple-calendar.css'>")
+      $.getScript('/libs/calendar/simple-calendar.js',()=>{
+        this.createCalendar()
+      });
     },
     methods:{
 		  createCalendar(){
