@@ -86,7 +86,8 @@ export default {
             search:{
                 "content":"",
                 "title":"",
-                docPath:'',
+                "docPath":'',
+                id:'',
             },
 
 
@@ -137,6 +138,9 @@ export default {
             this.getRole();
             if(this.detailData){
                 this.getNotify();
+                this.search.id=this.detailData.id;
+            }else{
+                this.search.id='';
             }
             // this.sendNotify();
         },
@@ -213,9 +217,10 @@ export default {
         },
         //提交数据
         sendNotify(name){
-            let sendData={content:'',items:'',title:'',url:[]};
+            let sendData={content:'',items:'',title:'',url:[],id:''};
             sendData["content"]=this.search["content"];
             sendData["title"]=this.search["title"];
+            sendData["id"]=this.search["id"];
             sendData["url"].push(this.search["docPath"]);
 
             let objTem=[];

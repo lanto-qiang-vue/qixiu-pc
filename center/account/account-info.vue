@@ -155,7 +155,7 @@
                     // this.$Message.info("上传成功");
                     this.addPhoto();
                 }else{
-                    this.$Message.error(res.status);
+                    // this.$Message.error(res.status);
                 }
             },
             //增加头像------------

@@ -1,4 +1,5 @@
 <template>
+<basic-container>
 <div style="background-color: #f5f7f9;text-align: center;padding: 10px;">
   <div class="common-content">
     <div class="sub-title">
@@ -10,12 +11,17 @@
     <nuxt-child @title="showTitle"/>
   </div>
 </div>
+</basic-container>
 </template>
 
 <script>
+  import BasicContainer from '~/components/basic-container.vue'
   export default {
     name: "single-article",
-    layout: 'common',
+    layout: 'layout-root',
+    components: {
+      BasicContainer
+    },
     data(){
       return{
         title: ''

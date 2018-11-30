@@ -100,7 +100,7 @@
                     companyName:this.searchList.companyName,
                     endDate:formatDate(this.searchList.startDate[1])||'',
                     isLogin:this.searchList.isLogin,
-                    pageNum:this.page,
+                    pageNo:this.page,
                     pageSize:this.limit,
                     startDate:formatDate(this.searchList.startDate[0])||'',
                     type:"manager",

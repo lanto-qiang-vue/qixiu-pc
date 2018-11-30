@@ -122,7 +122,7 @@
             <li class="button" @mouseover="showCdfFlag=true">问题集锦</li>
             <li class="button" @mouseover="showCdfFlag=false">专家团</li>
             <li class="cdf" style="background-color: #e86d1c;">
-              <a href="/cdf" target="_blank">在线咨询</a>
+              <a href="/cdf">在线咨询</a>
             </li>
           </ul>
           <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
@@ -292,12 +292,13 @@ if(!thisData) {
       hottest: [],
     },
     articleRight: [],
-
     error: null,
+    isGetData: false
   }
 }
 
 export default {
+  name: 'index',
   layout: 'layout-root',
   components: {
     CommonFooter,
@@ -306,7 +307,10 @@ export default {
   },
   mixins: [mixin],
   asyncData ({ app, error }) {
-    if(process.client && thisData) return thisData
+    if(process.client && thisData && thisData.isGetData) {
+      console.log('cache')
+      return thisData
+    }
     let getNews= (infoType, pageSize) => {
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
@@ -396,7 +400,8 @@ export default {
           latest: latest,
           hottest: hottest,
         },
-        articleRight: [res10281006[0], res10281016[0], res10281017[0]]
+        articleRight: [res10281006[0], res10281016[0], res10281017[0]],
+        isGetData: true
       }
     },(err)=>{
 
@@ -436,16 +441,8 @@ export default {
         setData.error= err
       }
 
-      // }else{
-        // setData.error= JSON.stringify(err)
-      // }
-
-
       return setData
     })
-    //   .catch((e) => {
-    //   error({ statusCode: 404, message: 'Post not found' })
-    // });
   },
   data () {
     return thisData
@@ -453,9 +450,14 @@ export default {
   beforeMount(){
   },
   mounted(){
-    console.log('index.mounted')
+    // console.log('index.mounted', this.$route)
     let self= this
-    this.getBanner()
+    if(!this.banners.length){
+      this.getBanner()
+    }
+    if(!this.area.length){
+      this.getArea()
+    }
 
     $(".service .left ul li, .service .left .icon-block").hover(function () {
       self.iconBlockShow= true
@@ -484,9 +486,8 @@ export default {
 
 
     this.error? console.error('error: ', this.error) : console.log('no-error')
-    this.getArea()
 
-    this.keepAlive= true
+
   },
   methods:{
     query(){

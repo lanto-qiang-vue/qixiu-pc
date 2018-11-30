@@ -7,7 +7,7 @@
     <div  slot="search"  >
       <Form :label-width="110" class="common-form">
         <FormItem label="菜单名" prop="parentId">
-          <Select v-model="search.menuId">
+          <Select v-model="search.menuId" clearable>
             <Option v-for="(item, index) in menuList" :key="index" :value="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
@@ -20,11 +20,11 @@
         <FormItem label="接口地址:">
           <Input type="text" v-model="search.uri" ></Input>
         </FormItem>
-        <FormItem >
-          <ButtonGroup size="small">
-            <Button type="primary" @click="page=1;getList()"><Icon type="ios-search" size="24"/></Button>
-            <Button type="primary" @click="clear()"><Icon type="ios-undo" size="24"/></Button>
-          </ButtonGroup>
+        <FormItem :label-width="0">
+          
+            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            
+          
         </FormItem>
       </Form>
     </div>

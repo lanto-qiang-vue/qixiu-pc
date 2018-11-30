@@ -15,7 +15,7 @@
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="accessBtn('upload')" @click="showModal=true;">上传文件</Button>
+        <Button type="primary" v-if="accessBtn('upload')" @click="addFun">上传文件</Button>
         <Button type="info" v-if="" @click="isDownFun" :disabled="!detailData">下载文件</Button>
         <Button type="error" v-if="accessBtn('delete')" @click="delquestion" :disabled="!detailData">删除</Button>
     </div>
@@ -30,7 +30,7 @@
     :footer-hide="false"
     :mask-closable="false"
     :transition-names="['', '']">
-      <Form :model="uploadData" :label-width="60">
+      <Form :model="uploadData" ref="uploadData" :label-width="60">
         <FormItem label="文件">
           <Upload
             ref="upload"
@@ -111,6 +111,12 @@ export default {
 
     },
     methods:{
+        addFun(){
+            this.showModal=true;
+            this.handleBeforeUpload();
+            this.$refs["uploadData"].resetFields();
+            // this.$refs['uploadData'].validateField('fileName');
+        },
         getList(){
             this.loading=true;
             this.$axios.post('/file/list', {
@@ -125,7 +131,7 @@ export default {
                     this.loading=false;
 
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
 
@@ -164,7 +170,7 @@ export default {
 
         },
         delFun(){
-            this.$axios.post('/file/delete/'+this.detailData.id,{
+            this.$axios.delete('/file/delete/'+this.detailData.id,{
             }).then( (res) => {
                   if(res.data.code=='0'){
                       this.closeDetail();
@@ -191,7 +197,7 @@ export default {
 
                     this.$Message.info("提交成功");
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
@@ -218,7 +224,7 @@ export default {
                this.uploadData.url= res.item.path
                 this.$Message.info("上传成功");
             }else{
-                this.$Message.error(res.status);
+                // this.$Message.error(res.status);
             }
         },
         visibleChange(status){

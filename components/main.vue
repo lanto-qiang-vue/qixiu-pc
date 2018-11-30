@@ -10,15 +10,11 @@
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
-        <my-bread-crumb></my-bread-crumb>
+        <my-bread-crumb :name="pageName"></my-bread-crumb>
       </div>
 
-      <!--<no-ssr v-if="!pageName">-->
-        <!--<nuxt-child keep-alive/>-->
-      <!--</no-ssr>-->
-      <!--<nuxt-child v-else keep-alive/>-->
-
-      <nuxt-child/>
+      <nuxt-child v-if="keepAlive" keep-alive/>
+      <nuxt-child v-else/>
     </Content>
   </Layout>
 </basic-container>
@@ -72,9 +68,12 @@ export default {
       // this.openedNames= arr
       return arr
     },
+    keepAlive(){
+      return this.$route.meta.keepAlive
+    }
   },
   mounted(){
-    // console.log('main-mounted', )
+    console.log('main-mounted', this.$route)
     // this.funAuth('sss')
   },
   methods: {
