@@ -125,18 +125,15 @@ export default {
       })
     },
     getParentList(){
-      if(this.parentList.length==1){
-        this.$axios.$post('/menu/list', {
+      // if(this.parentList.length==1){
+        this.$axios.$get('/menu/parent/list', {
           "pageNo": 1,
           "pageSize": this.total,
         }).then( (res) => {
-          for(let i in res.items){
-            if(res.items[i].parent.id==0){
-              this.parentList.push(res.items[i])
-            }
-          }
+          this.parentList = res.items;
+          this.parentList.unshift({id:0, name:'root'});
         })
-      }
+      // }
     }
   }
 }
