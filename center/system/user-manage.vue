@@ -20,10 +20,10 @@
           </Select>
         </FormItem>
         <FormItem :label-width="0">
-          
+
             <Button type="primary" @click="page=1;getList()">搜索</Button>
-            
-          
+
+
         </FormItem>
       </Form>
     </div>
@@ -63,7 +63,7 @@
         ],
         tableData: [],
         search:{
-          mobileNo: '18700000001',
+          mobileNo: '',
           nickname: '',
           disabled: '',
         },
