@@ -124,7 +124,7 @@
           },
           {
             title: '是否在岗', key: 'position', sortable: true, minWidth: 110,
-            render: (h, params) => h('span',params.row.position == true ? '是' : '否')
+            render: (h, params) => h('span',params.row.onDuty ? '是' : '否')
           },
           {
             title: '职称', key: 'professionalTitle', sortable: true, minWidth: 110
