@@ -51,7 +51,7 @@
     <nuxt-link tag="a" to="/guild-article/10281032" ><img src="/img/menu-icon/汽车销售.png"/><p>汽车销售</p></nuxt-link>
   </div>
   <div class="block" v-show="type==5">
-    <nuxt-link tag="a" to="/guild-article/10281022/219"><img src="/img/menu-icon/协会简介.png"/><p>协会简介</p></nuxt-link>
+    <nuxt-link tag="a" to="/article/summary"><img src="/img/menu-icon/协会简介.png"/><p>协会简介</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281023/212"><img src="/img/menu-icon/协会职能.png"/><p>协会职能</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281013" ><img src="/img/menu-icon/工作动态.png"/><p>工作动态</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281014" ><img src="/img/menu-icon/行业风采.png"/><p>行业风采</p></nuxt-link>
