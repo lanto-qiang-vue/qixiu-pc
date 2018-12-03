@@ -67,9 +67,7 @@ if(!thisData) {
     ],//问题分类--------
     columns: [
 
-      {title: '序号',  minWidth: 80,
-        render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-      },
+      {title: '序号', width:60, type: 'index'},
       {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
       {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
       {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
@@ -208,16 +206,15 @@ export default {
         },
         //监听传过来的数据值-----------，
 
-
-      beforeRouteLeave (to, from, next) {
-        // 导航离开该组件的对应路由时调用
-        // 可以访问组件实例 `this`
-        thisData= this.$data
-        // console.log('beforeRouteLeave:', thisData)
-        next()
-      }
     },
-	}
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    thisData= this.$data
+    // console.log('beforeRouteLeave:', thisData)
+    next()
+  }
+}
 </script>
 
 <style scoped lang="less">
