@@ -404,7 +404,7 @@ export default {
           redirectUri: encodeURIComponent(href),
         }
         if(state){
-          param.code= this.$route.query.code
+          param.code= this.$route.query.auth_code ||this.$route.query.code
           switch (state){
             case 'qq':{
               param.platform= 'QQ'
