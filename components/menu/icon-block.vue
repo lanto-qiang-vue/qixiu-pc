@@ -57,7 +57,7 @@
     <nuxt-link tag="a" to="/guild-article/10281014" ><img src="/img/menu-icon/行业风采.png"/><p>行业风采</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281008" ><img src="/img/menu-icon/行业能手.png"/><p>行业能手</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281015" ><img src="/img/menu-icon/行业党建.png"/><p>行业党建</p></nuxt-link>
-    <nuxt-link tag="a" to="guild-article/10281024/211" ><img src="/img/menu-icon/专家组.png" /><p>专家组</p></nuxt-link>
+    <nuxt-link tag="a" to="guild-article/10281024" ><img src="/img/menu-icon/专家组.png" /><p>专家组</p></nuxt-link>
   </div>
   <div class="block" v-show="type==6">
     <nuxt-link tag="a" to="/gov-article/10281030" ><img src="/img/menu-icon/培训需求.png"/><p>培训需求</p></nuxt-link>
