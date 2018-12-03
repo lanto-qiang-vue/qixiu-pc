@@ -29,23 +29,25 @@
         <!--</Select>-->
         <!--</FormItem>-->
         <FormItem :label-width="80" style="width: 100px;">
-          <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('list')" @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" @click="add">新增</Button>
-      <Button type="primary" :disabled="canDo" @click="edit">修改</Button>
-      <Button type="error"  @click="del" :disabled="canDo">删除</Button>
+      <Button type="success" v-if="accessBtn('add')" @click="add">新增</Button>
+      <Button type="primary" v-if="accessBtn('view')" :disabled="canDo" @click="edit">查看</Button>
+      <Button type="error" v-if="accessBtn('delete')" @click="del" :disabled="canDo">删除</Button>
+      <Button type="primary" v-if="accessBtn('look')" :disabled="canDo" @click="look">查看</Button>
     </div>
   </common-table>
 </template>
 <script>
   import CommonTable from '~/components/common-table.vue'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'staff-query',
     components: { CommonTable },
+    mixins: [funMixin],
     props: ['showType'],
     watch: {
       showType() {
@@ -155,10 +157,16 @@
         this.list = row;
       },
       add() {
-        window.location.href = '/center/staff-detail/?id=' + null
+        // window.location.href = '/center/staff-detail/?id=' + null
+        this.$router.push('/center/staff-detail')
       },
       edit(){
-        window.location.href = "/center/staff-detail/?id="+this.list.id;
+        this.$router.push({path: '/center/staff-detail', query:{id: this.list.id}})
+        // window.location.href = "/center/staff-detail/?id="+this.list.id;
+      },
+      look(){
+        this.$router.push({path: '/center/employees-detail', query:{id: this.list.id}})
+        // window.location.href = "/center/staff-detail/?id="+this.list.id;
       },
       getName(list,id){
        let data = "";

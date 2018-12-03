@@ -121,9 +121,9 @@
         </div>
       </Form>
     </div>
-    <Button type="primary" @click="handleTabsAdd" style="margin:20px 0 20px 120px;">添加证书</Button>
+    <Button type="primary" @click="handleTabsAdd" v-if="accessBtn('edit')" style="margin:20px 0 20px 120px;">添加证书</Button>
     <Tabs type="card" :before-remove='beforeRemove' v-model="indexName" style="width:80%;" @on-click="qh">
-      <TabPane v-for="(item,tab) in formData.staffCertList" :closable="true" :key="tab" :name="'s'+(tab)"
+      <TabPane v-for="(item,tab) in formData.staffCertList" :closable="accessBtn('edit')" :key="tab" :name="'s'+(tab)"
                :label="'证书' + (tab+1)">
         <Form class="common-form" :model="item" ref="s1" :rules="rules" :label-width="120">
           <!--<FormItem label="名称" prop="certName" style="width:80%;">-->
@@ -152,6 +152,7 @@
             <!--@success="success"></upload-img>-->
             <!--</div>-->
             <Upload
+              v-if="accessBtn('edit')"
               multiple
               :headers="{token:item.token}"
               :show-upload-list="false"
@@ -188,7 +189,7 @@
     </Modal>
     <Form :label-width="120">
       <FormItem>
-        <Button @click="submit" type="primary">保存</Button>
+        <Button @click="submit" v-if="accessBtn('edit')" type="primary">保存</Button>
       </FormItem>
     </Form>
   </div>
@@ -197,10 +198,12 @@
 <script>
   import uploadImg from '~/components/uploadImg.vue'
   import { deepClone } from '../../static/util'
+  import funMixin from '~/components/fun-auth-mixim.js'
 
   export default {
     name: 'staff-detail',
     components: { uploadImg },
+    mixins: [funMixin],
     data() {
       const validateChange = (rule, value, callback) => {
         if (value == 0) {

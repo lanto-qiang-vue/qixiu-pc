@@ -107,7 +107,8 @@ export default [
         meta: {
           icon: '',
           title: '电子健康档案详情',
-          // accessId: '/center/car-record-detail',
+          accessId: '/center/repair-info-detail',
+          hideMenu: true
         },
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
@@ -411,6 +412,8 @@ export default [
         meta: {
           icon: '',
           title: '企业员工详情',
+          accessId: '/center/staff-detail',
+          hideMenu: true
         },
         component: resolve('center/company/staff-detail.vue'),
       },
@@ -480,6 +483,16 @@ export default [
           accessId: '/center/employees-query',
         },
         component: resolve('center/company/staff-query.vue'),
+      },
+      {
+        path: 'employees-detail',
+        meta: {
+          icon: '',
+          title: '企业员工详情',
+          accessId: '/center/employees-detail',
+          hideMenu: true
+        },
+        component: resolve('center/company/staff-detail.vue'),
       },
     ]
   },

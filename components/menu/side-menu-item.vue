@@ -15,7 +15,7 @@
       </template>
       <template v-else>
         <side-menu-item v-if="showChildren(item)" :key="`menu-${item.meta.accessId}`" :parent-item="item"></side-menu-item>
-        <menu-item v-else :name="getNameOrHref(item)" :key="`menu-${item.meta.accessId}`">
+        <menu-item v-else-if="!item.meta.hideMenu" :name="getNameOrHref(item)" :key="`menu-${item.meta.accessId}`">
           <!--<common-icon :type="item.icon || ''" :custom="item.custom"/>-->
           <Icon :type="item.icon || ''" :custom="item.custom" v-if="item.custom ||item.icon"/>
           <span>{{ showTitle(item) }}</span></menu-item>
