@@ -129,7 +129,7 @@ export default {
   },
   asyncData ({ app, params, error }) {
     return app.$axios({
-      baseURL: 'http://127.0.0.1:'+config.port+'/repair',
+      baseURL: 'http://localhost:'+config.port+'/repair',
       url: '/micro/search/company/repair/'+ params.id,
       method: 'get',
     }).then((res) => {
@@ -137,12 +137,12 @@ export default {
         info: res.data
       }
     }, (err)=>{
-      console.log(err)
+      // console.log(err)
       // if(process.client)
-      console.log('err:', err.response.data)
+      // console.log('err:', err.response.data)
       return {
         info: {},
-        error: err.response.data
+        error: err.response? err.response.data: 'err'
       }
     });
   },

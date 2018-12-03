@@ -240,7 +240,9 @@ export default {
 activated(){
   console.log('activated()')
     // this.getRouterData();
-  this.getList()
+  if(!this.queryed || Object.keys(this.$route.query).length){
+    this.getList()
+  }
 
   // console.log('queryData.category', queryData.category)
   // console.log('this.searchList.companyCategory', this.searchList.companyCategory)
@@ -333,6 +335,7 @@ activated(){
                     this.tableData=res.data.items;
                     this.total=res.data.total;
                     this.loading=false;
+                    this.queryed= true
                 }
            })
            this.detailData= null;
