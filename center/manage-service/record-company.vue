@@ -6,7 +6,7 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading" @onSortChange="onSortChange">
     <div  slot="search"  >
-      <Form :label-width="100" class="common-form">
+      <Form :label-width="100" class="common-form" :model="searchList" ref="searchForm">
           <FormItem label="区域:">
             <Select v-model="searchList.area.key" clearable>
                 <Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
@@ -78,8 +78,27 @@
 import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
-import { getName } from '@/static/util.js'
+import { getName, deepClone } from '@/static/util.js'
 
+var searchList={
+  "area": {
+    key: ''
+  },//区域
+  "businessStatus": "",//企业状态
+  "buttJoin": "",//是否对接
+  "companyCategory": '',//维修企业类型
+  "companyName": "",//企业名称
+  "dept": '',//管理部门
+  "inDays": "",//未上传天数
+  "license": "",//许可证号
+  "minister": "",//是否总对总
+  "org": '',//管理部门
+  "show": "",//是否前台显示
+  "special": "",//是否特约
+  "uploadMonth": "",//按月查询
+  order:'',//排序查询
+  index:''
+}
 if(!thisData) {
   var thisData= {
     loading:false,
@@ -182,7 +201,10 @@ export default {
     },
     mixins: [funMixin],
     data(){
-	return thisData
+	  console.log('data()')
+      // this.testFun()
+      thisData.searchList= this.getRouterData()
+	    return thisData
     },
   // watch:{
   //   total(n, o, b){
@@ -201,46 +223,72 @@ export default {
   //   next()
   // },
   mounted () {
-	    console.log('record-company: mounted')
+	    console.log('record-company: mounted', this.$route.query)
         this.getAreaInfo();
         this.getType('1');
         this.getCompanyArea();
     //   this.getList();
-      
-      
-      
-    //   this.getType('24');
-      
 
-      this.getRouterData();
+
+
+    //   this.getType('24');
+
+
+      // this.getRouterData();
 
 },
 activated(){
-    this.getRouterData();
+  console.log('activated()')
+    // this.getRouterData();
+  this.getList()
+
+  // console.log('queryData.category', queryData.category)
+  // console.log('this.searchList.companyCategory', this.searchList.companyCategory)
+  // console.log('this.$data.searchList.companyCategory', this.$data.searchList.companyCategory)
+  // console.log('thisData.searchList.companyCategory', thisData.searchList.companyCategory)
+  // console.log('this.$data', this.$data)
 },
     methods:{
         getRouterData(){
-            
-        var queryData=this.$route.query;
-        if(queryData.name=="top"){
-            
-            this.searchList.companyCategory=queryData.category;
-            this.getList();
-        }else if(queryData.name=="zdz"){
-            this.searchList.area.key=queryData.id;
-            if(queryData.minister==1){
-                this.searchList.minister="是";
-                this.searchList.buttJoin="是";
-                
-            }else{
-                this.searchList.minister="否";
-                this.searchList.buttJoin="是";
+          let queryData= this.$route.query
+          let search= thisData.searchList
+          console.log(JSON.stringify(queryData))
+          // for(let key in queryData){
+          //   if(key) flag= true
+          // }
+	    // console.log('getRouterData.this.$route.query', Object.keys(this.$route.query).length)
+         //  let arr= Object.keys(this.$route.query)
+          if(Object.keys(queryData).length){
+            // this.$data.searchList= null
+            search= deepClone(searchList)
+
+            if(queryData.area){
+              search.area= {
+                key: queryData.area
+              }
             }
-            this.getList();
-        }else{
-            this.getList();
-        }
-        
+            if(queryData.category){
+              search.companyCategory= parseInt(queryData.category);
+            }
+            if(queryData.name=="zdz"){
+              if(queryData.minister==1){
+                search.minister="是";
+                search.buttJoin="是";
+
+              }else{
+                search.minister="否";
+                search.buttJoin="是";
+              }
+            }
+
+            // this.getList();
+
+          }
+          console.log('search', search)
+          return search
+
+
+
       },
         getList(){
             this.loading=true;
