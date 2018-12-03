@@ -13,7 +13,7 @@
                     <Input type="text" v-model="searchList.vehicleNum" placeholder="请输入许可证号"></Input>
                 </FormItem>
                 <FormItem label="反馈日期:">
-                    <Input type="text" v-model="searchList.createDate" placeholder="请输入企业名称"></Input>
+                  <DatePicker type="date"  @on-change="selectDate" format="yyyy-MM-dd"></DatePicker>
                 </FormItem>
                 <FormItem label="有无凭证:">
                     <Select v-model="searchList.hasEvidence" clearable>
@@ -25,9 +25,9 @@
                         <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
                     </Select>
                 </FormItem>
-                
+
                 <FormItem :label-width="0" style="width: 60px;">
-                    <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                    <Button type="primary" v-if="" @click="page=1;getOperate()">搜索</Button>
                 </FormItem>
         </Form>
     </div>
@@ -90,7 +90,7 @@
                   }
 
               }
-            
+
             },
           {title: '企业是否已读', key: 'hasRead', sortable: true, minWidth: 130,
                 render: (h, params) => {
@@ -106,7 +106,7 @@
 
               }
             },
-          
+
         ],
         tableData: [],
         searchList:{
@@ -115,7 +115,7 @@
             hasEvidence:'',
             type:'',
             vehicleNum:'',
-            
+
         },
         page: 1,
         limit: 10,
@@ -144,7 +144,7 @@
         getOperate(){
             this.loading=true;
             let page=this.page-1;
-            
+
             let strUrl="";
             for(let i in this.searchList){
                 if(i=="hasEvidence"){
@@ -169,9 +169,12 @@
                 this.loading=false;
                 // this.$Message.error(res.statusText);
               }
-              
+
             })
         },
+      selectDate(date, type){
+        this.searchList.createDate= date
+      },
         changePage(page){
           this.page= page
           this.getList()
@@ -199,7 +202,7 @@
           this.detailData= null
           this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
-          
+
           this.getList();
         },
         searchFun(){

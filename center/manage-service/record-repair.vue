@@ -49,19 +49,25 @@
 import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import { deepClone } from '@/static/util.js'
 
+var searchList= {
+    byVehicleNumberStandard:"all",
+    byVinStandard:"all",
+    companyName:"",
+    vehicleplatenumber:"",
+    vin:'',
+  }
 if(!thisData) {
   var thisData= {
     loading:false,
     typeList: [
-      {code:'yes',name:'有登录'},
-      {code:'no',name:'未登录'},
+      {code:'yes',name:'正确'},
+      {code:'no',name:'错误'},
     ],//问题分类--------
     columns: [
 
-      {title: '序号',  minWidth: 80,
-        render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-      },
+      {title: '序号', width:60, type: 'index'},
       {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
       {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
       {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
@@ -97,58 +103,36 @@ export default {
     },
     mixins: [funMixin],
     data(){
-		  return{
-              loading:false,
-              typeList: [
-                  {code:'yes',name:'正确'},
-                  {code:'no',name:'错误'},
-              ],//问题分类--------
-        columns: [
-          
-          {title: '序号',  minWidth: 80,
-            render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-          },
-          {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
-          {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
-          {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
-          {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,},
-          {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
-          {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150},
-          {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150},
-        ],
-        tableData: [],
-        searchList:{
-            byVehicleNumberStandard:"all",
-            byVinStandard:"all",
-            companyName:"",
-            vehicleplatenumber:"",
-            vin:'',
-        },
-        page: 1,
-        limit: 10,
-        total: 0,
-        showTable:false,
-        showDetail: false,
-        showOtherDetail:false,
-        detailData: null,
-        clearTableSelect: null,
-
-      }
+      thisData.searchList= this.getRouterData()
+		  return thisData
     },
 
     mounted () {
 
-      this.getRouterData();
+      // this.getRouterData();
     //   this.getType();
     },
-    // beforeMount(){
-    //   this.$axios.post('/menu/list', {
-    //     "pageNo": 1,
-    //     "pageSize": 10,
-    //   })
-    // },
+  activated(){
+    // console.log('activated()')
+    // this.getRouterData();
+    if(!this.queryed || Object.keys(this.$route.query)){
+      this.getList()
+    }
+  },
 
     methods:{
+      getRouterData(){
+        let queryData=this.$route.query;
+        let search= thisData.searchList
+        if(Object.keys(queryData).length){
+          search= deepClone(searchList)
+
+          if(queryData.name){
+            search.companyName= queryData.name
+          }
+        }
+        return search
+      },
         getList(){
             this.loading=true;
             this.$axios.post('/vehicle/carfile/query4manager', {
@@ -167,6 +151,7 @@ export default {
                     this.tableData=res.data.items;
                     this.total=res.data.total;
                     this.loading=false;
+                  this.queryed= true
                 }
            })
            this.detailData= null;
@@ -220,30 +205,16 @@ export default {
             })
         },
         //监听传过来的数据值-----------，
-      getRouterData(){
-        var queryData=this.$route.query;
-        if(queryData&&queryData.flag){
 
-            this.searchList.companyName=queryData.name;
-            console.log(this.searchList.companyName);
-            this.getList();
-            console.log("有值",queryData);
-        }else{
-            console.log("没有值");
-            this.getList();
-        }
-
-      },
-
-      beforeRouteLeave (to, from, next) {
-        // 导航离开该组件的对应路由时调用
-        // 可以访问组件实例 `this`
-        thisData= this.$data
-        // console.log('beforeRouteLeave:', thisData)
-        next()
-      }
     },
-	}
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    thisData= this.$data
+    // console.log('beforeRouteLeave:', thisData)
+    next()
+  }
+}
 </script>
 
 <style scoped lang="less">

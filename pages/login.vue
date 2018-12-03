@@ -174,8 +174,8 @@ export default {
             };
 			return {
 				formPass: {
-					userName: '18700000001',
-					password: '123456'
+					userName: '',
+					password: ''
 				},
 				formPhone:{
 					userMobile:'',

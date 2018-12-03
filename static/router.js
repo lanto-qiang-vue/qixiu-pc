@@ -107,7 +107,7 @@ export default [
         meta: {
           icon: '',
           title: '电子健康档案详情',
-          accessId: '/center/car-record-detail',
+          // accessId: '/center/car-record-detail',
         },
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
@@ -214,7 +214,7 @@ export default [
         path: 'operate-complaint',
         meta: {
           icon: '',
-          title: '反馈管理',
+          title: '反馈管理(运营)',
           accessId: '/center/operate-complaint',
         },
         component: resolve('center/operate/operate-complaint.vue'),
