@@ -51,6 +51,9 @@
         <FormItem label="文件名" :required="true" prop="fileName">
           <Input v-model="uploadData.fileName"></Input>
         </FormItem>
+        <FormItem label="文件分类">
+          <Input v-model="uploadData.category"></Input>
+        </FormItem>
       </Form>
 
     <div slot="footer">
@@ -101,7 +104,8 @@ export default {
             showModal:false,//是否显示上传页
             uploadData:{
               fileName:'',
-              url: ''
+              url: '',
+              category:'',
             }
         }
     },
