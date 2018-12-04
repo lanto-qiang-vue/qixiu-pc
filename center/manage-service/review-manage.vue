@@ -241,7 +241,6 @@ activated(){
           this.limit= size
           this.getList()
         },
-
         onRowClick( row, index){
             console.log('row:',row);
             if(row.STATUS=="10421003"){

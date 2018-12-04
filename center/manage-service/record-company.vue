@@ -143,8 +143,8 @@ if(!thisData) {
       "show": "",//是否前台显示
       "special": "",//是否特约
       "uploadMonth": "",//按月查询
-      order:'',//排序查询
-      index:''
+      order:0,//排序查询
+      index:13
     },
     manageArr:[],
     page: 1,
@@ -464,9 +464,9 @@ activated(){
                 this.getList();
             }else{
 
-                if(type=="asc"){
+                if(type=="desc"){
                     this.searchList.order=0;
-                }else if(type=="desc"){
+                }else if(type=="asc"){
                     this.searchList.order=1;
                 }
 
