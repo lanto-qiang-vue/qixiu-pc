@@ -214,6 +214,7 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
+    $('body').removeClass('hot-map')
     this.stompClient.disconnect()
     next()
   }
@@ -226,7 +227,20 @@ export default {
       overflow: visible;
     }
   }
+  .hot-map::-webkit-scrollbar{
+    height: 0;
+    width: 0;
+  }
 </style>
 <style lang="less">
   @import './hotmap.less';
+  .hot-map{
+    .common-content > div:not(.sub-title){
+      overflow: visible;
+    }
+  }
+  .hot-map::-webkit-scrollbar{
+    height: 0;
+    width: 0;
+  }
 </style>

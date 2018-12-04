@@ -69,7 +69,7 @@
   <Modal
     v-model="showBind"
     title="请绑定手机号"
-    width="350px"
+    width="300px"
     @on-visible-change=""
     :footer-hide="true"
     class=""
@@ -95,9 +95,9 @@
         <FormItem style="margin-bottom: 10px">
           <Button type="primary" long @click="toLogin(bindParam.type, bindParam.openId, true)">绑定并登录</Button>
         </FormItem>
-        <div class="deal">
+        <div class="deal" style="text-align: center">
           <p>新用户完成注册，代表同意</p>
-          <a>《上海汽修平台用户协议》</a>
+          <a href="/article/protocol" target="_blank">《上海汽修平台用户协议》</a>
         </div>
       </Form>
   </Modal>
@@ -201,7 +201,7 @@ export default {
 				time: 60,
 				timing: null,
 
-        showBind: false,
+        showBind: true,
         bindParam:{
           type: '',
           openId: ''
