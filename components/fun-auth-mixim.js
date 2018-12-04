@@ -17,8 +17,10 @@ let access= (name, route, store)=>{
   if(route.meta && route.meta.accessId){
     functions= match(route.meta.accessId, store.state.user.accessMenu)
   }
+
   for(let i in functions){
     if(functions[i].btnId== name){
+      
       flag= true
     }
   }
