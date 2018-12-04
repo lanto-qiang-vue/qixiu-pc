@@ -201,7 +201,7 @@ export default {
 				time: 60,
 				timing: null,
 
-        showBind: true,
+        showBind: false,
         bindParam:{
           type: '',
           openId: ''
