@@ -42,11 +42,13 @@
             {title: '序号',  width: 80,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
           },
-          {title: '答案状态', key: 'status', sortable: true, width: 120,
+          {title: '答案状态', key: 'status', minWidth: 110,
             render: (h, params) => h('span', params.row.status.name)
           },
-          {title: '问题内容', key: 'questionContent', sortable: true, minWidth: 120},
-          {title: '答案内容', key: 'answerContent', sortable: true, minWidth: 135},
+          {title: '问题内容', key: 'questionContent', minWidth: 180,tooltip:true,},
+          {title: '答案内容', key: 'answerContent', minWidth: 180,tooltip:true,},
+          {title: '提问时间', key: 'questionTime', sortable: true, minWidth: 120},
+          {title: '回答时间', key: 'answerTime', sortable: true, minWidth: 120},
         ],
         tableData: [],
         searchList:{
