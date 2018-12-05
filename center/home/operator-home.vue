@@ -215,7 +215,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     $('body').removeClass('hot-map')
-    this.stompClient.disconnect()
+    if(this.stompClient) this.stompClient.disconnect()
     next()
   }
 }

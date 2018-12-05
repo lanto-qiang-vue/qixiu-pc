@@ -67,7 +67,7 @@ export default {
             showModal:false,
             collapse: '1',
             listSearch:{
-                questionPhoto:['xxx'],
+                questionPhoto:[],
                 content:"",
                 categoryName:"",
             },
