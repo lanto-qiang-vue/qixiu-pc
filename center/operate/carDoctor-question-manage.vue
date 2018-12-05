@@ -41,14 +41,16 @@
 		  return{
         loading:true,
         columns: [
-          {title: '问题内容', key: 'content', sortable: true, minWidth: 120,
+          {title: '问题内容', key: 'content', minWidth: 120,
           },
-          {title: '问题状态', key: 'status', sortable: true, minWidth: 120,
+          {title: '问题状态', key: 'status', minWidth: 120,
                 render: (h, params) => h('span',  params.row.status.name)
-            },
-          {title: '提问专家', key: 'expertName', sortable: true, minWidth: 135},
-          {title: '问题分类', key: 'categoryName', sortable: true, minWidth: 120},
-          {title: '提问用户', key: 'userName', sortable: true, minWidth: 120,
+          },
+          {title: '提问时间', key: 'createTime', sortable: true, minWidth: 135},
+          {title: '回答时间', key: 'answerTime', sortable: true, minWidth: 120},
+          {title: '提问专家', key: 'expertName', minWidth: 135},
+          {title: '问题分类', key: 'categoryName', minWidth: 120},
+          {title: '提问用户', key: 'userName', minWidth: 120,
             // render: (h, params) => h('span',  params.row.status.name)
           },
         ],
