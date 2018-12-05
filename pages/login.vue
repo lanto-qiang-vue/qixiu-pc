@@ -152,7 +152,6 @@
 </template>
 
 <script>
-import config from '../config.js'
 import BasicContainer from '~/components/basic-container.vue'
 export default {
 		name: "login",
@@ -229,7 +228,6 @@ export default {
 		  // console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
-      console.log('baseUrl:', config.apiUrl)
     },
 		methods: {
 			//获取短信验证码----

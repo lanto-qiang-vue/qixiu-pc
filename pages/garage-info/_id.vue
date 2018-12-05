@@ -128,11 +128,14 @@ export default {
     return params.id? true: false
   },
   asyncData ({ app, params, error }) {
+    let  baseURL= 'http://127.0.0.1:'+config.port+'/repair'
+    if(process.client)  baseURL= window.location.origin +'/repair'
     return app.$axios({
-      baseURL: 'http://localhost:'+config.port+'/repair',
+      baseURL: baseURL,
       url: '/micro/search/company/repair/'+ params.id,
       method: 'get',
     }).then((res) => {
+      // console.log(res)
       return {
         info: res.data
       }

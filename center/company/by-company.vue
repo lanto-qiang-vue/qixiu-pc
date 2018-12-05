@@ -61,7 +61,7 @@
     },
     methods: {
       rowClick(row) {
-       window.location.href = "/center/employees-query/?id="+row.companyId;
+        this.$router.push({path: "/center/employees-query", query:{id: row.companyId}})
       },
       getName(list, id) {
         let data = ''

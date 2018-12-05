@@ -54,7 +54,7 @@
         this.showModal = true
       }
     },
-    data: function() {
+    data() {
       return {
         educationList: [
           { id: 0, name: '请选择' },

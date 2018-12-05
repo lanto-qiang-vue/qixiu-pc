@@ -85,6 +85,7 @@ export default {
     this.$Spin.show();
     $.getScript('/libs/echarts.common.min.js',()=>{
       this.getData()
+      this.$Spin.hide();
     })
   },
   methods:{
@@ -92,7 +93,7 @@ export default {
       this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
         this.res= res.item
         this.showChart(res.item)
-        this.$Spin.hide();
+
       })
     },
     showChart(data){
