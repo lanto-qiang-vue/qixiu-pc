@@ -31,6 +31,22 @@ export default {
           }
         }
       }
+      if(!sortRoles.length){
+        if(flag){
+          for(let i in roles){
+            sortRoles.push(roles[i])
+          }
+        }else{
+          let menu= this.$store.state.user.accessMenu
+          if(menu.length){
+            if(menu[0].leaf){
+              sortRoles.push({path: menu[0].uri})
+            }else{
+              sortRoles.push({path: menu[0].children[0].uri})
+            }
+          }
+        }
+      }
       return sortRoles
     },
   }
