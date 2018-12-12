@@ -42,6 +42,39 @@
 
   </div>
 
+  <!--<div class="dblock">
+    <h1 class="dtitle">维修数据上报管理</h1>
+    <div class="center">
+      <div >
+        <div >
+          <Form :label-width="110" class="common-form">
+              <FormItem label="统计维度:">
+                  <Button style="width: 60px;" type="primary" shape="circle">7天</Button>
+                  <Button style="width: 60px;" type="primary" shape="circle">1个月</Button>
+              </FormItem>
+              <FormItem label="" :label-width="0" style="width:410px;text-align: left;">
+                  <DatePicker type="date" placeholder="Select date" style="width: 150px"></DatePicker>
+                  <span>-</span>
+                  <DatePicker type="date" placeholder="Select date" style="width: 150px"></DatePicker>
+              </FormItem>
+              
+        </Form>
+        </div>
+          <div>
+            <Table :columns="notifyColumns" :data="notifyData" ref="table2"
+                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
+          </div>
+          <div>
+            <Table :columns="notifyColumns" :data="notifyData" ref="table2"
+                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
+          </div>
+
+
+      </div>
+    </div>
+
+  </div>-->
+
 </div>
 </template>
 
@@ -72,6 +105,33 @@ export default {
 
           },
       ],
+      areaColumns:[
+          {title: '未上报维修记录企业总数', minWidth: 250,key: 'companyName',},
+          {title: '沪市', key: 'companyName',  minWidth: 100,},
+          {title: '沪闵', key: 'allCount',  minWidth: 100},
+          {title: '沪宝', key: 'hasCount',  minWidth: 100,},
+          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
+          {title: '沪金', key: 'noCount',  minWidth: 100,},
+          {title: '沪松', key: 'noCount',  minWidth: 100,},
+          {title: '沪青', key: 'noCount',  minWidth: 100,},
+          {title: '沪奉', key: 'noCount',  minWidth: 100,},
+          {title: '沪崇', key: 'noCount',  minWidth: 100,},
+      ],
+      areaColumnsData:[],
+      areaColumns1:[
+          {title: '上报异常的企业数', minWidth: 250,key: 'companyName',},
+          {title: '沪市', key: 'companyName',  minWidth: 100,},
+          {title: '沪闵', key: 'allCount',  minWidth: 100},
+          {title: '沪宝', key: 'hasCount',  minWidth: 100,},
+          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
+          {title: '沪金', key: 'noCount',  minWidth: 100,},
+          {title: '沪松', key: 'noCount',  minWidth: 100,},
+          {title: '沪青', key: 'noCount',  minWidth: 100,},
+          {title: '沪奉', key: 'noCount',  minWidth: 100,},
+          {title: '沪崇', key: 'noCount',  minWidth: 100,},
+      ],
+      areaColumnsData1:[],
+
       notifyData: [],
       typeList:[
             {code:0,name:"维修记录未上传"},
