@@ -115,8 +115,8 @@
             
         },
         deleteFuncion(){
-            this.$axios.post('/maintain/deleteOnsiteOrder', {
-                    id:this.detailData.id
+            this.$axios.post('/service/order/delete/'+this.detailData.id, {
+                    
             }).then( (res) => {
 					      if(res.data.code=='0'){
                   this.closeDetail();
