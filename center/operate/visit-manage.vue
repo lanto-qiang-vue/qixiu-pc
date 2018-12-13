@@ -168,7 +168,7 @@ export default {
 
         },
         deleteFuncion(){
-            this.$axios.delete('/service/delete/'+this.detailData.id,).then(
+            this.$axios.post('/service/delete/'+this.detailData.id,).then(
             (res) => {
                 if(res.data.code=='0'){
                     this.closeDetail();

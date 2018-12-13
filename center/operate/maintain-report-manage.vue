@@ -20,7 +20,8 @@
       <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
       <Button type="error" v-if="" :disabled="!detailData"  @click="delFun">删除</Button>
     </div>
-    <!--<company-white-detail :showDetail="showDetail" :detailData="detailData"></company-white-detail>-->
+    <maintain-report-deail :showDetail="showDetail" :detailData="detailData"></maintain-report-deail>
+
   </common-table>
 
 </template>
@@ -28,12 +29,13 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
-//   import companyWhiteDetail from './company-white-detail.vue'
+  import maintainReportDeail from './maintain-report-detail.vue'
+
 	export default {
 		name: "maintain-report-manage",
     components: {
       CommonTable,
-    //   companyWhiteDetail
+      maintainReportDeail
     },
     mixins: [funMixin],
     data(){
