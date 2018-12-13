@@ -256,7 +256,7 @@ export default {
       let query='?fl=type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category'+
         '&q='+ this.search.q +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
-      if(is164) query+= ('&sort='+ (this.search.sort||'distance'))
+      if(is164) query+= ('&sort=_score desc,'+ (this.search.sort||'distance'))
       if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
       let fq='&fq=type:'+ this.search.type, is4s=''
       if(this.search.area && is164) fq+= '+AND+areaKey:'+ this.search.area
