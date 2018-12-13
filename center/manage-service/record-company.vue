@@ -227,14 +227,7 @@ export default {
         this.getAreaInfo();
         this.getType('1');
         this.getCompanyArea();
-    //   this.getList();
 
-
-
-    //   this.getType('24');
-
-
-      // this.getRouterData();
 
 },
 activated(){
@@ -295,14 +288,19 @@ activated(){
         getList(){
             this.loading=true;
             let upData={};
+            console.log(',,,,,,,,',this.searchList);
             for(let i in this.searchList){
                 if(this.searchList[i]=="是"){
                     upData[i]=true;
                 }else if(this.searchList[i]=="否"){
                     upData[i]=false;
-                }else{
+                }else if(i=='area'){
                   if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
+                }else if(this.searchList[i]){
+                    upData[i]=this.searchList[i];
+                }else{
+                    upData[i]=null;
                 }
             }
             console.log(upData["uploadMonth"],this.manageArr);
@@ -312,23 +310,23 @@ activated(){
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
             this.$axios.post('/vehicle/repair/query', {
-                    "area": upData["area"]||null,
-                    "businessStatus": upData["businessStatus"]||null,
-                    "buttJoin": upData["buttJoin"]||null,
-                    "companyCategory": upData["companyCategory"]||null,
-                    "companyName": upData["companyName"]||null,
-                    "dept": upData["dept"]||null,
-                    "inDays": upData["inDays"]||null,
-                    "license": upData["license"]||null,
-                    "minister": upData["minister"]||null,
-                    "org": upData["org"]||null,
+                    "area": upData["area"],
+                    "businessStatus": upData["businessStatus"],
+                    "buttJoin": upData["buttJoin"],
+                    "companyCategory": upData["companyCategory"],
+                    "companyName": upData["companyName"],
+                    "dept": upData["dept"],
+                    "inDays": upData["inDays"],
+                    "license": upData["license"],
+                    "minister": upData["minister"],
+                    "org": upData["org"],
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    "show": upData["show"]||null,
-                    "special": upData["special"]||null,
-                    "uploadMonth": upData["uploadMonth"]||null,
-                    order:upData["order"]||null,
-                    index:upData["index"]||null,
+                    "show": upData["show"],
+                    "special": upData["special"],
+                    "uploadMonth": upData["uploadMonth"],
+                    order:upData["order"],
+                    index:upData["index"],
 
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -347,9 +345,13 @@ activated(){
                     upData[i]=true;
                 }else if(this.searchList[i]=="否"){
                     upData[i]=false;
-                }else{
-                    if(i=='area' &&!this.searchList[i].key) upData[i]= null
+                }else if(i=='area'){
+                  if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
+                }else if(this.searchList[i]){
+                    upData[i]=this.searchList[i];
+                }else{
+                    upData[i]=null;
                 }
             }
             console.log(upData["uploadMonth"],this.manageArr);
@@ -365,19 +367,19 @@ activated(){
               method: 'post',
               url: '/vehicle/repair/export',
               data:{
-                "area": upData["area"]||null,
-                "businessStatus": upData["businessStatus"]||null,
-                "buttJoin": upData["buttJoin"]||null,
-                "companyCategory": upData["companyCategory"]||null,
-                "companyName": upData["companyName"]||null,
-                "dept": upData["dept"]||null,
-                "inDays": upData["inDays"]||null,
-                "license": upData["license"]||null,
-                "minister": upData["minister"]||null,
-                "org": upData["org"]||null,
-                "show": upData["show"]||null,
-                "special": upData["special"]||null,
-                "uploadMonth": upData["uploadMonth"]||null,
+                "area": upData["area"],
+                "businessStatus": upData["businessStatus"],
+                "buttJoin": upData["buttJoin"],
+                "companyCategory": upData["companyCategory"],
+                "companyName": upData["companyName"],
+                "dept": upData["dept"],
+                "inDays": upData["inDays"],
+                "license": upData["license"],
+                "minister": upData["minister"],
+                "org": upData["org"],
+                "show": upData["show"],
+                "special": upData["special"],
+                "uploadMonth": upData["uploadMonth"],
                 },
               responseType: 'arraybuffer'
             }).then( (res) => {

@@ -341,7 +341,7 @@ export default {
             this.property=1;
             this.imgFlag=true;
             this.busineFlag=false;
-
+            this.editIDCard=false;
             
 
             for(let i in this.infoData){
@@ -440,6 +440,8 @@ export default {
                         this.infoData['ownerName']=res.data.item.reviseOwnerName;
                         this.infoData['imageUrl']='data:image/png;base64,'+res.data.item.frontImage;
                         this.infoData['id']=res.data.item.creditId;
+                    }else{
+                        
                     }
                 }else{
                     // this.$Message.info(res.data.status)
