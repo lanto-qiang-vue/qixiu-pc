@@ -73,7 +73,7 @@
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="sendNotify('search')" size="large" type="success"  style="margin-right: 10px;" v-if="accessBtn('delete')">发送</Button>
+            <Button  @click="sendNotify('search')" size="large" type="success"  style="margin-right: 10px;" v-if="accessBtn('send')">发送</Button>
             <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
         </div>
 
