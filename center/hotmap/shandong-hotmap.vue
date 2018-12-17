@@ -115,7 +115,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .hotmap{
     position: absolute;
     top:50%;
