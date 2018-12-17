@@ -94,6 +94,15 @@ export default [
         component: resolve('center/home/operator-home.vue'),
       },
       {
+        path: 'shandong-map',
+        meta: {
+          icon: '',
+          title: '山东热力图',
+          accessId: '/center/shandong-map',
+        },
+        component: resolve('center/hotmap/shandong-hotmap.vue'),
+      },
+      {
         path: 'my-car-record',
         meta: {
           icon: '',
