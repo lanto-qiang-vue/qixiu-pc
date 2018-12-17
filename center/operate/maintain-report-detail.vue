@@ -167,12 +167,19 @@
                 </div>
             </div>
 
-            <div class="center">
+            <div class="mincenter">
                 <div class="left">
                     证件照片:
                 </div>
-                <div class="right">
+                <!--<div class="right">
                     上海祥通汽车销
+                </div>-->
+
+                <div class="pic-card">
+                    <div class="pic-body">
+                        <img  class="pic" src="../../assets/img/login_img/qq_logo.png"/>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -627,6 +634,14 @@ export default {
     font-size: 14px;
     border-bottom:1px solid #E8E8E8;
 
+
+    
+    
+
+
+
+
+
     .minleft{
         display: inline-block;
         min-width:80px;
@@ -693,6 +708,28 @@ export default {
     font-size: 14px;
     border-bottom:1px solid #E8E8E8;
     
+    .pic-card{
+      display: inline-block;
+      margin: 0 10px 10px 0;
+      width: 350px;
+      min-width: 250px;
+      .pic-body{
+        width: 100%;
+        height: 200px;
+        /*border: 1px solid #dcdee2;*/
+        position: relative;
+        .pic{
+          max-width: 100%;
+          max-height: 100%;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50% , -50%);
+          cursor: pointer;
+        }
+        }
+      }
+
     .minleft{
         display: inline-block;
         min-width:80px;
@@ -743,62 +780,4 @@ export default {
   }
 }
 
-  .pic-card{
-      display: inline-block;
-      margin: 0 10px 10px 0;
-      width: 200px;
-      min-width: 200px;
-      
-      .red{
-        color: red;
-      }
-      .pic-body{
-        width: 100%;
-        height: 150px;
-        /*border: 1px solid #dcdee2;*/
-        position: relative;
-        .no-pic{
-          width: 250px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-        }
-        .pic{
-          max-width: 100%;
-          max-height: 100%;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-          cursor: pointer;
-        }
-        .button{
-          width: 100%;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          text-align: center;
-          > *{
-            margin: 0 5px;
-            vertical-align: top;
-          }
-          .up-img{
-            display: inline-block;
-            overflow: hidden;
-            position: relative;
-            .input{
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-              opacity: 0;
-              font-size: 0;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
 </style>
