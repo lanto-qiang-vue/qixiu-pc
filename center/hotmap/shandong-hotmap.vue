@@ -43,6 +43,7 @@
         <div class="area area-370300" area-name="淄博市" style="left: 38%;top: 30%;width: 7%;height: 27%;"></div>
         <div class="area area-370200-1" area-name="青岛市" style="left: 61%;top: 34%;width: 13%;height: 12%;"></div>
         <div class="area area-370200-2" area-name="青岛市" style="left: 65%;top: 44%;width: 10%;height: 12%;"></div>
+        <div class="area area-370900" area-name="泰安市" style="left: 23%;top: 52%;width: 15%;height: 10%;"></div>
         <div class="area area-371700" area-name="菏泽市" style="left: 6%;top: 61%;width: 13%;height: 26%;"></div>
         <div class="area area-370800" area-name="济宁市" style="left: 18%;top: 61%;width: 15%;height: 18%;"></div>
         <div class="area area-370400" area-name="枣庄市" style="left: 30%;top: 73%;width: 8%;height: 16%;"></div>
@@ -74,7 +75,7 @@ export default {
   mixins: [Mixin],
   data(){
     return{
-      areaKeys: ['370100','370200','370300','370400','370500','370600','370800','371100','371200','371300','371600','371700'],
+      areaKeys: ['370100','370200','370300','370400','370500','370600','370800','371100','371200','371300','371600','371700', '371000'],
       areaNum: {
         '370600': 2,
         '370200': 2,
