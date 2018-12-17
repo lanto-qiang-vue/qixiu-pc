@@ -41,8 +41,8 @@
         <div class="area area-370100" area-name="济南市" style="left: 28%;top: 27%;width: 6%;height: 23%;"></div>
         <div class="area area-371200" area-name="莱芜市" style="left: 33%;top: 46%;width: 8%;height: 9%;"></div>
         <div class="area area-370300" area-name="淄博市" style="left: 38%;top: 30%;width: 7%;height: 27%;"></div>
-        <div class="area area-370200-3" area-name="青岛市" style="left: 61%;top: 34%;width: 13%;height: 12%;"></div>
-        <div class="area area-370200-3" area-name="青岛市" style="left: 65%;top: 44%;width: 10%;height: 12%;"></div>
+        <div class="area area-370200-1" area-name="青岛市" style="left: 61%;top: 34%;width: 13%;height: 12%;"></div>
+        <div class="area area-370200-2" area-name="青岛市" style="left: 65%;top: 44%;width: 10%;height: 12%;"></div>
         <div class="area area-371700" area-name="菏泽市" style="left: 6%;top: 61%;width: 13%;height: 26%;"></div>
         <div class="area area-370800" area-name="济宁市" style="left: 18%;top: 61%;width: 15%;height: 18%;"></div>
         <div class="area area-370400" area-name="枣庄市" style="left: 30%;top: 73%;width: 8%;height: 16%;"></div>
