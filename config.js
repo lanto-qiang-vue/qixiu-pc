@@ -17,7 +17,7 @@ const devConfig={
   port: '3000',
   // apiUrl: 'http://192.168.169.233:8888/',
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
-  apiUrl: 'http://118.25.81.63:8888/',
+  apiUrl: 'http://192.168.169.231:8888/',
 
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
