@@ -69,12 +69,12 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
 
-                    let jsonData=JSON.parse(res.data.item.content);
+                    // let jsonData=JSON.parse(res.data.item.content);
                     this.listData.title=res.data.item.title;
-                    this.listData.url=jsonData.url[0];
+                    this.listData.url=res.data.item.url[0];
 
                     var obj = document.getElementById('content') ;
-                    obj.innerHTML=jsonData.content;
+                    obj.innerHTML=res.data.item.content;
 
                   }else{
                     this.$Message.error(res.data.status);

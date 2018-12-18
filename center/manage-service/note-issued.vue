@@ -359,7 +359,6 @@ export default {
                         }
                     }
 
-                    console.log('什么鬼',list,this.newCheckList);
 
                     if(num==list.length){
                         data=[{id: 0}];

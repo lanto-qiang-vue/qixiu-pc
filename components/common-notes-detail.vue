@@ -61,12 +61,12 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
 
-                    let jsonData=JSON.parse(res.data.item.content);
+                    // let jsonData=JSON.parse(res.data.item.content);
                     this.listData.title=res.data.item.title;
-                    this.listData.url=jsonData.url[0];
+                    this.listData.url=res.data.item.url[0];
 
-                    console.log(jsonData.content);
-                    this.testContent=jsonData.content;
+                    // console.log(jsonData.content);
+                    this.testContent=res.data.item.content;
                     // var obj = document.getElementById('content1') ;
                     // obj.innerHTML=jsonData.content;
 
