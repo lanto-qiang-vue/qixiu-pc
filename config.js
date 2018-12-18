@@ -8,7 +8,7 @@ const prodConfig={
   //查修接口地址
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'https://socket.shanghaiqixiu.org/micro/heatmap/socket',
-  shandongSocket: 'https://heatmap.shanghaiqixiu.org/heatmap/socket'
+  shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket'
 }
 
 
