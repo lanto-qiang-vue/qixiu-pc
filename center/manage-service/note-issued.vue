@@ -208,6 +208,7 @@ export default {
                     }
                 }
             }
+            console.log(this.newCheckList);
         },
         getNotify(){
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
@@ -250,7 +251,7 @@ export default {
             this.$axios.post('/message/notify/role/shanghai', {
                     }).then( (res) => {
                         if(res.data.code=='0'){
-                            let resData=res.data.items;
+                            // let resData=res.data.items;
                             this.newCheckList=res.data.items;
                             // for(let i in resData){
                             //     this.checkList.push(resData[i]);
@@ -337,24 +338,38 @@ export default {
                         if(list[i].full){
                            list[i].types=[{id: 0}]
                            num++
-                        }else{
-                            if(list[i].types){
+                        }else if(!list[i].full&&list[i].types){
+                                console.log(list[i].code,!list[i].full&&list[i].types);
+                                let newTypes=[];
                                 for(let j in list[i].types){
-                                    if(!list[i].types[j].checked){
-                                        list[i].types.splice(j,1);
+                                    
+                                    if(list[i].types[j].checked){
+                                        
+                                        newTypes.push(list[i].types[j]);
                                     }
                                     
                                 }
-                            }
-                            
 
+                                if(newTypes.length==0){
+                                    list[i]=null;
+                                }
+                            
+                        }else{
+                            list.splice(i,1,null);
                         }
                     }
+
+                    console.log('什么鬼',list,this.newCheckList);
 
                     if(num==list.length){
                         data=[{id: 0}];
                     }else{
-                        data=list;
+                        for(let i in list){
+                            if(list[i]){
+                                data.push(list[i]);
+                            }
+                        }
+                        
                     }
 
                     if(!data.length){
