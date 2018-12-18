@@ -122,7 +122,7 @@ export default {
     top:50%;
     transform: translateY(-50%);
     width: 80%;
-    left: 10%;
+    left: 13%;
   }
   .hotmap .line{
     width: 42%;
@@ -134,8 +134,11 @@ export default {
     width: 50%;
     position: absolute;
     left: 53%;
-    top: 6%;
+    top: 7%;
     text-align: center;
+  }
+  .hotmap .star, .hotmap .star2{
+    left: -3%;
   }
   .hxxlogo{
     position: absolute;

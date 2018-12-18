@@ -81,7 +81,8 @@ export default {
       return text;
     },
     fullscreen() {
-      document.querySelector('.map-body').classList.add("allscreen")
+      // document.querySelector('.map-body').classList.add("allscreen")
+
       let docElm = document.documentElement;
       if (docElm.requestFullscreen) {
         docElm.requestFullscreen();
@@ -92,6 +93,10 @@ export default {
       } else if (docElm.msRequestFullscreen) {
         docElm.msRequestFullscreen();
       }
+      setTimeout(()=>{
+        $('.map-body').addClass('allscreen')
+      },500)
+
     },
     checkFull() {
       return document.fullscreenElement ||
