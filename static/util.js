@@ -667,13 +667,13 @@ export const signIn = ({ route, store, $axios, Message, Modal, Spin},toRedirect)
     }
     if(route.fullPath.indexOf('/center')>=0 && isComp){
       Spin.show()
-      $axios.$get('/user/loginRecords/isCheckin').then((res)=>{
+      $axios.$get('/company/ischeckin').then((res)=>{
         if(!res.item){
           Modal.confirm({
             title: '每日签到',
             content: '是否签到？',
             onOk:()=>{
-              $axios.$post('/user/loginRecords/checkin', {}).then((res)=>{
+              $axios.$post('/company/checkin', {}).then((res)=>{
                 if(res.code==='0') Message.success('签到成功')
               })
             },

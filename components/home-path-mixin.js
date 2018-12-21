@@ -20,8 +20,8 @@ export default {
         {code:'weixiuqiye', path: '/center/company-home'},
         {code:'zhuanjia', path: '/center/answer-questions'},
         {code:'xiehui', path: '/center/account-info'},
-        {code:'guanlibumen', path: '/center/gov-home'},
         {code:'yunying', path: '/center/operator-home'},
+        {code:'guanlibumen', path: '/center/gov-home'},
         {code:'admin', path: '/center/menu-manage'},
       ]
       for (let i in order){
