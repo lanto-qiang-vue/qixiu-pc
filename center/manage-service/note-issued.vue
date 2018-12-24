@@ -73,7 +73,7 @@
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="sendNotify('search')" size="large" type="success"  style="margin-right: 10px;" v-if="accessBtn('send')">发送</Button>
+            <Button  @click="sendNotify('search')" size="large" type="success"  v-if="accessBtn('send')">发送</Button>
             <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
         </div>
 
@@ -215,8 +215,8 @@ export default {
 
                 }).then( (res) => {
                   if(res.data.code=='0'){
-                      var jsonContent=JSON.parse(res.data.item.content);
-                    this.search.content=jsonContent.content;
+                    //   var jsonContent=JSON.parse(res.data.item.content);
+                    this.search.content=res.data.item.content;
                     this.search.title=res.data.item.title;
 
 
@@ -247,12 +247,16 @@ export default {
             this.repairDataName=[];
             this.manageData=[];
             this.manageDataName=[];
+            this.newCheckList=[];
             this.spinShow=true;
             this.$axios.post('/message/notify/role/shanghai', {
                     }).then( (res) => {
                         if(res.data.code=='0'){
                             // let resData=res.data.items;
-                            this.newCheckList=res.data.items;
+                            for(let i in res.data.items){
+                                this.newCheckList.push(res.data.items[i]);
+                            }
+                            
                             // for(let i in resData){
                             //     this.checkList.push(resData[i]);
                             //     this.checkListName.push(resData[i].name);
@@ -273,17 +277,17 @@ export default {
                             // }
                             this.spinShow=false;
                         }else{
-                            this.$Message.info(res.data.status)
+                            // this.$Message.info(res.data.status)
                         }
                 })
         },
         //提交数据
         sendNotify(name){
-            let sendData={content:'',items:'',title:'',url:[],id:''};
+            let sendData={content:'',items:'',title:'',url:'',id:''};
             sendData["content"]=this.search["content"];
             sendData["title"]=this.search["title"];
             sendData["id"]=this.search["id"];
-            sendData["url"].push(this.search["docPath"]);
+            sendData["url"]=this.search["docPath"];
 
             // let objTem=[];
             // console.log(this.checkAllGroup);
@@ -352,6 +356,8 @@ export default {
 
                                 if(newTypes.length==0){
                                     list[i]=null;
+                                }else{
+                                    list[i].types=newTypes;
                                 }
                             
                         }else{

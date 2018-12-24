@@ -2,14 +2,14 @@
 <template>
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page"  :loading="loading">
+                :show="showTable" :page="page"  :loading="loading" @changeSelect="onSelectionChange">
     <div  slot="search"  >
         <Form :label-width="110" class="common-form">
               <FormItem label="企业名称:">
-                  <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
+                  <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
               </FormItem>
               <FormItem label="许可证号:">
-                  <Input type="text" v-model="search.professor" placeholder="请输入许可证号"></Input>
+                  <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
                   <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
@@ -18,9 +18,9 @@
     </div>
     <div slot="operate">
       <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="error" v-if="" :disabled="!detailData"  @click="delFun">删除</Button>
+      <Button type="error" v-if="" :disabled="deleteArray.length==0"  @click="delFun">删除</Button>
     </div>
-    <company-white-detail :showDetail="showDetail" :detailData="detailData"></company-white-detail>
+    <company-white-detail :showDetail="showDetail" @closeDetail="closeDetail"></company-white-detail>
   </common-table>
 
 </template>
@@ -40,22 +40,42 @@
 		  return{
         loading:false,
         columns: [
-          
-          {title: '企业名称', key: 'honor', sortable: true, minWidth: 120,},
-          {title: '许可证号', key: 'honor', sortable: true, minWidth: 120},
-          {title: '经营地址', key: 'honor', sortable: true, minWidth: 135},
-          {title: '经营范围', key: 'honor', sortable: true, minWidth: 120,tooltip:true,},
-          {title: '联系电话', key: 'honor', sortable: true, minWidth: 120,tooltip:true,},
-          {title: '主修品牌', key: 'honor', sortable: true, minWidth: 120,tooltip:true,},
-          {title: '信誉等级', key: 'honor', sortable: true, minWidth: 120,tooltip:true,},
-          {title: '收费标准', key: 'honor', sortable: true, minWidth: 120,tooltip:true,},
+          {
+              type: 'selection',
+              width: 60,
+              align: 'center'
+          },
+          {title: '企业名称', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.companyName||'')
+          },
+          {title: '许可证号', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.license||'')
+          },
+          {title: '经营地址', key: 'company', sortable: true, minWidth: 135,
+            render: (h, params) => h('span', params.row.company.businessAddress||'')
+          },
+          {title: '经营范围', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.businessScope||'')
+          },
+          {title: '联系电话', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.operatorMobile||'')
+          },
+          {title: '主修品牌', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.repairBrand||'')
+          },
+          {title: '信誉等级', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.lastYearLevel||'')
+          },
+          {title: '收费标准', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.repairBrand||'')
+          },
         ],
         tableData: [{"honor":'上海蓝途共享测试'}],
 
         search:{
-          name:'',
-          professor: '',
-          empUnit: '',
+          companyName:'',
+          license: '',
+          type:'WHITELIST',
         },
         page: 1,
         limit: 10,
@@ -64,32 +84,41 @@
         showDetail: false,
         detailData: null,
         clearTableSelect: null,
-
+        deleteArray:[],
       }
     },
     mounted () {
-      this.tableData=[{"honor":'上海蓝途共享测试'}];
+      // this.tableData=[{"honor":'上海蓝途共享测试'}];
+      this.getList();
     },
     methods:{
         getList(){
+          let page=this.page-1;
+          let urlStr='';
+          for(let i in this.search){
+            urlStr+='&'+i+'='+this.search[i];
+          }
+
           this.loading=true;
-          this.$axios.post('/expert/list', {
-              "professor": this.search.professor||'',
-              "empUnit": this.search.empUnit||'',
-              "name": this.search.name||'',
-              "pageNo": this.page,
-              "pageSize": this.limit,
+          this.$axios.get('/core/company-group/query?size='+this.limit+'&page='+page+urlStr, {
+              
           }).then( (res) => {
-            if(res.data.code=='0'){
-              this.tableData=res.data.items;
-              this.total=res.data.total;
-              this.loading=false;
-            }else{
-              this.$Message.info(res.data.status);
-            }
+            if(res.status===200){
+                  this.tableData=res.data.content;
+                  this.total=res.data.totalElements;
+                  this.loading=false;
+              }else{
+                this.loading=false;
+                // this.$Message.error(res.statusText);
+              }
             
           })
           this.detailData= null;
+        },
+        onSelectionChange(selection){
+
+            console.log('onSelectionChange',selection);
+            this.deleteArray=selection;
         },
         //删除页面数据-------------
         delFun(){
@@ -100,13 +129,18 @@
           })
         },
         delList(){
-            this.$axios.delete('/expert/delete/'+this.detailData.id,{
+            let deleteId='';
+            for(let i in this.deleteArray){
+              deleteId+=this.deleteArray[i]['id']+',';
+
+            }
+            deleteId=deleteId.slice(0,deleteId.length-1);
+            
+            this.$axios.delete('/core/company-group/'+deleteId,{
                         
                 }).then( (res) => {
-                    if(res.data.code=='0'){
+                    if(res.status===200){
                         this.closeDetail();
-                    }else{
-                        this.$Message.error(res.data.status);
                     }
             })
         },

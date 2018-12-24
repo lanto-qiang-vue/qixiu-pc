@@ -611,15 +611,15 @@ export default [
       // },
 
 
-      // {
-      //   path: 'for-you-service',
-      //   meta: {
-      //     icon: '',
-      //     title: '为您服务管理',
-      //     accessId: 410,
-      //   },
-      //   component: resolve('center/operate/for-you-service.vue'),
-      // },
+      {
+        path: 'for-you-service',
+        meta: {
+          icon: '',
+          title: '为您服务管理',
+          accessId: 410,
+        },
+        component: resolve('center/operate/for-you-service.vue'),
+      },
     ]
   },
   {
