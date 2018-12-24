@@ -12,7 +12,7 @@
         <FormItem label="昵称:">
             <Input type="text" v-model="search.nickname" ></Input>
         </FormItem>
-        <FormItem label="通过审核:">
+        <FormItem label="是否禁用:">
           <Select v-model="search.disabled" clearable>
             <Option value="" selected>全部</Option>
             <Option value="true">是</Option>
@@ -51,10 +51,10 @@
 		  return{
         columns: [
           {title: '用户ID', key: 'id',  minWidth: 100,},
-          {title: '手机号', key: 'mobile',  minWidth: 100,},
-          {title: '昵称', key: 'nickName',  minWidth: 100},
-          {title: '通过审核', key: 'disabled',  minWidth: 100,
-            render: (h, params) => h('span', params.row.disabled? '否': '是')
+          {title: '手机号', key: 'mobileNo',  minWidth: 100,},
+          {title: '昵称', key: 'nickname',  minWidth: 100},
+          {title: '是否禁用', key: 'disabled',  minWidth: 100,
+            render: (h, params) => h('span', params.row.disabled? '是': '否')
           },
           {title: '用户类型', key: 'type',  minWidth: 100,
             render: (h, params) => h('span', params.row.type?params.row.type.name: '')

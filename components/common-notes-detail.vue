@@ -63,7 +63,7 @@ export default {
 
                     // let jsonData=JSON.parse(res.data.item.content);
                     this.listData.title=res.data.item.title;
-                    this.listData.url=res.data.item.url[0];
+                    this.listData.url=res.data.item.url;
 
                     // console.log(jsonData.content);
                     this.testContent=res.data.item.content;

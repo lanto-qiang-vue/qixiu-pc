@@ -17,9 +17,9 @@
         </div>
     </div>
     <div slot="footer">
-        <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.audit">审核</Button>
-        <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.out">驳回</Button>
-        <Button  @click="exportFun" size="large" type="success"  style="margin-right: 10px;">附件下载</Button>
+        <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"   v-show="listButton.audit">审核</Button>
+        <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"   v-show="listButton.out">驳回</Button>
+        <Button  @click="exportFun" size="large" type="success"  >附件下载</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -71,7 +71,7 @@ export default {
 
                     // let jsonData=JSON.parse(res.data.item.content);
                     this.listData.title=res.data.item.title;
-                    this.listData.url=res.data.item.url[0];
+                    this.listData.url=res.data.item.url;
 
                     var obj = document.getElementById('content') ;
                     obj.innerHTML=res.data.item.content;

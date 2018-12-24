@@ -7,55 +7,40 @@
     @on-visible-change="visibleChange"
     :scrollable="true"
     :transfer= "true"
-    :footer-hide="false"
+    :footer-hide="true"
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
 
-    <div style="height: 100%;overflow: auto;">
-        <Form :label-width="120" class="common-form">
-            <FormItem label="企业名称:">
-                <Input type="text"  v-model="listSearch.status.name" placeholder=""></Input>
-            </FormItem>
-            <FormItem label="许可证号:">
-
-                <Input type="text"  v-model="listSearch.categoryName" placeholder=""></Input>
-            </FormItem>
-            <FormItem label="经营地址:">
-                <Input type="text"  v-model="listSearch.createTime" placeholder=""></Input>
-            </FormItem>
-            <FormItem label="经营范围:">
-                <Input type="text"  v-model="listSearch.answerTime" placeholder=""></Input>
-            </FormItem>
-            <FormItem label="联系电话:">
-                <Input v-model="listSearch.content"  type="text"  placeholder="" />
-            </FormItem>
-            <FormItem label="主修品牌:">
-                <Input v-model="listSearch.content"  type="text"  placeholder="" />
-            </FormItem>
-            <FormItem label="信誉等级:">
-                <Input v-model="listSearch.content"  type="text"  placeholder="" />
-            </FormItem>
-            <FormItem label="收费标准:">
-                <Input v-model="listSearch.content"  type="text"  placeholder="" />
-            </FormItem>
+<common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
+                @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
+                :show="showTable" :page="page"  :loading="loading" :showOperate=false>
+    <div  slot="search"  >
+        <Form :label-width="80" class="common-form">
+              <FormItem label="企业名称:">
+                  <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
+              </FormItem>
+              
+              <FormItem :label-width="0" style="width: 60px;">
+                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+              </FormItem>
         </Form>
-        <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
-    <div slot="footer">
-        <Button size="large" type="primary" :disabled="listButton.edit" @click="updateStatus(2)" v-if="accessBtn('audit')">审核通过</Button>
-        <Button size="large" type="primary" >确定</Button>
-        <Button  size="large" type="default" @click="showModal=false;">返回</Button>
-    </div>
+  </common-table>
+
   </Modal>
 </template>
 
 <script>
 import funMixin from '~/components/fun-auth-mixim.js'
+import CommonTable from '~/components/common-table.vue'
 export default {
 	name: "company-white-detail",
-    props:['showDetail', 'detailData'],
+    props:['showDetail'],
     mixins: [funMixin],
+    components: {
+      CommonTable
+    },
     data(){
 		return{
             spinShow:false,
@@ -72,59 +57,102 @@ export default {
             listButton:{
                 edit:true,
                 out:true,
-            }
-        
+            },
+            columns: [
+          
+                {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120,
+                },
+                {title: '许可证号', key: 'license', sortable: true, minWidth: 120},
+                {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 135},
+                {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120},
+                {title: '联系电话', key: 'operatorMobile', sortable: true, minWidth: 120,
+                    // render: (h, params) => h('span',  params.row.status.name)
+                },
+                // {title: '主要业务', key: 'spheres', sortable: true, minWidth: 120,
+                //     // render: (h, params) => h('span',  params.row.status.name)
+                // },
+                {title: '信誉等级', key: 'lastYearLevel', sortable: true, minWidth: 120,
+                    // render: (h, params) => h('span',  params.row.status.name)
+                },
+                // {title: '收费标准', key: 'workingHoursPrice', sortable: true, minWidth: 120,
+                //     // render: (h, params) => h('span',  params.row.status.name)
+                // },
+            ],
+            tableData: [],
+            search:{
+                name: "",
+            },
+            page: 1,
+            limit: 10,
+            total: 0,
+            showTable:false,
+            clearTableSelect: null,
+            loading:false,
         }
     },
     watch:{
         showDetail(){
             this.showModal=true;
-            // this.getDetail();
-            // if(this.detailData.status.id==1){
-            //     this.listButton.edit=false;
-            //     this.listButton.out=false;
-            // }else if(this.detailData.status.id==2){
-            //     this.listButton.edit=true;
-            //     this.listButton.out=false;
-            // }else if (this.detailData.status.id==3){
-            //     this.listButton.edit=true;
-            //     this.listButton.out=true;
-            // }
-
+            this.tableData=[];
+            this.total=0;
+            for(let i in this.search){
+                this.search[i]='';
+            }
         },
     },
     methods:{
         getDetail(){
-            this.spinShow=true;
-            this.$axios.get('/question/audit/detail/'+this.detailData.id,{
+            
+            let page=this.page-1;
+            let urlStr='';
+            for(let i in this.search){
+                urlStr+='&'+i+'='+this.search[i];
+            }
+
+            this.loading=true;
+
+            this.$axios.get('/core/company/query/name?size='+this.limit+'&page='+page+urlStr,{
             }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.spinShow=false;
-                    this.listSearch=res.data.item;
-                }else{
-                    // this.$Message.error(res.data.status);
-                }
+                if(res.status===200){
+                  this.tableData=res.data.content;
+                  this.total=res.data.totalElements;
+                  this.loading=false;
+              }else{
+                this.loading=false;
+                // this.$Message.error(res.statusText);
+              }
             })
         },
-        showImg(img){
-            this.$Modal.info({
-            width: 50,
-            title: '查看',
-            closable: true,
-            content: '<img src="'+img+'" style="width: 100%"/>'
-            })
-        },
-        //审核通过--
-        updateStatus(status){
-            this.$axios.get('/question/audit/manage/'+this.detailData.id+'/'+status,{
+        //新增白名单------
+        addCompanyList(companyData){
+            this.$axios.post('/core/company-group',{
+                "companyCode": companyData.companyCode,
+                "type": "WHITELIST"
             }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.$Message.info('修改审核成功');
-                    this.showModal=false;
-                }else{
-                    // this.$Message.error(res.data.status);
+                if(res.status===200){
+                  
                 }
             })
+
+            this.showModal=false;
+        },
+        changePage(page){
+          this.page= page
+          this.getDetail()
+        },
+        changePageSize(size){
+          this.limit= size
+          this.getDetail()
+        },
+        onRowClick( row, index){
+            this.addCompanyList(row);
+            
+        },
+        closeDetail(){
+          this.detailData= null;
+          this.clearTableSelect= Math.random();
+          
+          this.getDetail();
         },
         visibleChange(status){
           if(status === false){
