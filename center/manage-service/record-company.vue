@@ -163,6 +163,7 @@ if(!thisData) {
       {key:3,name:'注销'},
       {key:4,name:'空壳'},
       {key:11,name:'内修'},
+      {key:20,name:'停业'},
     ],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
     isFlagType:[
