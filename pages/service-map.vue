@@ -192,7 +192,6 @@ export default {
     },
     getLocation(){
       if(this.map){
-        // console.log('AMap.plugin(\'AMap.Geolocation\'')
         AMap.plugin('AMap.Geolocation', () => {
           this.geolocation = new AMap.Geolocation({
             buttonPosition: 'RB',
@@ -200,6 +199,7 @@ export default {
           });
           // this.map.addControl(this.geolocation);
           this.geolocation.getCurrentPosition((status,result)=>{
+            console.log("getLocation")
             if( status== 'complete'){
               this.map.setCenter(result.position)
               this.map.add(new AMap.Marker(result.position))
@@ -218,7 +218,7 @@ export default {
       AMap.plugin('AMap.CitySearch', () => {
         let city = new AMap.CitySearch();
         city.getLocalCity((status, result)=>{
-          // console.log('getLocalCity', status, result)
+          console.log('getLocalCity', status, result)
           if(status== 'complete'){
             this.map.setCity(result.city, ()=>{
               let center= this.map.getCenter()
@@ -258,7 +258,7 @@ export default {
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
       if(is164) query+= ('&sort=_score desc,'+ (this.search.sort||'distance'))
       if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
-      let fq='&fq=type:'+ this.search.type, is4s=''
+      let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
       if(this.search.area && is164) fq+= '+AND+areaKey:'+ this.search.area
       if(this.search.is4s && is164){
         is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
