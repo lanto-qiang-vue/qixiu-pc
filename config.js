@@ -8,7 +8,8 @@ const prodConfig={
   //查修接口地址
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'https://socket.shanghaiqixiu.org/micro/heatmap/socket',
-  shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket'
+  shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket',
+  articlePath: 'https://download.image.lanto.com/'
 }
 
 
@@ -21,7 +22,8 @@ const devConfig={
 
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
-  shandongSocket: 'http://118.25.13.140:10001/heatmap/socket'
+  shandongSocket: 'http://118.25.13.140:10001/heatmap/socket',
+  articlePath: 'http://download.image.lanto.com/'
 }
 
 export default process.env.NODE_ENV==='development'? devConfig: prodConfig
