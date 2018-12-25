@@ -79,24 +79,14 @@
         })
       },
 		  query(month){
-		    let url='', data={}
+		    let url='',  data={
+          id: this.data.id,
+          loginTime: month
+        }
 		    if(this.type=='company'){
           url= '/company/list/days'
-          data={
-            id: this.data.id,
-            loginTime: month
-          }
         }else{
           url= '/user/loginRecords/list/days'
-          data= {
-            "companyId": this.type=='company'? this.data.id : '',
-            "userId": this.type=='company'? '' : this.data.id,
-            "id": '',
-            "loginMethod": this.type=='company'? 'checkin' : '',
-            "loginTime": month,
-            "pageNo": 1,
-            "pageSize": 31
-          }
         }
         this.$axios.$post(url, data).then( (res) => {
           if(res.code=='0'){
