@@ -274,7 +274,7 @@ export default [
         path: 'change-password',
         meta: {
           icon: '',
-          title: '更换手机号码',
+          title: '修改密码',
           accessId: '/center/updatePass',
         },
         component: resolve('center/account/change-password.vue'),
@@ -751,6 +751,15 @@ export default [
           accessId: '/center/review-manage',
         },
         component: resolve('center/manage-service/review-manage.vue'),
+      },
+      {
+        path: 'maintain-data-manage',
+        meta: {
+          icon: '',
+          title: '维修数据管理',
+          accessId: '',
+        },
+        component: resolve('center/logininfo/maintain-data-manage.vue'),
       },
     ]
   },

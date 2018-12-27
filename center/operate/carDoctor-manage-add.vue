@@ -68,6 +68,8 @@
                 ref="upload"
                 :show-upload-list="false"
                 :headers="token"
+                :max-size="3072"
+                :on-exceeded-size="handleMaxSize"
                 :format="['PNG','JPG','JPEG','BMP']"
                 accept=".PNG, .JPG, .JPEG,.BMP"
                 :on-format-error="handleFormatError"
@@ -299,6 +301,9 @@ export default {
                 content:"该文件格式不正确，仅支持PNG、JPG、JPEG、BMP",
 
             })
+        },
+        handleMaxSize (file) {
+            this.$Message.error('图片过大,最大3M!');
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;

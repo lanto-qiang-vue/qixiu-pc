@@ -42,45 +42,6 @@
 
   </div>
 
-  <!--<div class="dblock">
-    <h1 class="dtitle">维修数据上报管理</h1>
-    <div class="center">
-      <div class="inline-box">
-        <div id="bar2" style="width: 800px;height: 350px"></div>
-      </div>
-      <div >
-        <div >
-            <Form :label-width="110" class="common-form">
-                <FormItem label="统计维度:">
-                    <Button style="width: 60px;" type="primary" shape="circle">7天</Button>
-                    <Button style="width: 60px;" type="primary" shape="circle">1个月</Button>
-                </FormItem>
-                <FormItem label="" :label-width="0" style="width:410px;text-align: left;">
-                    <DatePicker type="date" placeholder="" style="width: 150px"></DatePicker>
-                    <span>-</span>
-                    <DatePicker type="date" placeholder="" style="width: 150px"></DatePicker>
-                </FormItem>
-                
-          </Form>
-        </div>
-
-      
-
-          <div>
-            <Table :columns="areaColumns" :data="areaColumnsData" ref="table2"
-                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
-          </div>
-          <div>
-            <Table :columns="areaColumns1" :data="areaColumnsData1" ref="table2"
-                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
-          </div>
-
-
-      </div>
-    </div>
-
-  </div>-->
-
 </div>
 </template>
 
@@ -111,32 +72,6 @@ export default {
 
           },
       ],
-      areaColumns:[
-          {title: '未上报维修记录企业总数', minWidth: 250,key: 'companyName',},
-          {title: '沪市', key: 'companyName',  minWidth: 100,},
-          {title: '沪闵', key: 'allCount',  minWidth: 100},
-          {title: '沪宝', key: 'hasCount',  minWidth: 100,},
-          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
-          {title: '沪金', key: 'noCount',  minWidth: 100,},
-          {title: '沪松', key: 'noCount',  minWidth: 100,},
-          {title: '沪青', key: 'noCount',  minWidth: 100,},
-          {title: '沪奉', key: 'noCount',  minWidth: 100,},
-          {title: '沪崇', key: 'noCount',  minWidth: 100,},
-      ],
-      areaColumnsData:[],
-      areaColumns1:[
-          {title: '上报异常的企业数', minWidth: 250,key: 'companyName',},
-          {title: '沪市', key: 'companyName',  minWidth: 100,},
-          {title: '沪闵', key: 'allCount',  minWidth: 100},
-          {title: '沪宝', key: 'hasCount',  minWidth: 100,},
-          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
-          {title: '沪金', key: 'noCount',  minWidth: 100,},
-          {title: '沪松', key: 'noCount',  minWidth: 100,},
-          {title: '沪青', key: 'noCount',  minWidth: 100,},
-          {title: '沪奉', key: 'noCount',  minWidth: 100,},
-          {title: '沪崇', key: 'noCount',  minWidth: 100,},
-      ],
-      areaColumnsData1:[],
 
       notifyData: [],
       typeList:[
@@ -153,6 +88,8 @@ export default {
       this.getData()
       this.$Spin.hide();
     })
+
+    this.getList();
   },
   methods:{
     getData(){
@@ -176,7 +113,6 @@ export default {
       let pie1 = echarts.init(document.getElementById('pie1'));
       let pie3 = echarts.init(document.getElementById('pie3'));
       let bar1 = echarts.init(document.getElementById('bar1'));
-      // let bar2 = echarts.init(document.getElementById('bar2'));
       let option1 = {
         title: {
           text:'维修企业注册数量',
@@ -377,118 +313,7 @@ export default {
         // }
         // ],
       };
-      // let optionBar1 = {
-      //   color: ['#C14DE8','#0f0f0f'],
-      //   tooltip : {
-      //     trigger: 'axis',
-      //     axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-      //       type : 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
-      //       label:{show: true}
-      //     }
-      //   },
-      //   grid: {
-      //   },
-      //   legend: {
-      //     data:['非总对总数', '总对总数量', '全部'],
-      //   },
-      //   xAxis : [
-      //     {
-      //       type : 'category',
-      //       data : ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区',  '虹口区', '杨浦区', '闵行区', '宝山区', '嘉定区', '浦东新区', '金山区', '松江区', '青浦区',  '奉贤区', '崇明区'],
-      //       axisTick: {
-      //         alignWithLabel: true
-      //       },
-      //       axisLabel: {
-      //         interval: 0,
-      //         rotate: 40
-      //       },
-      //     },
-          
-          
-      //   ],
-      //   yAxis : [
-      //     {
-      //       type : 'value'
-      //     }
-      //   ],
-      //   series : [
-      //     {
-      //       barGap: 0,
-      //       label: {
-      //         normal: {
-      //           show: true,
-      //           position: 'inside',
-      //           // offset: [-25,-2]
-      //         }
-      //       },
-      //       //配置样式
-      //       itemStyle: {
-      //         //通常情况下：
-      //         normal:{
-      //           //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-      //           color: '#6761FF'
-      //         }
-      //       },
-      //       name:'非总对总数',
-      //       type:'bar',
-      //       barWidth: '60%',
-      //       data:[],
-      //       stack: '数量',
-      //       z: 3,
-      //     },
-      //     {
-      //       label: {
-      //         normal: {
-      //           show: true,
-      //           position: 'inside',
-      //           // offset: [25,-2]
-      //         }
-      //       },
-      //       //配置样式
-      //       itemStyle: {
-      //         //通常情况下：
-      //         normal:{
-      //           color: '#4DB2E8'
-      //         }
-      //       },
-      //       name:'总对总数量',
-      //       type:'bar',
-      //       //barWidth: '60%',
-      //       data:[],
-      //       stack: '数量',
-      //     },
-      //     {
-      //       name:'全部',
-      //       type:'line',
-      //       data:[],
-      //       label: {
-      //         normal: {
-      //           show: true,
-      //           position: 'top',
-      //         }
-      //       },
-      //       itemStyle: {
-      //         //通常情况下：
-      //         normal:{
-      //           color: '#C14DE8'
-      //         }
-      //       },
-      //       z: 4,
-      //     }
-      //   ],
-      //   // dataZoom: [
-      //   // {
-      //   //     show: true,
-      //   //     yAxisIndex: 0,
-      //   //     filterMode: 'none',
-      //   //     width: 30,
-      //   //     height: '70%',
-      //   //     showDataShadow: false,
-      //   //     left: '93%',
-      //   //     minSpan:10
-      //   // }
-      //   // ],
-      // };
+
       option1.series[0].data=[
         {value:parseInt(this.res.uploadcorpcount), name:'维修企业完成对接'},
         {value:parseInt(this.res.corpcount) - parseInt(this.res.uploadcorpcount), name:'维修企业未完成对接'},
@@ -534,12 +359,6 @@ export default {
          this.$router.push({path:'/center/record-company', query:{ minister: params.seriesIndex, area:areaData,name:'zdz'}})
       });
 
-
-      // optionBar1.xAxis[0].data= area;
-      // optionBar1.series[0].data=num;
-      // optionBar1.series[1].data=num2;
-      // optionBar1.series[2].data=sum;
-      // bar2.setOption(optionBar1);
 
     },
     onRowClickTop(row){

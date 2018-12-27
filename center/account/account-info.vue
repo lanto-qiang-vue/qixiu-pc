@@ -27,6 +27,8 @@
                     ref="upload"
                     :show-upload-list="false"
                     :headers="token"
+                    :max-size="3072"
+                    :on-exceeded-size="handleMaxSize"
                     :format="['PNG','JPG','JPEG','BMP']"
                     accept=".PNG, .JPG, .JPEG,.BMP"
                     :on-format-error="handleFormatError"
@@ -157,6 +159,9 @@
                 }else{
                     // this.$Message.error(res.status);
                 }
+            },
+            handleMaxSize (file) {
+                this.$Message.error('图片过大,最大3M!');
             },
             //增加头像------------
             addPhoto(){
