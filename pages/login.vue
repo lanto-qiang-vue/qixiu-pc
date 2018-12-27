@@ -153,6 +153,7 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import config from '~~/config.js'
 export default {
 		name: "login",
     layout: 'layout-root',
@@ -412,6 +413,7 @@ export default {
             case 'wx':{
               param.platform= 'WX'
               param.state= 'wx'
+              param.workOn= config.workOn
               break
             }
             case 'zfb':{

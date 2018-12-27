@@ -11,6 +11,7 @@ const prodConfig={
   shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket',
   articlePath: 'https://download.image.shanghaiqixiu.org/',
   // articlePath: 'http://download.image.lanto.com/'
+  workOn: 'pPro'
 }
 
 
@@ -24,7 +25,8 @@ const devConfig={
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
   shandongSocket: 'http://118.25.13.140:10001/heatmap/socket',
-  articlePath: 'http://download.image.lanto.com/'
+  articlePath: 'http://download.image.lanto.com/',
+  workOn: 'pDev'
 }
 
 export default process.env.NODE_ENV==='development'? devConfig: prodConfig
