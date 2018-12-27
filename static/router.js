@@ -466,7 +466,7 @@ export default [
     ]
   },
   {
-    path: '/menu22',
+    path: '/menu122',
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
