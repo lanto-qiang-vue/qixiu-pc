@@ -59,7 +59,7 @@
       </Tabs>
       <div class="other-way">
         <span>使用其他方式登录:</span>
-        <img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">
+        <!--<img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">-->
         <img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 27px">
         <img src="../assets/img/login_img/zhifu_logo.png" @click="uniteLogin('zfb')" style="width: 24px">
       </div>

@@ -30,7 +30,7 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" @click="showModal=Math.random()" :disabled="!detailData.id">查看</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="showModal=Math.random()" :disabled="!detailData.id">查看</Button>
     </div>
 
 </common-table>
@@ -43,8 +43,10 @@
 import CommonTable from '~/components/common-table.vue'
 import SignInCalendar from '~/components/sign-in-calendar.vue'
 import { formatDate } from '@/static/tools'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 		name: "enterprise-sign",
+  mixins: [funMixin],
     components: {
       CommonTable,
       SignInCalendar
