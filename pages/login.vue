@@ -413,7 +413,7 @@ export default {
             case 'wx':{
               param.platform= 'WX'
               param.state= 'wx'
-              param.workOn= config.workOn
+              // param.workOn= config.workOn
               break
             }
             case 'zfb':{
