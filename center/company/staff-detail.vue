@@ -7,12 +7,12 @@
           <FormItem label="姓名" style="width:60%;" prop="name">
             <Input type="text" v-model="formData.name"></Input>
           </FormItem>
-          <FormItem label="" style="width:20%;" prop="name" :label-width="0">
+          <!--<FormItem label="" style="width:20%;" prop="name" :label-width="0">
             <div style="width: 50px;    line-height: 20px;">
               <span :class="{'tagColor':formData.regStatus}">已注册</span>
               <span :class="{'tagColor':!formData.regStatus}">未注册</span>
             </div>
-          </FormItem>
+          </FormItem>-->
           <FormItem label="手机号码" style="width:60%;" prop="mobileNo">
             <Input type="text" v-model="formData.mobileNo"></Input>
           </FormItem>

@@ -110,12 +110,26 @@
             render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
           },
           {
-            title: '姓名', key: 'name', sortable: true, minWidth: 110
+            title: '姓名', key: 'name', sortable: true, minWidth: 110,
+            // render: (h, params) => {
+            //   if (params.row.regStatus) {
+                
+            //   } else if (this.titleMsg == '已派工维修中') {
+            //     return h('div', [
+            //       h('span', '已派工维修中')
+            //     ]);
+            //   }
+
+            // }
           },
           {
             title: '性别', key: 'corpName', sortable: true, minWidth: 150,
             render: (h, params) => h('span', params.row.gender == 1 ? '男' : '女')
           },
+          // {
+          //   title: '身份证号', key: 'idNum', sortable: true, minWidth: 150,
+            
+          // },
           {
             title: '学历', key: 'education', sortable: true, minWidth: 110,
             render: (h, params) => h('span', this.getName(this.educationList,params.row.education))
@@ -131,6 +145,9 @@
           {
             title: '职称', key: 'professionalTitle', sortable: true, minWidth: 110
           },
+          //  {
+          //   title: '企业名称', key: 'companyName', sortable: true, minWidth: 150
+          // },
         ]
       }
     },
