@@ -9,7 +9,8 @@ const prodConfig={
   repairUrl: 'http://118.25.35.172:7210/',
   socketUrl: 'https://socket.shanghaiqixiu.org/micro/heatmap/socket',
   shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket',
-  articlePath: 'http://download.image.lanto.com/'
+  articlePath: 'https://download.image.shanghaiqixiu.org/',
+  // articlePath: 'http://download.image.lanto.com/'
 }
 
 
