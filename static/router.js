@@ -498,7 +498,7 @@ export default [
         meta: {
           icon: '',
           title: '企业员工详情',
-          accessId: '/center/employees-detail',
+          accessId: '/center/staff-detail',
           hideMenu: true
         },
         component: resolve('center/company/staff-detail.vue'),
