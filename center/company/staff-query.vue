@@ -23,11 +23,19 @@
         <FormItem label="职称:">
           <Input type="text" v-model="search.professionalTitle" placeholder="请输入职称"></Input>
         </FormItem>
-        <!--<FormItem label="所属辖区:" prop="corp_area">-->
-        <!--<Select v-model="search.corp_area">-->
-        <!--<Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
-        <!--</Select>-->
-        <!--</FormItem>-->
+        <FormItem label="手机号:">
+          <Input type="text" v-model="search.mobileNo" placeholder="请输入手机号"></Input>
+        </FormItem>
+        <FormItem label="身份证号:">
+          <Input type="text" v-model="search.idNum" placeholder="请输入身份证号"></Input>
+        </FormItem>
+        <FormItem label="是否注册:">
+          <Select v-model="search.regStatus" clearable>
+            <Option value="true">是</Option>
+            <Option value="false">否</Option>
+          </Select>
+        </FormItem>
+
         <FormItem :label-width="80" style="width: 100px;">
           <Button type="primary" v-if="accessBtn('list')" @click="page=1,getList()">搜索</Button>
         </FormItem>
@@ -38,6 +46,7 @@
       <Button type="primary" v-if="accessBtn('view')" :disabled="canDo" @click="edit">查看</Button>
       <Button type="error" v-if="accessBtn('delete')" @click="del" :disabled="canDo">删除</Button>
       <Button type="primary" v-if="accessBtn('look')" :disabled="canDo" @click="look">查看</Button>
+      <Button type="primary"  @click="exportFun">导出</Button>
 
 
     </div>
@@ -95,7 +104,10 @@
           'education': 0,
           'name': '',
           'position': 0,
-          'professionalTitle': ''
+          'professionalTitle': '',
+          idNum:'',
+          regStatus:'',
+          mobileNo:'',
         },
         total: 0,
         page: 1,
@@ -104,51 +116,7 @@
         showTable: false,
         area: [],
         loading: false,
-        columns: [
-          {
-            title: '序号', minWidth: 80,
-            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
-          },
-          {
-            title: '姓名', key: 'name', sortable: true, minWidth: 110,
-            // render: (h, params) => {
-            //   if (params.row.regStatus) {
-                
-            //   } else if (this.titleMsg == '已派工维修中') {
-            //     return h('div', [
-            //       h('span', '已派工维修中')
-            //     ]);
-            //   }
-
-            // }
-          },
-          {
-            title: '性别', key: 'corpName', sortable: true, minWidth: 150,
-            render: (h, params) => h('span', params.row.gender == 1 ? '男' : '女')
-          },
-          // {
-          //   title: '身份证号', key: 'idNum', sortable: true, minWidth: 150,
-            
-          // },
-          {
-            title: '学历', key: 'education', sortable: true, minWidth: 110,
-            render: (h, params) => h('span', this.getName(this.educationList,params.row.education))
-          },
-          {
-            title: '岗位', key: 'position', sortable: true, minWidth: 110,
-            render: (h, params) => h('span', this.getName(this.positionList,params.row.position))
-          },
-          {
-            title: '是否在岗', key: 'position', sortable: true, minWidth: 110,
-            render: (h, params) => h('span',params.row.onDuty ? '是' : '否')
-          },
-          {
-            title: '职称', key: 'professionalTitle', sortable: true, minWidth: 110
-          },
-          //  {
-          //   title: '企业名称', key: 'companyName', sortable: true, minWidth: 150
-          // },
-        ]
+        columns: []
       }
     },
     methods: {
@@ -167,6 +135,46 @@
             })
           }
         });
+      },
+      //导出表格数据------
+      exportFun(){
+        this.$axios({
+          method: 'post',
+          url: '/staff/repair/export',
+          data:{
+            'companyId': this.search.companyId,
+            'companyName': this.search.companyName,
+            'education': this.search.education == 0 ? '' : this.search.education,
+            'name': this.search.name,
+            'position': this.search.position == 0 ? '' : this.search.position,
+            'professionalTitle': this.search.professionalTitle,
+            'pageNo': this.page,
+            'pageSize': this.limit,
+            mobileNo:this.search.mobileNo,
+            idNum:this.search.idNum,
+            regStatus:this.search.regStatus,
+          },
+          responseType: 'arraybuffer'
+        }).then( (res) => {
+            console.log('res',res)
+
+            let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+            let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+            console.log(headerData,headerName);
+
+
+            let blob = new Blob([res.data], {type: 'application/octet-stream'});
+
+            // console.log(blob);
+            let a = document.createElement('a');
+            a.download = headerName;
+
+            a.href = window.URL.createObjectURL(blob);
+            $("body").append(a);
+            a.click();
+            $(a).remove();
+
+        })
       },
       clearSection(){
         this.list = "";
@@ -216,7 +224,10 @@
           'position': this.search.position == 0 ? '' : this.search.position,
           'professionalTitle': this.search.professionalTitle,
           'pageNo': this.page,
-          'pageSize': this.limit
+          'pageSize': this.limit,
+          mobileNo:this.search.mobileNo,
+          idNum:this.search.idNum,
+          regStatus:this.search.regStatus,
         }).then((res) => {
           if (res.data.code == '0') {
             this.total = res.data.total
@@ -238,9 +249,120 @@
       let roles= this.$store.state.user.userInfo.roles;
       if(this.$route.path == '/center/employees-query'){
         this.type = 1;
+        this.columns=[
+          {
+            title: '序号', minWidth: 80,
+            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
+          },
+          {
+            title: '姓名', key: 'name', sortable: true, minWidth: 150,
+
+            render: (h, params) => {
+              if(params.row.regStatus){
+                  return h('div', [
+                    h('span',params.row.name),
+                    h('Icon', {
+                        props: {
+                          type: "ios-checkmark-circle",
+                        },
+                        style: {
+                            fontSize: "16px",
+                            color:"#52C41A",
+                            padding:"0 5px"
+                        },
+                      },
+                    ),
+                    h('span',{style: {
+                            
+                            color:"#52C41A",
+                    }},'已注册'),
+                  ]);
+              }else{
+                  return h('div', [
+                    h('span',params.row.name)
+                  ]);
+              }
+
+              
+            }
+          },
+          {
+            title: '性别', key: 'corpName', sortable: true, minWidth: 85,
+            render: (h, params) => h('span', params.row.gender == 1 ? '男' : '女')
+          },
+          {
+            title: '手机号', key: 'mobileNo', sortable: true, minWidth: 135,
+            
+          },
+          {
+            title: '身份证号', key: 'idNum', sortable: true, minWidth: 150,
+            
+          },
+          {
+            title: '学历', key: 'education', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', this.getName(this.educationList,params.row.education))
+          },
+          {
+            title: '岗位', key: 'position', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', this.getName(this.positionList,params.row.position))
+          },
+          {
+            title: '是否在岗', key: 'position', sortable: true, minWidth: 110,
+            render: (h, params) => h('span',params.row.onDuty ? '是' : '否')
+          },
+          {
+            title: '职称', key: 'professionalTitle', sortable: true, minWidth: 110
+          },
+          {
+            title: '企业名称', key: 'companyName', sortable: true, minWidth: 140
+          },
+        ];
+      }else if(this.$route.path == '/center/staff-query'){
+        this.type = 3;
+        this.columns=[
+          {
+            title: '序号', minWidth: 80,
+            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
+          },
+          {
+            title: '姓名', key: 'name', sortable: true, minWidth: 110,
+          },
+          {
+            title: '性别', key: 'corpName', sortable: true, minWidth: 100,
+            render: (h, params) => h('span', params.row.gender == 1 ? '男' : '女')
+          },
+          {
+            title: '手机号', key: 'mobileNo', sortable: true, minWidth: 135,
+            
+          },
+          {
+            title: '身份证号', key: 'idNum', sortable: true, minWidth: 150,
+            
+          },
+          {
+            title: '是否注册', key: 'regStatus', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.regStatus? '是' : '否')
+          },
+          {
+            title: '学历', key: 'education', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', this.getName(this.educationList,params.row.education))
+          },
+          {
+            title: '岗位', key: 'position', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', this.getName(this.positionList,params.row.position))
+          },
+          {
+            title: '是否在岗', key: 'position', sortable: true, minWidth: 110,
+            render: (h, params) => h('span',params.row.onDuty ? '是' : '否')
+          },
+          {
+            title: '职称', key: 'professionalTitle', sortable: true, minWidth: 110
+          },
+        ];
       }
       if(roles[0].code == 'weixiuqiye'){
         this.type = 3;
+        
         // let nickname = this.$store.state.user.userInfo.nickname;
         // this.search.companyName = nickname;
       }

@@ -7,16 +7,16 @@
           <FormItem label="姓名" style="width:60%;" prop="name">
             <Input type="text" v-model="formData.name"></Input>
           </FormItem>
-          <!--<FormItem label="" style="width:20%;" prop="name" :label-width="0">
+          <FormItem label="" style="width:20%;" prop="name" :label-width="0">
             <div style="width: 50px;    line-height: 20px;">
               <span :class="{'tagColor':formData.regStatus}">已注册</span>
               <span :class="{'tagColor':!formData.regStatus}">未注册</span>
             </div>
-          </FormItem>-->
-          <FormItem label="手机号码" style="width:60%;" prop="mobileNo">
-            <Input type="text" v-model="formData.mobileNo"></Input>
           </FormItem>
-          <FormItem label="身份证号" style="width:60%;" prop="idNum">
+          <FormItem label="手机号码" style="width:60%;"  prop="mobileNo">
+            <Input type="text" v-model="formData.mobileNo" :readonly="formData.regStatus"></Input>
+          </FormItem>
+          <FormItem label="身份证号" style="width:60%;" prop="idNum" >
             <Input type="text" v-model="formData.idNum"></Input>
           </FormItem>
           <FormItem label="性别:" style="width:80%;" prop="gender">
@@ -491,7 +491,9 @@
           } else {
             url = '/staff/add'
           }
+          
           let data = deepClone(this.formData)
+          data.idNum=data.idNum.toLowerCase();
           data.onDuty = Boolean(data.onDuty)
           if (valid) {
             this.$Modal.confirm({
@@ -518,7 +520,7 @@
 </script>
 <style lang="less" scoped>
   .tagColor{
-    color: green;
+    color: #52C41A;
   }
   .demo-upload-list {
     display: inline-block;
