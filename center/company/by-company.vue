@@ -20,7 +20,7 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary"  @click="exportFun">导出</Button>
+      <Button type="primary" v-if="accessBtn('export')"  @click="exportFun">导出</Button>
 
 
     </div>
@@ -29,9 +29,11 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
 import { getName, deepClone } from '@/static/util.js'
+import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'by-company',
     components: { CommonTable },
+    mixins: [funMixin],
     data: function() {
       return {
         areaList:[],

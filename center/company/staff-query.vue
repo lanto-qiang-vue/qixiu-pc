@@ -46,7 +46,7 @@
       <Button type="primary" v-if="accessBtn('view')" :disabled="canDo" @click="edit">查看</Button>
       <Button type="error" v-if="accessBtn('delete')" @click="del" :disabled="canDo">删除</Button>
       <Button type="primary" v-if="accessBtn('look')" :disabled="canDo" @click="look">查看</Button>
-      <Button type="primary"  @click="exportFun">导出</Button>
+      <Button type="primary" v-if="accessBtn('export')"  @click="exportFun">导出</Button>
 
 
     </div>
