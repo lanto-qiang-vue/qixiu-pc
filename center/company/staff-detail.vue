@@ -286,7 +286,7 @@
           staffCertList: [],
           idNum:'',
           mobileNo:'',
-          regStatus:'',
+          regStatus:false,
         },
         rule: {
           name: [{ required: true, message: '姓名必填' }],
