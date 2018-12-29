@@ -12,7 +12,7 @@
     <img class="shanghai" src="/img/hotmap/shanghai.png"/>
 
     <div class="total mnypjt">
-      <label><span id="corptotal">test-54321</span></label>
+      <label style="display: none"><span id="corptotal">test-54321</span></label>
       <label class="hasbg"><span id="join">test-54321</span></label>
       <label class="hasbg"><span id="using">test-54321</span></label>
     </div>
