@@ -24,7 +24,7 @@
             <div>浏览：{{detail.viewNumber}}</div>
           </div>
         </div>
-        <p>{{detail.content}}</p>
+        <p v-html="detail.content"></p>
         <div class="img-block" v-if="detail.questionPhoto && detail.questionPhoto.length">
           <img v-for="(item, key) in detail.questionPhoto" :src="item" :key="key"
                v-img="{group: 'ask-img'}"  />
@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="answer-content">
-            <p>{{item.answerContent}}</p>
+            <p v-html="item.answerContent"></p>
             <div class="img-block" v-if="detail.questionPhoto && detail.questionPhoto.length">
               <img v-for="(item, key2) in detail.questionPhoto" :src="item" :key="key2"
                    v-img="{group: 'answer-img'+key}"  />
