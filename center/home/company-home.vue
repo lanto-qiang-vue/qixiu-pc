@@ -83,7 +83,7 @@
         notifyColumns: [
           {title: '通知标题', key: 'title',  minWidth: 100,},
           {title: '通知内容', key: 'content',  minWidth: 100,
-            render: (h, params) => h('span', JSON.parse(params.row.content).content)
+            // render: (h, params) => h('span', JSON.parse(params.row.content).content)
           },
           {title: '通知发送人', key: 'nickname',  minWidth: 100},
           {title: '通知日期', key: 'sendTime',  minWidth: 100,

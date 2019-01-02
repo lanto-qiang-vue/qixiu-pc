@@ -170,6 +170,7 @@
       },
       value(data){
         this.data= data
+
       },
     },
     mounted() {
