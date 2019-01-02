@@ -98,8 +98,8 @@ export default {
         area: '',
         is4s: '',
         hot: '',
-        lng: '',
-        lat: ''
+        lng: 121.480236,
+        lat: 31.236301
       },
       area: [],
       sort:[
@@ -161,7 +161,7 @@ export default {
   // },
   methods:{
     init(){
-
+      this.$Spin.show();
       // console.log('this.map', this.map)
       // console.log('map1', window.map1)
       this.map= new AMap.Map('comp-map',{
@@ -198,19 +198,18 @@ export default {
             timeout: 2000,
           });
           // this.map.addControl(this.geolocation);
-          this.geolocation.getCurrentPosition((status,result)=>{
-            console.log("getLocation")
-            if( status== 'complete'){
-              this.map.setCenter(result.position)
-              this.map.add(new AMap.Marker(result.position))
-              this.search.lng= result.position.lng
-              this.search.lat= result.position.lat
-              this.getCompList()
-              this.initPiontList()
-            }else{
-              this.getCity()
-            }
-          });
+          this.geolocation.getCurrentPosition();
+          AMap.event.addListener(this.geolocation, 'complete', (result)=>{
+            this.map.setCenter(result.position)
+            this.map.add(new AMap.Marker(result.position))
+            this.search.lng= result.position.lng
+            this.search.lat= result.position.lat
+            this.getCompList()
+            this.initPiontList()
+          });//返回定位信息
+          AMap.event.addListener(this.geolocation, 'error', (err)=>{
+            this.getCity()
+          });      //返回定位出错信息
         });
       }
     },
@@ -230,6 +229,14 @@ export default {
               this.getCompList()
               this.initPiontList()
             })
+          }else{
+            let center= new AMap.LngLat(this.search.lng, this.search.lat)
+            this.map.panTo(center)
+            this.map.add(new AMap.Marker( {
+              position: center
+            }))
+            this.getCompList()
+            this.initPiontList()
           }
         })
       });
@@ -275,6 +282,7 @@ export default {
         url: '/micro/search/company'+ query,
         method: 'get',
       }).then( (res) => {
+        this.$Spin.hide();
         this.calcPointList(res.data.content)
       })
     },
