@@ -203,9 +203,6 @@ export default {
         border-bottom: 1px solid #e8eaec;
         .answer-content{
           margin: 15px 0;
-          img{
-            max-width: 20%;
-          }
         }
       }
       .answers:last-child{
@@ -220,6 +217,11 @@ export default {
   .ask-block{
     .ivu-card-body{
       min-height: 100px;
+    }
+  }
+  .answer-content{
+    img{
+      max-width: 100%;
     }
   }
 }
