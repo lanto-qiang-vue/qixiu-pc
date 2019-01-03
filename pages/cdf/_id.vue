@@ -50,9 +50,9 @@
           </div>
           <div class="answer-content">
             <p v-html="item.answerContent"></p>
-            <div class="img-block" v-if="detail.questionPhoto && detail.questionPhoto.length">
-              <img v-for="(item, key2) in detail.questionPhoto" :src="item" :key="key2"
-                   v-img="{group: 'answer-img'+key}"  />
+            <div class="img-block" v-if="item.answerPhoto && item.answerPhoto.length">
+              <img v-for="(item2, key2) in item.answerPhoto" :src="item2" :key="key2"
+                   v-img="{group: 'answer-img'+key2}"  />
             </div>
           </div>
         </div>
