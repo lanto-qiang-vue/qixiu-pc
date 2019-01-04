@@ -213,35 +213,35 @@
     <p>企业员工信息</p>
   </nuxt-link>
 
-  <div id="float-survey">
-    <p class="close">关闭</p>
-    <a href="http://dh3t.cn/ys6RSb" target="_blank">
-      <img src="/img/temp/float-survey.png"/>
-    </a>
-  </div>
-  <style>
-    #float-survey{
-      z-index: 999999999;
-      width: 100px;
-      position: fixed;
-      right: 5px;
-      bottom: 30%;
-      overflow: hidden;
-    }
-    #float-survey .close{
-      padding: 5px 10px;
-      float: right;
-      cursor: pointer;
-    }
-    #float-survey a{
-      display: block;
-      overflow: hidden;
-      width: 100%;
-    }
-    #float-survey a img{
-      width: 100%;
-    }
-  </style>
+  <!--<div id="float-survey">-->
+    <!--<p class="close">关闭</p>-->
+    <!--<a href="http://dh3t.cn/ys6RSb" target="_blank">-->
+      <!--<img src="/img/temp/float-survey.png"/>-->
+    <!--</a>-->
+  <!--</div>-->
+  <!--<style>-->
+    <!--#float-survey{-->
+      <!--z-index: 999999999;-->
+      <!--width: 100px;-->
+      <!--position: fixed;-->
+      <!--right: 5px;-->
+      <!--bottom: 30%;-->
+      <!--overflow: hidden;-->
+    <!--}-->
+    <!--#float-survey .close{-->
+      <!--padding: 5px 10px;-->
+      <!--float: right;-->
+      <!--cursor: pointer;-->
+    <!--}-->
+    <!--#float-survey a{-->
+      <!--display: block;-->
+      <!--overflow: hidden;-->
+      <!--width: 100%;-->
+    <!--}-->
+    <!--#float-survey a img{-->
+      <!--width: 100%;-->
+    <!--}-->
+  <!--</style>-->
 </div>
 </template>
 
@@ -491,10 +491,10 @@ export default {
   beforeMount(){
   },
   mounted(){
-    //问卷浮窗
-    $(" #float-survey .close").click(function () {
-      $(" #float-survey").hide()
-    })
+    // //问卷浮窗
+    // $(" #float-survey .close").click(function () {
+    //   $(" #float-survey").hide()
+    // })
 
     // console.log('index.mounted', this.$route)
     let self= this
