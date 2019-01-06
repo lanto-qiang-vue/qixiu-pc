@@ -375,7 +375,7 @@ export default {
           let lngLat= new AMap.LngLat(this.pointList[i].lon|| this.search.lng, this.pointList[i].lat|| this.search.lat)
           let content = ''
           switch (this.pointList[i].type){
-            case '300':{
+            case 300:{
               content= '<div class="map-content">'+
                 '<div class="title">'+ this.pointList[i].name+'</div>'+
                 '<div class="body">' +
