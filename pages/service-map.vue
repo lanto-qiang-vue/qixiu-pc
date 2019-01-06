@@ -25,8 +25,11 @@
       <Button slot="append" icon="ios-search" @click="getCompList"></Button>
       </Input>
       <div class="select-bar" v-show="search.type=='164' ||search.type=='300'">
-        <Select v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
+        <Select v-show="search.type=='164'" v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+        <Select v-show="search.type=='300'" v-model="search.sortSchool" placeholder="驾校排序" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, index) in sortSchool" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
         <Select v-show="search.type=='300'" v-model="search.bizScope" placeholder="驾照类型" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option>
@@ -34,7 +37,7 @@
         <Select v-model="search.is4s" placeholder="企业类型" v-show="search.type=='164'" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
-        <Select v-model="search.area" placeholder="企业区域" clearable @on-change="changeSelectAll">
+        <Select v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
         <Select v-model="search.hot" placeholder="热门搜索" v-show="search.type=='164'" clearable class="brand" @on-change='selectHot' ref="hot">
@@ -109,6 +112,7 @@ export default {
         is4s: '',
         hot: '',
         bizScope: '',
+        sortSchool: '',
         lng: 121.480236,
         lat: 31.236301
       },
@@ -117,6 +121,9 @@ export default {
         {name: '默认', value: ''},
         {name: '距离优先', value: 'distance'},
         {name: '好评优先', value: 'rating desc,distance asc'},
+      ],
+      sortSchool: [
+
       ],
       maintainType:[
         {name: '全部', value: ''},
@@ -138,10 +145,21 @@ export default {
       ],
       bizScope: [
         {name: '全部', value: ''},
+        {name: 'A1', value: 'A1'},
+        {name: 'A2', value: 'A2'},
+        {name: 'A3', value: 'A3'},
+        {name: 'B1', value: 'B1'},
+        {name: 'B2', value: 'B2'},
         {name: 'C1', value: 'C1'},
         {name: 'C2', value: 'C2'},
-        {name: 'A1', value: 'A1'},
-        {name: 'B1', value: 'B1'},
+        // {name: 'C3', value: 'C3'},
+        // {name: 'C4', value: 'C4'},
+        {name: 'D', value: 'D'},
+        {name: 'E', value: 'E'},
+        {name: 'F', value: 'F'},
+        // {name: 'M', value: 'M'},
+        // {name: 'N', value: 'N'},
+        // {name: 'P', value: 'P'},
       ],
       total: 0,
       limit: 4,
@@ -280,14 +298,15 @@ export default {
     },
     calcQuery(limit){
       let is164= this.search.type== 164
+      let is300= this.search.type== 300
       let query='?fl=type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,serveSupports'+
         '&q='+ this.search.q +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
       if(is164) query+= ('&sort=_score desc,'+ (this.search.sort||'distance'))
       if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
       let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
-      if(this.search.bizScope) fq+= ('+AND+bizScope:'+  this.search.bizScope)
-      if(this.search.area && is164) fq+= '+AND+areaKey:'+ this.search.area
+      if(this.search.bizScope) fq+= ('+AND+kw:'+  this.search.bizScope)
+      if(this.search.area && (is164 || is300)) fq+= '+AND+areaKey:'+ this.search.area
       if(this.search.is4s && is164){
         is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
         fq+= '+AND+' + is4s
@@ -354,36 +373,44 @@ export default {
         for (let i in this.pointList){
           let is164= this.pointList[i].type== 164
           let lngLat= new AMap.LngLat(this.pointList[i].lon|| this.search.lng, this.pointList[i].lat|| this.search.lat)
-          let content = '<div class="map-content">'+
-            '<div class="title">'+ this.pointList[i].name+'</div>'+
-            '<div class="body">' +
-            '<ul>' +
-            '<li><span>企业名称：</span>'+this.pointList[i].name+'</li>' +
-            '<li><span>经营地址：</span>'+this.pointList[i].addr+'</li>' +
-            '<li><span>联系电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
-            (is164? '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>':'' )+
-            (is164? '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>':'' )+
-            (is164? '<li><span>业户类别：</span>'+this.formatCategory(this.pointList[i].category)+'</li>':'' )+
-            '</ul>'+
-            (is164? ('<div class="button-block">' +
-            '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
-            '<a href="/appointment/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
-            '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
-            '</div>') :'')+
-            '</div>'+
-            '</div>'
+          let content = ''
+          switch (this.pointList[i].type){
+            case '300':{
+              content= '<div class="map-content">'+
+                '<div class="title">'+ this.pointList[i].name+'</div>'+
+                '<div class="body">' +
+                '<ul>' +
+                '<li><span>驾校名称：</span>'+this.pointList[i].name+'('+ this.pointList[i].grade+'级)</li>' +
+                '<li><span>报名地址：</span>'+this.pointList[i].addr+'</li>' +
+                '<li><span>报名电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
+                '<li><span>培训驾照类型：</span>'+(this.pointList[i].bizScope||'')+'</li>' +
+                '<li><span>训练基地：</span>'+(this.pointList[i].serveSupports.join(","))+'</li>' +
+                '</div>'+
+                '</div>'
+              break;
+            }
+            default :{
+              content = '<div class="map-content">'+
+                '<div class="title">'+ this.pointList[i].name+'</div>'+
+                '<div class="body">' +
+                '<ul>' +
+                '<li><span>企业名称：</span>'+this.pointList[i].name+'</li>' +
+                '<li><span>经营地址：</span>'+this.pointList[i].addr+'</li>' +
+                '<li><span>联系电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
+                (is164? '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>':'' )+
+                (is164? '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>':'' )+
+                (is164? '<li><span>业户类别：</span>'+this.formatCategory(this.pointList[i].category)+'</li>':'' )+
+                '</ul>'+
+                (is164? ('<div class="button-block">' +
+                  '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
+                  '<a href="/appointment/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
+                  '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
+                  '</div>') :'')+
+                '</div>'+
+                '</div>'
+            }
+          }
 
-          let contentSchool = '<div class="map-content">'+
-            '<div class="title">'+ this.pointList[i].name+'</div>'+
-            '<div class="body">' +
-            '<ul>' +
-            '<li><span>驾校名称：</span>'+this.pointList[i].name+'('+ this.pointList[i].grade+'级)</li>' +
-            '<li><span>报名地址：</span>'+this.pointList[i].addr+'</li>' +
-            '<li><span>报名电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
-            '<li><span>培训驾照类型：</span>'+(this.pointList[i].bizScope||'')+'</li>' +
-            '<li><span>训练基地：</span>'+(this.pointList[i].serveSupports.join(","))+'</li>' +
-            '</div>'+
-            '</div>'
 
           this.pointList[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
             // panel: 'panel',
@@ -392,7 +419,7 @@ export default {
             placeSearch: true,
             asOrigin: true,
             asDestination: true,
-            content: this.pointList[i].type=='300'? contentSchool:content
+            content: content
           });
 
 
