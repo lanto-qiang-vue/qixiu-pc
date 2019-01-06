@@ -59,7 +59,7 @@
             <span>报名地址：{{item.addr}}</span>
             <span>训练基地：{{item.serveSupports.join(',')}}</span>
             <span>培训驾照类型：{{item.bizScope}}</span>
-            <Tag color="orange">{{item.grade}}</Tag>
+            <Tag color="orange">{{item.grade ||'未评级'}}</Tag>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
@@ -123,7 +123,7 @@ export default {
         {name: '好评优先', value: 'rating desc,distance asc'},
       ],
       sortSchool: [
-
+        {name: '距离优先', value: 'distance'},
       ],
       maintainType:[
         {name: '全部', value: ''},
