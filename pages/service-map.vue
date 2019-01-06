@@ -5,7 +5,7 @@
     <div class="sub-title">
       <Breadcrumb>
         <BreadcrumbItem to="/">主页</BreadcrumbItem>
-        <BreadcrumbItem>维修查选</BreadcrumbItem>
+        <BreadcrumbItem>查选服务</BreadcrumbItem>
       </Breadcrumb>
     </div>
     <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
