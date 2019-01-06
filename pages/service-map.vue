@@ -467,7 +467,7 @@ export default {
       this.initPiontList()
     },
     changeSelectAll(){
-
+      this.page= 1
     },
     selectHot(val){
       if(val) this.search.q= val
