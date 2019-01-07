@@ -59,7 +59,7 @@
       </Tabs>
       <div class="other-way">
         <span>使用其他方式登录:</span>
-        <img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">
+        <!--<img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">-->
         <img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 27px">
         <img src="../assets/img/login_img/zhifu_logo.png" @click="uniteLogin('zfb')" style="width: 24px">
       </div>
@@ -69,7 +69,7 @@
   <Modal
     v-model="showBind"
     title="请绑定手机号"
-    width="350px"
+    width="300px"
     @on-visible-change=""
     :footer-hide="true"
     class=""
@@ -95,9 +95,9 @@
         <FormItem style="margin-bottom: 10px">
           <Button type="primary" long @click="toLogin(bindParam.type, bindParam.openId, true)">绑定并登录</Button>
         </FormItem>
-        <div class="deal">
+        <div class="deal" style="text-align: center">
           <p>新用户完成注册，代表同意</p>
-          <a>《上海汽修平台用户协议》</a>
+          <a href="/article/protocol" target="_blank">《上海汽修平台用户协议》</a>
         </div>
       </Form>
   </Modal>
@@ -152,8 +152,8 @@
 </template>
 
 <script>
-import config from '../config.js'
 import BasicContainer from '~/components/basic-container.vue'
+import config from '~~/config.js'
 export default {
 		name: "login",
     layout: 'layout-root',
@@ -229,7 +229,6 @@ export default {
 		  // console.log('this',this)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
-      console.log('baseUrl:', config.apiUrl)
     },
 		methods: {
 			//获取短信验证码----
@@ -404,7 +403,7 @@ export default {
           redirectUri: encodeURIComponent(href),
         }
         if(state){
-          param.code= this.$route.query.code
+          param.code= this.$route.query.auth_code ||this.$route.query.code
           switch (state){
             case 'qq':{
               param.platform= 'QQ'
@@ -414,6 +413,7 @@ export default {
             case 'wx':{
               param.platform= 'WX'
               param.state= 'wx'
+              // param.workOn= config.workOn
               break
             }
             case 'zfb':{

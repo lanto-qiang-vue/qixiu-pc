@@ -4,8 +4,20 @@
     <div style="height:auto;width:100%;">
       <div style="float:left;height:auto;width:50%;padding-bottom:20px;">
         <Form class="common-form" :model="formData" ref="formData" :rules="rule" :label-width="120">
-          <FormItem label="姓名" style="width:80%;" prop="name">
+          <FormItem label="姓名" style="width:60%;" prop="name">
             <Input type="text" v-model="formData.name"></Input>
+          </FormItem>
+          <FormItem label="" style="width:20%;" prop="name" :label-width="0">
+            <div style="width: 50px;    line-height: 20px;">
+              <span :class="{'tagColor':formData.regStatus}">已注册</span>
+              <span :class="{'tagColor':!formData.regStatus}">未注册</span>
+            </div>
+          </FormItem>
+          <FormItem label="手机号码" style="width:60%;"  prop="mobileNo">
+            <Input type="text" v-model="formData.mobileNo" :readonly="formData.regStatus"></Input>
+          </FormItem>
+          <FormItem label="身份证号" style="width:60%;" prop="idNum" >
+            <Input type="text" v-model="formData.idNum"></Input>
           </FormItem>
           <FormItem label="性别:" style="width:80%;" prop="gender">
             <RadioGroup v-model="formData.gender">
@@ -121,9 +133,9 @@
         </div>
       </Form>
     </div>
-    <Button type="primary" @click="handleTabsAdd" style="margin:20px 0 20px 120px;">添加证书</Button>
+    <Button type="primary" @click="handleTabsAdd" v-if="accessBtn('edit')" style="margin:20px 0 20px 120px;">添加证书</Button>
     <Tabs type="card" :before-remove='beforeRemove' v-model="indexName" style="width:80%;" @on-click="qh">
-      <TabPane v-for="(item,tab) in formData.staffCertList" :closable="true" :key="tab" :name="'s'+(tab)"
+      <TabPane v-for="(item,tab) in formData.staffCertList" :closable="accessBtn('edit')" :key="tab" :name="'s'+(tab)"
                :label="'证书' + (tab+1)">
         <Form class="common-form" :model="item" ref="s1" :rules="rules" :label-width="120">
           <!--<FormItem label="名称" prop="certName" style="width:80%;">-->
@@ -152,6 +164,7 @@
             <!--@success="success"></upload-img>-->
             <!--</div>-->
             <Upload
+              v-if="accessBtn('edit')"
               multiple
               :headers="{token:item.token}"
               :show-upload-list="false"
@@ -188,7 +201,7 @@
     </Modal>
     <Form :label-width="120">
       <FormItem>
-        <Button @click="submit" type="primary">保存</Button>
+        <Button @click="submit" v-if="accessBtn('edit')" type="primary">保存</Button>
       </FormItem>
     </Form>
   </div>
@@ -197,10 +210,12 @@
 <script>
   import uploadImg from '~/components/uploadImg.vue'
   import { deepClone } from '../../static/util'
+  import funMixin from '~/components/fun-auth-mixim.js'
 
   export default {
     name: 'staff-detail',
     components: { uploadImg },
+    mixins: [funMixin],
     data() {
       const validateChange = (rule, value, callback) => {
         if (value == 0) {
@@ -268,14 +283,19 @@
           districtHonor: '',
           industryLevelHonor: '',
           otherHonor: '',
-          staffCertList: []
+          staffCertList: [],
+          idNum:'',
+          mobileNo:'',
+          regStatus:false,
         },
         rule: {
           name: [{ required: true, message: '姓名必填' }],
           gender: [{ required: true, message: '性别必填' }],
           education: [{ required: true, message: '学历必选' }, { validator: validateChange, trigger: 'blur,change' }],
           onDuty: [{ required: true, message: '必填项' }],
-          position: [{ required: true, message: '岗位必选' }]
+          position: [{ required: true, message: '岗位必选' }],
+          mobileNo:[{ required: true, message: '手机号码必填' }],
+          idNum:[{ required: true, message: '身份证号必填' }],
         },
         rule1: {},
         rules: {
@@ -323,6 +343,8 @@
             this.formData = item
           }
         })
+      }else{
+        this.handleTabsAdd()
       }
     },
     methods: {
@@ -469,7 +491,9 @@
           } else {
             url = '/staff/add'
           }
+          
           let data = deepClone(this.formData)
+          data.idNum=data.idNum.toLowerCase();
           data.onDuty = Boolean(data.onDuty)
           if (valid) {
             this.$Modal.confirm({
@@ -495,6 +519,9 @@
   }
 </script>
 <style lang="less" scoped>
+  .tagColor{
+    color: #52C41A;
+  }
   .demo-upload-list {
     display: inline-block;
     width: 250px;

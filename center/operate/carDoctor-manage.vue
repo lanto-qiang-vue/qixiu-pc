@@ -51,8 +51,8 @@
           },
           {title: '职称', key: 'professor', sortable: true, minWidth: 120},
           {title: '就职企业', key: 'empUnit', sortable: true, minWidth: 135},
-          {title: '专业擅长', key: 'goodAt', sortable: true, minWidth: 120},
-          {title: '主要荣誉', key: 'honor', sortable: true, minWidth: 120,
+          {title: '专业擅长', key: 'goodAt', sortable: true, minWidth: 120,tooltip:true,},
+          {title: '主要荣誉', key: 'honor', sortable: true, minWidth: 120,tooltip:true,
             // render: (h, params) => h('span',  params.row.status.name)
           },
         ],

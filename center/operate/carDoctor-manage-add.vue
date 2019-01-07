@@ -2,7 +2,7 @@
 <template>
 <Modal
     v-model="showModal"
-    title="车大夫添加"
+    title="车大夫编辑"
     width="90"
     @on-visible-change="visibleChange"
     :scrollable="true"
@@ -43,7 +43,12 @@
                 <Input type="text"  v-model="listSearch.empUnit" placeholder="请输入就职企业"></Input>
             </FormItem>
             <FormItem label="职称:" style="width: 45%;" prop="professor">
-                <Input type="text" v-model="listSearch.professor" placeholder="请输入职称"></Input>
+                <Input type="text" v-model="item.name" placeholder="请输入职称" style="margin-bottom: 5px"
+                v-for="(item, index) in professors" :key="index" @on-change="changeProfessor">
+                  <Button type="error" slot="append" icon="md-close"
+                          v-if="index!=0" @click="delProfessor(index)"></Button>
+                </Input>
+              <Button type="success" @click="addProfessor">增加一条</Button>
             </FormItem>
             <FormItem label="荣誉:" style="width: 92%;">
                 <Input type="textarea" :rows="4" v-model="listSearch.honor" placeholder=""></Input>
@@ -63,6 +68,8 @@
                 ref="upload"
                 :show-upload-list="false"
                 :headers="token"
+                :max-size="3072"
+                :on-exceeded-size="handleMaxSize"
                 :format="['PNG','JPG','JPEG','BMP']"
                 accept=".PNG, .JPG, .JPEG,.BMP"
                 :on-format-error="handleFormatError"
@@ -117,6 +124,7 @@ export default {
             answerDetail:{
                 answerdata:'',
             },
+            professors:[{name: ''}],
             //规则验证-------
             ruleValidate: {
                 name: [
@@ -166,6 +174,13 @@ export default {
                 this.editFlag=true;
             }
         },
+      // professors(arr){
+      //     let professor=[]
+      //   for(let i in arr){
+      //     professor.push(arr[i].name)
+      //   }
+      //   this.listSearch.professor= professor.join(',')
+      // }
     },
     methods:{
         //获取详情
@@ -287,6 +302,9 @@ export default {
 
             })
         },
+        handleMaxSize (file) {
+            this.$Message.error('图片过大,最大3M!');
+        },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
@@ -303,7 +321,20 @@ export default {
             }else{
                 // this.$Message.error(res.status);
             }
+        },
+      delProfessor(index){
+        this.professors.splice(index, 1)
+      },
+      addProfessor(){
+          this.professors.push({name: ''})
+      },
+      changeProfessor(){
+        let professor=[], arr=this.professors
+        for(let i in arr){
+          if(arr[i].name) professor.push(arr[i].name)
         }
+        this.listSearch.professor= professor.join(',')
+      }
     },
 }
 </script>

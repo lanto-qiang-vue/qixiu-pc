@@ -3,7 +3,7 @@
   <div class="head">
     <span><Icon type="ios-pie" /> 问答专家团</span>
     <!--<span class="more">更多<Icon type="ios-arrow-forward" /></span>-->
-    <nuxt-link tag="a" class="more" :to="'/guild-article/10281024/211'">更多<Icon type="ios-arrow-forward" /></nuxt-link>
+    <nuxt-link tag="a" class="more" :to="'/guild-article/10281024/specialist'">更多<Icon type="ios-arrow-forward" /></nuxt-link>
   </div>
   <div id="expert-list">
     <ul>

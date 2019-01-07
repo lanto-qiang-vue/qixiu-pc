@@ -14,6 +14,7 @@ export default function ({ $axios, redirect, store, route, app }) {
       let code= response.data.code
       switch (code){
         case '0': break;
+        case '401':
         case '2000':
         case '100':{
           $axios.$get('/user/useraccount/logout')
@@ -36,7 +37,13 @@ export default function ({ $axios, redirect, store, route, app }) {
         default: {
           if (process.client && code!= undefined) {
             Message.destroy()
-            response.data.status? Message.error({content: response.data.status, duration: 3}): '';
+            let content= ''
+            if(response.data.status) content+= response.data.status
+            if(response.data.message) content+= ' '+response.data.message
+
+            response.data.status? Message.error({
+              content: content,
+              duration: 5}): '';
           }
         }
       }

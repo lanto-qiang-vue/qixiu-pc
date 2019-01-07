@@ -72,6 +72,7 @@ export default {
 
           },
       ],
+
       notifyData: [],
       typeList:[
             {code:0,name:"维修记录未上传"},
@@ -85,14 +86,17 @@ export default {
     this.$Spin.show();
     $.getScript('/libs/echarts.common.min.js',()=>{
       this.getData()
+      this.$Spin.hide();
     })
+
+    this.getList();
   },
   methods:{
     getData(){
       this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
         this.res= res.item
         this.showChart(res.item)
-        this.$Spin.hide();
+
       })
     },
     showChart(data){
@@ -309,6 +313,7 @@ export default {
         // }
         // ],
       };
+
       option1.series[0].data=[
         {value:parseInt(this.res.uploadcorpcount), name:'维修企业完成对接'},
         {value:parseInt(this.res.corpcount) - parseInt(this.res.uploadcorpcount), name:'维修企业未完成对接'},
@@ -334,10 +339,13 @@ export default {
       }
 
       optionBar.xAxis[0].data= area;
+
       optionBar.series[0].data=num;
       optionBar.series[1].data=num2;
       optionBar.series[2].data=sum;
       bar1.setOption(optionBar);
+
+      
 
       bar1.on('click', (params)=>{
           console.log(params)
@@ -350,6 +358,8 @@ export default {
                 }
          this.$router.push({path:'/center/record-company', query:{ minister: params.seriesIndex, area:areaData,name:'zdz'}})
       });
+
+
     },
     onRowClickTop(row){
       // console.log(row);

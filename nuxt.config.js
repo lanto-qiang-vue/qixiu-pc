@@ -81,6 +81,11 @@ module.exports = {
       pathRewrite: {'^/proxy': ''},
       secure: false
     },
+    '/staticArticle': {
+      target: config.articlePath,
+      pathRewrite: {'^/staticArticle': ''},
+      secure: false
+    },
   },
   /*
   ** Build configuration

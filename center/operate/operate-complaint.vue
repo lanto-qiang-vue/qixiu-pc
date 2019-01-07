@@ -58,14 +58,14 @@
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120},
           {title: '企业联系人电话', key: 'companyPhone', sortable: true, minWidth: 150,
           },
-          {title: '企业联系人电话', key: 'userMobile', sortable: true, minWidth: 150,
+          {title: '车主电话', key: 'userMobile', sortable: true, minWidth: 150,
           },
           {title: '车牌号', key: 'vehicleNum', sortable: true, minWidth: 120},
           {title: '反馈类型', key: 'type', sortable: true, minWidth: 120,
                 render: (h, params) => h('span', getName(this.typeList,params.row.type)||'')
             },
           {title: '事件发生日期', key: 'cmCreateDate', sortable: true, minWidth: 150,
-            render: (h, params) => h('span', formatDate(params.row.cmCreateDate)||'')
+            render: (h, params) => h('span', formatDate(params.row.billCreateDate)||'')
             },
           {title: '凭证', key: 'photoUrl', sortable: true, minWidth: 130,
                 render: (h, params) => {

@@ -1,7 +1,7 @@
 <template>
 <div style="position: relative;">
   <Button type="primary" @click="fullscreen" style="position: absolute;right: 10px;top: -36px;">全屏</Button>
-  <div class="operator-home">
+  <div class="map-body">
     <div class="hxxlogo">
       <img class="hxx-logo" src="/img/hotmap/logo.png"/>
       <img class="logostar" src="/img/hotmap/logostar.png"/>
@@ -12,7 +12,7 @@
     <img class="shanghai" src="/img/hotmap/shanghai.png"/>
 
     <div class="total mnypjt">
-      <label><span id="corptotal">test-54321</span></label>
+      <label style="display: none"><span id="corptotal">test-54321</span></label>
       <label class="hasbg"><span id="join">test-54321</span></label>
       <label class="hasbg"><span id="using">test-54321</span></label>
     </div>
@@ -67,47 +67,23 @@
 </template>
 
 <script>
-import config from '../../config.js'
+import config from '~/config.js'
+import Mixin from '~/center/hotmap/hotmap-mixin.js'
 export default {
   name: "operator-home",
-  // head () {
-  //   return {
-  //     script: [
-  //       { type: 'text/javascript', src: "/libs/websocket/sockjs.min.js"},
-  //       { type: 'text/javascript', src: "/libs/websocket/stomp.min.js"},
-  //
-  //     ],
-  //   }
-  // },
+  mixins: [Mixin],
   data(){
     return{
       areaKeys: ['310000','310112','310113','310114','310115','310116','310117','310118','310120','310130'],
-      stompClient: null
-    }
-  },
-  mounted(){
-    $('body').addClass('hot-map')
-    window.onresize = ()=> {
-      if (!this.checkFull()) {
-        document.querySelector('.operator-home').classList.remove("allscreen")
+      areaNum: {
+        '310118': 2,
+        '310115': 3,
+        '310116': 3,
+        '310130': 4,
       }
     }
-
-    $.getScript('/libs/websocket/sockjs.min.js',()=>{
-      $.getScript('/libs/websocket/stomp.min.js',()=>{
-        this.connect()
-      })
-    })
-
-
-    // setInterval( ()=> {
-    //    var card= parseInt(100*Math.random())>40?'沪A88888':''
-    //    var usehxx= parseInt(100*Math.random())>60?true:false
-    //    var area= ''
-    //    this.setPoint(card, usehxx, area)
-    // },2000)
-    // this.setPoint('沪A88888', true, '310116')
   },
+
   methods:{
     connect() {
       let socket = new SockJS(config.socketUrl);//连接SockJs的endpoint
@@ -137,96 +113,112 @@ export default {
         },60000)
       });
     },
-    setPoint(vehicle, usehxx, areaKey, showTime) {
-      let id ='id-'+ this.makeid(5), area= areaKey || this.areaKeys[ Math.floor(Math.random()*10+ 1)];
-      let html='<div class="block" id="'+ id+'" style="'+this.getLoc()+'">' +
-        (vehicle?('            <div class="card">' +
-          '                <img class="car" src="/img/hotmap/car.png"/>' +
-          '                <span class="lq">'+vehicle+'</span>' +
-          '                <img class="carpoint" src="/img/hotmap/point.png"/>' +
-          '            </div>'):'') +
-        '            <div class="point '+(usehxx?'yellow':'')+'">' +
-        '                <div class="dot"></div>' +
-        '                <div class="pulse"></div>' +
-        '            </div>' +
-        '        </div>';
-
-      $(this.getArea(area)).append(html)
-
-      setTimeout(function () {
-        $("#"+id+ ' .card').addClass('on')
-        setTimeout(function () {
-          $("#"+id+ ' .card').removeClass('on')
-          $("#"+id).addClass('disappear')
-          setTimeout(function () {
-            $("#"+id).remove()
-          },1000)
-        },showTime||3000)
-      },50)
-    },
-    getArea(key) {
-      let className='', num={
-        '310118': 2,
-        '310115': 3,
-        '310116': 3,
-        '310130': 4,
-      };
-      for( let i in num){
-        if(key==i){
-          className='.area-'+key+'-'+ Math.floor(Math.random()*num[i]+ 1)
-        }
-      }
-      if(!className) className='.area-'+key
-
-      return className
-    },
-    getLoc() {
-      let top=parseInt(100*Math.random()),left=parseInt(100*Math.random()), style=''
-      style= 'left: '+left+'%;top: '+top+'%;'
-      return style
-    },
-    makeid(length) {
-      let text = "";
-      let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-      for( let i=0; i < length; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      return text;
-    },
-    fullscreen() {
-      document.querySelector('.operator-home').classList.add("allscreen")
-      let docElm = document.documentElement;
-      if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-      } else if (docElm.mozRequestFullScreen) {
-        docElm.mozRequestFullScreen();
-      } else if (docElm.webkitRequestFullScreen) {
-        docElm.webkitRequestFullScreen();
-      } else if (docElm.msRequestFullscreen) {
-        docElm.msRequestFullscreen();
-      }
-    },
-    checkFull() {
-      let isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled;
-      //to fix : false || undefined == undefined
-      if (isFull === undefined) {isFull = false;}
-      return isFull;
-    }
   },
-  beforeRouteLeave (to, from, next) {
-    this.stompClient.disconnect()
-    next()
-  }
+
 }
 </script>
 
 <style lang="less" scoped>
-  .hot-map{
-    .common-content > div:not(.sub-title){
-      overflow: visible;
-    }
+  .hotmap{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    width: 60%;
+    left: 30%;
+  }
+  .hotmap .line{
+    width: 50%;
+    position: absolute;
+    top: 30%;
+    left: -30%;
+  }
+  .hotmap .times{
+    width: 60%;
+    position: absolute;
+    left: -40%;
+    top:27.5%;
+    text-align: center;
+  }
+  .hxxlogo{
+    position: absolute;
+    left: 3%;
+    top:3%;
+    width: 15%;
+  }
+  .hxxlogo .hxx-logo{
+    width: 100%;
+  }
+  .hxxlogo .logostar{
+    position: absolute;
+    opacity: .5;
+    width: 30%;
+    right: -7%;
+    bottom: -14%;
+  }
+  .mark{
+    position: absolute;
+    top:5%;
+    right: 3%;
+    width: 15%;
+  }
+  .slogan{
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+    width: 20%;
+  }
+
+  .shanghai{
+    width: 20%;
+    position: absolute;
+    left: 25%;
+    top: 6%;
+  }
+
+  .total{
+    position: absolute;
+    left: 5%;
+    bottom: 10%;
+    color: #00c0ff;
+    font-size: 1.9vw;
+    width: 23%;
+    letter-spacing: .1vw
+  }
+  .total label{
+    display: block;
+    width: 100%;
+    margin-bottom: 15%;
+  }
+  .total label:first-child{
+    margin-bottom: 10%;
+  }
+  .total label.hasbg{
+    /*background: url("/img/hotmap/kuang.png") no-repeat left center;*/
+    /*background-size: 105% 100%;*/
+    background: url("/img/hotmap/kuang.png") no-repeat -.3vw center;
+    background-size: cover;
+  }
+  .total label span{
+    width: 100%;
+    height: 4vw;
+    line-height: 4vw;
+    padding-left: 55%;
+    display: block;
+  }
+  .total label:nth-child(1) span{
+    background: url("/img/hotmap/label1.png") no-repeat left center;
+    background-size: 45% auto;
+  }
+  .total label:nth-child(2) span{
+    background: url("/img/hotmap/label2.png") no-repeat 1.5vw center;
+    background-size: 45% auto;
+  }
+  .total label:nth-child(3) span{
+    background: url("/img/hotmap/label3.png") no-repeat 1.5vw center;
+    background-size: 50% auto;
+    padding-left: 60%;
   }
 </style>
 <style lang="less">
-  @import './hotmap.less';
+  @import '../hotmap/hotmap.less';
 </style>

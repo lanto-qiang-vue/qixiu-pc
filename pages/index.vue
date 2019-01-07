@@ -195,7 +195,7 @@
       <ul>
         <nuxt-link class="article" v-for="item in articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
           <h3>{{item.title}}</h3>
-          <p style="-webkit-box-orient: vertical;">{{item.content | FormatArticle(item.title)}}</p>
+          <p style="-webkit-box-orient: vertical;">{{item.meno | FormatArticle(item.title)}}</p>
         </nuxt-link>
       </ul>
     </div>
@@ -212,6 +212,36 @@
     <Icon type="ios-people" size="40" style="line-height: 50px"/>
     <p>企业员工信息</p>
   </nuxt-link>
+
+  <!--<div id="float-survey">-->
+    <!--<p class="close">关闭</p>-->
+    <!--<a href="http://dh3t.cn/ys6RSb" target="_blank">-->
+      <!--<img src="/img/temp/float-survey.png"/>-->
+    <!--</a>-->
+  <!--</div>-->
+  <!--<style>-->
+    <!--#float-survey{-->
+      <!--z-index: 999999999;-->
+      <!--width: 100px;-->
+      <!--position: fixed;-->
+      <!--right: 5px;-->
+      <!--bottom: 30%;-->
+      <!--overflow: hidden;-->
+    <!--}-->
+    <!--#float-survey .close{-->
+      <!--padding: 5px 10px;-->
+      <!--float: right;-->
+      <!--cursor: pointer;-->
+    <!--}-->
+    <!--#float-survey a{-->
+      <!--display: block;-->
+      <!--overflow: hidden;-->
+      <!--width: 100%;-->
+    <!--}-->
+    <!--#float-survey a img{-->
+      <!--width: 100%;-->
+    <!--}-->
+  <!--</style>-->
 </div>
 </template>
 
@@ -311,21 +341,31 @@ export default {
       console.log('cache')
       return thisData
     }
-    let getNews= (infoType, pageSize) => {
-      return new Promise((resolve, reject) => {
-        app.$axios.$post('/infopublic/home/all',{
-          "infoType": infoType,
-          "pageNo": 1,
-          "pageSize": pageSize,
-        }).then(res => {
-          if (res.code === '0') {
-            resolve(res.items)
-          } else reject( res)
-        },err => {
-          reject(err)
-        })
+    // let getNews= (infoType, pageSize) => {
+    //   return new Promise((resolve, reject) => {
+    //     app.$axios.$post('/infopublic/home/all',{
+    //       "infoType": infoType,
+    //       "pageNo": 1,
+    //       "pageSize": pageSize,
+    //     }).then(res => {
+    //       if (res.code === '0') {
+    //         resolve(res.items)
+    //       } else reject( res)
+    //     },err => {
+    //       reject(err)
+    //     })
+    //   })
+    // }
+    let articles= new Promise((resolve, reject) => {
+      app.$axios.$get('/infopublic/home/all').then(res => {
+        if (res.code === '0') {
+          resolve( res.item)
+        } else reject( res)
+      },err => {
+        reject(err)
       })
-    }
+    })
+
     let questionList= new Promise((resolve, reject) => {
       app.$axios.$post('/question/nostate/list',{
         "pageNo": 1,
@@ -348,17 +388,17 @@ export default {
       })
     })
 
-    //文章banner
-    let article10281019= getNews('10281019', 5)
-
-    //中间文章
-    let article10281013= getNews('10281013', 5)
-    let article10281020= getNews('10281020', 5)
-
-    //右边三篇
-    let article10281006= getNews('10281006', 1)
-    let article10281016= getNews('10281016', 1)
-    let article10281017= getNews('10281017', 1)
+    // //文章banner
+    // let article10281019= getNews('10281019', 5)
+    //
+    // //中间文章
+    // let article10281013= getNews('10281013', 5)
+    // let article10281020= getNews('10281020', 5)
+    //
+    // //右边三篇
+    // let article10281006= getNews('10281006', 1)
+    // let article10281016= getNews('10281016', 1)
+    // let article10281017= getNews('10281017', 1)
 
     // return {
     //   questionList: [],
@@ -373,34 +413,35 @@ export default {
     return Promise.all([
       questionList,
       cdfList,
-      article10281019,
-      article10281013,
-      article10281020,
-      article10281006,
-      article10281016,
-      article10281017,
-    ]).then(([resQuestion, resCdf, res10281019, res10281013, res10281020, res10281006, res10281016, res10281017, ]) => {
-      let latest= res10281013.concat(res10281020)
-      let hottest= deepClone(latest)
-      latest.sort(function (a,b) {
-        return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
-      })
-      for (let i in hottest){
-        let temp={}
-        let randomIndex = Math.floor(Math.random()*(hottest.length-1));
-        temp= hottest[i]
-        hottest[i]= hottest[randomIndex]
-        hottest[randomIndex]= temp
-      }
+      articles
+      // article10281019,
+      // article10281013,
+      // article10281020,
+      // article10281006,
+      // article10281016,
+      // article10281017,
+    ]).then(([resQuestion, resCdf, resArticle ]) => {
+      // let latest= res10281013.concat(res10281020)
+      // let hottest= deepClone(latest)
+      // latest.sort(function (a,b) {
+      //   return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
+      // })
+      // for (let i in hottest){
+      //   let temp={}
+      //   let randomIndex = Math.floor(Math.random()*(hottest.length-1));
+      //   temp= hottest[i]
+      //   hottest[i]= hottest[randomIndex]
+      //   hottest[randomIndex]= temp
+      // }
       return {
         questionList: resQuestion,
         cdfList: resCdf,
-        articleBanner: res10281019,
+        articleBanner: resArticle.left10281019,
         articleMiddle: {
-          latest: latest,
-          hottest: hottest,
+          latest: resArticle.middle10281013,
+          hottest: resArticle.middle10281020,
         },
-        articleRight: [res10281006[0], res10281016[0], res10281017[0]],
+        articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
         isGetData: true
       }
     },(err)=>{
@@ -450,6 +491,11 @@ export default {
   beforeMount(){
   },
   mounted(){
+    // //问卷浮窗
+    // $(" #float-survey .close").click(function () {
+    //   $(" #float-survey").hide()
+    // })
+
     // console.log('index.mounted', this.$route)
     let self= this
     if(!this.banners.length){

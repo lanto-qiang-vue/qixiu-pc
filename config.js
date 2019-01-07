@@ -6,20 +6,28 @@ const prodConfig={
   // apiUrl: 'http://212.64.5.54:8888/',
   apiUrl: 'http://gateway.qixiu.lanto.com/',
   //查修接口地址
-  repairUrl: 'http://115.159.101.204:7210/',
-  socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
+  repairUrl: 'http://118.25.35.172:7210/',
+  socketUrl: 'https://socket.shanghaiqixiu.org/micro/heatmap/socket',
+  shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket',
+  articlePath: 'https://download.image.shanghaiqixiu.org/',
+  // articlePath: 'http://download.image.lanto.com/'
+  workOn: 'pPro'
 }
 
 
 //开发测试环境配置
 const devConfig={
   port: '3000',
-  // apiUrl: 'http://192.168.169.190:8888/',
-  apiUrl: 'http://118.25.81.63:8888/',
   // apiUrl: 'http://212.64.5.54:8888/',
+  // apiUrl: 'http://gateway.qixiu.lanto.com/',
+  apiUrl: 'http://192.168.169.231:8888/',
 
-  repairUrl: 'http://115.159.101.204:7210/',
+  // repairUrl: 'http://118.25.35.172:7210/',
+  repairUrl: 'http://192.168.169.230:7210/',
   socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
+  shandongSocket: 'http://118.25.13.140:10001/heatmap/socket',
+  articlePath: 'http://download.image.lanto.com/',
+  workOn: 'pDev'
 }
 
 export default process.env.NODE_ENV==='development'? devConfig: prodConfig

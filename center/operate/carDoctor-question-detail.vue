@@ -21,6 +21,12 @@
 
                 <Input type="text" disabled v-model="listSearch.categoryName" placeholder=""></Input>
             </FormItem>
+            <FormItem label="提问时间:" style="width: 80%;">
+                <Input type="text" disabled v-model="listSearch.createTime" placeholder=""></Input>
+            </FormItem>
+            <FormItem label="回答时间:" style="width: 80%;">
+                <Input type="text" disabled v-model="listSearch.answerTime" placeholder=""></Input>
+            </FormItem>
             <FormItem label="问题内容:" style="width: 80%;">
                 <Input v-model="listSearch.content" disabled type="textarea" :rows="4" placeholder="" />
             </FormItem>
@@ -61,6 +67,8 @@ export default {
                 questionPhoto:"",
                 content:"",
                 categoryName:"",
+                createTime:"",
+                answerTime:"",
                 status:{name:''},
             },
             listButton:{
@@ -96,7 +104,7 @@ export default {
                     this.spinShow=false;
                     this.listSearch=res.data.item;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
             })
         },
@@ -116,7 +124,7 @@ export default {
                     this.$Message.info('修改审核成功');
                     this.showModal=false;
                 }else{
-                    this.$Message.error(res.data.status);
+                    // this.$Message.error(res.data.status);
                 }
             })
         },

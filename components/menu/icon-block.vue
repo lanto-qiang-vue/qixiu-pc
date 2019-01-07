@@ -12,7 +12,8 @@
     <nuxt-link tag="a" to="/service-map?type=214"><img src="/img/menu-icon/危运车辆维修.png"/><p>危运车辆维修</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map?type=215"><img src="/img/menu-icon/新能源汽车维修.png"/><p>新能源汽车维修</p></nuxt-link>
     <nuxt-link tag="a" to="/article/help"><img src="/img/menu-icon/道路救援.png"/><p>施救牵引企业</p></nuxt-link>
-    <nuxt-link tag="a" to="/guild-article/10281034" ><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>
+    <!--<nuxt-link tag="a" to="/guild-article/10281034" ><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>-->
+    <nuxt-link tag="a" to="/service-map?type=300" ><img src="/img/menu-icon/推介服务.png"/><p>学车找我</p></nuxt-link>
     <a href="/file/tips.pdf" ><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></a>
   </div>
   <div class="block" v-show="type==2">
@@ -57,7 +58,7 @@
     <nuxt-link tag="a" to="/guild-article/10281014" ><img src="/img/menu-icon/行业风采.png"/><p>行业风采</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281008" ><img src="/img/menu-icon/行业能手.png"/><p>行业能手</p></nuxt-link>
     <nuxt-link tag="a" to="/guild-article/10281015" ><img src="/img/menu-icon/行业党建.png"/><p>行业党建</p></nuxt-link>
-    <nuxt-link tag="a" to="guild-article/10281024/211" ><img src="/img/menu-icon/专家组.png" /><p>专家组</p></nuxt-link>
+    <nuxt-link tag="a" to="guild-article/10281024" ><img src="/img/menu-icon/专家组.png" /><p>专家组</p></nuxt-link>
   </div>
   <div class="block" v-show="type==6">
     <nuxt-link tag="a" to="/gov-article/10281030" ><img src="/img/menu-icon/培训需求.png"/><p>培训需求</p></nuxt-link>

@@ -107,24 +107,24 @@ if(!thisData) {
       {code:'no',name:'未登录'},
     ],//问题分类--------
     columns: [
-      {title: '区域', key: 'shortName', sortable: true, minWidth: 80,
+      {title: '区域', key: 'shortName', sortable: 'custom', minWidth: 80,
         // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
       },
-      {title: '企业类型', key: 'category', sortable: true, minWidth: 120},
-      {title: '企业名称', key: 'companyName', sortable: true, minWidth: 135},
-      {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150},
-      {title: '是否对接', key: 'buttJoin', sortable: true, minWidth: 110},
-      {title: '上传数量', key: 'count', sortable: true, minWidth: 110},
-      {title: '许可证', key: 'license', sortable: true, minWidth: 120},
-      {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 150},
-      {title: '未上传天数', key: 'noUpdateDays', sortable: true, minWidth: 120},
-      {title: '总对总', key: 'minister', sortable: true, minWidth: 100},
-      {title: '特约维修', key: 'special', sortable: true, minWidth: 110},
-      {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 110,
+      {title: '企业类型', key: 'category', sortable: 'custom', minWidth: 120},
+      {title: '企业名称', key: 'companyName', sortable: 'custom', minWidth: 135},
+      {title: '经营地址', key: 'businessAddress', sortable: 'custom', minWidth: 150},
+      {title: '是否对接', key: 'buttJoin', sortable: 'custom', minWidth: 110},
+      {title: '上传数量', key: 'count', sortable: 'custom', minWidth: 110},
+      {title: '许可证', key: 'license', sortable: 'custom', minWidth: 120},
+      {title: '经营范围', key: 'businessScope', sortable: 'custom', minWidth: 150},
+      {title: '未上传天数', key: 'noUpdateDays', sortable: 'custom', minWidth: 120},
+      {title: '总对总', key: 'minister', sortable: 'custom', minWidth: 100},
+      {title: '特约维修', key: 'special', sortable: 'custom', minWidth: 110},
+      {title: '经营状态', key: 'businessStatus', sortable: 'custom', minWidth: 110,
         // render: (h, params) => h('span', params.row.businessStatus.name)
       },
-      {title: '前台显示', key: 'show', sortable: true, minWidth: 110},
-      {title: '对接时间', key: 'firstUploadTime', sortable: true, minWidth: 110},
+      {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
+      {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
     ],
     tableData: [],
     searchList:{
@@ -143,8 +143,8 @@ if(!thisData) {
       "show": "",//是否前台显示
       "special": "",//是否特约
       "uploadMonth": "",//按月查询
-      order:'',//排序查询
-      index:''
+      order:0,//排序查询
+      index:13
     },
     manageArr:[],
     page: 1,
@@ -158,11 +158,12 @@ if(!thisData) {
     areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
     businessType:[
-      {key:1,name:'营业'},
-      {key:2,name:'歇业'},
-      {key:3,name:'注销'},
-      {key:4,name:'空壳'},
-      {key:11,name:'内修'},
+    //   {key:1,name:'营业'},
+    //   {key:2,name:'歇业'},
+    //   {key:3,name:'注销'},
+    //   {key:4,name:'空壳'},
+    //   {key:11,name:'内修'},
+    //   {key:20,name:'停业'},
     ],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
     isFlagType:[
@@ -226,15 +227,9 @@ export default {
 	    console.log('record-company: mounted', this.$route.query)
         this.getAreaInfo();
         this.getType('1');
+        this.getBusinessType();
         this.getCompanyArea();
-    //   this.getList();
 
-
-
-    //   this.getType('24');
-
-
-      // this.getRouterData();
 
 },
 activated(){
@@ -295,14 +290,19 @@ activated(){
         getList(){
             this.loading=true;
             let upData={};
+            console.log(',,,,,,,,',this.searchList);
             for(let i in this.searchList){
                 if(this.searchList[i]=="是"){
                     upData[i]=true;
                 }else if(this.searchList[i]=="否"){
                     upData[i]=false;
-                }else{
+                }else if(i=='area'){
                   if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
+                }else if(this.searchList[i]){
+                    upData[i]=this.searchList[i];
+                }else{
+                    upData[i]=null;
                 }
             }
             console.log(upData["uploadMonth"],this.manageArr);
@@ -312,23 +312,23 @@ activated(){
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
             this.$axios.post('/vehicle/repair/query', {
-                    "area": upData["area"]||null,
-                    "businessStatus": upData["businessStatus"]||null,
-                    "buttJoin": upData["buttJoin"]||null,
-                    "companyCategory": upData["companyCategory"]||null,
-                    "companyName": upData["companyName"]||null,
-                    "dept": upData["dept"]||null,
-                    "inDays": upData["inDays"]||null,
-                    "license": upData["license"]||null,
-                    "minister": upData["minister"]||null,
-                    "org": upData["org"]||null,
+                    "area": upData["area"],
+                    "businessStatus": upData["businessStatus"],
+                    "buttJoin": upData["buttJoin"],
+                    "companyCategory": upData["companyCategory"],
+                    "companyName": upData["companyName"],
+                    "dept": upData["dept"],
+                    "inDays": upData["inDays"],
+                    "license": upData["license"],
+                    "minister": upData["minister"],
+                    "org": upData["org"],
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    "show": upData["show"]||null,
-                    "special": upData["special"]||null,
-                    "uploadMonth": upData["uploadMonth"]||null,
-                    order:upData["order"]||null,
-                    index:upData["index"]||null,
+                    "show": upData["show"],
+                    "special": upData["special"],
+                    "uploadMonth": upData["uploadMonth"],
+                    order:upData["order"],
+                    index:upData["index"],
 
             }).then( (res) => {
                 if(res.data.code=='0'){
@@ -347,9 +347,13 @@ activated(){
                     upData[i]=true;
                 }else if(this.searchList[i]=="否"){
                     upData[i]=false;
-                }else{
-                    if(i=='area' &&!this.searchList[i].key) upData[i]= null
+                }else if(i=='area'){
+                  if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
+                }else if(this.searchList[i]){
+                    upData[i]=this.searchList[i];
+                }else{
+                    upData[i]=null;
                 }
             }
             console.log(upData["uploadMonth"],this.manageArr);
@@ -365,19 +369,19 @@ activated(){
               method: 'post',
               url: '/vehicle/repair/export',
               data:{
-                "area": upData["area"]||null,
-                "businessStatus": upData["businessStatus"]||null,
-                "buttJoin": upData["buttJoin"]||null,
-                "companyCategory": upData["companyCategory"]||null,
-                "companyName": upData["companyName"]||null,
-                "dept": upData["dept"]||null,
-                "inDays": upData["inDays"]||null,
-                "license": upData["license"]||null,
-                "minister": upData["minister"]||null,
-                "org": upData["org"]||null,
-                "show": upData["show"]||null,
-                "special": upData["special"]||null,
-                "uploadMonth": upData["uploadMonth"]||null,
+                "area": upData["area"],
+                "businessStatus": upData["businessStatus"],
+                "buttJoin": upData["buttJoin"],
+                "companyCategory": upData["companyCategory"],
+                "companyName": upData["companyName"],
+                "dept": upData["dept"],
+                "inDays": upData["inDays"],
+                "license": upData["license"],
+                "minister": upData["minister"],
+                "org": upData["org"],
+                "show": upData["show"],
+                "special": upData["special"],
+                "uploadMonth": upData["uploadMonth"],
                 },
               responseType: 'arraybuffer'
             }).then( (res) => {
@@ -414,6 +418,16 @@ activated(){
                 }
            })
 
+        },
+        getBusinessType(){
+            this.$axios.get('/company/category/business/list', {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+
+                    this.businessType=res.data.items;
+                    
+                }
+           })
         },
         getType(id){
             this.$axios.get('/dict/getValuesByTypeId/'+id, {
@@ -464,9 +478,9 @@ activated(){
                 this.getList();
             }else{
 
-                if(type=="asc"){
+                if(type=="desc"){
                     this.searchList.order=0;
-                }else if(type=="desc"){
+                }else if(type=="asc"){
                     this.searchList.order=1;
                 }
 

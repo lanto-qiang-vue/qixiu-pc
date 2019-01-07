@@ -34,6 +34,7 @@
     @on-row-dblclick="onRowDblclick"
     @on-current-change="onCurrentChange"
     @on-sort-change="onSortChange"
+    @on-select-all="onSelectAll"
   >
   </Table>
   <div class="table-bottom" v-show="showPage">
@@ -169,6 +170,7 @@
       },
       value(data){
         this.data= data
+
       },
     },
     mounted() {
@@ -212,6 +214,9 @@
       },
       changeSelect(selection){
        this.$emit('changeSelect',selection);
+      },
+      onSelectAll(selection){
+        this.$emit('onSelectAll',selection);
       },
       onRowClick( row, index){
         this.$emit('onRowClick',row, index);

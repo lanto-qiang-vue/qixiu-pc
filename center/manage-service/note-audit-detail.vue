@@ -13,13 +13,26 @@
     :transition-names="['', '']">
 
     <div style="height: 100%;overflow: auto;">
-        <div id="content">
+        <div class="public-block">
+            接收对象：
         </div>
+        <div style="padding: 0 15px;">
+            <div class="search-block" v-for="item in listData.roles">
+                <span>{{item.receiverType}}</span><span v-if="item.secondaryType">:{{item.secondaryType}}</span>
+            </div>
+        </div>
+        <div class="public-block">
+            通知内容：
+        </div>
+        <div style="padding: 0 15px;">
+            {{listData.content}}
+        </div>
+        <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.audit">审核</Button>
-        <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"  style="margin-right: 10px;" v-show="listButton.out">驳回</Button>
-        <Button  @click="exportFun" size="large" type="success"  style="margin-right: 10px;">附件下载</Button>
+        <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"   v-show="listButton.audit">审核</Button>
+        <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"   v-show="listButton.out">驳回</Button>
+        <Button  @click="exportFun" size="large" type="success"  >附件下载</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -34,16 +47,13 @@ export default {
     mixins: [funMixin],
     data(){
 		return{
+            spinShow:false,
             showModal:false,
             listData:{
                 content:"",
-                mobile:null,
-                nickName:null,
-                notifyId:"",
-                read:null,
-                sendtime:"",
                 title:"",
                 url:'',
+                roles:[],
             },
             listButton:{
                 audit:true,
@@ -64,22 +74,20 @@ export default {
     },
     methods:{
         getNotify(){
+            this.spinShow=true;
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
                     
                 }).then( (res) => {
                   if(res.data.code=='0'){
 
-                    let jsonData=JSON.parse(res.data.item.content);
+                    // let jsonData=JSON.parse(res.data.item.content);
                     this.listData.title=res.data.item.title;
-                    this.listData.url=jsonData.url[0];
+                    this.listData.url=res.data.item.url;
+                    this.listData.roles=res.data.item.roles;
+                    this.listData.content=res.data.item.content;
 
-                    var obj = document.getElementById('content') ;
-                    obj.innerHTML=jsonData.content;
-
-                  }else{
-                    this.$Message.error(res.data.status);
                   }
-					
+					this.spinShow=false;
 				  })
           
 
@@ -141,8 +149,14 @@ export default {
 
 }
 .search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
+  /*display: inline-block;
+  width: 180px;
+  margin-right: 10px;*/
+  padding: 5px 0;
+}
+.public-block{
+    padding: 15px 0;
+    font-size: 14px;
+    font-weight: bold;
 }
 </style>

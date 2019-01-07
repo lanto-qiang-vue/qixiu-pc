@@ -40,7 +40,7 @@
     display: inline-block;
     text-align: left;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     min-width: 800px;
     min-height: 70vh;
     background-color: white;

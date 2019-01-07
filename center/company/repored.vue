@@ -60,8 +60,8 @@
       getList() {
         this.loading = true
         this.$axios.post('/company/carfile/query', {
-          costlistcode: this.search.costlistcode,
-          vehicleplatenumber: this.search.vehicleplatenumber,
+          code: this.search.costlistcode,
+          plateNumber: this.search.vehicleplatenumber,
           pageNo:this.page,
           pageSize:this.limit,
         }).then((res) => {

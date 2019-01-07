@@ -18,4 +18,15 @@ export default ({ app }) => {
   //     window.location.href= to.fullPath
   //   }else next()
   // })
+
+  if (process.client){
+    let mobileSafari = (/iPhone/i.test(navigator.platform) || /iPod/i.test(navigator.platform) || /iPad/i.test(navigator.userAgent)) && !!navigator.appVersion.match(/(?:Version\/)([\w\._]+)/);
+      app.router.beforeEach((to, from, next) => {
+        console.log(from)
+        if(mobileSafari && (from.fullPath!='/' || from.name=='index')){
+          next(false)
+          window.location.href= to.fullPath
+        }else next()
+      })
+  }
 }
