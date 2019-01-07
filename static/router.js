@@ -672,6 +672,41 @@ export default [
 
       ]
   },
+  {
+    path: '/menuschool',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '驾校管理(运营)',
+      // accessId: '/menu19',
+    },
+    component: resolve('components/main.vue'),
+    children: [{
+      path: 'school-info',
+      meta: {
+        icon: '',
+        title: '驾校信息管理',
+        // accessId: '/center/carDoctor-manage',
+      },
+      component: resolve('center/driving-school/school-info-list.vue'),
+    },{
+      path: 'base-list',
+      meta: {
+        icon: '',
+        title: '驾校基地管理',
+        // accessId: '/center/carDoctor-manage',
+      },
+      component: resolve('center/driving-school/school-base-list.vue'),
+    },{
+      path: 'apply-list',
+      meta: {
+        icon: '',
+        title: '驾校报名管理',
+        // accessId: '/center/carDoctor-manage',
+      },
+      component: resolve('center/driving-school/school-apply-list.vue'),
+    },]
+  },
 
   //管理中心
   {

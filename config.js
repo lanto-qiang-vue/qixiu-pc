@@ -18,11 +18,12 @@ const prodConfig={
 //开发测试环境配置
 const devConfig={
   port: '3000',
-  apiUrl: 'http://212.64.5.54:8888/',
+  // apiUrl: 'http://212.64.5.54:8888/',
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
-  // apiUrl: 'http://192.168.169.231:8888/',
+  apiUrl: 'http://192.168.169.231:8888/',
 
-  repairUrl: 'http://118.25.35.172:7210/',
+  // repairUrl: 'http://118.25.35.172:7210/',
+  repairUrl: 'http://192.168.169.230:7210/',
   socketUrl: 'http://118.25.131.29:10001/micro/heatmap/socket',
   shandongSocket: 'http://118.25.13.140:10001/heatmap/socket',
   articlePath: 'http://download.image.lanto.com/',
