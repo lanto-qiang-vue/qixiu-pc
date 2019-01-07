@@ -46,7 +46,7 @@
                 },
                 {title: '企业名称', key: 'companyName', sortable: true, minWidth: 135},
                 {title: '是否已读', key: 'read', sortable: true, minWidth: 135},
-                {title: '发送时间', key: 'sendTime', sortable: true, minWidth: 135},
+                {title: '接收时间', key: 'sendTime', sortable: true, minWidth: 135},
                 
             ],
             tableData: [],

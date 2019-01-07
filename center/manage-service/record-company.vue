@@ -158,12 +158,12 @@ if(!thisData) {
     areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
     businessType:[
-      {key:1,name:'营业'},
-      {key:2,name:'歇业'},
-      {key:3,name:'注销'},
-      {key:4,name:'空壳'},
-      {key:11,name:'内修'},
-      {key:20,name:'停业'},
+    //   {key:1,name:'营业'},
+    //   {key:2,name:'歇业'},
+    //   {key:3,name:'注销'},
+    //   {key:4,name:'空壳'},
+    //   {key:11,name:'内修'},
+    //   {key:20,name:'停业'},
     ],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
     isFlagType:[
@@ -227,6 +227,7 @@ export default {
 	    console.log('record-company: mounted', this.$route.query)
         this.getAreaInfo();
         this.getType('1');
+        this.getBusinessType();
         this.getCompanyArea();
 
 
@@ -417,6 +418,16 @@ activated(){
                 }
            })
 
+        },
+        getBusinessType(){
+            this.$axios.get('/company/category/business/list', {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+
+                    this.businessType=res.data.items;
+                    
+                }
+           })
         },
         getType(id){
             this.$axios.get('/dict/getValuesByTypeId/'+id, {

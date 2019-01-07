@@ -23,7 +23,7 @@
             <div slot="operate">
                 <Button type="primary" v-if="" @click="showNote=Math.random();detailData=null;" >通知发布</Button>
                 <Button type="primary" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
-                <Button type="primary" v-if="accessBtn('roles')" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>
+                <Button type="primary" v-if="" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>
                 
                 <Button type="info" v-if="" @click="showNote=Math.random();" :disabled="editButton">编辑</Button>
                 <Button type="error" v-if="accessBtn('delete')" @click="removeListFun" :disabled="editButton">删除</Button>
