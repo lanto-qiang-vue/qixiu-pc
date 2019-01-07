@@ -19,7 +19,7 @@
     </div>
     <div slot="operate">
         <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
-        <Button type="info" v-if="" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>
+        <!--<Button type="info" v-if="" @click="showList=Math.random();" :disabled="!detailData">查看收件人</Button>-->
     </div>
 <note-audit-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></note-audit-detail>
 <note-recipient-list :showList="showList" :detailListData="detailData" @closeDetail="closeDetail"></note-recipient-list>
