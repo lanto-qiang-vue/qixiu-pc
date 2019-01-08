@@ -67,7 +67,7 @@
             <span>报名地址：{{item.addr}}</span>
             <!--<span>训练基地：{{item.serveSupports.join(',')}}</span>-->
             <span>训练基地：
-              <label v-for="(item2, index) in item.tag.split(' ')" :key="index">
+              <label v-if="item.tag" v-for="(item2, index) in item.tag.split(' ')" :key="index">
                 <a @click.stop="goBase(item2)">{{item2 }}</a>{{index<(item.tag.split(' ').length-1)? ',': ''}}
               </label>
             </span>
@@ -195,6 +195,16 @@ export default {
       markers: null
     }
   },
+  computed:{
+    nowType(){
+      return this.search.type
+    }
+  },
+  watch:{
+    nowType(){
+      this.map.clearMap()
+    }
+  },
   mounted(){
     console.log('this.extend', this.$extend)
     // console.log('Vue.compile', Vue.compile)
@@ -308,7 +318,7 @@ export default {
       })
     },
     getBase(){
-      if(this.search.type== 300 ){
+      if(this.search.type== '300' ){
         if(!this.base.length){
           this.$axios({
             baseURL: '/repair',
@@ -474,8 +484,8 @@ export default {
           switch (point.type){
             case 300:{
               let tel= this.$store.state.user.token? (point.tel||''):('<a @click="toLogin">登录后查看</a>')
-              let title= point.name.split('(')[0]+'驾校('+ point.grade+'级)'
-              let baseTag= '', tags= point.tag.split(' ')
+              let title= point.name.indexOf('(')>=0? point.name.split('(')[0]+'驾校('+ point.grade+'级)': point.name
+              let baseTag= '', tags= point.tag? point.tag.split(' '): ''
                 for(let k in tags){
                   for(let j in this.base){
                     if(this.base[j].name.indexOf(tags[k])>=0){
@@ -629,12 +639,12 @@ export default {
 
       this.getBase()
 
-      let is164= this.search.type== 164
-      if(is164){
-        this.map.setZoom(13)
-      } else{
-        this.map.setZoom(10)
-      }
+      // let is164= this.search.type== 164
+      // if(is164){
+      //   this.map.setZoom(13)
+      // } else{
+      //   this.map.setZoom(10)
+      // }
     },
     goTo(path){
       this.$router.push(path)
@@ -795,6 +805,9 @@ export default {
               position: absolute;
               top: -4px;
               right: 0;
+              height: 18px;
+              line-height: 16px;
+              padding: 0 4px;
             }
           }
           .appraise{
