@@ -360,7 +360,7 @@ export default {
       if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
       let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
       if(is300 && this.search.bizScope) fq+= ('+AND+kw:'+  this.search.bizScope)
-      if(is300 && this.search.base) fq+= ('+AND+tag:'+  this.search.base)
+      if(is300 && this.search.base) fq+= ('+AND+tag:'+  encodeURI(this.search.base))
       if(this.search.area && (is164 || is300)) fq+= '+AND+areaKey:'+ this.search.area
       if(this.search.is4s && is164){
         is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
