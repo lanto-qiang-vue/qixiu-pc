@@ -48,7 +48,7 @@
         <Select v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
-        <Select v-model="search.base" placeholder="驾校基地" clearable filterable @on-change="changeSelectAll">
+        <Select v-model="search.base" placeholder="训练基地" clearable filterable @on-change="changeSelectAll">
           <Option v-for="(item, key) in base" :value="item.name.replace('驾校基地','')" :key="key">{{item.name}}</Option>
         </Select>
       </div>
@@ -400,8 +400,8 @@ export default {
     renderBase(){
       let iconBase = new AMap.Icon({
         image: "/img/map/icon-base.png",
-        size: new AMap.Size(52, 52),
-        imageOffset: new AMap.Size(11, 11),
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
         imageSize: new AMap.Size(30, 30),
       });
       let markers= []
@@ -459,20 +459,20 @@ export default {
       }
       let iconNormal = new AMap.Icon({
           image: "/img/map/icon-normal.png",
-          size: new AMap.Size(52, 52),
-          imageOffset: new AMap.Size(11, 11),
+          size: new AMap.Size(30, 30),
+          // imageOffset: new AMap.Size(11, 11),
           imageSize: new AMap.Size(30, 30),
         });
       let icon4s = new AMap.Icon({
         image: "/img/map/icon-4s.png",
-        size: new AMap.Size(52, 52),
-        imageOffset: new AMap.Size(11, 11),
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
         imageSize: new AMap.Size(30, 30),
       });
       let iconSchool = new AMap.Icon({
         image: "/img/map/icon-school.png",
-        size: new AMap.Size(52, 52),
-        imageOffset: new AMap.Size(11, 11),
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
         imageSize: new AMap.Size(30, 30),
       });
 
@@ -635,7 +635,7 @@ export default {
 
       let style={
         url: '/img/map/position-num.png',
-        size: new AMap.Size(40, 40),
+        size: new AMap.Size(30, 30),
         textColor: '#fff',
         textSize: 14
       }
