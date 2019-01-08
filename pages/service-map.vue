@@ -568,6 +568,7 @@ export default {
                         }).then( (res) => {
                           if(res.data.code=='0'){
                             // self.$Message.success('恭喜您报名成功！驾校将及时联系您。')
+                            this.$refs[this.sid].resetFields()
                             this.$Modal.success({
                               title: '报名成功',
                               content: '恭喜您报名成功！驾校将及时联系您。'
@@ -636,6 +637,7 @@ export default {
       let style={
         url: '/img/map/position-num.png',
         size: new AMap.Size(30, 30),
+        imageOffset:new AMap.Pixel(-5,-5),
         textColor: '#fff',
         textSize: 14
       }
