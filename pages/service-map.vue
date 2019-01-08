@@ -202,6 +202,7 @@ export default {
   },
   watch:{
     nowType(){
+      this.$Spin.show();
       this.map.clearMap()
     }
   },
@@ -235,7 +236,7 @@ export default {
       this.map= new AMap.Map('comp-map',{
         keyboardEnable: false,
         scrollWheel: false,
-        zoom: 10,
+        zoom: 14,
       });
       // console.log('this.map2', this.map)
       // window.map1= this.map
@@ -320,7 +321,6 @@ export default {
     getBase(){
       if(this.search.type== '300' ){
         if(!this.base.length){
-          this.$Spin.show();
           this.$axios({
             baseURL: '/repair',
             url: '/micro/search/company?fl=name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
@@ -371,7 +371,7 @@ export default {
       return query
     },
     initPiontList(){
-      let query= this.calcQuery(20)
+      let query= this.calcQuery(50)
       this.$axios({
         baseURL: '/repair',
         url: '/micro/search/company'+ query,
@@ -436,7 +436,8 @@ export default {
           let marker= new AMap.Marker({
             icon: iconBase,
             position: lngLat,
-            extData: this.base[i]
+            extData: this.base[i],
+            zIndex: 110
           })
           marker.on('click', (e) => {
             e.target.getExtData().advancedInfoWindow.open(this.map)
