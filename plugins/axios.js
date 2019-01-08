@@ -9,6 +9,10 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('store.state.user.token:', token)
   })
   $axios.onResponse(response => {
+    let content= ''
+    if(response.data.status) content+= response.data.status
+    if(response.data.message) content+= ' '+response.data.message
+    if(response.data.msg) content+= ' '+response.data.msg
     // console.log('Interceptors:',response.status)
     if(response.status== 200){
       let code= response.data.code
@@ -37,11 +41,8 @@ export default function ({ $axios, redirect, store, route, app }) {
         default: {
           if (process.client && code!= undefined) {
             Message.destroy()
-            let content= ''
-            if(response.data.status) content+= response.data.status
-            if(response.data.message) content+= ' '+response.data.message
 
-            response.data.status? Message.error({
+            (response.data.status || response.data.code)? Message.error({
               content: content,
               duration: 5}): '';
           }
@@ -49,12 +50,29 @@ export default function ({ $axios, redirect, store, route, app }) {
       }
     }else{
       if (process.client) {
+        console.log(content)
         Message.destroy()
-        Message.error({content: response.error+', status:'+response.status, duration: 3})
+        Message.error({content: response.error+', status:'+response.status+ content, duration: 3})
       }
     }
+  })
 
-
+  $axios.onResponseError(error => {
+    // console.log('error', error)
+    for(let key in error){
+      console.log(key)
+    }
+    if(error.response.status==400){
+      let content= ''
+      if(error.response.data.status) content+= error.response.data.status
+      if(error.response.data.message) content+= ' '+error.response.data.message
+      if(error.response.data.msg) content+= ' '+error.response.data.msg
+      if (process.client &&content) {
+        console.log(content)
+        Message.destroy()
+        Message.error({content: content, duration: 3})
+      }
+    }
   })
 
 }
