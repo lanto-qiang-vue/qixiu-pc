@@ -22,8 +22,8 @@
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
       <Input v-model="search.q" placeholder="输入名称/地址" class="inline search" clearable
              @on-enter="getCompList"  @on-change="$refs.hot.clearSingleSelect(); page=1" >
-      <Button slot="append" icon="ios-search" @click="getCompList"></Button>
       </Input>
+      <Button type="primary" @click="getCompList">搜索</Button>
       <div class="select-bar" v-show="search.type=='164'">
         <Select  v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
@@ -266,7 +266,7 @@ export default {
         AMap.plugin('AMap.Geolocation', () => {
           this.geolocation = new AMap.Geolocation({
             buttonPosition: 'RB',
-            timeout: 2000,
+            timeout: 1000,
           });
           // this.map.addControl(this.geolocation);
           this.geolocation.getCurrentPosition();
@@ -327,6 +327,7 @@ export default {
           }).then( (res) => {
             this.base= res.data.content
             this.renderBase()
+            this.renderMap()
           })
         }else {
           this.renderBase()
@@ -481,18 +482,21 @@ export default {
           let is164= point.type== 164
           let lngLat= new AMap.LngLat(point.lon|| this.search.lng, point.lat|| this.search.lat)
           let content = ''
-          switch (point.type){
-            case 300:{
+          switch (point.type.toString()){
+            case '300':{
               let tel= this.$store.state.user.token? (point.tel||''):('<a @click="toLogin">登录后查看</a>')
               let title= point.name.indexOf('(')>=0? point.name.split('(')[0]+'驾校('+ point.grade+'级)': point.name
-              let baseTag= '', tags= point.tag? point.tag.split(' '): ''
+              let baseTag= '', tags= point.tag? point.tag.split(' '): []
+              console.log('tags', tags)
+              console.log('this.base', this.base)
                 for(let k in tags){
                   for(let j in this.base){
                     if(this.base[j].name.indexOf(tags[k])>=0){
-                      baseTag+=('<a  tag-name="'+tags[k]+'" @click="toBase(\''+tags[k]+'\')">'+this.base[j].name+'('+this.base[j].addr+')</a>')
+                      baseTag+=('<a  @click="toBase(\''+tags[k]+'\')">'+this.base[j].name+'('+this.base[j].addr+')</a>')
                     }
                   }
                 }
+                if(!baseTag) baseTag= point.tag
 
                 let template='<div class="map-content school">'+
                   '<div class="title">'+ title+'</div>'+
@@ -506,7 +510,7 @@ export default {
                   '<li><span>训练基地：</span><span class="base-tag">'+baseTag+'</span></li>' +
                   '</ul>'+
                   '<div class="sign-up"><h2>学车报名</h2>'+
-                  '<Form :ref="sid" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入姓名"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
+                  '<Form :ref="sid" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
                   '</div>'+
                   '</div>'+
                   '</div>'
@@ -560,7 +564,13 @@ export default {
                           "schoolId": point.sid,
                           "schoolName": point.name
                         }).then( (res) => {
-                          if(res.data.code=='0') self.$Message.success('报名成功')
+                          if(res.data.code=='0'){
+                            // self.$Message.success('恭喜您报名成功！驾校将及时联系您。')
+                            this.$Modal.success({
+                              title: '报名成功',
+                              content: '恭喜您报名成功！驾校将及时联系您。'
+                            })
+                          }
                         })
                       } else {}
                     })
@@ -633,7 +643,10 @@ export default {
       // this.map.add(this.markers)
       // console.log('AMap.MarkerClusterer', AMap.MarkerClusterer)
       AMap.plugin(["AMap.MarkerClusterer"],() => {
-        this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{styles:[style, style, style]});
+        this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{
+          styles:[style, style, style],
+          maxZoom: 16
+        });
         // console.log('renderMap() over')
       });
 
@@ -873,8 +886,9 @@ export default {
         padding-right: 5px;
       }
       .inline{
-        width: 69%;
         display: inline-table;
+        width: 50%;
+        margin-right: 1%;
       }
       .select-bar{
 
