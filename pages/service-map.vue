@@ -320,6 +320,7 @@ export default {
     getBase(){
       if(this.search.type== '300' ){
         if(!this.base.length){
+          this.$Spin.show();
           this.$axios({
             baseURL: '/repair',
             url: '/micro/search/company?fl=name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
@@ -487,8 +488,8 @@ export default {
               let tel= this.$store.state.user.token? (point.tel||''):('<a @click="toLogin">登录后查看</a>')
               let title= point.name.indexOf('(')>=0? point.name.split('(')[0]+'驾校('+ point.grade+'级)': point.name
               let baseTag= '', tags= point.tag? point.tag.split(' '): []
-              console.log('tags', tags)
-              console.log('this.base', this.base)
+              // console.log('tags', tags)
+              // console.log('this.base', this.base)
                 for(let k in tags){
                   for(let j in this.base){
                     if(this.base[j].name.indexOf(tags[k])>=0){
@@ -782,6 +783,7 @@ export default {
           border: 1px solid #ededed;
           margin-bottom: 5px;
           position: relative;
+          cursor: pointer;
           img{
             float: left;
             margin: 8px;
@@ -801,7 +803,6 @@ export default {
               white-space: nowrap;
               overflow: hidden;
               display: block;
-              cursor: default;
             }
             .name{
               background: url(/img/map/com-icon.png) no-repeat left center;
@@ -821,6 +822,8 @@ export default {
               height: 18px;
               line-height: 16px;
               padding: 0 4px;
+              cursor: default;
+              z-index: -1;
             }
           }
           .appraise{
