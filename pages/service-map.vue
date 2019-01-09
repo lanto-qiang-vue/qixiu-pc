@@ -338,6 +338,7 @@ export default {
 
     },
     getCompList(){
+      this.$Spin.show();
       let query= this.calcQuery()
       this.$axios({
         baseURL: '/repair',
@@ -347,6 +348,7 @@ export default {
         this.list= res.data.content
         this.calcPointList(res.data.content)
         this.total= res.data.totalElements
+        this.$Spin.hide();
       })
     },
     calcQuery(limit){
@@ -398,6 +400,7 @@ export default {
       this.renderMap()
     },
     renderBase(){
+      let self= this
       let iconBase = new AMap.Icon({
         image: "/img/map/icon-base.png",
         size: new AMap.Size(30, 30),
@@ -409,17 +412,36 @@ export default {
       AMap.plugin('AMap.AdvancedInfoWindow', () => {
         for (let i in this.base){
           let lngLat= new AMap.LngLat(this.base[i].lon, this.base[i].lat)
-          let content = ''
+          let content = '', template= ''
 
-          content= '<div class="map-content">'+
+          template= '<div class="map-content">'+
             '<div class="title">训练基地</div>'+
             // '<div class="title">'+ this.pointList[i].name+'</div>'+
             '<div class="body">' +
             '<ul>' +
             '<li><span>基地名称：</span>'+this.base[i].name+'</li>' +
             '<li><span>基地地址：</span>'+this.base[i].addr+'</li>' +
+            '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
+            '</ul>' +
             '</div>'+
             '</div>'
+
+          let component= Vue.extend({
+            template: template,
+            data(){
+              return{
+               name: self.base[i].name.replace('驾校基地', '')
+              }
+            },
+            methods:{
+              look(){
+                self.search.base= this.name
+                self.getCompList()
+              }
+            }
+          })
+
+          content = new component().$mount().$el;
 
           this.base[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
             // panel: 'panel',
@@ -441,8 +463,8 @@ export default {
           })
           marker.on('click', (e) => {
             e.target.getExtData().advancedInfoWindow.open(this.map)
-            this.search.base= e.target.getExtData().name.replace('驾校基地','')
-            this.getCompList()
+            // this.search.base= e.target.getExtData().name.replace('驾校基地','')
+            // this.getCompList()
           })
           markers.push(marker)
         }
@@ -1003,6 +1025,8 @@ export default {
         overflow: hidden;
         li{
           line-height: 30px;
+          height: 30px;
+          width: 100%;
           font-size: 13px;
           span{
             font-weight: 600;

@@ -147,18 +147,21 @@
       </FormItem>
     </Form>
   </Modal>
+  <!--<simple-editor content="123456"></simple-editor>-->
 </div>
 </basic-container>
 </template>
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
-import config from '~~/config.js'
+import SimpleEditor from '~/components/simple-editor.vue'
+// import config from '~~/config.js'
 export default {
 		name: "login",
     layout: 'layout-root',
   components: {
-    BasicContainer
+    BasicContainer,
+    SimpleEditor
   },
 		data () {
 			// 联系电话验证
