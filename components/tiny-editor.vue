@@ -1,6 +1,6 @@
 <template>
 <div class="tinymce-editor" >
-  <textarea ref="editor" id="textarea"></textarea>
+  <textarea ref="editor"></textarea>
   <Spin v-show="showSpin" fix></Spin>
 </div>
 </template>
