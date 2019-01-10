@@ -42,6 +42,7 @@
             <FormItem label="驾校电话1:" >
                 <Input type="text" v-model="search.phoneNo1" placeholder="请输入驾校电话"></Input>
                 
+
             </FormItem>
             <FormItem label="驾校电话2:" >
                 <Input type="text" v-model="search.phoneNo2" placeholder="请输入驾校电话"></Input>
@@ -51,7 +52,7 @@
                     <Option v-for="item in creditLevelArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            
+
             <FormItem label="培训驾照类型:" prop="trainingScope" style="width: 95%;">
                 <div style="width: 450px;">
                 <Select v-model="search.trainingScope" multiple clearable>
@@ -68,7 +69,7 @@
                 <div style="width: 450px;">
                     <Table :columns="columns1" :data="data1" @on-selection-change="onSelectionChange"></Table>
                 </div>
-                
+
             </FormItem>
             <FormItem label="图片上传:" style="width: 80%;" >
 
@@ -181,7 +182,7 @@ export default {
         }
     },
     watch:{
-        
+
         showDetail(){
             this.showModal=true;
             this.getAreaInfo();
@@ -217,7 +218,7 @@ export default {
                                     this.search.pic.push(this.detailData['pic']);
                                 }
                             }
-                            
+
                         break;
                         case 'trainingScope':
                             if(this.detailData['trainingScope']){
@@ -227,17 +228,17 @@ export default {
                                     this.search.trainingScope.push(this.detailData['trainingScope']);
                                 }
                             }
-                            
+
                         break;
                         case 'phoneNo':
-                            
+
                                 let temPhone=this.detailData['phoneNo'].split('/');
                                 this.search.phoneNo1=temPhone[0];
                                 this.search.phoneNo2=temPhone[1];
                         break;
-                        case 'about':this.search[i]=this.detailData[i]||'';
-                        break;
-                        default:this.search[i]=this.detailData[i];
+
+                        default:this.search[i]=this.detailData[i]||'';
+
                     }
                 }
                 let newBase=this.detailData['baseList'];
@@ -273,15 +274,15 @@ export default {
                     "about":""
                 }
             }
-            
+
         },
     },
     methods:{
         closeSelect(){
-                
+
         },
         onRowSelect(val){
-             
+
             let newVal={
                 id:'',
                 name:'',
@@ -298,7 +299,7 @@ export default {
                 }
             }
 
-            
+
 
             this.data1.push(newVal);
 
@@ -314,7 +315,7 @@ export default {
                         this.search.baseId.push(this.data1[i]['id']);
                     }
                 }
-                
+
             }
             console.log(JSON.stringify(this.data1),this.search.drivingBase);
         },
@@ -329,7 +330,7 @@ export default {
                         this.data1[i]['_checked']=true;
                     }
                 }
-                
+
             }
 
             this.search.drivingBase="";
@@ -363,13 +364,13 @@ export default {
 
             this.search.pic=val;
         },
-            
+
         checkAllGroupChange (data) {
-			
+
         },
         addDrive(name){
-            this.search['about']=this.$refs.editor.getContent();
 
+          this.search['about']=this.$refs.editor.getContent();
         this.$refs[name].validate((valid) => {
           if (valid) {
                 let addData={
@@ -404,7 +405,7 @@ export default {
                     addData[i]=this.search[i];
                 }
             }
-            
+
             if(this.search['id']){
                 this.$axios.put('/training/driving/school/'+this.search['id'], {
                     "address": addData['address'],
@@ -453,8 +454,8 @@ export default {
           }
         });
 
-            
-            
+
+
         },
         //获取区域数据-------
         getAreaInfo(){
@@ -474,7 +475,7 @@ export default {
             if(val){
                 this.search['areaName']=val['label'];
             }
-            
+
         }
 
     },

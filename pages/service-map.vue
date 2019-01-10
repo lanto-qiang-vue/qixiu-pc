@@ -72,7 +72,7 @@
               </label>
             </span>
             <span>培训驾照类型：{{item.bizScope}}</span>
-            <Tag color="orange">{{item.grade ||'未评级'}}</Tag>
+            <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
