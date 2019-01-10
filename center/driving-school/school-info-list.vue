@@ -87,7 +87,10 @@
           {title: '报名地址', key: 'address', sortable: true, minWidth: 120},
           {title: '报名电话', key: 'phoneNo', sortable: true, minWidth: 120,
             render: (h, params) => {
-				let temPhone=params.row.phoneNo.split('/');
+				let temPhone='';
+				if(params.row.phoneNo){
+					temPhone=params.row.phoneNo.split('/');
+				}
               return h('div', [
                 h('span', 
                   temPhone[0]
@@ -97,7 +100,10 @@
           },
           {title: '报名电话2', key: 'phoneNo', sortable: true, minWidth: 150,
             render: (h, params) => {
-				let temPhone=params.row.phoneNo.split('/');
+				let temPhone='';
+				if(params.row.phoneNo){
+					temPhone=params.row.phoneNo.split('/');
+				}
               return h('div', [
                 h('span', 
                   temPhone[1]

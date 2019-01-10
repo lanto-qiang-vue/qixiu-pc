@@ -39,11 +39,11 @@
             <FormItem label="地址纬度:" prop="lat">
                 <Input type="text" v-model="search.lat" placeholder=""></Input>
             </FormItem>
-            <FormItem label="驾校电话1:" prop="phoneNo1">
+            <FormItem label="驾校电话1:" >
                 <Input type="text" v-model="search.phoneNo1" placeholder=""></Input>
                 
             </FormItem>
-            <FormItem label="驾校电话2:" prop="phoneNo2">
+            <FormItem label="驾校电话2:" >
                 <Input type="text" v-model="search.phoneNo2" placeholder=""></Input>
             </FormItem>
             <FormItem label="驾校等级:" prop="creditLevel">
@@ -72,7 +72,7 @@
                 </div>
                 
             </FormItem>
-            <FormItem label="图片上传:" style="width: 80%;" prop="pic">
+            <FormItem label="图片上传:" style="width: 80%;" >
 
                 <upload-imgs :description="description" :callback="'uploadImgFun'" @uploadImgFun="uploadImgFun" :data="search.pic"></upload-imgs>
 
@@ -85,7 +85,7 @@
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="addDrive" size="large" type="success"  v-if="">提交</Button>
+            <Button  @click="addDrive('search')" size="large" type="success"  v-if="">提交</Button>
         </div>
 
   </Modal>
@@ -153,12 +153,12 @@ export default {
                 address: [{ required: true,  message: '请填写数据',}],
                 lon: [{ required: true,  message: '请填写数据',}],
                 lat: [{ required: true,  message: '请填写数据',}],
-                phoneNo1: [{ required: true,  message: '请填写数据',}],
-                phoneNo2: [{ required: true,  message: '请填写数据',}],
+                // phoneNo1: [{ required: true,  message: '请填写数据',}],
+                // phoneNo2: [{ required: true,  message: '请填写数据',}],
                 creditLevel: [{ required: true,  message: '请填写数据',}],
                 trainingScope: [{ required: true,  message: '请填写数据',}],
                 drivingBase: [{ required: true,  message: '请填写数据',}],
-                pic: [{ required: true,  message: '请填写数据',}],
+                // pic: [{ required: true,  message: '请填写数据',}],
                 areaKey: [{ required: true,  message: '请填写数据',}],
                 about: [{ required: true,  message: '请填写数据',}],
             },//规则验证
@@ -358,8 +358,11 @@ export default {
         checkAllGroupChange (data) {
 			
         },
-        addDrive(){
-            let addData={
+        addDrive(name){
+
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+                let addData={
                 "address": "",
                 "areaKey": "",
                 "areaName": "",
@@ -437,6 +440,10 @@ export default {
                     }
                 })
             }
+          }
+        });
+
+            
             
         },
         //获取区域数据-------
