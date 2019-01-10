@@ -20,34 +20,42 @@
         <Option value="300">驾校</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
-      <Input v-model="search.q" placeholder="输入企业名称/地址" class="inline search" clearable
-             @on-enter="getCompList"  @on-change="$refs.hot.clearSingleSelect()" >
-      <Button slot="append" icon="ios-search" @click="getCompList"></Button>
+      <Input v-model="search.q" placeholder="输入名称/地址" class="inline search" clearable
+             @on-enter="getCompList"  @on-change="$refs.hot.clearSingleSelect(); page=1" >
       </Input>
-      <div class="select-bar" v-show="search.type=='164' ||search.type=='300'">
-        <Select v-show="search.type=='164'" v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
+      <Button type="primary" @click="getCompList">搜索</Button>
+      <div class="select-bar" v-show="search.type=='164'">
+        <Select  v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
-        <Select v-show="search.type=='300'" v-model="search.sortSchool" placeholder="驾校排序" clearable @on-change="changeSelectAll">
-          <Option v-for="(item, index) in sortSchool" :value="item.value" :key="index">{{item.name}}</Option>
-        </Select>
-        <Select v-show="search.type=='300'" v-model="search.bizScope" placeholder="驾照类型" clearable @on-change="changeSelectAll">
-          <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option>
-        </Select>
-        <Select v-model="search.is4s" placeholder="企业类型" v-show="search.type=='164'" clearable @on-change="changeSelectAll">
+        <Select v-model="search.is4s" placeholder="企业类型"  clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
         <Select v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
-        <Select v-model="search.hot" placeholder="热门搜索" v-show="search.type=='164'" clearable class="brand" @on-change='selectHot' ref="hot">
+        <Select v-model="search.hot" placeholder="热门搜索"  clearable class="brand" @on-change='selectHot' ref="hot">
           <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+      </div>
+      <div class="select-bar" v-show="search.type=='300'">
+        <Select  v-model="search.sortSchool" placeholder="驾校排序" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, index) in sortSchool" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+        <Select  v-model="search.bizScope" placeholder="驾照类型" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option>
+        </Select>
+        <Select v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
+          <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
+        </Select>
+        <Select v-model="search.base" placeholder="训练基地" clearable filterable @on-change="changeSelectAll">
+          <Option v-for="(item, key) in base" :value="item.name.replace('驾校基地','')" :key="key">{{item.name}}</Option>
         </Select>
       </div>
       <div class="res">查询结果：共<span>{{total}}</span>条记录，请在企业列表或地图中选择查看</div>
       <ul>
         <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
-          <img :src="item.frontPhoto? item.frontPhoto:'/img/map/com-head.jpg'">
+          <img :src="item.pic? item.pic:'/img/map/com-head.jpg'">
           <div class="list-right" v-if="item.type!='300'">
             <span class="name">{{item.name}}</span>
             <span>地址：{{item.addr}}</span>
@@ -57,7 +65,12 @@
           <div class="list-right" v-else>
             <span class="name type300">{{item.name}}</span>
             <span>报名地址：{{item.addr}}</span>
-            <span>训练基地：{{item.serveSupports.join(',')}}</span>
+            <!--<span>训练基地：{{item.serveSupports.join(',')}}</span>-->
+            <span>训练基地：
+              <label v-if="item.tag" v-for="(item2, index) in item.tag.split(' ')" :key="index">
+                <a @click.stop="goBase(item2)">{{item2 }}</a>{{index<(item.tag.split(' ').length-1)? ',': ''}}
+              </label>
+            </span>
             <span>培训驾照类型：{{item.bizScope}}</span>
             <Tag color="orange">{{item.grade ||'未评级'}}</Tag>
           </div>
@@ -82,6 +95,7 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import Vue from 'vue'
 export default {
   name: "service-map",
   layout: 'layout-root',
@@ -111,8 +125,9 @@ export default {
         area: '',
         is4s: '',
         hot: '',
-        bizScope: '',
+        bizScope: 'C1',
         sortSchool: '',
+        base: '',
         lng: 121.480236,
         lat: 31.236301
       },
@@ -123,7 +138,9 @@ export default {
         {name: '好评优先', value: 'rating desc,distance asc'},
       ],
       sortSchool: [
+        {name: '默认', value: ''},
         {name: '距离优先', value: 'distance'},
+        {name: '评级优先', value: 'rating desc,distance asc'},
       ],
       maintainType:[
         {name: '全部', value: ''},
@@ -161,6 +178,9 @@ export default {
         // {name: 'N', value: 'N'},
         // {name: 'P', value: 'P'},
       ],
+      base:[
+
+      ],
       total: 0,
       limit: 4,
       page: 1,
@@ -175,7 +195,20 @@ export default {
       markers: null
     }
   },
+  computed:{
+    nowType(){
+      return this.search.type
+    }
+  },
+  watch:{
+    nowType(){
+      this.$Spin.show();
+      this.map.clearMap()
+    }
+  },
   mounted(){
+    console.log('this.extend', this.$extend)
+    // console.log('Vue.compile', Vue.compile)
     $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2',()=>{
       this.init()
     });
@@ -201,7 +234,9 @@ export default {
       // console.log('this.map', this.map)
       // console.log('map1', window.map1)
       this.map= new AMap.Map('comp-map',{
-        zoom: 10,
+        keyboardEnable: false,
+        scrollWheel: false,
+        zoom: 14,
       });
       // console.log('this.map2', this.map)
       // window.map1= this.map
@@ -225,13 +260,14 @@ export default {
       }
       // console.log(this.$route.query)
       this.getArea()
+      this.getBase()
     },
     getLocation(){
       if(this.map){
         AMap.plugin('AMap.Geolocation', () => {
           this.geolocation = new AMap.Geolocation({
             buttonPosition: 'RB',
-            timeout: 2000,
+            timeout: 1000,
           });
           // this.map.addControl(this.geolocation);
           this.geolocation.getCurrentPosition();
@@ -282,7 +318,27 @@ export default {
         this.area= res.items
       })
     },
+    getBase(){
+      if(this.search.type== '300' ){
+        if(!this.base.length){
+          this.$axios({
+            baseURL: '/repair',
+            url: '/micro/search/company?fl=name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
+            method: 'get',
+          }).then( (res) => {
+            this.base= res.data.content
+            this.renderBase()
+            this.renderMap()
+          })
+        }else {
+          this.renderBase()
+        }
+      }
+
+
+    },
     getCompList(){
+      this.$Spin.show();
       let query= this.calcQuery()
       this.$axios({
         baseURL: '/repair',
@@ -290,22 +346,23 @@ export default {
         method: 'get',
       }).then( (res) => {
         this.list= res.data.content
-        // this.list= [{"bizScope":"C2,C1","distance":34.626394046953806,"grade":"AA","name":"奉贤县汽车运输有限公司机动车驾驶员培训队","serveSupports":["星火"],"tel":"13916526823、57413274","lon":121.454448,"kw":"奉贤","type":300,"addr":"奉贤区南桥路795号","lat":30.925683,"sid":"1"},{"bizScope":"C2,C1","distance":34.626394046953806,"grade":"AA","name":"奉贤县汽车运输有限公司机动车驾驶员培训队","serveSupports":["星火"],"tel":"13916526823、57413274","lon":121.454448,"kw":"奉贤","type":300,"addr":"奉贤区南桥路795号","lat":30.925683,"sid":"1"}]
         this.calcPointList(res.data.content)
-        // this.calcPointList(this.list)
         this.total= res.data.totalElements
+        this.$Spin.hide();
       })
     },
     calcQuery(limit){
       let is164= this.search.type== 164
       let is300= this.search.type== 300
-      let query='?fl=type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,serveSupports'+
+      let query='?fl=pic,type,sid,name,addr,tel,distance,kw,lon,lat,bizScope,brand,category,grade,tag'+
         '&q='+ this.search.q +
         '&page='+ (this.page-1) +','+ (limit ||this.limit)
       if(is164) query+= ('&sort=_score desc,'+ (this.search.sort||'distance'))
+      if(is300) query+= ('&sort=_score desc,'+ (this.search.sortSchool||'distance'))
       if(this.search.lng) query+=('&point='+this.search.lat+','+this.search.lng)
       let fq='&fq=status:1+AND+type:'+ this.search.type, is4s=''
-      if(this.search.bizScope) fq+= ('+AND+kw:'+  this.search.bizScope)
+      if(is300 && this.search.bizScope) fq+= ('+AND+kw:'+  this.search.bizScope)
+      if(is300 && this.search.base) fq+= ('+AND+tag:'+  encodeURI(this.search.base))
       if(this.search.area && (is164 || is300)) fq+= '+AND+areaKey:'+ this.search.area
       if(this.search.is4s && is164){
         is4s= (this.search.is4s=='yes' ? 'kw:4s': '-kw:4s')
@@ -316,7 +373,7 @@ export default {
       return query
     },
     initPiontList(){
-      let query= this.calcQuery(20)
+      let query= this.calcQuery(50)
       this.$axios({
         baseURL: '/repair',
         url: '/micro/search/company'+ query,
@@ -342,7 +399,81 @@ export default {
       }
       this.renderMap()
     },
+    renderBase(){
+      let self= this
+      let iconBase = new AMap.Icon({
+        image: "/img/map/icon-base.png",
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
+        imageSize: new AMap.Size(30, 30),
+      });
+      let markers= []
+
+      AMap.plugin('AMap.AdvancedInfoWindow', () => {
+        for (let i in this.base){
+          let lngLat= new AMap.LngLat(this.base[i].lon, this.base[i].lat)
+          let content = '', template= ''
+
+          template= '<div class="map-content">'+
+            '<div class="title">训练基地</div>'+
+            // '<div class="title">'+ this.pointList[i].name+'</div>'+
+            '<div class="body">' +
+            '<ul>' +
+            '<li><span>基地名称：</span>'+this.base[i].name+'</li>' +
+            '<li><span>基地地址：</span>'+this.base[i].addr+'</li>' +
+            '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
+            '</ul>' +
+            '</div>'+
+            '</div>'
+
+          let component= Vue.extend({
+            template: template,
+            data(){
+              return{
+               name: self.base[i].name.replace('驾校基地', '')
+              }
+            },
+            methods:{
+              look(){
+                self.search.base= this.name
+                self.getCompList()
+              }
+            }
+          })
+
+          content = new component().$mount().$el;
+
+          this.base[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
+            // panel: 'panel',
+            offset: new AMap.Pixel(5, -20),
+            position: lngLat,
+            // placeSearch: true,
+            // asOrigin: true,
+            // asDestination: true,
+            content: content
+          });
+
+
+
+          let marker= new AMap.Marker({
+            icon: iconBase,
+            position: lngLat,
+            extData: this.base[i],
+            zIndex: 110
+          })
+          marker.on('click', (e) => {
+            e.target.getExtData().advancedInfoWindow.open(this.map)
+            // this.search.base= e.target.getExtData().name.replace('驾校基地','')
+            // this.getCompList()
+          })
+          markers.push(marker)
+        }
+
+        this.map.add(markers)
+      })
+    },
     renderMap(){
+      let self= this
       if(this.markerClusterer ) {
         this.markerClusterer.clearMarkers();
         this.markerClusterer.setMap(null);
@@ -350,20 +481,20 @@ export default {
       }
       let iconNormal = new AMap.Icon({
           image: "/img/map/icon-normal.png",
-          size: new AMap.Size(52, 52),
-          imageOffset: new AMap.Size(11, 11),
+          size: new AMap.Size(30, 30),
+          // imageOffset: new AMap.Size(11, 11),
           imageSize: new AMap.Size(30, 30),
         });
       let icon4s = new AMap.Icon({
         image: "/img/map/icon-4s.png",
-        size: new AMap.Size(52, 52),
-        imageOffset: new AMap.Size(11, 11),
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
         imageSize: new AMap.Size(30, 30),
       });
       let iconSchool = new AMap.Icon({
         image: "/img/map/icon-school.png",
-        size: new AMap.Size(52, 52),
-        imageOffset: new AMap.Size(11, 11),
+        size: new AMap.Size(30, 30),
+        // imageOffset: new AMap.Size(11, 11),
         imageSize: new AMap.Size(30, 30),
       });
 
@@ -371,40 +502,128 @@ export default {
 
       AMap.plugin('AMap.AdvancedInfoWindow', () => {
         for (let i in this.pointList){
-          let is164= this.pointList[i].type== 164
-          let lngLat= new AMap.LngLat(this.pointList[i].lon|| this.search.lng, this.pointList[i].lat|| this.search.lat)
+          let point= this.pointList[i]
+          let is164= point.type== 164
+          let lngLat= new AMap.LngLat(point.lon|| this.search.lng, point.lat|| this.search.lat)
           let content = ''
-          switch (this.pointList[i].type){
-            case 300:{
-              content= '<div class="map-content">'+
-                '<div class="title">'+ this.pointList[i].name+'</div>'+
-                '<div class="body">' +
-                '<ul>' +
-                '<li><span>驾校名称：</span>'+this.pointList[i].name+'('+ this.pointList[i].grade+'级)</li>' +
-                '<li><span>报名地址：</span>'+this.pointList[i].addr+'</li>' +
-                '<li><span>报名电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
-                '<li><span>培训驾照类型：</span>'+(this.pointList[i].bizScope||'')+'</li>' +
-                '<li><span>训练基地：</span>'+(this.pointList[i].serveSupports.join(","))+'</li>' +
-                '</div>'+
-                '</div>'
+          switch (point.type.toString()){
+            case '300':{
+              let tel= this.$store.state.user.token? (point.tel||''):('<a @click="toLogin">登录后查看</a>')
+              let title= point.name.indexOf('(')>=0? point.name.split('(')[0]+'驾校('+ point.grade+'级)': point.name
+              let baseTag= '', tags= point.tag? point.tag.split(' '): []
+              // console.log('tags', tags)
+              // console.log('this.base', this.base)
+                for(let k in tags){
+                  for(let j in this.base){
+                    if(this.base[j].name.indexOf(tags[k])>=0){
+                      baseTag+=('<a  @click="toBase(\''+tags[k]+'\')">'+this.base[j].name+'('+this.base[j].addr+')</a>')
+                    }
+                  }
+                }
+                if(!baseTag) baseTag= point.tag
+
+                let template='<div class="map-content school">'+
+                  '<div class="title">'+ title+'</div>'+
+                  '<div class="body">' +
+                  '<img class="head-img" src="'+(point.pic||'/img/map/com-head.jpg')+'"/>'+
+                  '<ul>' +
+                  '<li><span>驾校名称：</span>'+point.name+'</li>' +
+                  '<li><span>报名地址：</span>'+point.addr+'</li>' +
+                  '<li><span>报名电话：</span>'+tel+'</li>' +
+                  '<li><span>培训驾照类型：</span>'+(point.bizScope||'')+'</li>' +
+                  '<li><span>训练基地：</span><span class="base-tag">'+baseTag+'</span></li>' +
+                  '</ul>'+
+                  '<div class="sign-up"><h2>学车报名</h2>'+
+                  '<Form :ref="sid" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
+                  '</div>'+
+                  '</div>'+
+                  '</div>'
+
+              let component= Vue.extend({
+                template: template,
+                data(){
+                  let rule= { required: true, message:'必填项不能为空'}
+                  let validate = (rule, value, callback) => {
+                    let p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+                    let p2=/0\d{2,3}-\d{7,8}/;
+                    if (p2.test(value)||p1.test(value)||!value) {
+                      callback();
+                    }else{
+                      callback(new Error('请输入正确的号码'));
+                    }
+                  };
+                  return{
+                    sid: 'form'+point.sid,
+                    search:{
+                      name: '',
+                      tel: '',
+                      bizScope: ''
+                    },
+                    rule:{
+                      name: [rule],
+                      tel: [rule,
+                        { len:11, validator:validate, message: '请输入正确的号码'}
+                      ],
+                      bizScope: [rule],
+                    },
+                    bizScope: self.bizScope.slice(1, self.bizScope.length)
+                  }
+                },
+                methods:{
+                  toBase: self.goBase,
+                  toLogin(){
+                    self.$router.push({
+                      path: '/login',
+                      query: { redirect:  self.$route.fullPath }
+                    })
+                  },
+                  apply(){
+                    // console.log(this.search.bizScope)
+                    this.$refs[this.sid].validate((valid) => {
+                      if (valid) {
+                        self.$axios.post('/training/driving/register', {
+                          "category": this.search.bizScope,
+                          "name": this.search.name,
+                          "phoneNo": this.search.tel,
+                          "schoolId": point.sid,
+                          "schoolName": point.name
+                        }).then( (res) => {
+                          if(res.data.code=='0'){
+                            // self.$Message.success('恭喜您报名成功！驾校将及时联系您。')
+                            this.$refs[this.sid].resetFields()
+                            this.$Modal.success({
+                              title: '报名成功',
+                              content: '恭喜您报名成功！驾校将及时联系您。'
+                            })
+                          }
+                        })
+                      } else {}
+                    })
+                  }
+                }
+              })
+
+              content = new component().$mount().$el;
+
+
               break;
             }
             default :{
               content = '<div class="map-content">'+
-                '<div class="title">'+ this.pointList[i].name+'</div>'+
+                '<div class="title">'+ point.name+'</div>'+
                 '<div class="body">' +
                 '<ul>' +
-                '<li><span>企业名称：</span>'+this.pointList[i].name+'</li>' +
-                '<li><span>经营地址：</span>'+this.pointList[i].addr+'</li>' +
-                '<li><span>联系电话：</span>'+(this.pointList[i].tel||'')+'</li>' +
-                (is164? '<li><span>经营范围：</span>'+this.pointList[i].bizScope+'</li>':'' )+
-                (is164? '<li><span>主修品牌：</span>'+this.pointList[i].brand+'</li>':'' )+
-                (is164? '<li><span>业户类别：</span>'+this.formatCategory(this.pointList[i].category)+'</li>':'' )+
+                '<li><span>企业名称：</span>'+point.name+'</li>' +
+                '<li><span>经营地址：</span>'+point.addr+'</li>' +
+                '<li><span>联系电话：</span>'+(point.tel||'')+'</li>' +
+                (is164? '<li><span>经营范围：</span>'+point.bizScope+'</li>':'' )+
+                (is164? '<li><span>主修品牌：</span>'+point.brand+'</li>':'' )+
+                (is164? '<li><span>业户类别：</span>'+this.formatCategory(point.category)+'</li>':'' )+
                 '</ul>'+
                 (is164? ('<div class="button-block">' +
-                  '<a href="/visit-service/?id='+this.pointList[i].sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
-                  '<a href="/appointment/?id='+this.pointList[i].sid+'&name='+this.pointList[i].name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
-                  '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+this.pointList[i].sid+'"><span>查看详情</span></a>'+
+                  '<a href="/visit-service/?id='+point.sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
+                  '<a href="/appointment/?id='+point.sid+'&name='+point.name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
+                  '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+point.sid+'"><span>查看详情</span></a>'+
                   '</div>') :'')+
                 '</div>'+
                 '</div>'
@@ -412,7 +631,7 @@ export default {
           }
 
 
-          this.pointList[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
+          point.advancedInfoWindow= new AMap.AdvancedInfoWindow({
             // panel: 'panel',
             offset: new AMap.Pixel(5, -20),
             position: lngLat,
@@ -425,9 +644,9 @@ export default {
 
 
           let marker= new AMap.Marker({
-            icon: this.pointList[i].type=='300'?iconSchool:(this.pointList[i].is4s? icon4s: iconNormal),
+            icon: point.type=='300'?iconSchool:(point.is4s? icon4s: iconNormal),
             position: lngLat,
-            extData: this.pointList[i]
+            extData: point
           })
           marker.on('click', (e) => {
             e.target.getExtData().advancedInfoWindow.open(this.map)
@@ -439,7 +658,8 @@ export default {
 
       let style={
         url: '/img/map/position-num.png',
-        size: new AMap.Size(40, 40),
+        size: new AMap.Size(30, 30),
+        imageOffset:new AMap.Pixel(-5,-5),
         textColor: '#fff',
         textSize: 14
       }
@@ -449,15 +669,31 @@ export default {
       // this.map.add(this.markers)
       // console.log('AMap.MarkerClusterer', AMap.MarkerClusterer)
       AMap.plugin(["AMap.MarkerClusterer"],() => {
-        this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{styles:[style, style, style]});
+        this.markerClusterer = new AMap.MarkerClusterer(this.map, this.markers,{
+          styles:[style, style, style],
+          maxZoom: 16
+        });
         // console.log('renderMap() over')
       });
 
-      let is164= this.search.type== 164
-      if(is164){
-        this.map.setZoom(13)
-      } else{
-        this.map.setZoom(10)
+      this.getBase()
+
+      // let is164= this.search.type== 164
+      // if(is164){
+      //   this.map.setZoom(13)
+      // } else{
+      //   this.map.setZoom(10)
+      // }
+    },
+    goTo(path){
+      this.$router.push(path)
+    },
+    goBase(name){
+      console.log(name)
+      for(let i in this.base){
+        if(this.base[i].name.indexOf(name)>=0){
+          this.base[i].advancedInfoWindow.open(this.map)
+        }
       }
     },
     changeType(){
@@ -572,6 +808,7 @@ export default {
           border: 1px solid #ededed;
           margin-bottom: 5px;
           position: relative;
+          cursor: pointer;
           img{
             float: left;
             margin: 8px;
@@ -591,7 +828,6 @@ export default {
               white-space: nowrap;
               overflow: hidden;
               display: block;
-              cursor: default;
             }
             .name{
               background: url(/img/map/com-icon.png) no-repeat left center;
@@ -608,6 +844,11 @@ export default {
               position: absolute;
               top: -4px;
               right: 0;
+              height: 18px;
+              line-height: 16px;
+              padding: 0 4px;
+              cursor: default;
+              z-index: -1;
             }
           }
           .appraise{
@@ -673,8 +914,9 @@ export default {
         padding-right: 5px;
       }
       .inline{
-        width: 69%;
         display: inline-table;
+        width: 50%;
+        margin-right: 1%;
       }
       .select-bar{
 
@@ -769,12 +1011,27 @@ export default {
       color: white;
     }
     .body{
-      padding: 15px;
-      ul li{
-        line-height: 30px;
-        font-size: 13px;
-        span{
-          font-weight: 600;
+      padding: 5px 15px;
+      position: relative;
+      .head-img{
+        position: absolute;
+        top: 15px;
+        /*bottom: 0;*/
+        left: 15px;
+        width: 150px;
+        /*margin: auto;*/
+      }
+      ul{
+        overflow: hidden;
+        li{
+          line-height: 30px;
+          height: 30px;
+          width: 100%;
+          font-size: 13px;
+          span{
+            font-weight: 600;
+            float: left;
+          }
         }
       }
       .button-block{
@@ -782,6 +1039,42 @@ export default {
         text-align: right;
         .ivu-btn{
           margin-left: 15px;
+        }
+      }
+    }
+  }
+  .school{
+    width: 550px;
+    .body>ul{
+      padding-left: 160px;
+      .base-tag{
+        font-weight: 400;
+        a{
+          display: block;
+        }
+      }
+    }
+    .sign-up{
+      overflow: hidden;
+      border-top: 1px solid #CECECE;
+      h2{
+        margin: 10px;
+      }
+      .ivu-form-item{
+        width: 25%;
+        float: left;
+        position: relative;
+        .ivu-form-item-label{
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          height: 10px;
+          float: none;
+          padding: 0;
+          &:before{
+            margin-right: 1px;
+          }
         }
       }
     }
