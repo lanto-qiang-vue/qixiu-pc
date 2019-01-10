@@ -62,10 +62,11 @@ export default function ({ $axios, redirect, store, route, app }) {
     //   console.log(key)
     // }
     if(error&& error.response && error.response.status==400){
+      let content= getContent(error.response)
       if (process.client &&content) {
         // console.log(content)
         // Message.destroy()
-        Message.error({content: getContent(error.response), duration: 3})
+        Message.error({content: content, duration: 3})
       }
     }
   })

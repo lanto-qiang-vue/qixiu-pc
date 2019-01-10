@@ -1,5 +1,5 @@
 <template>
-<div class="tinymce-editor" >
+<div class="tinymce-editor ivu-input">
   <textarea ref="editor"></textarea>
   <Spin v-show="showSpin" fix></Spin>
 </div>
@@ -57,10 +57,11 @@ export default {
         menubar: this.menubar,
         toolbar:  this.toolbar,
         plugins:  this.plugins,
+        min_height: 500,
         indentation : '2em',
         fontsize_formats: '12px 14px 16px 18px 20px 22px 24px',
         font_formats: '宋体=SimSun,STSong;黑体=SimHei,STHeiti;微软雅黑=Microsoft Yahei,STXinwei;楷体=KaiTi,STKaiti;新宋体=NSimSun,STZhongsong;仿宋=FangSong,STFangsong',
-        content_style: '*{word-break: break-all;}',
+        content_style: '*{word-break: break-all;box-sizing: border-box;}',
         external_plugins: external_plugins
       }).then((editor)=>{
         this.showSpin= false
@@ -86,5 +87,17 @@ export default {
 .tinymce-editor{
   position: relative;
   overflow: hidden;
+  height: auto;
+  /*border: 0;*/
+  border-radius: 0;
+  padding: 0;
 }
+</style>
+<style lang="less">
+  .tinymce-editor{
+    .mce-container, .mce-container *, .mce-widget, .mce-widget *, .mce-reset{
+      box-sizing: border-box;
+    }
+  }
+
 </style>
