@@ -21,7 +21,7 @@
                 </FormItem>
                 <FormItem label="驾校等级:">
                     <Select v-model="searchList.creditLevel" clearable>
-                        <Option v-for="item in creditLevelArr" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                        <Option v-for="item in creditLevelArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="培训驾照类型:"  >
@@ -113,7 +113,21 @@
           },
           {title: '培训驾照类型', key: 'trainingScope', sortable: true, minWidth: 130,},
 		  {title: '训练基地', key: 'drivingBase', sortable: true, minWidth: 140,},
-		  {title: '驾校等级', key: 'creditLevel', sortable: true, minWidth: 140,},
+		  {title: '驾校等级', key: 'creditLevel', sortable: true, minWidth: 140,
+			render: (h, params) => {
+				let temPhone='';
+				if(params.row.creditLevel=='N'){
+					temPhone='未评级';
+				}else{
+					temPhone=params.row.creditLevel;
+				}
+              return h('div', [
+                h('span', 
+                  temPhone
+                )
+              ]);
+            }
+			},
           
         ],
         tableData: [],
@@ -126,9 +140,11 @@
             
         },
 		creditLevelArr:[
-			{name:'A'},
-			{name:'AA'},
-			{name:'AAA'},
+			{name:'未评级',code:'N'},
+			{name:'B',code:'B'},
+			{name:'A',code:'A'},
+			{name:'AA',code:'AA'},
+			{name:'AAA',code:'AAA'},
 		],
 		drivingBaseArr:[],
         page: 1,
