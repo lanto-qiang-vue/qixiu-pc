@@ -17,13 +17,8 @@ const prodConfig={
 
 //开发测试环境配置
 const devConfig={
-<<<<<<< HEAD
-  port: '3000',
-  // apiUrl: 'http://212.64.5.54:8888/',
-=======
   port: '3333',
-  apiUrl: 'http://212.64.5.54:8888/',
->>>>>>> 1a34cd619f29913987e8e7417b6dec973b04a1a0
+  // apiUrl: 'http://212.64.5.54:8888/',
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
   apiUrl: 'http://192.168.169.231:8888/',
 

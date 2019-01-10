@@ -51,9 +51,7 @@
                     <Option v-for="item in creditLevelArr" :value="item.name" :key="item.name">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="驾校简介:" prop="about" style="width: 95%;">
-                <Input type="textarea" v-model="search.about" :rows="1" placeholder="请输入公司简介"> </Input>
-            </FormItem>
+            
             <FormItem label="培训驾照类型:" prop="trainingScope" style="width: 95%;">
                 <div style="width: 450px;">
                 <Select v-model="search.trainingScope" multiple clearable>
@@ -81,6 +79,10 @@
                 <p>最多上传五张图片，单张最大不超过3M</p>
                 <p>仅支持PNG、JPG、JPEG、BMP格式</p>
             </FormItem>
+            <FormItem label="驾校简介:" prop="about" style="width: 95%;">
+                <!--<Input type="textarea" v-model="search.about" :rows="1" placeholder="请输入公司简介"> </Input>-->
+                <tiny-editor :content="search.about" ref="editor"></tiny-editor>
+            </FormItem>
         </Form>
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
@@ -97,12 +99,14 @@ import funMixin from '~/components/fun-auth-mixim.js'
   import unitSearchInput from '~/components/unit-search-input.vue'
   import uploadImgs from '~/components/upload-imgs.vue'
 
+import TinyEditor from '~/components/tiny-editor.vue'
+
   import {   deepClone } from '@/static/util'
 export default {
 	name: "note-issued",
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
-    components: {unitSearchInput,uploadImgs},
+    components: {unitSearchInput,uploadImgs,TinyEditor},
     data(){
         return{
             spinShow:false,
@@ -359,6 +363,7 @@ export default {
 			
         },
         addDrive(name){
+            this.search['about']=this.$refs.editor.getContent();
 
         this.$refs[name].validate((valid) => {
           if (valid) {
