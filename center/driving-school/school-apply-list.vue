@@ -11,12 +11,12 @@
           <Input type="text" v-model="search.phoneNo" placeholder="请输入手机号"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary"  @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('query')"  @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary"  @click="toImport">导出</Button>
+      <Button type="primary"  @click="toImport" v-if="accessBtn('export')">导出</Button>
     </div>
   </common-table>
 </template>
