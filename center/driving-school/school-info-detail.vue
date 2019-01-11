@@ -88,7 +88,7 @@
 <Spin size="large" fix v-if="spinShow"></Spin>
         </div>
         <div slot="footer">
-            <Button  @click="addDrive('search')" size="large" type="success"  v-if="">提交</Button>
+            <Button  @click="addDrive('search')" size="large" type="success"  v-if="accessBtn('add')">提交</Button>
         </div>
 
   </Modal>
@@ -371,7 +371,7 @@ export default {
         addDrive(name){
 
           this.search['about']=this.$refs.editor.getContent();
-        this.$refs[name].validate((valid) => {
+            this.$refs[name].validate((valid) => {
           if (valid) {
                 let addData={
                 "address": "",

@@ -35,13 +35,13 @@
                 </FormItem>
                 
                 <FormItem :label-width="0" style="width: 60px;">
-                    <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                    <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
                 </FormItem>
         </Form>
     </div>
     <div slot="operate">
-        <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-        <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+        <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+        <Button type="info" v-if="accessBtn('update')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
     </div>
 	<school-info-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" ></school-info-detail>
   </common-table>
@@ -50,7 +50,7 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import schoolInfoDetail from './school-info-detail.vue'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   import { formatDate } from '@/static/tools.js'
   import { getName } from '@/static/util.js'
 	export default {
@@ -59,8 +59,9 @@
       CommonTable,
 	  schoolInfoDetail
     },
+    mixins: [funMixin],
     data(){
-		  return{
+	return{
         loading:false,
         checkList:[
             {'name':'A1'},
@@ -79,12 +80,12 @@
           {title: '序号', minWidth: 80,
             render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
           },
-          {title: '驾校名称', key: 'name', sortable: true, minWidth: 120,
+          {title: '驾校名称', key: 'name', sortable: true, minWidth: 160,
           },
           {title: '驾校简称', key: 'simpleName', sortable: true, minWidth: 120},
-          {title: '许可证号', key: 'licenseNo', sortable: true, minWidth: 150,
+          {title: '许可证号', key: 'licenseNo', sortable: true, minWidth: 160,
           },
-          {title: '报名地址', key: 'address', sortable: true, minWidth: 120},
+          {title: '报名地址', key: 'address', sortable: true, minWidth: 160},
           {title: '报名电话', key: 'phoneNo', sortable: true, minWidth: 120,
             render: (h, params) => {
 				let temPhone='';
@@ -98,7 +99,7 @@
               ]);
             }
           },
-          {title: '报名电话2', key: 'phoneNo', sortable: true, minWidth: 150,
+          {title: '报名电话2', key: 'phoneNo', sortable: true, minWidth: 120,
             render: (h, params) => {
 				let temPhone='';
 				if(params.row.phoneNo){
@@ -112,12 +113,12 @@
             }
           },
           {title: '培训驾照类型', key: 'trainingScope', sortable: true, minWidth: 130,},
-		  {title: '训练基地', key: 'drivingBase', sortable: true, minWidth: 140,},
-		  {title: '驾校等级', key: 'creditLevel', sortable: true, minWidth: 140,
+		  {title: '训练基地', key: 'drivingBase', sortable: true, minWidth: 130,},
+		  {title: '驾校等级', key: 'creditLevel', sortable: true, minWidth: 120,
 			render: (h, params) => {
 				let temPhone='';
 				if(params.row.creditLevel=='N'){
-                    
+
 					temPhone='未评级';
 				}else{
 					temPhone=params.row.creditLevel;
@@ -184,7 +185,7 @@
             
             this.$axios.get('/training/driving/school/query?size='+this.limit+'&page='+page+strUrl, {
             }).then( (res) => {
-              console.log(res);
+            //   console.log(res);
               if(res.status===200){
                   this.tableData=res.data.content;
                   this.total=res.data.totalElements;
@@ -200,7 +201,7 @@
 			let page=this.page-1;
 			this.$axios.get('/training/driving/base/query', {
             }).then( (res) => {
-              console.log(res);
+            //   console.log(res);
               if(res.status===200){
                 
 				this.drivingBaseArr=res.data.content;
@@ -218,22 +219,10 @@
           this.getList()
         },
         onRowClick( row, index){
-            console.log('row:',row);
-            if(row.STATUS=="10421003"){
-                this.isOrderSuccess=true;
-            }else{
-                this.isOrderSuccess=false;
-            }
           this.detailData=row
-        },
-        onRowDblclick( row, index){
-          this.detailData=row
-          console.log('row:',row);
-          this.showDetail=Math.random()
         },
         closeDetail(){
           this.detailData= null
-          this.isOrderSuccess=true;
           this.clearTableSelect= Math.random()
           
           this.getList();
