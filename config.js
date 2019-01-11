@@ -6,7 +6,7 @@ const prodConfig={
   // apiUrl: 'http://212.64.5.54:8888/',
   apiUrl: 'http://gateway.qixiu.lanto.com/',
   //查修接口地址
-  repairUrl: 'http://118.25.35.172:7210/',
+  repairUrl: 'http://corp.search.shanghaiqixiu.org/',
 
   socketUrl: 'https://www.test.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
