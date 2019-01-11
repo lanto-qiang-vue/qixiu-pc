@@ -8,7 +8,7 @@ const prodConfig={
   //查修接口地址
   repairUrl: 'http://118.25.35.172:7210/',
 
-  socketUrl: ' https://www.shanghaiqixiu.org/heatmap/socket',
+  socketUrl: 'https://www.test.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
   articlePath: 'https://download.image.shanghaiqixiu.org/',
@@ -28,7 +28,7 @@ const devConfig={
   // repairUrl: 'http://118.25.35.172:7210/',
   repairUrl: 'http://192.168.169.230:7210/',
 
-  socketUrl: ' https://www.shanghaiqixiu.org/heatmap/socket',
+  socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
   articlePath: 'http://download.image.lanto.com/',
