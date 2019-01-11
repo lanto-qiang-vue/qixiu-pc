@@ -7,7 +7,7 @@ const prodConfig={
   apiUrl: 'http://gateway.qixiu.lanto.com/',
   //查修接口地址
   repairUrl: 'http://118.25.35.172:7210/',
-  socketUrl: 'https://socket.shanghaiqixiu.org/heatmap/socket',
+  socketUrl: 'https://www.test.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shanghaiqixiu.org/heatmap/socket',
   articlePath: 'https://download.image.shanghaiqixiu.org/',
   // articlePath: 'http://download.image.lanto.com/'
@@ -21,10 +21,11 @@ const devConfig={
   // apiUrl: 'http://212.64.5.54:8888/',
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
   apiUrl: 'http://192.168.169.231:8888/',
+  // apiUrl: 'http://192.168.169.114:8481/',
 
   // repairUrl: 'http://118.25.35.172:7210/',
   repairUrl: 'http://192.168.169.230:7210/',
-  socketUrl: 'http://118.25.131.29:10001/heatmap/socket',
+  socketUrl: 'https://www.test.shanghaiqixiu.org/heatmpa',
   shandongSocket: 'http://118.25.13.140:10001/heatmap/socket',
   articlePath: 'http://download.image.lanto.com/',
   workOn: 'pDev'
