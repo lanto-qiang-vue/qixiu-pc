@@ -596,7 +596,7 @@ export default {
                 '<div class="button-block"  v-show="is164">' +
                   '<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
                   '<Button :to="\'/apdatasment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
-                  '<Button :to="\'/garage-info/\'+datas.sid">查看详情</Button>'+
+                  '<Button :to="\'/garage-info/\'+datas.sid" type="info">查看详情</Button>'+
                 '</div>'+
                 '</div>'+
                 '</div>'
@@ -707,7 +707,7 @@ export default {
 
       this.markers= []
 
-      AMap.plugin('AMap.AdvancedInfoWindow', () => {
+
         for (let i in this.pointList){
           let point= this.pointList[i]
           let is164= point.type== 164
@@ -721,14 +721,11 @@ export default {
             extData: point
           })
           marker.on('click', (e) => {
-            let data= e.target.getExtData()
-            let window= this.getInfoWindow(data.type)
-            window.data= data
-            window.el.open(this.map, e.target.getPosition())
+
+            this.openInfoWindow(e.target)
           })
           this.markers.push(marker)
         }
-      })
 
 
       let style={
@@ -767,7 +764,7 @@ export default {
       console.log(name)
       for(let i in this.base){
         if(this.base[i].name.indexOf(name)>=0){
-          this.base[i].advancedInfoWindow.open(this.map)
+          this.openInfoWindow(this.base[i])
         }
       }
     },
@@ -785,8 +782,9 @@ export default {
     },
     openMapInfo(id){
       for (let i in this.markers){
-        if(this.markers[i].getExtData().sid== id){
-          this.markers[i].getExtData().advancedInfoWindow.open(this.map)
+        let data= this.markers[i].getExtData()
+        if(data.sid== id){
+          this.openInfoWindow(this.markers[i])
         }
       }
     },
@@ -821,6 +819,13 @@ export default {
           return this.infoWindow[key]
         }
       }
+    },
+    openInfoWindow(marker){
+      let data= marker.getExtData()
+      let window= this.getInfoWindow(data.type.toString())
+      window.data= data
+      window.el.open(this.map, marker.getPosition())
+
     }
   }
 }
@@ -1120,7 +1125,7 @@ export default {
         margin-top: 20px;
         text-align: right;
         .ivu-btn{
-          margin-left: 15px;
+          margin-left: 10px;
         }
       }
     }
