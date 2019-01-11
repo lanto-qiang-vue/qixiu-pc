@@ -192,7 +192,25 @@ export default {
       map: null,
       geolocation: null,
       markerClusterer: null,
-      markers: null
+      markers: null,
+
+      infoWindow:{
+        garage: {
+          type: ['164','166','214','215','213'],
+          el: null,
+          data: {}
+        },
+        school: {
+          type: ['300'],
+          el: null,
+          data: {}
+        },
+        base: {
+          type: ['301'],
+          el: null,
+          data: {}
+        }
+      }
     }
   },
   computed:{
@@ -261,6 +279,7 @@ export default {
       // console.log(this.$route.query)
       this.getArea()
       this.getBase()
+      this.initInfoWindow()
     },
     getLocation(){
       if(this.map){
@@ -400,7 +419,6 @@ export default {
       this.renderMap()
     },
     renderBase(){
-      let self= this
       let iconBase = new AMap.Icon({
         image: "/img/map/icon-base.png",
         size: new AMap.Size(30, 30),
@@ -409,67 +427,256 @@ export default {
       });
       let markers= []
 
+
+      for (let i in this.base){
+        let lngLat= new AMap.LngLat(this.base[i].lon, this.base[i].lat)
+        let marker= new AMap.Marker({
+          icon: iconBase,
+          position: lngLat,
+          extData: this.base[i],
+          zIndex: 110
+        })
+        marker.on('click', (e) => {
+          // console.log('e.target', e.target)
+          this.infoWindow.base.data= e.target.getExtData()
+          this.infoWindow.base.el.open(this.map, e.target.getPosition())
+        })
+        markers.push(marker)
+      }
+
+      this.map.add(markers)
+
+    },
+    initInfoWindow(){
+      let self= this
+      let garage= this.infoWindow.garage
+      let school= this.infoWindow.school
+      let base= this.infoWindow.base
+      let template='', component= null
       AMap.plugin('AMap.AdvancedInfoWindow', () => {
-        for (let i in this.base){
-          let lngLat= new AMap.LngLat(this.base[i].lon, this.base[i].lat)
-          let content = '', template= ''
 
-          template= '<div class="map-content">'+
-            '<div class="title">训练基地</div>'+
-            // '<div class="title">'+ this.pointList[i].name+'</div>'+
-            '<div class="body">' +
-            '<ul>' +
-            '<li><span>基地名称：</span>'+this.base[i].name+'</li>' +
-            '<li><span>基地地址：</span>'+this.base[i].addr+'</li>' +
-            '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
-            '</ul>' +
-            '</div>'+
-            '</div>'
+        template='<div class="map-content school">'+
+                '<div class="title">{{title}}</div>'+
+                '<div class="body">' +
+                '<img class="head-img" :src="datas.pic||\'/img/map/com-head.jpg\'"/>'+
+                '<ul>' +
+                '<li><span>驾校名称：</span>{{datas.name}}</li>' +
+                '<li><span>报名地址：</span>{{datas.addr}}</li>' +
+                '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
+                '<li><span>培训驾照类型：</span>{{datas.bizScope}}</li>' +
+                '<li><span>训练基地：</span><span class="base-tag">' +
+                '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
+                '</span></li>' +
+                '</ul>'+
+                '<div class="sign-up"><h2>学车报名</h2>'+
+                '<Form ref="signForm" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
+                '</div>'+
+                '</div>'+
+                '</div>'
 
-          let component= Vue.extend({
-            template: template,
-            data(){
-              return{
-               name: self.base[i].name.replace('驾校基地', '')
-              }
-            },
-            methods:{
-              look(){
-                self.search.base= this.name
-                self.getCompList()
-              }
+               component= Vue.extend({
+                template: template,
+                data(){
+                  let rule= { required: true, message:'必填项不能为空'}
+                  let validate = (rule, value, callback) => {
+                    let p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
+                    let p2=/0\d{2,3}-\d{7,8}/;
+                    if (p2.test(value)||p1.test(value)||!value) {
+                      callback();
+                    }else{
+                      callback(new Error('请输入正确的号码'));
+                    }
+                  };
+                  return{
+                    search:{
+                      name: '',
+                      tel: '',
+                      bizScope: ''
+                    },
+                    rule:{
+                      name: [rule],
+                      tel: [rule,
+                        { len:11, validator:validate, message: '请输入正确的号码'}
+                      ],
+                      bizScope: [rule],
+                    },
+                    bizScope: self.bizScope.slice(1, self.bizScope.length)
+                  }
+                },
+                computed:{
+                  datas(){
+                    return self.infoWindow.school.data
+                  },
+                  tags(){
+                    let baseTag= [], tags= this.datas.tag? this.datas.tag.split(' '): []
+                    // console.log('tags', tags)
+                    for(let i in tags){
+                      for(let j in self.base){
+                        if(self.base[j].name.indexOf(tags[i])>=0){
+                          baseTag.push({
+                            label: self.base[j].name+'('+self.base[j].addr+')',
+                            value: tags[i]
+                          })
+                        }
+                      }
+                    }
+                    if(!baseTag.length){
+                      baseTag=[{
+                        label: this.datas.tag,
+                        value: ''
+                      }]
+                    }
+                    return baseTag
+                  },
+                  tel(){
+                    return self.$store.state.user.token? (this.datas.tel||' '): ''
+                  },
+                  title(){
+                    return (this.datas.name&& this.datas.name.indexOf('(')>=0)? this.datas.name.split('(')[0]+'驾校('+ this.datas.grade+'级)': this.datas.name
+                  }
+                },
+                methods:{
+                  toBase: self.goBase,
+                  toLogin(){
+                    self.$router.push({
+                      path: '/login',
+                      query: { redirect:  self.$route.fullPath }
+                    })
+                  },
+                  apply(){
+                    // console.log(this.search.bizScope)
+                    this.$refs.signForm.validate((valid) => {
+                      if (valid) {
+                        self.$axios.post('/training/driving/register', {
+                          "category": this.search.bizScope,
+                          "name": this.search.name,
+                          "phoneNo": this.search.tel,
+                          "schoolId": this.datas.sid,
+                          "schoolName": this.datas.name
+                        }).then( (res) => {
+                          if(res.data.code=='0'){
+                            // self.$Message.success('恭喜您报名成功！驾校将及时联系您。')
+                            this.$refs.signForm.resetFields()
+                            this.$Modal.success({
+                              title: '报名成功',
+                              content: '恭喜您报名成功！驾校将及时联系您。'
+                            })
+                          }
+                        })
+                      } else {}
+                    })
+                  }
+                }
+              })
+
+              school.el = new AMap.AdvancedInfoWindow({
+                // panel: 'panel',
+                offset: new AMap.Pixel(5, -20),
+                // position: lngLat,
+                placeSearch: true,
+                asOrigin: true,
+                asDestination: true,
+                content: new component().$mount().$el
+              });
+
+
+
+
+        template = '<div class="map-content">'+
+                '<div class="title">{{datas.name}}</div>'+
+                '<div class="body">' +
+                '<ul>' +
+                '<li><span>企业名称：</span>{{datas.name}}</li>' +
+                '<li><span>经营地址：</span>{{datas.addr}}</li>' +
+                '<li><span>联系电话：</span>{{(datas.tel||"")}}</li>' +
+                '<li v-show="is164"><span>经营范围：</span>{{datas.bizScope}}</li>'+
+                '<li v-show="is164"><span>主修品牌：</span>{{datas.brand}}</li>'+
+                '<li v-show="is164"><span>业户类别：</span>{{category}}</li>'+
+                '</ul>'+
+                '<div class="button-block"  v-show="is164">' +
+                  '<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
+                  '<Button :to="\'/apdatasment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
+                  '<Button :to="\'/garage-info/\'+datas.sid">查看详情</Button>'+
+                '</div>'+
+                '</div>'+
+                '</div>'
+
+
+        component= Vue.extend({
+          template: template,
+          data(){
+            return{
             }
-          })
+          },
+          computed:{
+            datas(){
+              return self.infoWindow.garage.data
+            },
+            is164(){
+              return this.datas.type== 164
+            },
+            category(){
+              return self.formatCategory(this.datas.category)
+            },
+          },
+          methods:{
+          }
+        })
 
-          content = new component().$mount().$el;
-
-          this.base[i].advancedInfoWindow= new AMap.AdvancedInfoWindow({
-            // panel: 'panel',
-            offset: new AMap.Pixel(5, -20),
-            position: lngLat,
-            // placeSearch: true,
-            // asOrigin: true,
-            // asDestination: true,
-            content: content
-          });
+        garage.el = new AMap.AdvancedInfoWindow({
+          // panel: 'panel',
+          offset: new AMap.Pixel(5, -20),
+          // position: lngLat,
+          placeSearch: true,
+          asOrigin: true,
+          asDestination: true,
+          content: new component().$mount().$el
+        });
 
 
 
-          let marker= new AMap.Marker({
-            icon: iconBase,
-            position: lngLat,
-            extData: this.base[i],
-            zIndex: 110
-          })
-          marker.on('click', (e) => {
-            e.target.getExtData().advancedInfoWindow.open(this.map)
-            // this.search.base= e.target.getExtData().name.replace('驾校基地','')
-            // this.getCompList()
-          })
-          markers.push(marker)
-        }
+        template= '<div class="map-content">'+
+          '<div class="title">训练基地</div>'+
+          '<div class="body">' +
+          '<ul>' +
+          '<li><span>基地名称：</span>{{datas.name}}</li>' +
+          '<li><span>基地地址：</span>{{datas.addr}}</li>' +
+          '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
+          '</ul>' +
+          '</div>'+
+          '</div>'
 
-        this.map.add(markers)
+        component= Vue.extend({
+          template: template,
+          data(){
+            return{
+            }
+          },
+          computed:{
+            datas(){
+              return self.infoWindow.base.data
+            },
+            simpleName(){
+              return this.datas.name? this.datas.name.replace('驾校基地', '') : ''
+            }
+          },
+          methods:{
+            look(){
+              self.search.base= this.simpleName
+              self.getCompList()
+            }
+          }
+        })
+
+        base.el = new AMap.AdvancedInfoWindow({
+          // panel: 'panel',
+          offset: new AMap.Pixel(5, -20),
+          // position: lngLat,
+          placeSearch: true,
+          asOrigin: true,
+          asDestination: true,
+          content: new component().$mount().$el
+        });
       })
     },
     renderMap(){
@@ -505,141 +712,6 @@ export default {
           let point= this.pointList[i]
           let is164= point.type== 164
           let lngLat= new AMap.LngLat(point.lon|| this.search.lng, point.lat|| this.search.lat)
-          let content = ''
-          switch (point.type.toString()){
-            case '300':{
-              let tel= this.$store.state.user.token? (point.tel||''):('<a @click="toLogin">登录后查看</a>')
-              let title= point.name.indexOf('(')>=0? point.name.split('(')[0]+'驾校('+ point.grade+'级)': point.name
-              let baseTag= '', tags= point.tag? point.tag.split(' '): []
-              // console.log('tags', tags)
-              // console.log('this.base', this.base)
-                for(let k in tags){
-                  for(let j in this.base){
-                    if(this.base[j].name.indexOf(tags[k])>=0){
-                      baseTag+=('<a  @click="toBase(\''+tags[k]+'\')">'+this.base[j].name+'('+this.base[j].addr+')</a>')
-                    }
-                  }
-                }
-                if(!baseTag) baseTag= point.tag
-
-                let template='<div class="map-content school">'+
-                  '<div class="title">'+ title+'</div>'+
-                  '<div class="body">' +
-                  '<img class="head-img" src="'+(point.pic||'/img/map/com-head.jpg')+'"/>'+
-                  '<ul>' +
-                  '<li><span>驾校名称：</span>'+point.name+'</li>' +
-                  '<li><span>报名地址：</span>'+point.addr+'</li>' +
-                  '<li><span>报名电话：</span>'+tel+'</li>' +
-                  '<li><span>培训驾照类型：</span>'+(point.bizScope||'')+'</li>' +
-                  '<li><span>训练基地：</span><span class="base-tag">'+baseTag+'</span></li>' +
-                  '</ul>'+
-                  '<div class="sign-up"><h2>学车报名</h2>'+
-                  '<Form :ref="sid" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
-                  '</div>'+
-                  '</div>'+
-                  '</div>'
-
-              let component= Vue.extend({
-                template: template,
-                data(){
-                  let rule= { required: true, message:'必填项不能为空'}
-                  let validate = (rule, value, callback) => {
-                    let p1 = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/;
-                    let p2=/0\d{2,3}-\d{7,8}/;
-                    if (p2.test(value)||p1.test(value)||!value) {
-                      callback();
-                    }else{
-                      callback(new Error('请输入正确的号码'));
-                    }
-                  };
-                  return{
-                    sid: 'form'+point.sid,
-                    search:{
-                      name: '',
-                      tel: '',
-                      bizScope: ''
-                    },
-                    rule:{
-                      name: [rule],
-                      tel: [rule,
-                        { len:11, validator:validate, message: '请输入正确的号码'}
-                      ],
-                      bizScope: [rule],
-                    },
-                    bizScope: self.bizScope.slice(1, self.bizScope.length)
-                  }
-                },
-                methods:{
-                  toBase: self.goBase,
-                  toLogin(){
-                    self.$router.push({
-                      path: '/login',
-                      query: { redirect:  self.$route.fullPath }
-                    })
-                  },
-                  apply(){
-                    // console.log(this.search.bizScope)
-                    this.$refs[this.sid].validate((valid) => {
-                      if (valid) {
-                        self.$axios.post('/training/driving/register', {
-                          "category": this.search.bizScope,
-                          "name": this.search.name,
-                          "phoneNo": this.search.tel,
-                          "schoolId": point.sid,
-                          "schoolName": point.name
-                        }).then( (res) => {
-                          if(res.data.code=='0'){
-                            // self.$Message.success('恭喜您报名成功！驾校将及时联系您。')
-                            this.$refs[this.sid].resetFields()
-                            this.$Modal.success({
-                              title: '报名成功',
-                              content: '恭喜您报名成功！驾校将及时联系您。'
-                            })
-                          }
-                        })
-                      } else {}
-                    })
-                  }
-                }
-              })
-
-              content = new component().$mount().$el;
-
-
-              break;
-            }
-            default :{
-              content = '<div class="map-content">'+
-                '<div class="title">'+ point.name+'</div>'+
-                '<div class="body">' +
-                '<ul>' +
-                '<li><span>企业名称：</span>'+point.name+'</li>' +
-                '<li><span>经营地址：</span>'+point.addr+'</li>' +
-                '<li><span>联系电话：</span>'+(point.tel||'')+'</li>' +
-                (is164? '<li><span>经营范围：</span>'+point.bizScope+'</li>':'' )+
-                (is164? '<li><span>主修品牌：</span>'+point.brand+'</li>':'' )+
-                (is164? '<li><span>业户类别：</span>'+this.formatCategory(point.category)+'</li>':'' )+
-                '</ul>'+
-                (is164? ('<div class="button-block">' +
-                  '<a href="/visit-service/?id='+point.sid+'"><button type="button" class="ivu-btn ivu-btn-default"><span>上门服务</span></button></a>'+
-                  '<a href="/appointment/?id='+point.sid+'&name='+point.name+'"><button type="button" class="ivu-btn ivu-btn-default"><span>预约服务</span></button></a>'+
-                  '<a class="ivu-btn ivu-btn-info" href="/garage-info/'+point.sid+'"><span>查看详情</span></a>'+
-                  '</div>') :'')+
-                '</div>'+
-                '</div>'
-            }
-          }
-
-
-          point.advancedInfoWindow= new AMap.AdvancedInfoWindow({
-            // panel: 'panel',
-            offset: new AMap.Pixel(5, -20),
-            position: lngLat,
-            placeSearch: true,
-            asOrigin: true,
-            asDestination: true,
-            content: content
-          });
 
 
 
@@ -649,7 +721,10 @@ export default {
             extData: point
           })
           marker.on('click', (e) => {
-            e.target.getExtData().advancedInfoWindow.open(this.map)
+            let data= e.target.getExtData()
+            let window= this.getInfoWindow(data.type)
+            window.data= data
+            window.el.open(this.map, e.target.getPosition())
           })
           this.markers.push(marker)
         }
@@ -738,6 +813,13 @@ export default {
         case 46: return '摩托车维修业户';
         case 47: return '汽车快修业户';
         default: return ''
+      }
+    },
+    getInfoWindow(type){
+      for(let key in this.infoWindow){
+        if(this.infoWindow[key].type.indexOf(type)){
+          return this.infoWindow[key]
+        }
       }
     }
   }
