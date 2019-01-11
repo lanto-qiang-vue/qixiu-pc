@@ -1,7 +1,7 @@
 <template>
   <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize"
-                :show="showTable" :page="page" :loading="loading" @onRowClick="rowClick" :showOperate="false">
+                :show="showTable" :page="page" :loading="loading" @onRowClick="rowClick">
     <div slot="search">
       <Form class="common-form">
         <FormItem :label-width="80" label="报名人姓名:">
@@ -11,13 +11,13 @@
           <Input type="text" v-model="search.phoneNo" placeholder="请输入手机号"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('query')"  @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
-    <!--<div slot="operate">-->
-      <!--<Button type="primary" v-if="">导出</Button>-->
-    <!--</div>-->
+    <div slot="operate">
+      <Button type="primary"  @click="toImport" v-if="accessBtn('export')">导出</Button>
+    </div>
   </common-table>
 </template>
 <script>
@@ -68,6 +68,20 @@
       changePage(page) {
         this.page = page;
         this.getList();
+      },
+      toImport(){
+        this.$axios({method: 'get',url:'/training/driving/register/download?name='+this.search.name+"&phoneNo="+this.search.phoneNo}).then((res) => {
+          let data = "\ufeff"+res.data;
+          let blob = new Blob([data], {type: 'text/csv,charset=UTF-8'});
+          let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+          let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+          let a = document.createElement('a');
+          a.download = headerName;
+          a.href = window.URL.createObjectURL(blob);
+          $("body").append(a);
+          a.click();
+          $(a).remove();
+        })
       },
       rowClick() {
 

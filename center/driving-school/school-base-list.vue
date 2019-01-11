@@ -8,13 +8,13 @@
           <Input type="text" v-model="search.name" placeholder="请输入基地名称/地址"></Input>
         </FormItem>
         <FormItem>
-          <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('query')" @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="add">新增</Button>
-      <Button type="primary" @click="update" :disabled="canDo" v-if="">查看&nbsp;|&nbsp;编辑</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="add">新增</Button>
+      <Button type="primary" @click="update" :disabled="canDo" v-if="accessBtn('edit')">查看&nbsp;|&nbsp;编辑</Button>
     </div>
     <Modal
       v-model="showModal"
@@ -32,10 +32,10 @@
           <Input v-model="formData.address" type="text"> </Input>
         </FormItem>
         <FormItem label="地址经度:" prop="lon">
-          <InputNumber v-model="formData.lon" type="text" :min="0"> </InputNumber>
+          <Input v-model="formData.lon" type="text" :min="0"> </Input>
         </FormItem>
-        <FormItem label="地址维度:" prop="lat">
-          <InputNumber v-model="formData.lat" type="text" :min="0"> </InputNumber>
+        <FormItem label="地址纬度:" prop="lat">
+          <Input v-model="formData.lat" type="text" :min="0"> </Input>
         </FormItem>
       </Form>
       <div slot="footer">
@@ -83,8 +83,8 @@
         rules: {
           name: [{ required: true, message: '基地名称必填' }],
           address: [{ required: true, message: '基地地址必填' }],
-          lon: [{ required: true, message: '地址经度必填'}],
-          lat: [{ required: true, message: '地址维度必填'}]
+          lon: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址经度必填,且小数精度六位'}],
+          lat: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址维度必填,且小数经度六位'}]
         },
         total: 0,
         clearTableSelect: false,
@@ -144,8 +144,8 @@
         this.Row = ''
       },
       add() {
+        this.$refs.formData.resetFields();
         this.showModal = true;
-        this.$refs['formData'].resetFields();
         this.formData = deepClone(this.storeData);
       },
       changePageSize(size) {
@@ -160,7 +160,7 @@
         this.Row = row
       },
       update() {
-        this.$refs['formData'].resetFields();
+        this.$refs.formData.resetFields();
         this.formData = deepClone(this.Row)
         this.clearSection()
         this.showModal = true;
