@@ -153,12 +153,13 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
-import config from '~~/config.js'
+
+// import config from '~~/config.js'
 export default {
 		name: "login",
     layout: 'layout-root',
   components: {
-    BasicContainer
+    BasicContainer,
   },
 		data () {
 			// 联系电话验证

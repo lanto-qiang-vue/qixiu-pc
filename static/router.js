@@ -609,6 +609,15 @@ export default [
       //   },
       //   component: resolve('center/operate/maintain-report-manage.vue'),
       // },
+       {
+        path: 'school-info-list',
+        meta: {
+          icon: '',
+          title: '驾校信息管理',
+          accessId: '',
+        },
+        component: resolve('center/driving-school/school-info-list.vue'),
+      },
 
 
       {
@@ -678,7 +687,7 @@ export default [
     meta: {
       icon: 'logo-buffer',
       title: '驾校管理(运营)',
-      // accessId: '/menu19',
+      accessId: '/menuschool',
     },
     component: resolve('components/main.vue'),
     children: [{
@@ -686,7 +695,7 @@ export default [
       meta: {
         icon: '',
         title: '驾校信息管理',
-        // accessId: '/center/carDoctor-manage',
+        accessId: '/center/school-info-list',
       },
       component: resolve('center/driving-school/school-info-list.vue'),
     },{
@@ -694,7 +703,7 @@ export default [
       meta: {
         icon: '',
         title: '驾校基地管理',
-        // accessId: '/center/carDoctor-manage',
+        accessId: '/center/base-list',
       },
       component: resolve('center/driving-school/school-base-list.vue'),
     },{
@@ -702,7 +711,7 @@ export default [
       meta: {
         icon: '',
         title: '驾校报名管理',
-        // accessId: '/center/carDoctor-manage',
+        accessId: '/center/apply-list',
       },
       component: resolve('center/driving-school/school-apply-list.vue'),
     },]
