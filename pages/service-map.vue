@@ -540,7 +540,8 @@ export default {
                     return self.$store.state.user.token? (this.datas.phoneNo||' '): ''
                   },
                   title(){
-                    return (this.datas.simpleName)? (this.datas.simpleName+'('+'驾校('+ this.datas.creditLevel+'级)'): this.datas.name
+                    return (this.datas.simpleName)? (this.datas.simpleName+'驾校('+
+                      (this.datas.creditLevel=='N'?'未评':this.datas.creditLevel)+'级)'): this.datas.name
                   }
                 },
                 methods:{
@@ -1196,6 +1197,7 @@ export default {
         -webkit-line-clamp: 3;
         width: calc(100% - 70px);
         line-height: 25px;
+        min-height: 30px;
         overflow: hidden;
       }
     }
