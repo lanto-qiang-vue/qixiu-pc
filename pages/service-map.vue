@@ -471,7 +471,7 @@ export default {
                 '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
                 '</span></li>' +
                 '<li><span>驾校风采：</span>' +
-                  '<span class="intro" style="-webkit-box-orient:vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
+                  '<span class="intro" style="-webkit-box-orient:vertical;-moz-box-orient: vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
           '<a class="more" @click="goMore">更多</a>'+
                 '</li>' +
                 '</ul>'+
@@ -1190,16 +1190,22 @@ export default {
         }
       }
       .intro{
+        position: relative;
         font-weight: 400;
         word-break: break-all;
         text-overflow: ellipsis;
         display: -webkit-box;
+        display: -moz-box;
         line-clamp: 3;
         -webkit-line-clamp: 3;
         -moz-line-clamp:3;
+        box-orient:vertical;
+        -webkit-box-orient:vertical;
+        -moz-box-orient: vertical;
         width: calc(100% - 70px);
         line-height: 25px;
         min-height: 30px;
+        max-height: 70px;
         overflow: hidden;
       }
     }
