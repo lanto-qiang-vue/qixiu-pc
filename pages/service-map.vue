@@ -49,13 +49,13 @@
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
         <Select v-model="search.base" placeholder="训练基地" clearable filterable @on-change="changeSelectAll">
-          <Option v-for="(item, key) in base" :value="item.name.replace('驾校基地','')" :key="key">{{item.name}}</Option>
+          <Option v-for="(item, key) in base" :value="item.getExtData().name.replace('驾校基地','')" :key="key">{{item.getExtData().name}}</Option>
         </Select>
       </div>
       <div class="res">查询结果：共<span>{{total}}</span>条记录，请在企业列表或地图中选择查看</div>
       <ul>
         <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
-          <img :src="item.pic? item.pic:'/img/map/com-head.jpg'">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'">
           <div class="list-right" v-if="item.type!='300'">
             <span class="name">{{item.name}}</span>
             <span>地址：{{item.addr}}</span>
@@ -342,15 +342,15 @@ export default {
         if(!this.base.length){
           this.$axios({
             baseURL: '/repair',
-            url: '/micro/search/company?fl=name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
+            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
             method: 'get',
           }).then( (res) => {
-            this.base= res.data.content
-            this.renderBase()
+            // this.base= res.data.content
+            this.renderBase(res.data.content)
             this.renderMap()
           })
         }else {
-          this.renderBase()
+          this.map.add(this.base)
         }
       }
 
@@ -418,7 +418,7 @@ export default {
       }
       this.renderMap()
     },
-    renderBase(){
+    renderBase(baseList){
       let iconBase = new AMap.Icon({
         image: "/img/map/icon-base.png",
         size: new AMap.Size(30, 30),
@@ -427,22 +427,24 @@ export default {
       });
       let markers= []
 
-
-      for (let i in this.base){
-        let lngLat= new AMap.LngLat(this.base[i].lon, this.base[i].lat)
+      for (let i in baseList){
+        let lngLat= new AMap.LngLat(baseList[i].lon, baseList[i].lat)
         let marker= new AMap.Marker({
           icon: iconBase,
           position: lngLat,
-          extData: this.base[i],
+          extData: baseList[i],
           zIndex: 110
         })
         marker.on('click', (e) => {
           // console.log('e.target', e.target)
-          this.infoWindow.base.data= e.target.getExtData()
-          this.infoWindow.base.el.open(this.map, e.target.getPosition())
+          // this.infoWindow.base.data= e.target.getExtData()
+          // this.infoWindow.base.el.open(this.map, e.target.getPosition())
+
+          this.openInfoWindow(e.target)
         })
         markers.push(marker)
       }
+      this.base= markers
 
       this.map.add(markers)
 
@@ -458,18 +460,23 @@ export default {
         template='<div class="map-content school">'+
                 '<div class="title">{{title}}</div>'+
                 '<div class="body">' +
-                '<img class="head-img" :src="datas.pic||\'/img/map/com-head.jpg\'"/>'+
+                '<img class="head-img" :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
-                '<li><span>报名地址：</span>{{datas.addr}}</li>' +
+                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.grade}}</li>' +
+                '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
-                '<li><span>培训驾照类型：</span>{{datas.bizScope}}</li>' +
+                '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
                 '<li><span>训练基地：</span><span class="base-tag">' +
                 '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
                 '</span></li>' +
+                '<li><span>驾校风采：</span>' +
+                  '<span class="intro" style="-webkit-box-orient:vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
+          '<a class="more" @click="goMore">更多</a>'+
+                '</li>' +
                 '</ul>'+
                 '<div class="sign-up"><h2>学车报名</h2>'+
-                '<Form ref="signForm" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>一键报名</Button></FormItem></Form>'+
+                '<Form ref="signForm" :model="search" :rules="rule" :label-width="15"><FormItem label=" " prop="name"><Input type="text" v-model="search.name" placeholder="输入联系人"></Input></FormItem><FormItem label=" " prop="tel"><Input type="text" v-model="search.tel" placeholder="输入手机号" :maxlength="11"></Input></FormItem><FormItem label=" " prop="bizScope"><Select transfer v-model="search.bizScope" placeholder="驾照类型" clearable> <Option v-for="(item, index) in bizScope" :value="item.value" :key="index">{{item.name}}</Option> </Select></FormItem><FormItem ><Button type="primary" @click="apply" long>预约学车</Button></FormItem></Form>'+
                 '</div>'+
                 '</div>'+
                 '</div>'
@@ -494,11 +501,11 @@ export default {
                       bizScope: ''
                     },
                     rule:{
-                      name: [rule],
+                      // name: [rule],
                       tel: [rule,
                         { len:11, validator:validate, message: '请输入正确的号码'}
                       ],
-                      bizScope: [rule],
+                      // bizScope: [rule],
                     },
                     bizScope: self.bizScope.slice(1, self.bizScope.length)
                   }
@@ -508,13 +515,14 @@ export default {
                     return self.infoWindow.school.data
                   },
                   tags(){
-                    let baseTag= [], tags= this.datas.tag? this.datas.tag.split(' '): []
+                    let baseTag= [], tags= this.datas.drivingBase? this.datas.drivingBase.split(','): []
                     // console.log('tags', tags)
                     for(let i in tags){
                       for(let j in self.base){
-                        if(self.base[j].name.indexOf(tags[i])>=0){
+                        let baseInfo= self.base[j].getExtData()
+                        if(baseInfo.name.indexOf(tags[i])>=0){
                           baseTag.push({
-                            label: self.base[j].name+'('+self.base[j].addr+')',
+                            label: baseInfo.name+'('+baseInfo.addr+')',
                             value: tags[i]
                           })
                         }
@@ -522,17 +530,17 @@ export default {
                     }
                     if(!baseTag.length){
                       baseTag=[{
-                        label: this.datas.tag,
+                        label: this.datas.drivingBase,
                         value: ''
                       }]
                     }
                     return baseTag
                   },
                   tel(){
-                    return self.$store.state.user.token? (this.datas.tel||' '): ''
+                    return self.$store.state.user.token? (this.datas.phoneNo||' '): ''
                   },
                   title(){
-                    return (this.datas.name&& this.datas.name.indexOf('(')>=0)? this.datas.name.split('(')[0]+'驾校('+ this.datas.grade+'级)': this.datas.name
+                    return (this.datas.simpleName)? (this.datas.simpleName+'('+'驾校('+ this.datas.creditLevel+'级)'): this.datas.name
                   }
                 },
                 methods:{
@@ -541,6 +549,12 @@ export default {
                     self.$router.push({
                       path: '/login',
                       query: { redirect:  self.$route.fullPath }
+                    })
+                  },
+                  goMore(){
+                    self.$router.push({
+                      path: '/article/'+this.datas.id,
+                      query: { type: 'school' }
                     })
                   },
                   apply(){
@@ -596,7 +610,7 @@ export default {
                 '<div class="button-block"  v-show="is164">' +
                   '<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
                   '<Button :to="\'/apdatasment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
-                  '<Button :to="\'/garage-info/\'+datas.sid">查看详情</Button>'+
+                  '<Button :to="\'/garage-info/\'+datas.sid" type="info">查看详情</Button>'+
                 '</div>'+
                 '</div>'+
                 '</div>'
@@ -707,28 +721,29 @@ export default {
 
       this.markers= []
 
-      AMap.plugin('AMap.AdvancedInfoWindow', () => {
+
         for (let i in this.pointList){
           let point= this.pointList[i]
-          let is164= point.type== 164
+          let is300= point.type.toString()== '300'
           let lngLat= new AMap.LngLat(point.lon|| this.search.lng, point.lat|| this.search.lat)
 
 
 
           let marker= new AMap.Marker({
-            icon: point.type=='300'?iconSchool:(point.is4s? icon4s: iconNormal),
+            icon: is300? iconSchool:(point.is4s? icon4s: iconNormal),
             position: lngLat,
             extData: point
           })
           marker.on('click', (e) => {
-            let data= e.target.getExtData()
-            let window= this.getInfoWindow(data.type)
-            window.data= data
-            window.el.open(this.map, e.target.getPosition())
+            console.log(e.target.getExtData().type.toString()=='300')
+            if(e.target.getExtData().type.toString()=='300'){
+              this.openInfoWindow(e.target, this.getSchoolDetail)
+            }else{
+              this.openInfoWindow(e.target)
+            }
           })
           this.markers.push(marker)
         }
-      })
 
 
       let style={
@@ -760,14 +775,22 @@ export default {
       //   this.map.setZoom(10)
       // }
     },
+    getSchoolDetail(marker, window){
+      let data= marker.getExtData()
+      this.$axios.$get('/training/driving/school/'+ data.sid).then( (res) => {
+        window.data= res
+        window.el.open(this.map, marker.getPosition())
+      })
+    },
     goTo(path){
       this.$router.push(path)
     },
     goBase(name){
       console.log(name)
       for(let i in this.base){
-        if(this.base[i].name.indexOf(name)>=0){
-          this.base[i].advancedInfoWindow.open(this.map)
+        let data= this.base[i].getExtData()
+        if(data.name.indexOf(name)>=0){
+          this.openInfoWindow(this.base[i])
         }
       }
     },
@@ -785,8 +808,13 @@ export default {
     },
     openMapInfo(id){
       for (let i in this.markers){
-        if(this.markers[i].getExtData().sid== id){
-          this.markers[i].getExtData().advancedInfoWindow.open(this.map)
+        let data= this.markers[i].getExtData()
+        if(data.sid== id){
+          if(data.type.toString()=='300'){
+            this.openInfoWindow(this.markers[i], this.getSchoolDetail)
+          }else{
+            this.openInfoWindow(this.markers[i])
+          }
         }
       }
     },
@@ -817,9 +845,21 @@ export default {
     },
     getInfoWindow(type){
       for(let key in this.infoWindow){
-        if(this.infoWindow[key].type.indexOf(type)){
+        if(this.infoWindow[key].type.indexOf(type.toString())>=0){
           return this.infoWindow[key]
         }
+      }
+    },
+    openInfoWindow(marker, callback){
+      let data= marker.getExtData()
+      let window= this.getInfoWindow(data.type.toString())
+      console.log('data', data)
+      console.log('window', window)
+      if(callback){
+        callback(marker, window)
+      }else{
+        window.data= data
+        window.el.open(this.map, marker.getPosition())
       }
     }
   }
@@ -1018,7 +1058,7 @@ export default {
     }
   }
   .search .ivu-input-icon-clear{
-    right: 40px;
+    /*right: 40px;*/
   }
   .map-frame .brand .ivu-select-dropdown{
     overflow-x: hidden;
@@ -1085,6 +1125,7 @@ export default {
   }
   .map-content{
     width: 500px;
+    position: relative;
     .title{
       height: 30px;
       line-height: 30px;
@@ -1107,9 +1148,10 @@ export default {
         overflow: hidden;
         li{
           line-height: 30px;
-          height: 30px;
+          min-height: 30px;
           width: 100%;
           font-size: 13px;
+          overflow: hidden;
           span{
             font-weight: 600;
             float: left;
@@ -1120,7 +1162,7 @@ export default {
         margin-top: 20px;
         text-align: right;
         .ivu-btn{
-          margin-left: 15px;
+          margin-left: 10px;
         }
       }
     }
@@ -1134,6 +1176,27 @@ export default {
         a{
           display: block;
         }
+      }
+      li{
+        position: relative;
+        .more{
+          /*position: absolute;*/
+          bottom: 0;
+          right: 0;
+          background-color: white;
+          line-height: 15px;
+          margin-left: 65px;
+        }
+      }
+      .intro{
+        font-weight: 400;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        width: calc(100% - 70px);
+        line-height: 25px;
+        overflow: hidden;
       }
     }
     .sign-up{
