@@ -1194,7 +1194,9 @@ export default {
         word-break: break-all;
         text-overflow: ellipsis;
         display: -webkit-box;
+        line-clamp: 3;
         -webkit-line-clamp: 3;
+        -moz-line-clamp:3;
         width: calc(100% - 70px);
         line-height: 25px;
         min-height: 30px;
