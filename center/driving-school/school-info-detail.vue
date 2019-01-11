@@ -16,10 +16,10 @@
     <div style="height: 100%;overflow: auto;">
         <Form :label-width="110" ref="search" :rules="ruleValidate"  :model="search" class="common-form">
             <FormItem label="驾校全称:"  prop="name">
-                <Input type="text" v-model="search.name" placeholder=""></Input>
+                <Input type="text" v-model="search.name" placeholder="请输入驾校全称"></Input>
             </FormItem>
             <FormItem label="驾校简称:"  prop="simpleName">
-                <Input type="text" v-model="search.simpleName" placeholder=""></Input>
+                <Input type="text" v-model="search.simpleName" placeholder="请输入驾校简称"></Input>
             </FormItem>
             <FormItem label="区域:"  prop="areaKey">
                 <Select v-model="search.areaKey" clearable @on-change="selectAreaFun" :label-in-value="true">
@@ -27,28 +27,29 @@
                 </Select>
             </FormItem>
             <FormItem label="许可证号" prop="licenseNo">
-                <Input type="text" v-model="search.licenseNo" placeholder=""></Input>
+                <Input type="text" v-model="search.licenseNo" placeholder="请输入许可证号"></Input>
             </FormItem>
 
             <FormItem label="报名地址:" prop="address">
-                <Input type="text" v-model="search.address" placeholder=""></Input>
+                <Input type="text" v-model="search.address" placeholder="请输入报名地址"></Input>
             </FormItem>
             <FormItem label="地址经度:" prop="lon">
-                <Input type="text" v-model="search.lon" placeholder=""></Input>
+                <Input type="text" v-model="search.lon" placeholder="请输入地址经度"></Input>
             </FormItem>
             <FormItem label="地址纬度:" prop="lat">
-                <Input type="text" v-model="search.lat" placeholder=""></Input>
+                <Input type="text" v-model="search.lat" placeholder="请输入地址纬度"></Input>
             </FormItem>
             <FormItem label="驾校电话1:" >
-                <Input type="text" v-model="search.phoneNo1" placeholder=""></Input>
+                <Input type="text" v-model="search.phoneNo1" placeholder="请输入驾校电话"></Input>
+                
 
             </FormItem>
             <FormItem label="驾校电话2:" >
-                <Input type="text" v-model="search.phoneNo2" placeholder=""></Input>
+                <Input type="text" v-model="search.phoneNo2" placeholder="请输入驾校电话"></Input>
             </FormItem>
             <FormItem label="驾校等级:" prop="creditLevel">
                 <Select v-model="search.creditLevel" clearable>
-                    <Option v-for="item in creditLevelArr" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                    <Option v-for="item in creditLevelArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
 
@@ -103,7 +104,7 @@ import TinyEditor from '~/components/tiny-editor.vue'
 
   import {   deepClone } from '@/static/util'
 export default {
-	name: "note-issued",
+	name: "school-info-detail",
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
     components: {unitSearchInput,uploadImgs,TinyEditor},
@@ -146,9 +147,11 @@ export default {
             ],
             checkAllGroup: [],
             creditLevelArr:[
-                {name:'A'},
-                {name:'AA'},
-                {name:'AAA'},
+                {name:'未评级',code:'N'},
+			{name:'B',code:'B'},
+			{name:'A',code:'A'},
+			{name:'AA',code:'AA'},
+			{name:'AAA',code:'AAA'},
             ],
             ruleValidate: {
                 name:[{ required: true, message: '请填写数据', },],
@@ -183,6 +186,7 @@ export default {
         showDetail(){
             this.showModal=true;
             this.getAreaInfo();
+            this.showChange=Math.random();
             if(this.detailData){
                 this.search={
                     "address": "",
@@ -232,7 +236,9 @@ export default {
                                 this.search.phoneNo1=temPhone[0];
                                 this.search.phoneNo2=temPhone[1];
                         break;
+
                         default:this.search[i]=this.detailData[i]||'';
+
                     }
                 }
                 let newBase=this.detailData['baseList'];
