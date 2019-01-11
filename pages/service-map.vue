@@ -566,7 +566,7 @@ export default {
                           "category": this.search.bizScope,
                           "name": this.search.name,
                           "phoneNo": this.search.tel,
-                          "schoolId": this.datas.sid,
+                          "schoolId": this.datas.id,
                           "schoolName": this.datas.name
                         }).then( (res) => {
                           if(res.data.code=='0'){
