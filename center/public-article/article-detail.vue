@@ -18,7 +18,7 @@
       console.log('asyncData', params)
       if(query &&query.type=='school'){
         return app.$axios.$get('/training/driving/school/'+ params.id).then((res) => {
-          let img='',arr= res.pic.split(',')
+          let img='',arr= res.pic? res.pic.split(','): []
           for(let i in arr){
             img+= ('<img src="'+arr[i]+'"/>')
           }

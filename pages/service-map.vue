@@ -95,6 +95,7 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import { formatArticle } from '@/static/util.js'
 import Vue from 'vue'
 export default {
   name: "service-map",
@@ -472,7 +473,7 @@ export default {
                 '</span></li>' +
                 '<li><span>驾校风采：</span>' +
                   '<span class="intro" style="-webkit-box-orient:vertical;-moz-box-orient: vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
-          '<a class="more" @click="goMore">更多</a>'+
+          '<a class="more" v-show="formatArticle(datas.about)" @click="goMore">更多</a>'+
                 '</li>' +
                 '</ul>'+
                 '<div class="sign-up"><h2>学车报名</h2>'+
@@ -545,6 +546,7 @@ export default {
                   }
                 },
                 methods:{
+                  formatArticle: formatArticle,
                   toBase: self.goBase,
                   toLogin(){
                     self.$router.push({
@@ -553,10 +555,11 @@ export default {
                     })
                   },
                   goMore(){
-                    self.$router.push({
-                      path: '/article/'+this.datas.id,
-                      query: { type: 'school' }
-                    })
+                    // self.$router.push({
+                    //   path: '/article/'+this.datas.id,
+                    //   query: { type: 'school' }
+                    // })
+                    window.open('/article/'+this.datas.id +'?type=school', '_blank');
                   },
                   apply(){
                     // console.log(this.search.bizScope)
@@ -1203,7 +1206,8 @@ export default {
         -webkit-box-orient:vertical;
         -moz-box-orient: vertical;
         width: calc(100% - 70px);
-        line-height: 25px;
+        line-height: 18px;
+        padding-top: 7px;
         min-height: 30px;
         max-height: 70px;
         overflow: hidden;
@@ -1240,6 +1244,10 @@ export default {
   .amap-adcombo-close{
     top: 6px;
     right: 6px;
+  }
+  .amap-logo, .amap-copyright{
+    display: none!important;
+    /*z-index: 1!important;*/
   }
 }
 
