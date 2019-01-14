@@ -461,7 +461,7 @@ export default {
         template='<div class="map-content school">'+
                 '<div class="title">{{title}}</div>'+
                 '<div class="body">' +
-                '<img class="head-img" :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
+                '<img class="head-img" v-img :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
                 '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}</li>' +
@@ -1234,7 +1234,7 @@ export default {
         width: 25%;
         float: left;
         position: relative;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
         .ivu-form-item-label{
           position: absolute;
           top: 0;
@@ -1246,6 +1246,9 @@ export default {
           &:before{
             margin-right: 1px;
           }
+        }
+        .ivu-form-item-error-tip{
+          padding-top: 0;
         }
       }
     }
