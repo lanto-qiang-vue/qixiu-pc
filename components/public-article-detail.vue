@@ -23,6 +23,7 @@ export default {
   overflow: hidden;
   font-size: 14px;
   color: black;
+  word-break: break-all;
   img{
     max-width: 100%;
     height: auto;
