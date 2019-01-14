@@ -3,8 +3,8 @@ const prodConfig={
   //端口号
   port: '3000',
   //接口地址
-  // apiUrl: 'http://212.64.5.54:8888/',
-  apiUrl: 'http://gateway.qixiu.lanto.com/',
+  apiUrl: 'http://212.64.5.54:8888/',
+  // apiUrl: 'http://gateway.qixiu.lanto.com/',
   //查修接口地址
   // repairUrl: 'http://corp.search.shanghaiqixiu.org/',
   repairUrl: 'http://129.211.14.78：7210/',
