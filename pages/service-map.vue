@@ -1,7 +1,7 @@
 <template>
 <basic-container>
 <div style="text-align: center">
-  <div class="map-body">
+  <div class="service-map-body">
     <div class="sub-title">
       <Breadcrumb>
         <BreadcrumbItem to="/">主页</BreadcrumbItem>
@@ -464,7 +464,7 @@ export default {
                 '<img class="head-img" :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
-                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.grade}}</li>' +
+                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}</li>' +
                 '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
                 '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
@@ -508,10 +508,19 @@ export default {
                       ],
                       // bizScope: [rule],
                     },
-                    bizScope: self.bizScope.slice(1, self.bizScope.length)
                   }
                 },
                 computed:{
+                  bizScope(){
+                    let arr= this.datas.trainingScope?this.datas.trainingScope.split(','): [], biz=[]
+                    for(let i in arr){
+                      biz.push({
+                        value: arr[i],
+                        name: arr[i]
+                      })
+                    }
+                    return biz
+                  },
                   datas(){
                     return self.infoWindow.school.data
                   },
@@ -871,7 +880,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .map-body{
+  .service-map-body{
     min-width: 800px;
     max-width: 1200px;
     display: inline-block;
@@ -1054,7 +1063,7 @@ export default {
   }
 </style>
 <style lang="less">
-.map-body{
+.service-map-body{
   .paging {
     text-align: center;
     li{
@@ -1177,6 +1186,8 @@ export default {
       padding-left: 160px;
       .base-tag{
         font-weight: 400;
+        max-height: 90px;
+        overflow: auto;
         a{
           display: block;
         }
@@ -1223,6 +1234,7 @@ export default {
         width: 25%;
         float: left;
         position: relative;
+        margin-bottom: 10px;
         .ivu-form-item-label{
           position: absolute;
           top: 0;
