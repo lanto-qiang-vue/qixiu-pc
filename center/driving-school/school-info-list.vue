@@ -16,7 +16,7 @@
                 <FormItem label="训练基地:">
                     
                     <Select v-model="searchList.drivingBase" clearable>
-                        <Option v-for="item in drivingBaseArr" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                        <Option v-for="item in drivingBaseArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem label="驾校等级:">
