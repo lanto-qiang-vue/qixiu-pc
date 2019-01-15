@@ -199,12 +199,12 @@
         },
 		getNameList(){
 			let page=this.page-1;
-			this.$axios.get('/training/driving/base/query', {
+			this.$axios.get('/training/driving/base/query?size=500&page='+page, {
             }).then( (res) => {
             //   console.log(res);
               if(res.status===200){
                 
-				this.drivingBaseArr=res.data.content;
+				        this.drivingBaseArr=res.data.content;
 
               }
               
