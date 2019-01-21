@@ -68,6 +68,7 @@ export default function ({ $axios, redirect, store, route, app }) {
         Message.error({content: content, duration: 3})
       }
     }
+    return error.response
   })
 
 }

@@ -10,6 +10,16 @@
       </div>
     </div>
     <div class="dblock">
+      <h1 class="dtitle">平台对接人</h1>
+      <div class="center">
+        <div class="inline-box">
+          <Table :columns="buttColumns" :data="buttData"  width="800"
+                 stripe border></Table>
+        </div>
+      </div>
+
+    </div>
+    <div class="dblock">
       <h1 class="dtitle">未读通知</h1>
       <div class="center">
         <div class="inline-box">
@@ -19,7 +29,6 @@
       </div>
 
     </div>
-
     <div class="dblock">
       <h1 class="dtitle">上门服务申请业务（仅限于法律法规允许的业务）</h1>
       <div class="center">
@@ -57,12 +66,13 @@
       </div>
 
     </div>
-
+<butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt"></butt-joint>
   </div>
 </template>
 
 <script>
   import { formatDate } from '~/static/tools.js'
+  import buttJoint from '~/components/butt-joint.vue'
 	export default {
 		name: "company-home",
     // head () {
@@ -72,8 +82,39 @@
     //     ],
     //   }
     // },
+    components:{buttJoint},
     data(){
       return{
+        commentModal:true,
+        showType:false,
+        dataInit:null,
+        buttColumns:[
+          {title: '对接人姓名', key: 'contactName',  minWidth: 100,},
+          {title: '对接人手机号', key: 'contactMobile',  minWidth: 100,},
+          {title: '操作', key: 'cz',  minWidth: 100,
+            render: (h, params) => {
+              let buttonContent= '更改';
+              let buttonStatus = 'primary';
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                  },
+                  style: {
+                    width:"60px",
+                    textAlign: "center",
+                    marginRight: '10px',
+                  },
+                  on: {
+                    click: (index) => {
+                      this.changeButt(params.row);
+                    }
+                  }
+                }, buttonContent),
+              ]);
+            }
+          },
+        ],
         infoColumns: [
           {title: '业户名称', key: 'companyName',  minWidth: 100,},
           {title: '许可证号', key: 'license',  minWidth: 100,},
@@ -93,7 +134,7 @@
         infoData: [],
         notifyData: [],
         visitDate:[],//上门日期服务--------
-
+        buttData:[],
         visitData:[],
         orderData:[],
       }
@@ -114,6 +155,7 @@
         let newDate=formatDate(oDate, 'yyyy-MM-dd');
         this.visitDate.unshift(newDate);
       }
+      this.checkButt();
       console.log(this.visitDate);
 
 
@@ -122,6 +164,17 @@
       this.getNotify();
     },
     methods:{
+      checkButt(){
+        this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
+          if(res.status == 200){
+            this.buttData = res.data.content;
+          }
+        })
+      },
+      changeButt(row){
+        this.dataInit = row;
+        this.showType = Math.random();
+      },
         getServerDate(){
           this.$axios.get('/statistics/admin/comStatistics',{
 
