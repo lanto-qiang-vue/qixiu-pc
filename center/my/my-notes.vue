@@ -23,14 +23,14 @@
     </div>
     <my-notes-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" style="height: 100%;overflow: auto;"></my-notes-detail>
   </common-table>
-  
+
 
 
 </template>
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { formatDate } from '@/static/tools.js'
-  import myNotesDetail from './my-notes-detail.vue'
+  import myNotesDetail from '~/components/common-notes-detail.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
 	export default {
 		name: "my-notes",
@@ -59,7 +59,7 @@
             //           h('span', '已读')
             //       ]);
             //     }
-                
+
             // }
 
           },
@@ -79,13 +79,13 @@
         detailData: null,
         clearTableSelect: null,
         isOrderSuccess:true,//判断是不是预约成功
-        
+
       }
     },
     mounted () {
       this.showTable= Math.random();
       this.getList();
-    
+
     },
     // beforeMount(){
     //   this.$axios.post('/menu/list', {
@@ -102,10 +102,10 @@
                     "endDate": this.search.select[1],
 
                     "startDate": this.search.select[0],
-                    
+
                     "pageNo": this.page,
                     "pageSize": this.limit,
-                    
+
                     "title": this.search.input,
 
                 }).then( (res) => {
@@ -116,7 +116,7 @@
                   }else{
                     this.$Message.error(res.data.status);
                   }
-					
+
 				  })
           this.detailData= null;
 
@@ -132,10 +132,10 @@
 
         onRowClick( row, index){
             console.log('row：',row);
-            
+
           this.detailData=row
         },
-        
+
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
