@@ -4,6 +4,13 @@
       <p slot="header">
         <span>{{title}}</span>
       </p>
+
+      <div style="text-align: center;line-height: 24px;" v-show="exportNum.count">
+        <h3>导入结果</h3>
+        <p class="content">导入成功数：{{exportNum.count-exportNum.errorCount}}</p>
+        <p class="content">导入失败数：{{exportNum.errorCount}}</p>
+        <p class="content">导入失败行号：{{exportNum.errorRows}}</p>
+      </div>
       <div style="text-align:left;">
         <Upload
           ref="upload"
@@ -12,7 +19,7 @@
           :show-upload-list="false"
           :on-format-error="handleFormatError"
           :on-success="uploadSuccess"
-          :data="token"
+          :headers="token"
           accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
           :format="['xls','xlsx','xlsm']"
           type="drag"
@@ -26,7 +33,7 @@
         <div>{{filename}}</div>
       </div>
       <div slot="footer">
-        <Button type="success" @click="down" style="float:left;">下载模板</Button>
+        <!--<Button type="success" @click="down" style="float:left;">下载模板</Button>-->
         <Button type="primary" @click="upload">确定</Button>
         <Button type="error" @click="uploadClose">关闭</Button>
       </div>
@@ -39,13 +46,15 @@
     data() {
       return {
         filename: '请选择文件',
-        token: {access_token: ''},
+        token: {token: ''},
         baseUrl: '',
         show: false,
+        exportNum:{},//导入数量计算-----
+
       }
     },
     mounted() {
-      this.token.access_token = this.$store.state.user.token
+      this.token.token = this.$store.state.user.token
     },
     props: {
       type: {},//默认隐藏
@@ -56,7 +65,7 @@
       },//成功上传传递函数
       uploadName: {
         type: String, default() {
-          return 'uploadFile'
+          return 'file'
         }
       },
       actionUrl: {
@@ -86,6 +95,7 @@
         if(this.type != false) {
           this.filename = "请选择文件";
           this.show = true;
+          this.exportNum={};
         }else{
           this.show = false;
         }
@@ -116,7 +126,14 @@
       },
       uploadSuccess(res) {
         this.$Spin.hide();
-        this.$emit(this.success, res);
+
+        // console.log('upload 数据',res);
+        if(res.code=="0"){
+          this.exportNum=res.item;
+        }else{
+          this.$Message.error(res.status);
+        }
+        this.filename = "请选择文件";
       },
       down() {
         window.location.href =  this.downUrl;
@@ -124,3 +141,13 @@
     }
   }
 </script>
+<style scoped lang="less">
+  .content {
+    width: 100%;
+    height: auto;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+}
+
+</style>

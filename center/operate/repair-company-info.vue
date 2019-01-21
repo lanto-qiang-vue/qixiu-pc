@@ -1,5 +1,6 @@
-<!--维修企业信息管理详情  2018-11-05  -->
+
 <template>
+<!--维修企业信息管理详情  2018-11-05  -->
 <Modal
     v-model="showModal"
     title="维修企业信息"
@@ -11,16 +12,20 @@
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
-    <div style="height: 100%;overflow: auto;">
-        <Form ref="listSearch" :rules="ruleValidate"  :model="listSearch" :label-width="140" class="common-form">
-            <FormItem label="企业名称:" style="width: 45%;" prop="corpName">
-                <Input type="text" v-model="listSearch.corpName" placeholder="请输入企业名称"></Input>
+    <div slot="header" class="header-inner">维修服务预约<span>（{{testTitle}}）</span></div>
+    <div >
+        <Collapse v-model="collapse">
+        <Panel name="1">企业基本信息
+        <Form ref="listSearch" :rules="ruleValidate"  :model="listSearch" :label-width="140" class="common-form" slot="content">
+            <FormItem label="企业名称:" style="width: 45%;" prop="name">
+                <Input type="text" v-model="listSearch.name" placeholder="请输入企业名称"></Input>
             </FormItem>
             <FormItem label="许可证号:" style="width: 45%;" prop="licence">
                 <Input type="text" v-model="listSearch.licence" placeholder="请输入许可证号"></Input>
             </FormItem>
             <FormItem label="许可证有效期:" style="width: 45%;" prop="licenceBeginDate">
-                <DatePicker type="daterange" v-model="listSearch.licenceBeginDate" placement="bottom-start" placeholder="请输入日期" style="width: 100%"></DatePicker>
+                <DatePicker type="date" v-model="listSearch.licenceBeginDate" placeholder="开始日期" style="width: 49%"></DatePicker>
+                <DatePicker type="date" v-model="listSearch.licenceEndDate" placeholder="结束日期" style="width: 49%"></DatePicker>
             </FormItem>
 
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
@@ -42,8 +47,15 @@
                     <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="经营地址邮政编码:" style="width: 45%;" prop="businessPostalCode">
-                <Input type="text" v-model="listSearch.businessPostalCode" placeholder="请输入经营地址邮政编码"></Input>
+            <FormItem label="经营地址经度:" style="width: 45%;" prop="longitude">
+                <Input type="text"  v-model="listSearch.longitude" placeholder="请输入经营地址经度"></Input>
+            </FormItem>
+            <FormItem label="经营地址维度:" style="width: 45%;" prop="latitude">
+                <Input type="text"  v-model="listSearch.latitude" placeholder="请输入经营地址维度"></Input>
+            </FormItem>
+
+            <FormItem label="经营地址邮政编码:" style="width: 45%;" prop="postalCode">
+                <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
             </FormItem>
             <FormItem label="法定代表人:" style="width: 45%;" prop="legalName">
                 <Input type="text"  v-model="listSearch.legalName" placeholder=""></Input>
@@ -53,10 +65,6 @@
             </FormItem>
             <FormItem label="代表人固定电话:" style="width: 45%;" prop="legalTel">
                 <Input type="text"  v-model="listSearch.legalTel" placeholder=""></Input>
-
-                            
-                            
-                        
             </FormItem>
             <FormItem label="代表人邮箱:" style="width: 45%;" prop="legalEmail">
                 <Input type="text"  v-model="listSearch.legalEmail" placeholder=""></Input>
@@ -79,198 +87,255 @@
             <FormItem label="营业时间:" style="width: 45%;" prop="businessHours">
                 <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="" style="width: 100%;" v-model="listSearch.businessHours"></TimePicker>
             </FormItem>
-            <FormItem label="工时定额执行标准:" style="width: 45%;" prop="workingHoursQuotaExecutionStandard.id">
-                <RadioGroup v-model="listSearch.workingHoursQuotaExecutionStandard.id">
-                    <Radio v-for="item in workCompanyType" :label="item.name" :key="item.name">{{item.code}}</Radio>
-                    
-                </RadioGroup>
+            <FormItem label="管理机构与部门:" style="width: 45%;" prop="org">
+                <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
             </FormItem>
-            <FormItem label="工时单价:" style="width: 45%;" prop="workingHoursPrice">
-                <Input type="text"  v-model="listSearch.workingHoursPrice" placeholder="请输入工时单价"></Input>
+            <FormItem label="经营状态:" style="width: 45%;" prop="businessStatus">
+                <Select v-model="listSearch.businessStatus">
+                    <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="业户类别:" style="width: 90%;" prop="industryCategory.id">
-                <RadioGroup v-model="listSearch.industryCategory.id">
-                    <Radio v-for="item in households" :label="item.name" :key="item.name">{{item.code}}</Radio>
-                    
-                </RadioGroup>
+            <FormItem label="备案状态:" style="width: 45%;" prop="beianStatus">
+                <Select v-model="listSearch.beianStatus">
+                    <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="其他业户类别:" style="width: 92%;" v-show="listSearch.industryCategory.id==4?true:false">
-                <Input type="text"  v-model="listSearch.industryCategoryOther" placeholder="" style="width: 250px;"></Input>
+            <FormItem label="企业品牌:" style="width: 45%;" prop="brand">
+                <Input type="text"  v-model="listSearch.brand" placeholder=""></Input>
             </FormItem>
-            <FormItem label="经济类型:" style="width: 90%;">
+            <FormItem label="企业主要业务范围:" style="width: 45%;" prop="businessSphere">
                 
-                <RadioGroup v-model="listSearch.economicType.id">
-                    <Radio v-for="item in moneyType" :label="item.name" :key="item.name">{{item.code}}</Radio>
-                    
-                </RadioGroup>
+                <Select v-model="listSearch.businessSphere" multiple clearable>
+                    <Option v-for="item in companySphere" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="其他经济类型:" style="width: 92%;" v-show="listSearch.economicType.id==10?true:false">
-                <Input type="text"  v-model="listSearch.economicTypeOther" placeholder="" style="width: 250px;"></Input>
+            <FormItem label="其他主要业务范围:" style="width: 45%;" v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true">
+                <Input type="text"  v-model="listSearch.businessSphereOther" placeholder="" ></Input>
             </FormItem>
-            <FormItem label="经营范围:" style="width: 90%;">
-                <Divider />
-            </FormItem>
-            <FormItem label="维修类别:" style="width: 92%;">
-                
-                <Select v-model="companyRepair" style="width: 250px;">
+            <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
+                <Select v-model="listSearch.businessScope" >
                     <Option v-for="item in repairType" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="一类机动车维修:" style="width: 92%;" v-show="companyRepair==1?true:false">
-                <CheckboxGroup v-model="listSearch.scope1" @on-change="repairTypeFun">
-                    <Checkbox v-for="item in oneCarType" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
+            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false">
+                <Select v-model="listSearch.businessScope2" multiple clearable>
+                    <Option v-for="item in oneCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
             </FormItem>
-            <FormItem label="二类机动车维修:" style="width: 92%;" v-show="companyRepair==2?true:false">
+            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false">
+                <Select v-model="listSearch.businessScope2" multiple clearable>
+                    <Option v-for="item in twoCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false">
+                <Select v-model="listSearch.businessScope2" multiple clearable>
+                    <Option v-for="item in threeCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false">
+                <Select v-model="listSearch.businessScope2" multiple clearable>
+                    <Option v-for="item in motorcycle" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false">
+                <Select v-model="listSearch.businessScope2" multiple clearable>
+                    <Option v-for="item in carList" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="总对总:" style="width: 45%;" prop="zdz">
                 
-                <CheckboxGroup v-model="listSearch.scope2">
-                    <Checkbox v-for="item in twoCarType" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
+                <i-switch size="large" v-model="listSearch.zdz">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
             </FormItem>
-            <FormItem label="三类机动车维修:" style="width: 80%;" v-show="companyRepair==3?true:false">
+            <FormItem label="是否对接:" style="width: 45%;" prop="buttJoint">
+               
+                <i-switch size="large" v-model="listSearch.buttJoint">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+            <FormItem label="前台显示:" style="width: 45%;" prop="show">
                 
-                <CheckboxGroup v-model="listSearch.scope3">
-                    <Checkbox v-for="item in threeCarType" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
+                  <i-switch size="large" v-model="listSearch.show">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
             </FormItem>
-            <FormItem label="摩托车维修:" style="width: 92%;" v-show="companyRepair==4?true:false">
+            <FormItem label="特约维修:" style="width: 45%;" prop="special">
                 
-                <CheckboxGroup v-model="listSearch.scope4">
-                    <Checkbox v-for="item in motorcycle" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
-            </FormItem>
-            <FormItem label="汽车维修:" style="width: 92%;" v-show="companyRepair==5?true:false">
                 
-                <CheckboxGroup v-model="listSearch.scope5">
-                    <Checkbox v-for="item in carList" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
+                  <i-switch size="large" v-model="listSearch.special">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
             </FormItem>
-            <FormItem label="企业主要业务范围:" style="width: 92%;">
-                
-                <CheckboxGroup v-model="listSearch.sphere">
-                    <Checkbox v-for="item in companySphere" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
-                </CheckboxGroup>
+            <FormItem label="特约维修品牌:" style="width: 45%;" v-show="listSearch.special?true:false">
+                <Input type="text"  v-model="listSearch.specialRepairBrand" placeholder="" ></Input>
             </FormItem>
-            <FormItem label="其他主要业务范围:" style="width: 92%;" v-show="listSearch.sphere.indexOf(10)==-1?false:true">
-                <Input type="text"  v-model="listSearch.sphereOther" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
-            <FormItem label="企业员工总数:" style="width: 92%;">
-                <RadioGroup v-model="listSearch.employeeNumber.id">
-                    <Radio v-for="item in companyStaff" :label="item.name" :key="item.name">{{item.code}}</Radio>
-                    
-                </RadioGroup>
-            </FormItem>
-            <FormItem label="企业目前占地面积:" style="width: 92%;">
-                
-                <RadioGroup v-model="listSearch.floorSpace.id">
-                    <Radio v-for="item in companyArea" :label="item.name" :key="item.name">{{item.code}}</Radio>
-                    
-                </RadioGroup>
-            </FormItem>
-            <FormItem label="企业管理人员情况（职业资格、学历等描述）:" style="width: 90%;">
-                <Divider />
-            </FormItem>
-            <FormItem label="经理人:" style="width: 92%;" prop="manager">
-                <Input type="text"  v-model="listSearch.manager" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
-            <FormItem label="服务负责人:" style="width: 92%;" prop="serviceLeader">
-                <Input type="text" v-model="listSearch.serviceLeader" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
-            <FormItem label="技术负责人:" style="width: 92%;" prop="technologyLeader">
-                <Input type="text" v-model="listSearch.technologyLeader" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
-            <FormItem label="质量检验员:" style="width: 92%;" prop="qualityInspector">
-                <Input type="text"  v-model="listSearch.qualityInspector" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
-            <FormItem label="其他:" style="width: 92%;" prop="managerOther">
-                <Input type="text"  v-model="listSearch.managerOther" placeholder="" style="width: 250px;"></Input>
+            <FormItem label="对接情况:" style="width: 92%;" >
+                <Table border  :columns="columns10" :data="data9"></Table>
             </FormItem>
 
-            <FormItem label="企业技术人员配备情况:" style="width: 90%;">
-                <Divider />
+            <FormItem label="企业服务优势自我描述:" style="width: 92%;" prop="desc">
+                <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder=""></Input>
             </FormItem>
-            <FormItem label="机工高级技师人数:" style="width: 45%;" prop="machinistSeniorTechnician">
-                
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistSeniorTechnician" placeholder="高级技师人数"></InputNumber>
-            </FormItem>
-            <FormItem label="机工技师人数:" style="width: 45%;" prop="machinistTechnician">
-                
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistTechnician" placeholder="技师人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="机工高级人数:" style="width: 45%;" prop="machinistSenior">
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistSenior" placeholder="高级人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="机工中级人数:" style="width: 45%;" prop="machinistMedium">
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinistMedium" placeholder="中级人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="电工高级技师人数:" style="width: 45%;" prop="electricianSeniorTechnician">
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianSeniorTechnician" placeholder="高级技师人数"></InputNumber>
+
+
+
+
+            </Form>
+            </Panel>
+            <Panel name="2">企业信息
+                <Form  :label-width="140" class="common-form" slot="content">
+            <FormItem label="工时定额执行标准:" style="width: 45%;" >
+                <Select v-model="listSearch.workingHoursQuotaExecutionStandard">
+                    <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="工时单价:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.workingHoursPrice" placeholder="请输入工时单价"></Input>
+            </FormItem>
+            <FormItem label="业户类别:" style="width: 45%;" >
+                <Select v-model="listSearch.industryCategory">
+                    <Option v-for="item in households" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="其他业户类别:" style="width: 45%;" v-show="listSearch.industryCategory==9?true:false">
+                <Input type="text"  v-model="listSearch.industryCategoryOther" placeholder="" style="width: 100%;"></Input>
+            </FormItem>
+            <FormItem label="经济类型:" style="width: 45%;">
+                
+                <Select v-model="listSearch.economicType">
+                    <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="其他经济类型:" style="width: 45%;" v-show="listSearch.economicType==900?true:false">
+                <Input type="text"  v-model="listSearch.economicTypeOther" placeholder=""></Input>
+            </FormItem>
+
+
+
+            <FormItem label="对接时间:" style="width: 45%;" >
+                
+                <DatePicker type="date" placeholder="请选择" style="width: 100%;" v-model="listSearch.updateTime" ></DatePicker>
+            </FormItem>
+            
+
+            
+            
+            <FormItem label="企业员工总数:" style="width: 45%;">
+                <Select v-model="listSearch.employeeNumber" >
+                    <Option v-for="item in companyStaff" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="企业目前占地面积:" style="width: 45%;">
+                <Select v-model="listSearch.floorSpace" >
+                    <Option v-for="item in companyArea" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+
+            <FormItem label="经理人:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.manager" placeholder="" ></Input>
+            </FormItem>
+            <FormItem label="服务负责人:" style="width: 45%;" >
+                <Input type="text" v-model="listSearch.serviceLeader" placeholder="" ></Input>
+            </FormItem>
+            <FormItem label="技术负责人:" style="width: 45%;">
+                <Input type="text" v-model="listSearch.technologyLeader" placeholder="" ></Input>
+            </FormItem>
+            <FormItem label="质量检验员:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.qualityInspector" placeholder="" ></Input>
+            </FormItem>
+            <FormItem label="其他:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.managerOther" placeholder="" ></Input>
+            </FormItem>
+
+            <FormItem label="机工高级技师人数:" style="width: 45%;" >
+                
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[0]" placeholder="高级技师人数"></InputNumber>
+            </FormItem>
+            <FormItem label="机工技师人数:" style="width: 45%;" >
+                
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[1]" placeholder="技师人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="电工技师人数:" style="width: 45%;" prop="electricianTechnician">
+            <FormItem label="机工高级人数:" style="width: 45%;" >
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianTechnician" placeholder="技师人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[2]" placeholder="高级人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="电工高级人数:" style="width: 45%;" prop="electricianSenior">
-
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianSenior" placeholder="高级人数"></InputNumber>
-                
+            <FormItem label="机工中级人数:" style="width: 45%;" >
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[3]" placeholder="中级人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="电工中级人数:" style="width: 45%;" prop="electricianMedium">
+            <FormItem label="电工高级技师人数:" style="width: 45%;" >
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricianMedium" placeholder="中级人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[0]" placeholder="高级技师人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="钣金工高级技师人数:" style="width: 45%;" prop="tinbenderSeniorTechnician">
+            <FormItem label="电工技师人数:" style="width: 45%;" >
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderSeniorTechnician" placeholder="高级技师人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[1]" placeholder="技师人数"></InputNumber>
                 
             </FormItem>
-            <FormItem label="钣金工技师人数:" style="width: 45%;" prop="tinbenderTechnician">
+            <FormItem label="电工高级人数:" style="width: 45%;" >
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderTechnician" placeholder="技师人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="钣金工高级人数:" style="width: 45%;" prop="tinbenderSenior">
-
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderSenior" placeholder="高级人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="钣金工中级人数:" style="width: 45%;" prop="tinbenderMedium">
-
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenderMedium" placeholder="中级人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="油漆工高级技师人数:" style="width: 45%;" prop="painterSeniorTechnician">
-
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterSeniorTechnician" placeholder="高级技师人数"></InputNumber>
-                
-            </FormItem>
-            <FormItem label="油漆工技师人数:" style="width: 45%;" prop="painterTechnician">
-                
-
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterTechnician" placeholder="技师人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[2]" placeholder="高级人数"></InputNumber>
                 
                 
             </FormItem>
-            <FormItem label="油漆工高级人数:" style="width: 45%;" prop="painterSenior">
+            <FormItem label="电工中级人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[3]" placeholder="中级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工高级技师人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[0]" placeholder="高级技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工技师人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[1]" placeholder="技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工高级人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[2]" placeholder="高级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="钣金工中级人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[3]" placeholder="中级人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="油漆工高级技师人数:" style="width: 45%;" >
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[0]" placeholder="高级技师人数"></InputNumber>
+                
+            </FormItem>
+            <FormItem label="油漆工技师人数:" style="width: 45%;" >
                 
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterSenior" placeholder="高级人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[1]" placeholder="技师人数"></InputNumber>
                 
                 
             </FormItem>
-            <FormItem label="油漆工中级人数:" style="width: 45%;" prop="painterMedium">
+            <FormItem label="油漆工高级人数:" style="width: 45%;" >
                 
 
-                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painterMedium" placeholder="中级人数"></InputNumber>
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[2]" placeholder="高级人数"></InputNumber>
+                
+                
+            </FormItem>
+            <FormItem label="油漆工中级人数:" style="width: 45%;" >
+                
+
+                <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[3]" placeholder="中级人数"></InputNumber>
                 
             </FormItem>
             <FormItem label="企业主要维修车型:" style="width: 92%;">
@@ -278,58 +343,33 @@
                     <Checkbox v-for="item in vehicleModel" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
                 </CheckboxGroup>
             </FormItem>
-            <FormItem label="主修品牌:" style="width: 92%;" v-show="listSearch.model.indexOf(6)==-1?false:true">
-                <Input type="text"  v-model="listSearch.modelOther" placeholder="" style="width: 250px;"></Input>
+            <FormItem label="主修品牌:" style="width: 45%;" v-show="(listSearch.model&&listSearch.model.indexOf(6)==-1)?false:true">
+                <Input type="text"  v-model="listSearch.modelOther" placeholder="" ></Input>
             </FormItem>
             <FormItem label="24小时汽车维修救援:" style="width: 92%;">
-                <!--<Select v-model="listSearch.rescue" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
                 <i-switch size="large" v-model="listSearch.rescue">
                     <span slot="open">有</span>
                     <span slot="close">无</span>
                 </i-switch>
             </FormItem>
-            <FormItem label="汽车销售、维修:" style="width: 92%;">
-                
-                <!--<Select v-model="listSearch.specialRepair" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
-                <i-switch size="large" v-model="listSearch.specialRepair">
-                    <span slot="open">是</span>
-                    <span slot="close">否</span>
-                </i-switch>
-            </FormItem>
-            <FormItem label="汽车销售、维修品牌:" style="width: 92%;" v-show="listSearch.specialRepair?true:false">
-                <Input type="text"  v-model="listSearch.specialRepairBrand" placeholder="" style="width: 250px;"></Input>
-            </FormItem>
+            
+            
             <FormItem label="通过ISO质量管理体系认证:" style="width: 92%;">
-                
-                <!--<Select v-model="listSearch.iso" style="width: 250px;">
-                    <Option v-for="item in passType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
                 <i-switch size="large" v-model="listSearch.iso">
                     <span slot="open">通过</span>
                     <span slot="close">未通过</span>
                 </i-switch>
             </FormItem>
             <FormItem label="通过安全生产标准化达标认证:" style="width: 92%;">
-                
-                
-                <!--<Select v-model="listSearch.throughSafetyProductionStandardization" style="width: 250px;">
-                    <Option v-for="item in passType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
                 <i-switch size="large" v-model="listSearch.throughSafetyProductionStandardization">
                     <span slot="open">通过</span>
                     <span slot="close">未通过</span>
                 </i-switch>
             </FormItem>
             <FormItem label="通过环保部门专项整治:" style="width: 92%;">
-                
-                
-                <!--<Select v-model="listSearch.throughEnvironmentalProtectionSpecialRenovation" style="width: 250px;">
-                    <Option v-for="item in passType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
                 <i-switch size="large" v-model="listSearch.throughEnvironmentalProtectionSpecialRenovation">
                     <span slot="open">通过</span>
                     <span slot="close">未通过</span>
@@ -337,28 +377,33 @@
             </FormItem>
             <FormItem label="是否为全国诚信维修企业:" style="width: 92%;">
                 <i-switch size="large" v-model="listSearch.sincerity">
-                    <span slot="open">通过</span>
-                    <span slot="close">未通过</span>
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
                 </i-switch>
-                
-                <!--<Select v-model="listSearch.sincerity" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
             </FormItem>
-            <FormItem label="成为全国诚信维修企业的年份:" style="width: 92%;" v-show="listSearch.sincerity==1?true:false">
-                <Input type="text"  v-model="listSearch.sincerityYear" placeholder="" style="width: 250px;"></Input>
+            <FormItem label="成为全国诚信维修企业的年份:" style="width: 92%;" v-show="listSearch.sincerity?true:false">
+                <!--<Input type="text"  v-model="listSearch.sincerityYears" placeholder="" style="width: 250px;"></Input>-->
+                <DatePicker type="year" v-model="yearsArr.begin" placeholder="开始日期" style="width: 100px;"></DatePicker>
+                <DatePicker type="year" v-model="yearsArr.end" placeholder="结束日期" style="width: 100px;"></DatePicker>
+                <Button size="large" type="primary" @click="addYear">新增</Button>
+            </FormItem>
+            <FormItem label="" style="width: 92%;" v-show="listSearch.sincerityYears.length">
+                <div>
+                    <div class="yearClass" v-for="item in listSearch.sincerityYears">
+                        {{item.startYear}} {{item.endYear?-item.endYear:''}}
+                    </div>
+                </div>
+                
             </FormItem>
             <FormItem label="上年度质量信誉考核等级:" style="width: 92%;">
-                <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel.id">
-                    <Radio v-for="item in qualityCheck" :label="item.name" :key="item.name">{{ item.code }}</Radio>
+                <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel">
+                    <Radio v-for="item in qualityCheck" :label="item.id" :key="item.id">{{ item.name }}</Radio>
                 </RadioGroup>
             </FormItem>
 
             <FormItem label="是否提供上门维修:" style="width: 92%;">
-                
-                <!--<Select v-model="listSearch.offerOnsiteRepair" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
                 <i-switch size="large" v-model="listSearch.offerOnsiteRepair">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
@@ -366,29 +411,26 @@
             </FormItem>
             <FormItem label="提供上门服务种类:" style="width: 92%;">
                 <CheckboxGroup v-model="listSearch.serviceCategory">
-                    <Checkbox v-for="item in visitService"  :label="item.name" :key="item.code">{{item.code}}</Checkbox>
+                    <Checkbox v-for="item in visitService"  :label="item.key" :key="item.key">{{item.name}}</Checkbox>
                 </CheckboxGroup>
             </FormItem>
-            <FormItem label="其他服务种类:" style="width: 80%;" v-show="listSearch.serviceCategory.indexOf(7)==-1?false:true">
+            <FormItem label="其他服务种类:" style="width: 45%;" v-show="listSearch.serviceCategory.indexOf(300007)==-1?false:true">
                 <Input type="text"  v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
             <FormItem label="企业特色服务:" style="width: 92%;">
-                <Input type="textarea" :rows="4"  v-model="listSearch.specialService" placeholder=""></Input>
+                <Input type="textarea" :rows="1"  v-model="listSearch.specialService" placeholder=""></Input>
             </FormItem>
             <FormItem label="企业服务优势自我描述:" style="width: 92%;">
-                <Input type="textarea" :rows="4" v-model="listSearch.selfDesc" placeholder=""></Input>
+                <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder=""></Input>
             </FormItem>
-            <FormItem label="企业自我简介:" style="width: 92%;" prop="selfIntroduction">
-                <Input type="textarea" :rows="4"  v-model="listSearch.selfIntroduction" placeholder=""></Input>
+            <FormItem label="企业自我简介:" style="width: 92%;">
+                <Input type="textarea" :rows="1"  v-model="listSearch.selfIntroduction" placeholder=""></Input>
             </FormItem>
             <FormItem label="区级以上荣誉获得情况:" style="width: 92%;">
-                <Input type="textarea" :rows="4"  v-model="listSearch.honor" placeholder=""></Input>
+                <Input type="textarea" :rows="1"  v-model="listSearch.honor" placeholder=""></Input>
             </FormItem>
             <FormItem label="是否愿意开通车大夫服务等在线维修服务:" style="width: 92%;">
                 
-                <!--<Select v-model="listSearch.openOnlineRepairService" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
                 <i-switch size="large" v-model="listSearch.openOnlineRepairService">
                     <span slot="open">愿意</span>
                     <span slot="close">不愿意</span>
@@ -399,66 +441,88 @@
                     <span slot="open">愿意</span>
                     <span slot="close">不愿意</span>
                 </i-switch>
-                <!--<Select v-model="listSearch.openOnlineBusinessService" style="width: 250px;">
-                    <Option v-for="item in whetherType" :value="item.name" :key="item.name">{{ item.code }}</Option>
-                </Select>-->
+
             </FormItem>
         </Form>
-        <Spin size="large" fix v-if="spinShow"></Spin>
+            </Panel>
+      </Collapse>
+        
+        <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
     <div slot="footer">
-        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="testChange">提交</Button>
+        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="addCompany('listSearch')">提交</Button>
+        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="showChange=Math.random(),detailId=listSearch.id">查看变更</Button>
+        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="modal1=true" :disabled="listSearch.status==2">审核</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
+    <Modal v-model="modal1">
+        <p class="modelClass">审核是否通过</p>
+        <div slot="footer">
+            <Button  size="large" type="primary" @click="auditFun(true)">通过</Button>
+            <Button  size="large" type="error" @click="auditFun(false)">不通过</Button>
+        </div>
+    </Modal>
+    <!--<Spin size="large" fix v-if="spinShow"></Spin>-->
   </Modal>
+  
 </template>
 
 <script>
 import {  imgToBase64,getName } from '@/static/util.js'
   import { formatDate } from '@/static/tools'
   import funMixin from '~/components/fun-auth-mixim.js'
+import changeCompanyInfo from './change-company-info.vue'
 export default {
 	name: "repair-company-info",
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
+    components: {changeCompanyInfo},
     data(){
 		return{
-            spinShow:false,
+            collapse: '1',
+            detailId:null,
+            showChange:null,
+            // spinShow:false,
             showModal:false,
-            
+            testTitle:'',
+            modal1:false,
+            manageType:[],//管理部门数据集合--------
+            manageArr:[],
+            columns10: [
+                    {
+                        title: '对接渠道',
+                        key: 'name'
+                    },
+                    {
+                        title: '对接时间',
+                        key: 'buttJointTime'
+                    },
+            ],
+            data9:[],
             listSearch:{
-                "businessHours": "",
-                "businessPostalCode": "",
-                "businessRegion": "",
-                "businessAddress": "",
-                "complaintTel": "",
-                "corpName": "",
-                "economicType": {id:1},
+                "businessHours": "",//营业时间
+                "postalCode": "",//经营地址邮政编码------------------------------------------------
+                "businessRegion": "",//经营地址区域
+                "businessAddress": "",//经营地地址
+                "complaintTel": "",//企业反馈电话
+                "economicType": 1,//经济类型
                 "economicTypeOther": "",
-                "electricianMedium": 0,
-                "electricianSenior": 0,
-                "electricianSeniorTechnician": 0,
-                "electricianTechnician": 0,
-                "employeeNumber": {id:1},
-                "floorSpace": {id:1},
+                "employeeNumber": 1,//企业员工总数--------------------------
+                "floorSpace": 1,//企业目前占地面积-------------------------------
                 "honor": "",
                 "id": "",
-                "industryCategory": {id:1},
+                "industryCategory": 1,//业户类别
                 "industryCategoryOther": "",
                 "iso": false,
                 "latitude": "",
                 "legalEmail": "",
                 "legalMobile": "",
-                "legalName": "",
+                "legalName": "",//法定代表人
                 "legalTel": "",
-                "licence": "",
-                "licenceBeginDate": "",
-                "licenceEndDate": "",
+                "licence": "",//许可证号
+                "licenceBeginDate": "",//许可证有效期
+                "licenceEndDate": "",//许可证有效期
                 "longitude": "",
-                "machinistMedium": 0,
-                "machinistSenior": 0,
-                "machinistSeniorTechnician": 0,
-                "machinistTechnician": 0,
                 "manager": "",
                 "managerOther": "",
                 "model": [],
@@ -470,45 +534,73 @@ export default {
                 "operatorMobile": "",
                 "operatorName": "",
                 "operatorTel": "",
-                "painterMedium": 0,
-                "painterSenior": 0,
-                "painterSeniorTechnician": 0,
-                "painterTechnician": 0,
                 "qualityInspector": "",
-                "qualityReputationAssessmentLevel": {id:4},
-                "registerAddress": "",
-                "registerDate": "",
-                "registerRegion": "",
+                "qualityReputationAssessmentLevel": 4,
+                "registerAddress": "",//工商注册地址
+                "registerDate": "",//工商注册日期
+                "registerRegion": "",//工商注册地址区域
                 "rescue": false,
-                "scope1": [],
-                "scope2": [],
-                "scope3": [],
-                "scope4": [],
-                "scope5": [],
-                "selfDesc": "",
+                // "selfDesc": "",
                 "selfIntroduction": "",
                 "serviceCategory": [],
                 "serviceCategoryOther": "",
                 "serviceLeader": "",
                 "sincerity": false,
-                "sincerityYear": 0,
-                "specialRepair": false,
+                "sincerityYears": [],
+                
                 "specialRepairBrand": "",
                 "specialService": "",
-                "sphere": [],
-                "sphereOther": "",
                 "technologyLeader": "",
                 "throughEnvironmentalProtectionSpecialRenovation": false,
                 "throughSafetyProductionStandardization": false,
-                "tinbenderMedium": 0,
-                "tinbenderSenior": 0,
-                "tinbenderSeniorTechnician": 0,
-                "tinbenderTechnician": 0,
-                "workingHoursPrice": "",
-                "workingHoursQuotaExecutionStandard": {id:1},
+                "workingHoursPrice": "",//工时单价
+                "workingHoursQuotaExecutionStandard": '',//工时定额执行标准
+
+                "beianStatus": 0,//备案状态---------------------------------------------
+                "brand": "",//企业品牌--------------------------------------------------
+                "businessScope": 0,//经营范围
+                "businessScope2": [
+                    0
+                ],//经营范围小类
+                "businessSphere": [],//主要业务范围
+                "businessSphereOther": "",//其他业务范围
+                "businessStatus": 0,//经营状态
+                "corpInfoId": 0,//企业id
+                "dept": "",//管理部门
+                "desc": "",//自我描述
+                "zdz":false,//总对总
+                "buttJoint":false,//是否对接
+
+                "electricians": [
+                    0,0,0,0
+                ],//电工
+
+                "machinists": [
+                    0,0,0,0
+                ],//机工
+
+                "name": "",//企业名称----------------------------------------------
+
+                "org": "",//管理机构---------------------------------------------------
+                "painters": [
+                    0,0,0,0
+                ],//油漆工
+
+                "show": false,//是否前台显示--------------------------------------------------------
+
+                "special": false,//是否特约维修
+                "specialRepairBrand": "",//主修品牌
+                "specialService": "",//服务特色
+                "status": 1,//审核状态
+
+                "tinbenders": [
+                    0,0,0,0
+                ],//钣金工
+                "updateTime": "",//更新时间--------------------
+                "buttJointInfoDtos":[],
             },
             ruleValidate: {
-                corpName:[{ required: true, message: '必填项不可为空', },],
+                name:[{ required: true, message: '必填项不可为空', },],
                 licence:[{ required: true, message: '必填项不可为空', },],
                 licenceBeginDate:[{ required: true, message: '必填项不可为空', },],
                 registerAddress:[{ required: true, message: '必填项不可为空', },],
@@ -517,13 +609,17 @@ export default {
 
                 businessAddress:[{ required: true, message: '必填项不可为空', },],
                 businessRegion:[{ required: true, message: '必填项不可为空', },],
-                businessPostalCode:[{ required: true, message: '必填项不可为空', },],
+                longitude:[{ required: true, message: '必填项不可为空', },],
+                latitude:[{ required: true, message: '必填项不可为空', },],
+
+                postalCode:[{ required: true, message: '必填项不可为空', },],
+
                 legalName:[{ required: true, message: '必填项不可为空', },],
                 legalMobile:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
+                    // {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
                 ],
                 legalTel:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
+                    // {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
                 ],
                 
                 legalEmail:[{ required: true, message: '必填项不可为空', },
@@ -531,135 +627,94 @@ export default {
                 ],
                 operatorName:[{ required: true, message: '必填项不可为空', },],
                 operatorMobile:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
+                    // {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
                 ],
                 operatorTel:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
+                    // {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
                 ],
                 operatorEmail:[{ required: true, message: '必填项不可为空', },
                     {pattern:/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/, message:'请输入正确的邮箱', trigger:'blur'}
                 ],
                 complaintTel:[{ required: true, message: '必填项不可为空', },],
-
                 businessHours:[{ required: true, message: '必填项不可为空', },],
-                // workingHoursQuotaExecutionStandard:[{ required: true, message: '必填项不可为空', },],
-                workingHoursPrice:[{ required: true, message: '必填项不可为空', },],
-                // industryCategory:[{ required: true, message: '必填项不可为空', },],
-                operatorEmail:[{ required: true, message: '必填项不可为空', },],
-                complaintTel:[{ required: true, message: '必填项不可为空', },],
-                manager:[{ required: true, message: '必填项不可为空', },],
-                serviceLeader:[{ required: true, message: '必填项不可为空', },],
-                technologyLeader:[{ required: true, message: '必填项不可为空', },],
-                qualityInspector:[{ required: true, message: '必填项不可为空', },],
-                managerOther:[{ required: true, message: '必填项不可为空', },],
-                machinistSeniorTechnician:[{ required: true, message: '必填项不可为空', },],
-                machinistTechnician:[{ required: true, message: '必填项不可为空', },],
-                machinistSenior:[{ required: true, message: '必填项不可为空', },],
-                machinistMedium:[{ required: true, message: '必填项不可为空', },],
+                org:[{ required: true, message: '必填项不可为空', },],
+                businessStatus:[{ required: true, message: '必填项不可为空', },],
 
-                electricianSeniorTechnician:[{ required: true, message: '必填项不可为空', },],
-                electricianTechnician:[{ required: true, message: '必填项不可为空', },],
-                electricianSenior:[{ required: true, message: '必填项不可为空', },],
-                electricianMedium:[{ required: true, message: '必填项不可为空', },],
+                beianStatus:[{ required: true, message: '必填项不可为空', },],
+                brand:[{ required: true, message: '必填项不可为空', },],
+                businessSphere:[{ required: true, message: '必填项不可为空', },],
+                businessScope:[{ required: true, message: '必填项不可为空', },],
+                zdz:[{ required: true, message: '必填项不可为空', },],
+                buttJoint:[{ required: true, message: '必填项不可为空', },],
+                show:[{ required: true, message: '必填项不可为空', },],
+                special:[{ required: true, message: '必填项不可为空', },],
+                desc:[{ required: true, message: '必填项不可为空', },],
 
-                tinbenderSeniorTechnician:[{ required: true, message: '必填项不可为空', },],
-                tinbenderTechnician:[{ required: true, message: '必填项不可为空', },],
-                tinbenderSenior:[{ required: true, message: '必填项不可为空', },],
-                tinbenderMedium:[{ required: true, message: '必填项不可为空', },],
-
-                painterSeniorTechnician:[{ required: true, message: '必填项不可为空', },],
-                painterTechnician:[{ required: true, message: '必填项不可为空', },],
-                painterSenior:[{ required: true, message: '必填项不可为空', },],
-                painterMedium:[{ required: true, message: '必填项不可为空', },],
-
-                selfIntroduction:[{ required: true, message: '必填项不可为空', },],
             },//规则验证
             typeList:[],//学历类别数据------
             //维修类别数据---------
             repairType:[
-                {code:"一类机动车维修",name:1},
-                {code:"二类机动车维修",name:2},
-                {code:"三类机动车维修",name:3},
-                {code:"摩托车维修",name:4},
-                {code:"汽车维修",name:5},
+                {code:"一类机动车维修",name:43},
+                {code:"二类机动车维修",name:44},
+                {code:"三类机动车维修",name:45},
+                {code:"摩托车维修",name:46},
+                {code:"汽车维修",name:47},
             ],
             companyRepair:'',
             //一类机动车维修------
             oneCarType:[
-                {code:"小型车辆维修",name:1},
-                {code:"大、中型客车维修",name:2},
-                {code:"大、中型货车维修",name:3},
-                {code:"危险货车运输维修",name:4},
-                {code:"电动(油电混合)汽车维修",name:5},
-                {code:"燃气汽车维修",name:6},
+                {code:"小型车辆维修",name:48},
+                {code:"大、中型客车维修",name:49},
+                {code:"大、中型货车维修",name:50},
+                {code:"危险货车运输维修",name:51},
+                {code:"电动(油电混合)汽车维修",name:52},
+                {code:"燃气汽车维修",name:53},
             ],
             //二类机动车维修-------
             twoCarType:[
-                {code:"小型车辆维修",name:1},
-                {code:"大、中型客车维修",name:2},
-                {code:"大、中型货车维修",name:3},
-                {code:"电动(油电混合)汽车维修",name:4},
-                {code:"燃气汽车维修",name:5},
+                {code:"小型车辆维修",name:54},
+                {code:"大、中型客车维修",name:55},
+                {code:"大、中型货车维修",name:56},
+                {code:"电动(油电混合)汽车维修",name:57},
+                {code:"燃气汽车维修",name:58},
             ],
             //三类机动车维修-------
             threeCarType:[
-                {code:"发动机修理",name:1},
-                {code:"车身维修",name:2},
-                {code:"电气系统维修",name:3},
-                {code:"自动变速器维修",name:4},
-                {code:"车身清洁维护",name:5},
+                {code:"发动机修理",name:59},
+                {code:"车身维修",name:60},
+                {code:"电气系统维修",name:61},
+                {code:"自动变速器维修",name:62},
+                {code:"车身清洁维护",name:63},
 
-                {code:"涂漆",name:6},
-                {code:"轮胎动平衡及修补",name:7},
-                {code:"四轮定位检测调整",name:8},
-                {code:"供油系统维护及油品更换",name:9},
-                {code:"喷油泵和喷油嘴维修",name:10},
+                {code:"涂漆",name:64},
+                {code:"轮胎动平衡及修补",name:65},
+                {code:"四轮定位检测调整",name:66},
+                {code:"供油系统维护及油品更换",name:67},
+                {code:"喷油泵和喷油嘴维修",name:68},
 
-                {code:"曲轴修磨",name:11},
-                {code:"气缸镗磨",name:12},
-                {code:"散热器（水箱）维修",name:13},
-                {code:"空调维修",name:14},
-                {code:"车辆装潢（篷布坐垫及内装饰）",name:15},
-                {code:"车辆玻璃安装",name:16},
+                {code:"曲轴修磨",name:69},
+                {code:"气缸镗磨",name:70},
+                {code:"散热器（水箱）维修",name:71},
+                {code:"空调维修",name:72},
+                {code:"车辆装潢（篷布坐垫及内装饰）",name:73},
+                {code:"车辆玻璃安装",name:74},
             ],
             //摩托车维修
             motorcycle:[
-                {code:"一类",name:1},
-                {code:"二类",name:2},
+                {code:"一类",name:75},
+                {code:"二类",name:76},
             ],
             //汽车维修
             carList:[
-                {code:"A类",name:1},
-                {code:"B类",name:2},
+                {code:"A类",name:77},
+                {code:"B类",name:78},
             ],
             //企业主要业务
-            companySphere:[
-                {code:"品牌维修",name:1},
-                {code:"综合维修",name:2},
-                {code:"专项维修",name:3},
-                {code:"营运车辆维修",name:4},
-                {code:"事故车维修",name:5},
-
-                {code:"配件销售",name:6},
-                {code:"新车销售",name:7},
-                {code:"汽车保险",name:8},
-                {code:"二手车置换",name:9},
-                {code:"其他",name:10},
-            ],
+            companySphere:[],
             //企业员工总数
-            companyStaff:[
-                {code:"10人以下",name:1},
-                {code:"10-20人",name:2},
-                {code:"30-50人",name:3},
-                {code:"50人以上",name:4},
-            ],
+            companyStaff:[],
             //企业占地面积
-            companyArea:[
-                {code:"200㎡以下",name:1},
-                {code:"200-500㎡",name:2},
-                {code:"500-1000㎡",name:3},
-                {code:"1000㎡以上",name:4},
-            ],
+            companyArea:[],
             //企业主要维修车型
             vehicleModel:[
                 {code:"轿车（不含出租）",name:1},
@@ -670,41 +725,19 @@ export default {
                 {code:"主修品牌",name:6},
             ],
             //上年度质量考核
-            qualityCheck:[
-                {code:"AAA",name:1},
-                {code:"AA",name:2},
-                {code:"A",name:3},
-                {code:"未考核",name:4},
-            ],
+            qualityCheck:[],
             //上门服务-----
-            visitService:[
-                {code:"上门故障诊断",name:1},
-                {code:"上门取送车服务",name:2},
-                {code:"上门更换备胎",name:3},
-                {code:"上门更换灯泡",name:4},
-                {code:"上门更换雨刮片",name:5},
-                {code:"上门电瓶泵电",name:6},
-                {code:"其他",name:7},
-            ],
+            visitService:[],
             //业户类别--------
             households:[
-                {code:"企业",name:1},
-                {code:"分支机构",name:2},
-                {code:"个体经营户",name:3},
-                {code:"其他",name:4},
+                {code:"企业",name:6},
+                {code:"分支机构",name:7},
+                {code:"个体经营户",name:8},
+                {code:"其他",name:9},
             ],
             //经济类型-------
             moneyType:[
-                {code:"国有",name:1},
-                {code:"集体",name:2},
-                {code:"私营",name:3},
-                {code:"联营",name:4},
-                {code:"股份制",name:5},
-                {code:"独资",name:6},
-                {code:"合资",name:7},
-                {code:"合作",name:8},
-                {code:"港澳台投资",name:9},
-                {code:"其他",name:10},
+                
             ],
             //工时定额执行标准-----
             workCompanyType:[
@@ -721,50 +754,69 @@ export default {
                 {code:"通过",name:"1"},
                 {code:"未通过",name:"0"},
             ],
+            //备案状态数据
+            beianStatusArr:[
+                {code:"待备案",name:1},
+                {code:"已备案",name:2},
+                {code:"未备案",name:3},
+            ],
+            //经营状态数据------
+            businessStatusArr:[],
+            //成为全国诚信企业的数据--------
+            yearsArr:{
+                begin:'',
+                end:''
+            },
+            //审核状态问题------
+            statusArr:[
+                {code:1,name:'待审核'},
+                {code:2,name:'审核成功'},
+                {code:3,name:'审核不成功'},
+            ]
 
         }
     },
     watch:{
         showDetail(){
+
+
             this.showModal=true;
+            this.collapse='1';
             this.getType();
+            this.getPubliceType(4);
+            this.getPubliceType(6);
+            this.getPubliceType(7);
+            this.getPubliceType(8);
+            this.getPubliceType(9);
+            this.getPubliceType(30);
+            this.getPubliceType(24);
+            this.getCompanyArea();
             this.companyRepair='';
-            if(this.detailData){
-                this.getDetail();
-            }else{
-                this.listSearch={
-                "businessHours": "",
-                "businessPostalCode": "",
-                "businessRegion": "",
-                "businessAddress": "",
-                "complaintTel": "",
-                "corpName": "",
-                "economicType": {id:1},
+            this.manageArr=[];
+            this.listSearch={
+                "businessHours": "",//营业时间
+                "postalCode": "",//经营地址邮政编码------------------------------------------------
+                "businessRegion": "",//经营地址区域
+                "businessAddress": "",//经营地地址
+                "complaintTel": "",//企业反馈电话
+                "economicType": 1,//经济类型
                 "economicTypeOther": "",
-                "electricianMedium": 0,
-                "electricianSenior": 0,
-                "electricianSeniorTechnician": 0,
-                "electricianTechnician": 0,
-                "employeeNumber": {id:1},
-                "floorSpace": {id:1},
+                "employeeNumber": 1,//企业员工总数--------------------------
+                "floorSpace": 1,//企业目前占地面积-------------------------------
                 "honor": "",
                 "id": "",
-                "industryCategory": {id:1},
+                "industryCategory": 1,//业户类别
                 "industryCategoryOther": "",
                 "iso": false,
                 "latitude": "",
                 "legalEmail": "",
                 "legalMobile": "",
-                "legalName": "",
+                "legalName": "",//法定代表人
                 "legalTel": "",
-                "licence": "",
-                "licenceBeginDate": "",
-                "licenceEndDate": "",
+                "licence": "",//许可证号
+                "licenceBeginDate": "",//许可证有效期
+                "licenceEndDate": "",//许可证有效期
                 "longitude": "",
-                "machinistMedium": 0,
-                "machinistSenior": 0,
-                "machinistSeniorTechnician": 0,
-                "machinistTechnician": 0,
                 "manager": "",
                 "managerOther": "",
                 "model": [],
@@ -776,138 +828,210 @@ export default {
                 "operatorMobile": "",
                 "operatorName": "",
                 "operatorTel": "",
-                "painterMedium": 0,
-                "painterSenior": 0,
-                "painterSeniorTechnician": 0,
-                "painterTechnician": 0,
                 "qualityInspector": "",
-                "qualityReputationAssessmentLevel": {id:4},
-                "registerAddress": "",
-                "registerDate": "",
-                "registerRegion": "",
+                "qualityReputationAssessmentLevel": 4,
+                "registerAddress": "",//工商注册地址
+                "registerDate": "",//工商注册日期
+                "registerRegion": "",//工商注册地址区域
                 "rescue": false,
-                "scope1": [],
-                "scope2": [],
-                "scope3": [],
-                "scope4": [],
-                "scope5": [],
                 "selfDesc": "",
                 "selfIntroduction": "",
                 "serviceCategory": [],
                 "serviceCategoryOther": "",
                 "serviceLeader": "",
                 "sincerity": false,
-                "sincerityYear": 0,
-                "specialRepair": false,
+                "sincerityYears": [],
+                "specialRepair": false,//-汽车销售、维修----------------------------
                 "specialRepairBrand": "",
                 "specialService": "",
-                "sphere": [],
-                "sphereOther": "",
                 "technologyLeader": "",
                 "throughEnvironmentalProtectionSpecialRenovation": false,
                 "throughSafetyProductionStandardization": false,
-                "tinbenderMedium": 0,
-                "tinbenderSenior": 0,
-                "tinbenderSeniorTechnician": 0,
-                "tinbenderTechnician": 0,
-                "workingHoursPrice": "",
-                "workingHoursQuotaExecutionStandard": {id:1},
-            };
-            }
+                "workingHoursPrice": "",//工时单价
+                "workingHoursQuotaExecutionStandard": '',//工时定额执行标准
 
+                "beianStatus": 0,//备案状态---------------------------------------------
+                "brand": "",//企业品牌--------------------------------------------------
+                "businessScope": 0,//经营范围
+                "businessScope2": [
+                    0
+                ],//经营范围小类
+                "businessSphere": [],//主要业务范围
+                "businessSphereOther": "",//其他业务范围
+                "businessStatus": 0,//经营状态
+                "corpInfoId": 0,//企业id
+                "dept": "",//管理部门
+                "desc": "",//备注
+                "zdz":false,//总对总
+                "buttJoint":false,//是否对接
+
+                "electricians": [
+                    0,0,0,0
+                ],//电工
+
+                "machinists": [
+                    0,0,0,0
+                ],//机工
+
+                "name": "",//企业名称----------------------------------------------
+
+                "org": "",//管理机构---------------------------------------------------
+                "painters": [
+                    0,0,0,0
+                ],//油漆工
+
+                "show": false,//是否前台显示--------------------------------------------------------
+
+                "special": false,//是否特约维修
+                "specialRepairBrand": "",//主修品牌
+                "specialService": "",//服务特色
+                "status": 1,//审核状态
+
+                "tinbenders": [
+                    0,0,0,0
+                ],//钣金工
+                "updateTime": "",//更新时间--------------------
+                "buttJointInfoDtos":[],
+            };
+
+            if(this.detailData){
+                this.getDetail(this.detailData.id);
+            }else{
+                
+            }
+            console.log("this.listSearch.status",this.listSearch.status)
+            this.testTitle=getName(this.statusArr,this.listSearch.status);
         },
     },
+    
     methods:{
-        testChange(){
-            console.log(this.listSearch);
-            this.addCompany();
+        getDetail(id){
+            // this.spinShow=true;
+            this.$Spin.show();
+            this.$axios.get('/corp/manage/detail/'+id, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    let resData=res.data.item;
+                    for(let i in resData){
+                        if(i=="businessHours"){
+                            this.listSearch[i]=resData[i].split('-');
+                        }
+                        else{
+                            if(resData[i]){
+                                this.listSearch[i]=resData[i];
+                            }
+                            
+                        }
+                        
+                    }
+                    this.manageArr=[];
+                    this.manageArr.push(this.listSearch.org);
+                    this.manageArr.push(this.listSearch.dept);
+                    this.testTitle=getName(this.statusArr,this.listSearch.status);
+
+                    this.data9=this.listSearch["buttJointInfoDtos"];
+                }
+                // this.spinShow=false;
+                this.$Spin.hide();
+           })
         },
         //选择维修类别时带的参数--------
         repairTypeFun(name,val){
             console.log(name,val);
         },
         //新增一个企业数据---------
-        addCompany(){
-            // this.spinShow=true;
-            if(this.detailData){
-                this.$axios.post('/corp/edit',{
-                    id:this.detailData.corpId,
-                    corpName: this.listSearch.corpName,//公司名称 
-                    licence: this.listSearch.licence, //许可证号
-                    licenceBeginDate:formatDate(this.listSearch.licenceBeginDate[0]),//许可证起始日期
-                    licenceEndDate:formatDate(this.listSearch.licenceBeginDate[1]),//许可证终止日期
-                    registerAddress:this.listSearch.registerAddress,//工商注册地址
-                    registerRegion:this.listSearch.registerRegion,//工商注册地址区域
-                    registerDate:formatDate(this.listSearch.registerDate),//工商注册日期
-                    businessAddress:this.listSearch.businessAddress,//经营地地址
-                    businessRegion:this.listSearch.businessRegion,//经营地址区域
-                    businessPostalCode:this.listSearch.businessPostalCode,//经营地址邮政编码
-                    legalName:this.listSearch.legalName,//法定代表人
-                    legalMobile:this.listSearch.legalMobile,//法定代表人手机
-                    legalTel:this.listSearch.legalTel,//法定代表人固定电话
-                    legalEmail:this.listSearch.legalEmail,//法定代表人邮箱
-                    operatorName:this.listSearch.operatorName,//日常经营管理负责人
-                    operatorMobile:this.listSearch.operatorMobile,//日常经营管理负责人手机
-                    operatorTel:this.listSearch.operatorTel,//日常经营管理负责人固定电话
-                    operatorEmail:this.listSearch.operatorEmail,//日常经营管理负责人邮箱
-                    complaintTel:this.listSearch.complaintTel,//企业反馈电话
-                    businessHours:(this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',//营业时间
-                    workingHoursQuotaExecutionStandard:this.listSearch.workingHoursQuotaExecutionStandard.id,//工时定额执行标准
-                    workingHoursPrice:this.listSearch.workingHoursPrice,//工时单价
-                    industryCategory:this.listSearch.industryCategory.id,//业户类别
-                    industryCategoryOther:this.listSearch.industryCategoryOther,//其他业户类别
-                    economicType:this.listSearch.economicType.id,//经济类别
-                    economicTypeOther:this.listSearch.economicTypeOther,//其他经济类别
-                    scope1:this.listSearch.scope1,//一类机动车维修
-                    scope2:this.listSearch.scope2,//二类机动车维修
-                    scope3:this.listSearch.scope3,//三类机动车维修
-                    scope4:this.listSearch.scope4,//摩托车维修
-                    scope5:this.listSearch.scope5,//汽车维修
-                    sphere:this.listSearch.sphere,//企业主要业务范围
-                    sphereOther:this.listSearch.sphereOther,//其他企业主要业务范围
-                    employeeNumber:this.listSearch.employeeNumber.id,//企业员工总数
-                    floorSpace:this.listSearch.floorSpace.id,//企业目前占地面积
-                    manager:this.listSearch.manager,//经理人
-                    serviceLeader:this.listSearch.serviceLeader,//服务负责人
-                    technologyLeader:this.listSearch.technologyLeader,//技术负责人
-                    qualityInspector:this.listSearch.qualityInspector,//质量检验员
-                    managerOther:this.listSearch.managerOther,//其他
-                    machinistSeniorTechnician:this.listSearch.machinistSeniorTechnician,//技工高级技师
-                    machinistTechnician:this.listSearch.machinistTechnician,//技工高级技师
-                    machinistSenior:this.listSearch.machinistSenior,//高级技师
-                    machinistMedium:this.listSearch.machinistMedium,//中级技师
-                    electricianSeniorTechnician:this.listSearch.electricianSeniorTechnician,//中级技师
-                    electricianTechnician:this.listSearch.electricianTechnician,//中级技师
-                    electricianSenior:this.listSearch.electricianSenior,//中级技师
-                    electricianMedium:this.listSearch.electricianMedium,//中级技师
-                    tinbenderMedium:this.listSearch.tinbenderMedium,//中级技师
-                    tinbenderSenior:this.listSearch.tinbenderSenior,//中级技师
-                    tinbenderSeniorTechnician:this.listSearch.tinbenderSeniorTechnician,//中级技师
-                    tinbenderTechnician:this.listSearch.tinbenderTechnician,//中级技师
-                    painterMedium:this.listSearch.painterMedium,//中级技师
-                    painterSenior:this.listSearch.painterSenior,//中级技师
-                    painterSeniorTechnician:this.listSearch.painterSeniorTechnician,//中级技师
-                    painterTechnician:this.listSearch.painterTechnician,//中级技师
-                    model:this.listSearch.model,//企业主要维修车型
-                    modelOther:this.listSearch.modelOther,//主修品牌
-                    rescue:this.listSearch.rescue,//24小时汽车维修救援
-                    specialRepair:this.listSearch.specialRepair,//汽车销售、维修
-                    specialRepairBrand:this.listSearch.specialRepairBrand,//汽车销售、维修品牌
-                    iso:this.listSearch.iso,//通过ISO质量管理体系认证
-                    throughSafetyProductionStandardization:this.listSearch.throughSafetyProductionStandardization,//通过安全生产标准化达标认证
-                    throughEnvironmentalProtectionSpecialRenovation:this.listSearch.throughEnvironmentalProtectionSpecialRenovation,//通过环保部门专项整治
-                    sincerity:this.listSearch.sincerity,//是否为全国诚信维修企业
-                    sincerityYear:this.listSearch.sincerityYear||0,//为全国诚信维修企业年份
-                    qualityReputationAssessmentLevel:this.listSearch.qualityReputationAssessmentLevel.id,//上年度质量信誉考核等级
-                    offerOnsiteRepair:this.listSearch.offerOnsiteRepair,//是否提供上门维修
-                    serviceCategory:this.listSearch.serviceCategory,//提供上门服务种类
-                    serviceCategoryOther:this.listSearch.serviceCategoryOther,//其他服务种类
-                    specialService:this.listSearch.specialService,//企业特色服务
-                    selfDesc:this.listSearch.selfDesc,//企业服务优势自我描述
-                    selfIntroduction:this.listSearch.selfIntroduction,//企业自我简介
-                    honor:this.listSearch.honor,//区级以上荣誉获得情况
-                    openOnlineRepairService:this.listSearch.openOnlineRepairService,//是否愿意开通车大夫服务等在线维修服务
-                    openOnlineBusinessService:this.listSearch.openOnlineBusinessService,//是否愿意开通在线商务服务
+        addCompany(name){
+            if(this.manageArr.length>0){
+                this.listSearch["org"]=this.manageArr[0]||'';
+                this.listSearch["dept"]=this.manageArr[1]||'';
+            }
+
+            this.$refs[name].validate((valid) => {
+
+                if (valid) {
+
+                    if(this.detailData){
+                
+                this.$axios.post('/corp/manage/update',{
+                    
+                    "beianStatus": this.listSearch.beianStatus,
+                    "brand": this.listSearch.brand,
+                    "businessAddress": this.listSearch.businessAddress,
+                    "businessHours": (this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',
+                    "businessRegion": this.listSearch.businessRegion,
+                    "businessScope": this.listSearch.businessScope,
+                    "businessScope2": this.listSearch.businessScope2,
+                    "businessSphere": this.listSearch.businessSphere,
+                    "businessSphereOther": this.listSearch.businessSphereOther,
+                    "businessStatus": this.listSearch.businessStatus,
+                    "buttJoint": this.listSearch.buttJoint,
+                    "complaintTel": this.listSearch.complaintTel,
+                    "corpInfoId": this.listSearch.corpInfoId,
+                    "dept": this.listSearch.dept,
+                    "desc": this.listSearch.desc,
+                    "economicType": this.listSearch.economicType,
+                    "economicTypeOther": this.listSearch.economicTypeOther,
+                    "electricians": this.listSearch.electricians,
+                    "employeeNumber": this.listSearch.employeeNumber,
+                    "floorSpace": this.listSearch.floorSpace,
+                    "honor": this.listSearch.honor,
+                    "id": this.listSearch.id,
+                    "industryCategory": this.listSearch.industryCategory,
+                    "industryCategoryOther": this.listSearch.industryCategoryOther,
+                    "iso": this.listSearch.iso,
+                    "latitude": this.listSearch.latitude,
+                    "legalEmail": this.listSearch.legalEmail,
+                    "legalMobile": this.listSearch.legalMobile,
+                    "legalName": this.listSearch.legalName,
+                    "legalTel": this.listSearch.legalTel,
+                    "licence": this.listSearch.licence,
+                    "licenceBeginDate": formatDate(this.listSearch.licenceBeginDate),
+                    "licenceEndDate": formatDate(this.listSearch.licenceEndDate),
+                    "linkmanName": this.listSearch.linkmanName,
+                    "linkmanTel": this.listSearch.linkmanTel,
+                    "longitude": this.listSearch.longitude,
+                    "machinists": this.listSearch.machinists,
+                    "manager": this.listSearch.manager,
+                    "managerOther": this.listSearch.managerOther,
+                    "model": this.listSearch.model,
+                    "modelOther": this.listSearch.modelOther,
+                    "name": this.listSearch.name,
+                    "offerOnsiteRepair": this.listSearch.offerOnsiteRepair,
+                    "openOnlineBusinessService": this.listSearch.openOnlineBusinessService,
+                    "openOnlineRepairService": this.listSearch.openOnlineRepairService,
+                    "operatorEmail": this.listSearch.operatorEmail,
+                    "operatorMobile": this.listSearch.operatorMobile,
+                    "operatorName": this.listSearch.operatorName,
+                    "operatorTel": this.listSearch.operatorTel,
+                    "org": this.listSearch.org,
+                    "painters": this.listSearch.painters,
+                    "postalCode": this.listSearch.postalCode,
+                    "qualityInspector": this.listSearch.qualityInspector,
+                    "qualityReputationAssessmentLevel": this.listSearch.qualityReputationAssessmentLevel,
+                    "registerAddress": this.listSearch.registerAddress,
+                    "registerDate": formatDate(this.listSearch.registerDate),
+                    "registerRegion": this.listSearch.registerRegion,
+                    "rescue": this.listSearch.rescue,
+                    "selfIntroduction": this.listSearch.selfIntroduction,
+                    "serviceCategory": this.listSearch.serviceCategory,
+                    "serviceCategoryOther": this.listSearch.serviceCategoryOther,
+                    "serviceLeader": this.listSearch.serviceLeader,
+                    "show": this.listSearch.show,
+                    "sincerity": this.listSearch.sincerity,
+                    "sincerityYears": this.listSearch.sincerityYears,
+                    "special": this.listSearch.special,
+                    "specialRepairBrand": this.listSearch.specialRepairBrand,
+                    "specialService": this.listSearch.specialService,
+                    "status": this.listSearch.status,
+                    "technologyLeader": this.listSearch.technologyLeader,
+                    "throughEnvironmentalProtectionSpecialRenovation": this.listSearch.throughEnvironmentalProtectionSpecialRenovation,
+                    "throughSafetyProductionStandardization": this.listSearch.throughSafetyProductionStandardization,
+                    "tinbenders": this.listSearch.tinbenders,
+                    "updateTime": formatDate(this.listSearch.updateTime),
+                    "workingHoursPrice": this.listSearch.workingHoursPrice,
+                    "workingHoursQuotaExecutionStandard": this.listSearch.workingHoursQuotaExecutionStandard,
+                    "zdz": this.listSearch.zdz,
+
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;
@@ -916,83 +1040,86 @@ export default {
                     }
                 })
             }else{
-                this.$axios.post('/corp/add',{
-                    corpName: this.listSearch.corpName,//公司名称 
-                    licence: this.listSearch.licence, //许可证号
-                    licenceBeginDate:formatDate(this.listSearch.licenceBeginDate[0]),//许可证起始日期
-                    licenceEndDate:formatDate(this.listSearch.licenceBeginDate[1]),//许可证终止日期
-                    registerAddress:this.listSearch.registerAddress,//工商注册地址
-                    registerRegion:this.listSearch.registerRegion,//工商注册地址区域
-                    registerDate:formatDate(this.listSearch.registerDate),//工商注册日期
-                    businessAddress:this.listSearch.businessAddress,//经营地地址
-                    businessRegion:this.listSearch.businessRegion,//经营地址区域
-                    businessPostalCode:this.listSearch.businessPostalCode,//经营地址邮政编码
-                    legalName:this.listSearch.legalName,//法定代表人
-                    legalMobile:this.listSearch.legalMobile,//法定代表人手机
-                    legalTel:this.listSearch.legalTel,//法定代表人固定电话
-                    legalEmail:this.listSearch.legalEmail,//法定代表人邮箱
-                    operatorName:this.listSearch.operatorName,//日常经营管理负责人
-                    operatorMobile:this.listSearch.operatorMobile,//日常经营管理负责人手机
-                    operatorTel:this.listSearch.operatorTel,//日常经营管理负责人固定电话
-                    operatorEmail:this.listSearch.operatorEmail,//日常经营管理负责人邮箱
-                    complaintTel:this.listSearch.complaintTel,//企业反馈电话
-                    businessHours:(this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',//营业时间
-                    workingHoursQuotaExecutionStandard:this.listSearch.workingHoursQuotaExecutionStandard.id,//工时定额执行标准
-                    workingHoursPrice:this.listSearch.workingHoursPrice,//工时单价
-                    industryCategory:this.listSearch.industryCategory.id,//业户类别
-                    industryCategoryOther:this.listSearch.industryCategoryOther,//其他业户类别
-                    economicType:this.listSearch.economicType.id,//经济类别
-                    economicTypeOther:this.listSearch.economicTypeOther,//其他经济类别
-                    scope1:this.listSearch.scope1,//一类机动车维修
-                    scope2:this.listSearch.scope2,//二类机动车维修
-                    scope3:this.listSearch.scope3,//三类机动车维修
-                    scope4:this.listSearch.scope4,//摩托车维修
-                    scope5:this.listSearch.scope5,//汽车维修
-                    sphere:this.listSearch.sphere,//企业主要业务范围
-                    sphereOther:this.listSearch.sphereOther,//其他企业主要业务范围
-                    employeeNumber:this.listSearch.employeeNumber.id,//企业员工总数
-                    floorSpace:this.listSearch.floorSpace.id,//企业目前占地面积
-                    manager:this.listSearch.manager,//经理人
-                    serviceLeader:this.listSearch.serviceLeader,//服务负责人
-                    technologyLeader:this.listSearch.technologyLeader,//技术负责人
-                    qualityInspector:this.listSearch.qualityInspector,//质量检验员
-                    managerOther:this.listSearch.managerOther,//其他
-                    machinistSeniorTechnician:this.listSearch.machinistSeniorTechnician,//技工高级技师
-                    machinistTechnician:this.listSearch.machinistTechnician,//技工高级技师
-                    machinistSenior:this.listSearch.machinistSenior,//高级技师
-                    machinistMedium:this.listSearch.machinistMedium,//中级技师
-                    electricianSeniorTechnician:this.listSearch.electricianSeniorTechnician,//中级技师
-                    electricianTechnician:this.listSearch.electricianTechnician,//中级技师
-                    electricianSenior:this.listSearch.electricianSenior,//中级技师
-                    electricianMedium:this.listSearch.electricianMedium,//中级技师
-                    tinbenderMedium:this.listSearch.tinbenderMedium,//中级技师
-                    tinbenderSenior:this.listSearch.tinbenderSenior,//中级技师
-                    tinbenderSeniorTechnician:this.listSearch.tinbenderSeniorTechnician,//中级技师
-                    tinbenderTechnician:this.listSearch.tinbenderTechnician,//中级技师
-                    painterMedium:this.listSearch.painterMedium,//中级技师
-                    painterSenior:this.listSearch.painterSenior,//中级技师
-                    painterSeniorTechnician:this.listSearch.painterSeniorTechnician,//中级技师
-                    painterTechnician:this.listSearch.painterTechnician,//中级技师
-                    model:this.listSearch.model,//企业主要维修车型
-                    modelOther:this.listSearch.modelOther,//主修品牌
-                    rescue:this.listSearch.rescue,//24小时汽车维修救援
-                    specialRepair:this.listSearch.specialRepair,//汽车销售、维修
-                    specialRepairBrand:this.listSearch.specialRepairBrand,//汽车销售、维修品牌
-                    iso:this.listSearch.iso,//通过ISO质量管理体系认证
-                    throughSafetyProductionStandardization:this.listSearch.throughSafetyProductionStandardization,//通过安全生产标准化达标认证
-                    throughEnvironmentalProtectionSpecialRenovation:this.listSearch.throughEnvironmentalProtectionSpecialRenovation,//通过环保部门专项整治
-                    sincerity:this.listSearch.sincerity,//是否为全国诚信维修企业
-                    sincerityYear:this.listSearch.sincerityYear||0,//为全国诚信维修企业年份
-                    qualityReputationAssessmentLevel:this.listSearch.qualityReputationAssessmentLevel.id,//上年度质量信誉考核等级
-                    offerOnsiteRepair:this.listSearch.offerOnsiteRepair,//是否提供上门维修
-                    serviceCategory:this.listSearch.serviceCategory,//提供上门服务种类
-                    serviceCategoryOther:this.listSearch.serviceCategoryOther,//其他服务种类
-                    specialService:this.listSearch.specialService,//企业特色服务
-                    selfDesc:this.listSearch.selfDesc,//企业服务优势自我描述
-                    selfIntroduction:this.listSearch.selfIntroduction,//企业自我简介
-                    honor:this.listSearch.honor,//区级以上荣誉获得情况
-                    openOnlineRepairService:this.listSearch.openOnlineRepairService,//是否愿意开通车大夫服务等在线维修服务
-                    openOnlineBusinessService:this.listSearch.openOnlineBusinessService,//是否愿意开通在线商务服务
+                this.$axios.post('/corp/manage/add',{
+
+                    "beianStatus": this.listSearch.beianStatus,
+                    "brand": this.listSearch.brand,
+                    "businessAddress": this.listSearch.businessAddress,
+                    "businessHours": (this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',
+                    "businessRegion": this.listSearch.businessRegion,
+                    "businessScope": this.listSearch.businessScope,
+                    "businessScope2": this.listSearch.businessScope2,
+                    "businessSphere": this.listSearch.businessSphere,
+                    "businessSphereOther": this.listSearch.businessSphereOther,
+                    "businessStatus": this.listSearch.businessStatus,
+                    "buttJoint": this.listSearch.buttJoint,
+                    "complaintTel": this.listSearch.complaintTel,
+                    "corpInfoId": this.listSearch.corpInfoId,
+                    "dept": this.listSearch.dept,
+                    "desc": this.listSearch.desc,
+                    "economicType": this.listSearch.economicType,
+                    "economicTypeOther": this.listSearch.economicTypeOther,
+                    "electricians": this.listSearch.electricians,
+                    "employeeNumber": this.listSearch.employeeNumber,
+                    "floorSpace": this.listSearch.floorSpace,
+                    "honor": this.listSearch.honor,
+                    "id": this.listSearch.id,
+                    "industryCategory": this.listSearch.industryCategory,
+                    "industryCategoryOther": this.listSearch.industryCategoryOther,
+                    "iso": this.listSearch.iso,
+                    "latitude": this.listSearch.latitude,
+                    "legalEmail": this.listSearch.legalEmail,
+                    "legalMobile": this.listSearch.legalMobile,
+                    "legalName": this.listSearch.legalName,
+                    "legalTel": this.listSearch.legalTel,
+                    "licence": this.listSearch.licence,
+                    "licenceBeginDate": formatDate(this.listSearch.licenceBeginDate),
+                    "licenceEndDate": formatDate(this.listSearch.licenceEndDate),
+                    "linkmanName": this.listSearch.linkmanName,
+                    "linkmanTel": this.listSearch.linkmanTel,
+                    "longitude": this.listSearch.longitude,
+                    "machinists": this.listSearch.machinists,
+                    "manager": this.listSearch.manager,
+                    "managerOther": this.listSearch.managerOther,
+                    "model": this.listSearch.model,
+                    "modelOther": this.listSearch.modelOther,
+                    "name": this.listSearch.name,
+                    "offerOnsiteRepair": this.listSearch.offerOnsiteRepair,
+                    "openOnlineBusinessService": this.listSearch.openOnlineBusinessService,
+                    "openOnlineRepairService": this.listSearch.openOnlineRepairService,
+                    "operatorEmail": this.listSearch.operatorEmail,
+                    "operatorMobile": this.listSearch.operatorMobile,
+                    "operatorName": this.listSearch.operatorName,
+                    "operatorTel": this.listSearch.operatorTel,
+                    "org": this.listSearch.org,
+                    "painters": this.listSearch.painters,
+                    "postalCode": this.listSearch.postalCode,
+                    "qualityInspector": this.listSearch.qualityInspector,
+                    "qualityReputationAssessmentLevel": this.listSearch.qualityReputationAssessmentLevel,
+                    "registerAddress": this.listSearch.registerAddress,
+                    "registerDate": formatDate(this.listSearch.registerDate),
+                    "registerRegion": this.listSearch.registerRegion,
+                    "rescue": this.listSearch.rescue,
+                    "selfIntroduction": this.listSearch.selfIntroduction,
+                    "serviceCategory": this.listSearch.serviceCategory,
+                    "serviceCategoryOther": this.listSearch.serviceCategoryOther,
+                    "serviceLeader": this.listSearch.serviceLeader,
+                    "show": this.listSearch.show,
+                    "sincerity": this.listSearch.sincerity,
+                    "sincerityYears": this.listSearch.sincerityYears,
+                    "special": this.listSearch.special,
+                    "specialRepairBrand": this.listSearch.specialRepairBrand,
+                    "specialService": this.listSearch.specialService,
+                    "status": this.listSearch.status,
+                    "technologyLeader": this.listSearch.technologyLeader,
+                    "throughEnvironmentalProtectionSpecialRenovation": this.listSearch.throughEnvironmentalProtectionSpecialRenovation,
+                    "throughSafetyProductionStandardization": this.listSearch.throughSafetyProductionStandardization,
+                    "tinbenders": this.listSearch.tinbenders,
+                    "updateTime": formatDate(this.listSearch.updateTime),
+                    "workingHoursPrice": this.listSearch.workingHoursPrice,
+                    "workingHoursQuotaExecutionStandard": this.listSearch.workingHoursQuotaExecutionStandard,
+                    "zdz": this.listSearch.zdz,
+
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;
@@ -1001,6 +1128,10 @@ export default {
                     }
                 })
             }
+                }
+            });
+
+            
             
         },
         //获取区域信息
@@ -1013,106 +1144,83 @@ export default {
                 }
            })
         },
-        //获取详情数据------
-        getDetail(){
-            this.spinShow=true;
-            this.$axios.get('/corp/detail/'+this.detailData.corpId, {
-            }).then((res) => {
+        //获取公共配置信息---------
+        getPubliceType(id){
+            this.$axios.get('/dict/getValuesByTypeId/'+id, 
+            ).then( (res) => {
                 if(res.data.code=='0'){
-
-                    if(res.data.item.corpInfo){
-                        for(let i in res.data.item.corpInfo){
-                            if(i=='businessHours'){
-                                let objArr=res.data.item.corpInfo[i].split('-');
-                                this.listSearch[i]=objArr;
-                            }else{
-                                this.listSearch[i]=res.data.item.corpInfo[i];
-                            }
-                            
-                        }
+                    if(id==6){
+                        this.companySphere=res.data.items;
+                    }else if(7==id){
+                        this.companyStaff=res.data.items;
+                    }else if(8==id){
+                        this.companyArea=res.data.items;
+                    }else if(9==id){
+                        this.qualityCheck=res.data.items;
+                    }else if(4==id){
+                        this.moneyType=res.data.items;
+                    }else if(30==id){
+                        this.visitService=res.data.items;
+                    }else if(24==id){
+                        this.businessStatusArr=res.data.items;
                     }
                     
-                        this.listSearch['licenceBeginDate']=[res.data.item.corpInfo['licenceBeginDate'],res.data.item.corpInfo['licenceEndDate']];
-                    
-                    
-                    if(res.data.item.corpDesc){
-                        for(let i in res.data.item.corpDesc){
-                            this.listSearch[i]=res.data.item.corpDesc[i];
-                        }
-                    }
-                    if(res.data.item.corpStaffSummary){
-                        for(let i in res.data.item.corpStaffSummary){
-                            this.listSearch[i]=res.data.item.corpStaffSummary[i];
-                        }
-                    }
-                    //品牌维修--------------
-                    if(res.data.item.corpBusinessSphere){
-                        for(let i in res.data.item.corpBusinessSphere){
-                            if(res.data.item.corpBusinessSphere[i]['sphere1']==10){
-                                
-                                this.listSearch['sphereOther']=res.data.item.corpBusinessSphere[i]['sphereOther'];
-                                this.listSearch['sphere'].push(res.data.item.corpBusinessSphere[i]['sphere1']);
-                            }else{
-                                this.listSearch['sphere'].push(res.data.item.corpBusinessSphere[i]['sphere1']);
-                            }
-                            
-                        }
-                    }
-
-                    if(res.data.item.corpRepair){
-                        for(let i in res.data.item.corpRepair){
-                            if(res.data.item.corpRepair[i]['model']==6){
-                                this.listSearch['model'].push(res.data.item.corpRepair[i]['model']);
-                                this.listSearch['modelOther']=res.data.item.corpRepair[i]['otherModelName'];
-                            }else{
-                                this.listSearch['model'].push(res.data.item.corpRepair[i]['model']);
-                            }
-                        }
-                    }
-                    if(res.data.item.corpOnsiteServiceCategory){
-                        for(let i in res.data.item.corpOnsiteServiceCategory){
-                            if(res.data.item.corpOnsiteServiceCategory[i]['service']==7){
-                                this.listSearch['serviceCategory'].push(res.data.item.corpOnsiteServiceCategory[i]['service']);
-                                this.listSearch['serviceCategoryOther']=res.data.item.corpOnsiteServiceCategory[i]['otherServiceName'];
-                            }else{
-                                this.listSearch['serviceCategory'].push(res.data.item.corpOnsiteServiceCategory[i]['service']);
-                            }
-                        }
-                    }
-                    if(res.data.item.corpBusinessScope){
-                        for(let i in res.data.item.corpBusinessScope){
-                            if(res.data.item.corpBusinessScope[i]['scope1']==1){
-                                this.companyRepair=1;
-                                this.listSearch['scope1'].push(res.data.item.corpBusinessScope[i]['scope2']);
-                            }else if(res.data.item.corpBusinessScope[i]['scope1']==2){
-                                this.companyRepair=2;
-                                this.listSearch['scope2'].push(res.data.item.corpBusinessScope[i]['scope2']);
-                            }else if(res.data.item.corpBusinessScope[i]['scope1']==3){
-                                this.companyRepair=3;
-                                this.listSearch['scope3'].push(res.data.item.corpBusinessScope[i]['scope2']);
-                            }else if(res.data.item.corpBusinessScope[i]['scope1']==4){
-                                this.companyRepair=4;
-                                this.listSearch['scope4'].push(res.data.item.corpBusinessScope[i]['scope2']);
-                            }else if(res.data.item.corpBusinessScope[i]['scope1']==5){
-                                this.companyRepair=5;
-                                this.listSearch['scope5'].push(res.data.item.corpBusinessScope[i]['scope2']);
-                            }
-                            
-                        }
-                    }
-                    
-                    this.spinShow=false;
-                }else{
-                    this.spinShow=false;
                 }
            })
         },
+        
         visibleChange(status){
           if(status === false){
             this.$emit('closeDetail');
-            console.log(this.listSearch);
+            this.yearsArr={
+                begin:'',
+                end:''
+            };
             this.$refs['listSearch'].resetFields();
           }
+        },
+        //新增诚信企业年份------
+        addYear(){
+            if(!this.yearsArr.begin){
+                return;
+            }
+            let objYear={corpId:'',endYear:'',startYear:''};
+            objYear['corpId']=this.listSearch.id;
+            objYear['startYear']=formatDate(this.yearsArr.begin,'yyyy');
+            objYear['endYear']=formatDate(this.yearsArr.end,'yyyy');
+
+            this.listSearch.sincerityYears.push(objYear);
+        },
+        //审核是否通过-------------
+        auditFun(flag){
+            let status=1;
+            if(flag){
+                status=2;
+            }else{
+                status=3;
+            }
+
+            this.$axios.post('/corp/manage/audit', {
+                "corpId": this.listSearch.id,
+                "status": status,
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    this.testTitle=getName(this.statusArr,status);
+                }
+                
+            })
+            this.modal1=false;
+        },
+        //获取管理部门数据------
+        getCompanyArea(){
+            this.$axios.get('/area/dept/list/all/shanghai', {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    this.manageType=res.data.items;
+                }else{
+                    // this.$Message.error(res.data.status);
+                }
+           })
         },
         
     },
@@ -1217,5 +1325,34 @@ export default {
           }
         }
       }
+    }
+
+    .yearClass{
+        width: 110px;height: 25px;border: 1px solid #dcdee2; line-height: 25px; display: inline-block; margin-right: 10px; text-align: center ;margin-top:10px;
+    }
+
+
+    .header-inner {
+        display: inline-block;
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        font-size: 14px;
+        color: #17233d;
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        span{
+            color:red;
+        }
+    }
+
+    .modelClass{
+        text-align: center;height: 150px;
+        line-height: 150px;
+        font-size: 18px;
+        font-weight: bold;
     }
 </style>

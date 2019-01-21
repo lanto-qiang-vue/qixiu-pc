@@ -41,14 +41,17 @@
     </div>
     <div slot="operate">
         <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+
         <Button type="info" v-if="accessBtn('update')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
     </div>
 	<school-info-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" ></school-info-detail>
+  
   </common-table>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
+
   import schoolInfoDetail from './school-info-detail.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
   import { formatDate } from '@/static/tools.js'
@@ -62,6 +65,7 @@
     mixins: [funMixin],
     data(){
 	return{
+    
         loading:false,
         checkList:[
             {'name':'A1'},
