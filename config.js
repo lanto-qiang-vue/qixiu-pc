@@ -9,7 +9,7 @@ const prodConfig={
   repairUrl: 'http://corp.search.shanghaiqixiu.org/',
   // repairUrl: 'http://129.211.14.78:7210/',
 
-  socketUrl: 'https://www.test.shanghaiqixiu.org/heatmap/socket',
+  socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
   articlePath: 'https://download.image.shanghaiqixiu.org/',

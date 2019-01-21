@@ -101,7 +101,8 @@ export default {
           let obj=JSON.parse(response.body);
           let usehxx= parseInt(obj.origin)==1? true: false
           $("#corptotal").text(obj.total);
-          $("#join").text(obj.join);
+          // $("#join").text(obj.join);
+          $("#join").text(obj.total);
           $("#using").text(obj.using);
           if(obj.locateCode) this.setPoint(false , usehxx, obj.locateCode)
         });

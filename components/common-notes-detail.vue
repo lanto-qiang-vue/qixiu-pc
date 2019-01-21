@@ -23,9 +23,7 @@
         <div class="public-block">
             通知内容：
         </div>
-        <div style="padding: 0 15px;">
-            {{testContent}}
-        </div>
+        <div style="padding: 0 15px;" v-html="testContent"></div>
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
@@ -50,13 +48,13 @@ export default {
                 roles:[],
             },
             testContent:'',
-            
+
         }
     },
     watch:{
         showDetail(){
             this.showModal=true;
-            
+
             this.getNotify();
             // this.updateStatus();
         },
@@ -65,7 +63,7 @@ export default {
         getNotify(){
             this.spinShow=true;
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
-                    
+
             }).then( (res) => {
                   if(res.data.code=='0'){
 
@@ -81,7 +79,7 @@ export default {
                   }
 					this.spinShow=false;
 			})
-          
+
 
         },
         // updateStatus(){
@@ -89,11 +87,11 @@ export default {
         //             "notifyId ": this.detailData.id,
         //         }).then( (res) => {
         //           if(res.data.code=='0'){
-                    
+
         //           }else{
         //             this.$Message.error(res.data.status);
         //           }
-					
+
 		// 		  })
         // },
         exportFun(){
@@ -102,12 +100,12 @@ export default {
             }else{
                 this.$Message.error('暂无附件下载');
             }
-            
+
         },
         visibleChange(status){
           if(status === false){
             this.$emit('closeDetail');
-            
+
           }
         },
     },

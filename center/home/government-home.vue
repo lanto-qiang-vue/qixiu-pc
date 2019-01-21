@@ -22,7 +22,7 @@
     </div>
 
   </div>
-  <div class="dblock">
+  <div class="dblock" v-if="accessBtn('get')">
     <h1 class="dtitle">用户反馈</h1>
     <div class="center">
       <div >
@@ -46,9 +46,10 @@
 </template>
 
 <script>
+  import funMixin from '~/components/fun-auth-mixim.js'
 export default {
   name: "government-center",
-
+  mixins: [funMixin],
   data(){
     return{
       res:{},
@@ -89,7 +90,10 @@ export default {
       this.$Spin.hide();
     })
 
-    this.getList();
+    if(this.accessBtn('get')){
+      this.getList();
+    }
+
   },
   methods:{
     getData(){
@@ -345,7 +349,7 @@ export default {
       optionBar.series[2].data=sum;
       bar1.setOption(optionBar);
 
-      
+
 
       bar1.on('click', (params)=>{
           console.log(params)
