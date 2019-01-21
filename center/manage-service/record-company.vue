@@ -57,7 +57,7 @@
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
         <FormItem label="按月查询:">
-            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择"></DatePicker>
+            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
@@ -193,6 +193,19 @@ if(!thisData) {
       {code:"show",name:12},
       {code:"firstUploadTime",name:13},
     ],
+    dateOptions: {
+        disabledDate (date) {
+            
+            let oDate=new Date();
+            oDate.setMonth(oDate.getMonth());
+            oDate.setDate(0);
+            oDate.setHours(0);
+            oDate.setMinutes(0);
+            oDate.setMilliseconds(0);
+
+            return date && date.valueOf() >= oDate.getTime();
+        }
+    },
   }
 }
 export default {
@@ -247,46 +260,46 @@ activated(){
 },
     methods:{
         getRouterData(){
-          let queryData= this.$route.query
-          let search= thisData.searchList
-          console.log(JSON.stringify(queryData))
-          // for(let key in queryData){
-          //   if(key) flag= true
-          // }
-	    // console.log('getRouterData.this.$route.query', Object.keys(this.$route.query).length)
-         //  let arr= Object.keys(this.$route.query)
-          if(Object.keys(queryData).length){
-            // this.$data.searchList= null
-            search= deepClone(searchList)
+            let queryData= this.$route.query
+            let search= thisData.searchList
+            console.log(JSON.stringify(queryData))
+                    // for(let key in queryData){
+                    //   if(key) flag= true
+                    // }
+                    // console.log('getRouterData.this.$route.query', Object.keys(this.$route.query).length)
+                    //  let arr= Object.keys(this.$route.query)
+            if(Object.keys(queryData).length){
+                    // this.$data.searchList= null
+                search= deepClone(searchList)
 
-            if(queryData.area){
-              search.area= {
-                key: queryData.area
-              }
+                if(queryData.area){
+                search.area= {
+                    key: queryData.area
+                }
+                }
+                if(queryData.category){
+                search.companyCategory= parseInt(queryData.category);
+                }
+                if(queryData.name=="zdz"){
+                if(queryData.minister==1){
+                    search.minister="是";
+                    search.buttJoin="是";
+
+                }else{
+                    search.minister="否";
+                    search.buttJoin="是";
+                }
+                }
+
+                // this.getList();
+
             }
-            if(queryData.category){
-              search.companyCategory= parseInt(queryData.category);
-            }
-            if(queryData.name=="zdz"){
-              if(queryData.minister==1){
-                search.minister="是";
-                search.buttJoin="是";
-
-              }else{
-                search.minister="否";
-                search.buttJoin="是";
-              }
-            }
-
-            // this.getList();
-
-          }
-          console.log('search', search)
-          return search
+            console.log('search', search)
+            return search
 
 
 
-      },
+        },
         getList(){
             this.loading=true;
             let upData={};

@@ -591,24 +591,24 @@ export default [
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
-      // {
-      //   path: 'company-white-list',
-      //   meta: {
-      //     icon: '',
-      //     title: '企业白名单',
-      //     accessId: '',
-      //   },
-      //   component: resolve('center/operate/company-white-list.vue'),
-      // },
-      //  {
-      //   path: 'maintain-report-manage',
-      //   meta: {
-      //     icon: '',
-      //     title: '维修数据上报管理',
-      //     accessId: '',
-      //   },
-      //   component: resolve('center/operate/maintain-report-manage.vue'),
-      // },
+      {
+        path: 'company-white-list',
+        meta: {
+          icon: '',
+          title: '企业白名单',
+          accessId: '',
+        },
+        component: resolve('center/operate/company-white-list.vue'),
+      },
+       {
+        path: 'maintain-report-manage',
+        meta: {
+          icon: '',
+          title: '维修数据上报管理',
+          accessId: '',
+        },
+        component: resolve('center/operate/maintain-report-manage.vue'),
+      },
        {
         path: 'school-info-list',
         meta: {

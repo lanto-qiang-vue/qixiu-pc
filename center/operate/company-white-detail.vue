@@ -4,7 +4,6 @@
     v-model="showModal"
     title="新增白名单"
     width="90"
-    @on-visible-change="visibleChange"
     :scrollable="true"
     :transfer= "true"
     :footer-hide="true"
@@ -20,9 +19,8 @@
               <FormItem label="企业名称:">
                   <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
               </FormItem>
-              
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="" @click="page=1,getDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
@@ -45,19 +43,6 @@ export default {
 		return{
             spinShow:false,
             showModal:false,
-            collapse: '1',
-            listSearch:{
-                questionPhoto:"",
-                content:"",
-                categoryName:"",
-                createTime:"",
-                answerTime:"",
-                status:{name:''},
-            },
-            listButton:{
-                edit:true,
-                out:true,
-            },
             columns: [
           
                 {title: '企业名称', key: 'companyName', sortable: true, minWidth: 120,
@@ -66,17 +51,35 @@ export default {
                 {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 135},
                 {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120},
                 {title: '联系电话', key: 'operatorMobile', sortable: true, minWidth: 120,
-                    // render: (h, params) => h('span',  params.row.status.name)
                 },
-                // {title: '主要业务', key: 'spheres', sortable: true, minWidth: 120,
-                //     // render: (h, params) => h('span',  params.row.status.name)
-                // },
                 {title: '信誉等级', key: 'lastYearLevel', sortable: true, minWidth: 120,
-                    // render: (h, params) => h('span',  params.row.status.name)
                 },
-                // {title: '收费标准', key: 'workingHoursPrice', sortable: true, minWidth: 120,
-                //     // render: (h, params) => h('span',  params.row.status.name)
-                // },
+              {
+                title: '操作', key: 'lastYearLevel', sortable: true, minWidth: 120,
+                render: (h, params) => {
+                  let buttonContent= '添加';
+                  let buttonStatus = 'primary';
+                  return h('div', [
+                    h('Button', {
+                      props: {
+                        type: buttonStatus,
+                        size: 'small',
+                      },
+                      style: {
+                        width:"60px",
+                        textAlign: "center",
+                        marginRight: '10px',
+                      },
+                      on: {
+                        click: (index) => {
+                          this.addCompanyList(params.row.companyCode);
+                          this.showModal = false;
+                        }
+                      }
+                    }, buttonContent),
+                  ]);
+                }
+              },
             ],
             tableData: [],
             search:{
@@ -92,26 +95,19 @@ export default {
     },
     watch:{
         showDetail(){
-            this.showModal=true;
+            this.showModal=Math.random();
             this.tableData=[];
             this.total=0;
             for(let i in this.search){
                 this.search[i]='';
             }
+            this.getDetail();
         },
     },
     methods:{
         getDetail(){
-            
-            let page=this.page-1;
-            let urlStr='';
-            for(let i in this.search){
-                urlStr+='&'+i+'='+this.search[i];
-            }
-
             this.loading=true;
-
-            this.$axios.get('/core/company/query/name?size='+this.limit+'&page='+page+urlStr,{
+            this.$axios.get('/monitoring/config/company/query/name?size='+this.limit+'&page='+(this.page - 1)+"&name="+this.search.name,{
             }).then( (res) => {
                 if(res.status===200){
                   this.tableData=res.data.content;
@@ -124,14 +120,15 @@ export default {
             })
         },
         //新增白名单------
-        addCompanyList(companyData){
-            this.$axios.post('/core/company-group',{
-                "companyCode": companyData.companyCode,
+        addCompanyList(companyCode){
+            this.$axios.post('/monitoring/config/company-group/',{
+                "companyCode": companyCode,
                 "type": "WHITELIST"
             }).then( (res) => {
-                if(res.status===200){
-                  
-                }
+              if(res.data.code == 0){
+                this.$Message.success("添加成功");
+                this.$emit('refresh');
+              }
             })
 
             this.showModal=false;
@@ -144,20 +141,8 @@ export default {
           this.limit= size
           this.getDetail()
         },
-        onRowClick( row, index){
-            this.addCompanyList(row);
-            
-        },
-        closeDetail(){
-          this.detailData= null;
-          this.clearTableSelect= Math.random();
-          
-          this.getDetail();
-        },
-        visibleChange(status){
-          if(status === false){
-            this.$emit('closeDetail');
-          }
+        onRowClick(row){
+            // this.addCompanyList(row);
         },
     },
 }

@@ -264,8 +264,8 @@ export default {
             label: {
               normal: {
                 show: true,
-                position: 'inside',
-                // offset: [25,-2]
+                // position: 'inside',
+                offset: [25,-2]
               }
             },
             //配置样式

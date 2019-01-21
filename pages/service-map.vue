@@ -1,7 +1,7 @@
 <template>
 <basic-container>
 <div style="text-align: center">
-  <div class="map-body">
+  <div class="service-map-body">
     <div class="sub-title">
       <Breadcrumb>
         <BreadcrumbItem to="/">主页</BreadcrumbItem>
@@ -95,6 +95,7 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import { formatArticle } from '@/static/util.js'
 import Vue from 'vue'
 export default {
   name: "service-map",
@@ -460,10 +461,10 @@ export default {
         template='<div class="map-content school">'+
                 '<div class="title">{{title}}</div>'+
                 '<div class="body">' +
-                '<img class="head-img" :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
+                '<img class="head-img" v-img :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
-                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.grade}}</li>' +
+                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}</li>' +
                 '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
                 '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
@@ -471,8 +472,8 @@ export default {
                 '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
                 '</span></li>' +
                 '<li><span>驾校风采：</span>' +
-                  '<span class="intro" style="-webkit-box-orient:vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
-          '<a class="more" @click="goMore">更多</a>'+
+                  '<span class="intro" style="-webkit-box-orient:vertical;-moz-box-orient: vertical;">{{datas.about | FormatArticle("暂无")}}</span>' +
+          '<a class="more" v-show="formatArticle(datas.about)" @click="goMore">更多</a>'+
                 '</li>' +
                 '</ul>'+
                 '<div class="sign-up"><h2>学车报名</h2>'+
@@ -507,10 +508,19 @@ export default {
                       ],
                       // bizScope: [rule],
                     },
-                    bizScope: self.bizScope.slice(1, self.bizScope.length)
                   }
                 },
                 computed:{
+                  bizScope(){
+                    let arr= this.datas.trainingScope?this.datas.trainingScope.split(','): [], biz=[]
+                    for(let i in arr){
+                      biz.push({
+                        value: arr[i],
+                        name: arr[i]
+                      })
+                    }
+                    return biz
+                  },
                   datas(){
                     return self.infoWindow.school.data
                   },
@@ -540,10 +550,12 @@ export default {
                     return self.$store.state.user.token? (this.datas.phoneNo||' '): ''
                   },
                   title(){
-                    return (this.datas.simpleName)? (this.datas.simpleName+'('+'驾校('+ this.datas.creditLevel+'级)'): this.datas.name
+                    return (this.datas.simpleName)? (this.datas.simpleName+'驾校('+
+                      (this.datas.creditLevel=='N'?'未评':this.datas.creditLevel)+'级)'): this.datas.name
                   }
                 },
                 methods:{
+                  formatArticle: formatArticle,
                   toBase: self.goBase,
                   toLogin(){
                     self.$router.push({
@@ -552,10 +564,11 @@ export default {
                     })
                   },
                   goMore(){
-                    self.$router.push({
-                      path: '/article/'+this.datas.id,
-                      query: { type: 'school' }
-                    })
+                    // self.$router.push({
+                    //   path: '/article/'+this.datas.id,
+                    //   query: { type: 'school' }
+                    // })
+                    window.open('/article/'+this.datas.id +'?type=school', '_blank');
                   },
                   apply(){
                     // console.log(this.search.bizScope)
@@ -565,7 +578,7 @@ export default {
                           "category": this.search.bizScope,
                           "name": this.search.name,
                           "phoneNo": this.search.tel,
-                          "schoolId": this.datas.sid,
+                          "schoolId": this.datas.id,
                           "schoolName": this.datas.name
                         }).then( (res) => {
                           if(res.data.code=='0'){
@@ -867,7 +880,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  .map-body{
+  .service-map-body{
     min-width: 800px;
     max-width: 1200px;
     display: inline-block;
@@ -1050,7 +1063,7 @@ export default {
   }
 </style>
 <style lang="less">
-.map-body{
+.service-map-body{
   .paging {
     text-align: center;
     li{
@@ -1173,6 +1186,8 @@ export default {
       padding-left: 160px;
       .base-tag{
         font-weight: 400;
+        max-height: 90px;
+        overflow: auto;
         a{
           display: block;
         }
@@ -1189,13 +1204,23 @@ export default {
         }
       }
       .intro{
+        position: relative;
         font-weight: 400;
         word-break: break-all;
         text-overflow: ellipsis;
         display: -webkit-box;
+        display: -moz-box;
+        line-clamp: 3;
         -webkit-line-clamp: 3;
+        -moz-line-clamp:3;
+        box-orient:vertical;
+        -webkit-box-orient:vertical;
+        -moz-box-orient: vertical;
         width: calc(100% - 70px);
-        line-height: 25px;
+        line-height: 18px;
+        padding-top: 7px;
+        min-height: 30px;
+        max-height: 70px;
         overflow: hidden;
       }
     }
@@ -1209,6 +1234,7 @@ export default {
         width: 25%;
         float: left;
         position: relative;
+        margin-bottom: 15px;
         .ivu-form-item-label{
           position: absolute;
           top: 0;
@@ -1221,6 +1247,9 @@ export default {
             margin-right: 1px;
           }
         }
+        .ivu-form-item-error-tip{
+          padding-top: 0;
+        }
       }
     }
   }
@@ -1230,6 +1259,10 @@ export default {
   .amap-adcombo-close{
     top: 6px;
     right: 6px;
+  }
+  .amap-logo, .amap-copyright{
+    display: none!important;
+    /*z-index: 1!important;*/
   }
 }
 
