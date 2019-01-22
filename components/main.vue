@@ -17,6 +17,7 @@
       <nuxt-child v-else/>
     </Content>
   </Layout>
+  <butt-joint :type="showType" :dataInit="dataInit"></butt-joint>
 </basic-container>
 </template>
 
@@ -24,6 +25,7 @@
 import BasicContainer from '~/components/basic-container.vue'
 import SideMenu from './menu/side-menu.vue'
 import MyBreadCrumb from '~/components/bread-crumb.vue'
+import buttJoint from '~/components/butt-joint.vue'
 import {  getMenuByRouter2 } from '@/static/util'
 import mixin from '~/components/home-path-mixin.js'
 import router from '@/static/router'
@@ -35,7 +37,8 @@ export default {
   components: {
     BasicContainer,
     SideMenu,
-    MyBreadCrumb
+    MyBreadCrumb,
+    buttJoint
   },
   mixins: [mixin],
   props: ['paraMenu', 'pageName'],
@@ -44,6 +47,8 @@ export default {
   },
   data () {
     return {
+      dataInit:null,
+      showType:false,
       collapsed: false,
       showMenu: true
     }
@@ -74,9 +79,17 @@ export default {
   },
   mounted(){
     console.log('main-mounted', this.$route)
+    this.checkButt();
     // this.funAuth('sss')
   },
   methods: {
+     checkButt(){
+       this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
+         if(res.data.content.length == 0){
+           this.showType = true;
+         }
+       })
+     },
     turnToPage (name, meta) {
       // console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {

@@ -17,11 +17,10 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('store.state.user.token:', token)
   })
   $axios.onResponse(response => {
-
-    console.log('Interceptors:',response)
     if(response.status== 200){
       let code= response.data.code
       switch (code){
+        
         case '0': break;
         // case '401':
         case '2000':
@@ -69,6 +68,7 @@ export default function ({ $axios, redirect, store, route, app }) {
         Message.error({content: content, duration: 3})
       }
     }
+    return error.response
   })
 
 }

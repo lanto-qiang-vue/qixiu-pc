@@ -1,343 +1,376 @@
 <template>
-<div style="padding: 0 10px">
-    
-  <div class="dblock">
-    <h1 class="dtitle">维修数据上报管理</h1>
-    <div style="padding: 15px 0;">
-            <Form :label-width="110" class="common-form">
-                <FormItem label="统计维度:">
-                    <Button style="width: 60px;" type="primary" shape="circle">7天</Button>
-                    <Button style="width: 60px;" type="primary" shape="circle">1个月</Button>
-                </FormItem>
-                <FormItem label="" :label-width="0" style="width:410px;text-align: left;">
-                    <DatePicker type="date" placeholder="请选择开始日期" style="width: 150px"></DatePicker>
-                    <span>-</span>
-                    <DatePicker type="date" placeholder="请选择结束日期" style="width: 150px"></DatePicker>
-                </FormItem>
-                
-          </Form>
+  <div style="padding: 0 10px">
+
+    <div class="dblock">
+      <h1 class="dtitle">维修数据上报管理</h1>
+      <div style="padding: 15px 0;">
+        <Form :label-width="110" class="common-form">
+          <FormItem label="统计维度:">
+            <Button style="width: 60px;"  type="primary" shape="circle" v-if="buttonType == 1" @click="buttonType=1,minus(7)">7天</Button>
+            <Button style="width: 60px;"  shape="circle" @click="buttonType=2,minus(30)" v-if="buttonType == 1">1个月</Button>
+            <Button style="width: 60px;"   shape="circle" v-if="buttonType == 2" @click="buttonType=1,minus(7)">7天</Button>
+            <Button style="width: 60px;"  shape="circle" type="primary" @click="buttonType=2,minus(30)" v-if="buttonType == 2">1个月</Button>
+          </FormItem>
+          <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
+              <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期" style="width: 300px"></DatePicker>
+          </FormItem>
+           <FormItem :label-width="0">
+             <Button type="primary" @click="getData">查询</Button>
+           </FormItem>
+        </Form>
+      </div>
+      <div class="center">
+
+
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+          <div id="bar2" style="width: 100%;height: 600px;"></div>
+          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
+            <div style="float:left;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>未上传企业: {{success1}}家</b></div>
+            </div>
+            <div style="float:left;padding-left:20px;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>错误记录企业: {{error1}}家</b></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b></div>
+          <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
+            <Select style="width:150px;" v-model="key1">
+              <Option v-for="item in areaName" :value="item">{{item}}</Option>
+            </Select></div>
         </div>
-    <div class="center">
-
-
-
-      <div class="inline-box">
-        <div id="bar2" style="width: 800px;height: 450px"></div>
+        <div>
+        </div>
       </div>
-      <div >
-          <div>
-            <Table :columns="areaColumns" :data="areaColumnsData" ref="table2"
-                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
-          </div>
 
-          <div style="padding: 15px 0;">
-            <Table :columns="areaColumns1" :data="areaColumnsData1" ref="table2"
-                  stripe border @on-row-click="onRowClick" :loading="loading"></Table>
-          </div>
-      </div>
     </div>
 
   </div>
-
-</div>
 </template>
 
 <script>
-export default {
-  name: "maintain-data-manage",
-
-  data(){
-    return{
-      res:{},
-      loading:false,
-      recordColumns: [
-        {title: '类型', key: 'type',  minWidth: 100,},
-        {title: '总数', key: 'count',  minWidth: 100,},
-        {title: '已对接数量', key: 'uploadCount',  minWidth: 100},
-        {title: '完成率', key: 'rate',  minWidth: 100},
-      ],
-      recordData: [],
-      notifyColumns: [
-          {title: '排名', minWidth: 100,type: "index",},
-          {title: '企业名称', key: 'companyName',  minWidth: 100,
-          },
-          {title: '反馈总量(次)', key: 'allCount',  minWidth: 100},
-          {title: '有凭证数量(次)', key: 'hasCount',  minWidth: 100,
-
-          },
-          {title: '无凭证数量(次)', key: 'noCount',  minWidth: 100,
-
-          },
-      ],
-      areaColumns:[
-          {title: '未上报维修记录企业总数', minWidth: 250,key: 'noCount',},
-          {title: '沪市', key: 'noCount',  minWidth: 80,},
-          {title: '沪闵', key: 'noCount',  minWidth: 100},
-          {title: '沪宝', key: 'noCount',  minWidth: 100,},
-          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
-          {title: '沪金', key: 'noCount',  minWidth: 100,},
-          {title: '沪松', key: 'noCount',  minWidth: 100,},
-          {title: '沪青', key: 'noCount',  minWidth: 100,},
-          {title: '沪奉', key: 'noCount',  minWidth: 100,},
-          {title: '沪崇', key: 'noCount',  minWidth: 100,},
-      ],
-      areaColumnsData:[{noCount:1}],
-      areaColumns1:[
-          {title: '上报异常的企业数', minWidth: 250,key: 'noCount',},
-          {title: '沪市', key: 'noCount',  minWidth: 100,},
-          {title: '沪闵', key: 'noCount',  minWidth: 100},
-          {title: '沪宝', key: 'noCount',  minWidth: 100,},
-          {title: '沪嘉', key: 'noCount',  minWidth: 100,},
-          {title: '沪金', key: 'noCount',  minWidth: 100,},
-          {title: '沪松', key: 'noCount',  minWidth: 100,},
-          {title: '沪青', key: 'noCount',  minWidth: 100,},
-          {title: '沪奉', key: 'noCount',  minWidth: 100,},
-          {title: '沪崇', key: 'noCount',  minWidth: 100,},
-      ],
-      areaColumnsData1:[{noCount:1}],
-
-      notifyData: [],
-      typeList:[
-            {code:0,name:"维修记录未上传"},
-            {code:1,name:"维修记录不正确"},
-        ],
-        searchType:0,
-        areaType:[],
-    }
-  },
-  mounted() {
-    this.$Spin.show();
-    $.getScript('/libs/echarts.common.min.js',()=>{
-      this.getData()
-      this.$Spin.hide();
-    })
-  },
-  methods:{
-    getData(){
-      this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
-        this.res= res.item
-        this.showChart(res.item)
-
-      })
+  export default {
+    name: 'maintain-data-manage',
+    data() {
+      return {
+        searchType: 0,
+        areaType: [],
+        areaName: [],//区域名称获取。区域不重复。不用去重
+        dataObj: {},
+        key1: '全部',//维修上传记录筛选key
+        success1: 0,//
+        error1: 0,
+        bar2:null,
+        optionBar1:null,
+        buttonType:1,
+        apiShow:false,//api慢我就不显示
+        searchTime:null,
+      }
     },
-    showChart(data){
-      this.recordData=[
-        {category: 0, type: '维修企业', count: data.corpcount, uploadCount: data.uploadcorpcount, rate: data.corprate.toFixed(2)+'%'},
-        {category: 43, type: '一类维修企业', count: data.class1corpcount, uploadCount: data.class1uploadcorpcount, rate: data.class1corprate.toFixed(2)+'%'},
-        {category: 44, type: '二类维修企业', count: data.class2corpcount, uploadCount: data.class2uploadcorpcount, rate: data.class2corprate.toFixed(2)+'%'},
-        {category: 45, type: '三类维修业户', count: data.class3corpcount, uploadCount: data.class3uploadcorpcount, rate: data.class3corprate.toFixed(2)+'%'},
-        {category: 47, type: '汽车快修业户', count: data.class5corpcount, uploadCount: data.class5uploadcorpcount, rate: data.class5corprate.toFixed(2)+'%'},
-        {category: 46, type: '摩托车维修业户', count: data.class4corpcount, uploadCount: data.class4uploadcorpcount, rate: data.class4corprate.toFixed(2)+'%'},
-      ]
-      this.areaType=this.res.areaItems;
-
-      
-      let bar2 = echarts.init(document.getElementById('bar2'));
-
-
-      var app={};
-
-app.config = {
-    rotate: 0,
-    align: 'center',
-    verticalAlign: 'middle',
-    position: 'top',
-    distance: 15,
-};
-
-      var labelOption = {
-            normal: {
-                show: true,
-                position: app.config.position,
-                distance: app.config.distance,
-                align: app.config.align,
-                verticalAlign: app.config.verticalAlign,
-                rotate: app.config.rotate,
-                formatter: '{c}',
-                fontSize: 14,
-                rich: {
-                    name: {
-                        textBorderColor: '#fff'
-                    }
-                }
-            }
-        };
-
-      
-      let optionBar1 = {
-        color: ['#C14DE8','#0f0f0f'],
-        tooltip : {
-          trigger: 'axis',
-          axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-            type : 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
-            label:{show: true}
+    mounted() {
+      let self= this;
+      window.onresize = function(){
+        if(window.innerWidth!= self.windowInnerWidth){
+          if(self.bar2){
+            self.bar2.resize();
           }
-        },
-        grid: {
-        },
-        legend: {
-          data:['未上报维修记录企业数', '上报异常的企业数',],
-        },
-        xAxis : [
-          {
-            type : 'category',
-            data : [],
-            axisTick: {
-              alignWithLabel: true
-            },
-            axisLabel: {
-              interval: 0,
-              rotate: 0
-            },
-          },
-
-          
-          
-        ],
-        yAxis : [
-          {
-            type : 'value'
-          }
-        ],
-        series : [
-          {
-            barGap: 0,
-            label: labelOption,
-            //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal:{
-                //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                color: '#61A0A8'
-              }
-            },
-            name:'未上报维修记录企业数',
-            type:'bar',
-            data:[],
-            barGap:'20%', 
-          },
-          {
-            label: labelOption,
-            //配置样式
-            itemStyle: {
-              //通常情况下：
-              normal:{
-                color: '#C23431'
-              }
-            },
-            name:'上报异常的企业数',
-            type:'bar',
-            data:[],
-            barGap:'20%', 
-
-          },
-        ],
-        // dataZoom: [
-        // {
-        //     show: true,
-        //     yAxisIndex: 0,
-        //     filterMode: 'none',
-        //     width: 30,
-        //     height: '70%',
-        //     showDataShadow: false,
-        //     left: '93%',
-        //     minSpan:10
-        // }
-        // ],
-      };
-     
-
-      let datas = data.areaItems;
-      let area=[], num=[], num2=[], sum=[]
-
-      for (var i in datas){
-          area.push(datas[i].areaname)
-          num.push(datas[i].nzdzcount)
-          num2.push(datas[i].zdzcount)
-          sum.push(datas[i].nzdzcount+ datas[i].zdzcount)
-      }
-
-      optionBar1.xAxis[0].data= area;
-      optionBar1.series[0].data=num;
-      optionBar1.series[1].data=num2;
-    //   optionBar1.series[2].data=sum;
-      bar2.setOption(optionBar1);
-
-    },
-    onRowClickTop(row){
-      // console.log(row);
-      let rowData='';
-      if(row.category){
-        rowData=row.category;
-      }
-      this.$router.push({path:'/center/record-company', query:{ category: rowData,name:'top'}})
-    },
-    onRowClick(row){
-      // console.log(row);
-
-      this.$router.push({path:'/center/review-manage', query:{ companyName: row.companyName,type:this.searchType,name:'clp'}})
-    },
-    getList(){
-      let strUrl="";
-      if(this.searchType==0){
-        strUrl+='&type=0';
-      }else if(this.searchType==1){
-        strUrl+='&type=1';
-      }
-      this.loading=true;
-      this.$axios.get('/comment/complaint/maintain/query/statistics?size=10&page=0'+strUrl, {
-      }).then( (res) => {
-
-        if(res.status===200){
-            this.notifyData=res.data.content;
-            this.loading=false;
-        }else{
-          // this.$Message.error(res.statusText);
-          this.loading=false;
         }
+      }
 
+      $.getScript('/libs/echarts.common.min.js', () => {
+        this.minus(7);
       })
     },
-    onChange(value){
-      this.getList();
-    }
-  },
-}
+    methods: {
+      minus(day){
+        let date = new Date();
+        let buildDate1 = new Date();
+        let time = date.getTime() - day * 3600 * 24 * 1000;
+        let buildDate2 = new Date(time);
+        this.searchTime = [buildDate2,buildDate1];
+        this.getData();
+      },
+      toymd(date){
+        let buildDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
+        return buildDate;
+      },
+      getData() {
+        if(this.searchTime[0] == "" || this.searchTime[1] == ""){
+          this.$Message.info("数据查询需要选择时间段");
+          return false;
+        }
+        this.key1 = "全部";
+        this.$Spin.show();
+        let success = new Promise((resolve, reject) => {
+          this.$axios.$get('/monitoring/display/company/upload-not/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])).then(res => {
+            resolve(res)
+          }, err => {
+            reject(err)
+          })
+        })
+        let error = new Promise((resolve, reject) => {
+          this.$axios.$get('/monitoring/display/company/upload-fault/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])).then(res => {
+            resolve(res)
+          }, err => {
+            reject(err)
+          })
+        })
+        return Promise.all([
+          success,
+          error
+        ]).then(([res, data]) => {
+        if(res.status == 404 && data.status == 404){
+          return false;
+        }
+          this.areaName = []
+          this.dataObj = {}
+          let errorData = {}
+          let success1 = 0
+          let error1 = 0
+          for (let i in data) {
+            errorData[data[i].deptName] = data[i].companyCount;
+            error1 += parseInt(data[i].companyCount);
+          }
+          for (let i in res) {
+            this.areaName.push(res[i].deptName)
+            this.dataObj[res[i].deptName] = { success: res[i].companyCount, error: errorData[res[i].deptName] }
+            success1 += parseInt(res[i].companyCount);
+          }
+          this.success1 = success1;
+          this.error1 = error1;
+          this.areaName.unshift('全部')
+          this.apiShow = true;
+          this.showChart();
+          this.$Spin.hide();
+        })
+      },
+      showChart(data) {
+        this.bar2 = echarts.init(document.getElementById('bar2'))
+         this.optionBar1 = {
+          color: ['#C14DE8', '#0f0f0f'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+              label: { show: true }
+            }
+          },
+           selected:{
+             '未上传': true,
+             // 不选中'系列2'
+             '存在错误': true,
+           },
+          grid: {},
+          legend: {
+            data: ['未上传', '存在错误'],
+            top: 15,
+            right: '30%'
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: [],
+              axisTick: {
+                alignWithLabel: true
+              },
+              axisLabel: {
+                interval: 0,
+                rotate: 0
+              }
+            }
+
+
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              barGap: 0,
+              // label: labelOption,
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                  color: '#61A0A8'
+                }
+              },
+              name: '未上传',
+              type: 'bar',
+              data: [],
+              barGap: '20%',
+              stack: '数量'
+            },
+            {
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  color: '#C23431'
+                }
+              },
+              name: '存在错误',
+              type: 'bar',
+              data: [],
+              barGap: '20%',
+              stack: '数量'
+            }
+          ]
+        }
+        let area = [], success = [], error = [];
+        for (let i = 0; i < this.areaName.length; i++) {
+          if (this.areaName[i] == '全部') {
+            continue
+          }
+          area.push(this.areaName[i])
+          success.push(this.dataObj[this.areaName[i]].success)
+          error.push(this.dataObj[this.areaName[i]].error)
+        }
+        this.optionBar1.xAxis[0].data = area
+        this.optionBar1.series[0].data = success
+        this.optionBar1.series[1].data = error
+        this.bar2.clear();
+        this.bar2.setOption(this.optionBar1);
+      this.bar2.on('click', (params)=>{
+        console.log(params.seriesName);
+        return false;
+      });
+
+      },
+      onRowClickTop(row) {
+        // console.log(row);
+        let rowData = ''
+        if (row.category) {
+          rowData = row.category
+        }
+        this.$router.push({ path: '/center/record-company', query: { category: rowData, name: 'top' } })
+      },
+      onRowClick(row) {
+        // console.log(row);
+
+        this.$router.push({
+          path: '/center/review-manage',
+          query: { companyName: row.companyName, type: this.searchType, name: 'clp' }
+        })
+      },
+      getList() {
+        let strUrl = ''
+        if (this.searchType == 0) {
+          strUrl += '&type=0'
+        } else if (this.searchType == 1) {
+          strUrl += '&type=1'
+        }
+        this.loading = true
+        this.$axios.get('/comment/complaint/maintain/query/statistics?size=10&page=0' + strUrl, {}).then((res) => {
+
+          if (res.status === 200) {
+            this.notifyData = res.data.content
+            this.loading = false
+          } else {
+            // this.$Message.error(res.statusText);
+            this.loading = false
+          }
+
+        })
+      },
+      onChange(value) {
+        this.getList()
+      }
+    },
+    watch:{
+      searchTime(val){
+
+      },
+      key1(){
+        let area = [], success = [], error = [],success1 = 0,error1 = 0;
+        if(this.key1 == "全部"){
+          for (let i = 0; i < this.areaName.length; i++) {
+            if (this.areaName[i] == '全部') {
+              continue
+            }
+            area.push(this.areaName[i])
+            success.push(this.dataObj[this.areaName[i]].success)
+            success1 += parseInt(this.dataObj[this.areaName[i]].success);
+            error.push(this.dataObj[this.areaName[i]].error)
+            error1 += parseInt(this.dataObj[this.areaName[i]].error);
+            this.optionBar1.xAxis[0].data = area
+            this.optionBar1.series[0].data = success
+            this.optionBar1.series[1].data = error
+            this.bar2.setOption(this.optionBar1);
+            this.success1 = success1;
+            this.error1 = error1;
+          }
+          return;
+        }
+        for (let i = 0; i < this.areaName.length; i++) {
+          if (this.areaName[i] ==  this.key1) {
+            area.push(this.areaName[i])
+            success.push(this.dataObj[this.areaName[i]].success)
+            success1 += parseInt(this.dataObj[this.areaName[i]].success);
+            error.push(this.dataObj[this.areaName[i]].error)
+            error1 += parseInt(this.dataObj[this.areaName[i]].error);
+            this.success1 = success1;
+            this.error1 = error1;
+            this.optionBar1.xAxis[0].data = area
+            this.optionBar1.series[0].data = success
+            this.optionBar1.series[1].data = error
+            this.bar2.setOption(this.optionBar1);
+          }else{
+
+          }
+        }
+      }
+    },
+  }
 </script>
 
 <style scoped lang="less">
-.dblock{
-  margin: 10px 0;
-  .dtitle {
-    text-align: left;
-    padding-left: 10px;
-    border-left: 5px solid #4ba7f5;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  .center{
-    text-align: center;
-    .inline-box {
-      display: inline-block;
-      vertical-align: top;
-      margin-bottom: 30px;
-      > div {
-        white-space: nowrap;
+  .dblock {
+    margin: 10px 0;
+    .dtitle {
+      text-align: left;
+      padding-left: 10px;
+      border-left: 5px solid #4ba7f5;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    .center {
+      text-align: center;
+      .inline-box {
         display: inline-block;
+        vertical-align: top;
+        margin-bottom: 30px;
+        > div {
+          white-space: nowrap;
+          display: inline-block;
+        }
       }
     }
   }
-}
 
 </style>
 <style lang="less">
-  .pie-num{
+  .pie-num {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    p{
+    p {
       /*margin: 8px 0;*/
       text-align: center;
       font-size: 22px;

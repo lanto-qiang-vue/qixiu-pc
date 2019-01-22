@@ -1,26 +1,26 @@
 <!--企业白名单管理 2018-12-12-->
 <template>
-<common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
+  <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page"  :loading="loading" @changeSelect="onSelectionChange">
-    <div  slot="search"  >
-        <Form :label-width="110" class="common-form">
-              <FormItem label="企业名称:">
-                  <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
-              </FormItem>
-              <FormItem label="许可证号:">
-                  <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
-              </FormItem>
-              <FormItem :label-width="0" style="width: 80px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
-              </FormItem>
-        </Form>
+                :show="showTable" :page="page" :loading="loading" @changeSelect="onSelectionChange">
+    <div slot="search">
+      <Form :label-width="110" class="common-form">
+        <FormItem label="企业名称:">
+          <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
+        </FormItem>
+        <FormItem label="许可证号:">
+          <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
+        </FormItem>
+        <FormItem :label-width="0" style="width: 80px;">
+          <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+        </FormItem>
+      </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="error" v-if="" :disabled="deleteArray.length==0"  @click="delFun">删除</Button>
+      <Button type="primary" v-if="" @click="showDetail=Math.random()">新增</Button>
+      <Button type="error" v-if="" :disabled="cando" @click="del">删除</Button>
     </div>
-    <company-white-detail :showDetail="showDetail" @closeDetail="closeDetail"></company-white-detail>
+    <company-white-detail :showDetail="showDetail" @refresh="page=1,getList()"></company-white-detail>
   </common-table>
 
 </template>
@@ -36,145 +36,121 @@
       companyWhiteDetail
     },
     mixins: [funMixin],
-    data(){
-		  return{
-        loading:false,
+    data() {
+      return {
+        loading: false,
         columns: [
           {
-              type: 'selection',
-              width: 60,
-              align: 'center'
+            type: 'selection',
+            width: 60,
+            align: 'center'
           },
-          {title: '企业名称', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.companyName||'')
+          {
+            title: '企业名称', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.companyName || '')
           },
-          {title: '许可证号', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.license||'')
+          {
+            title: '许可证号', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.license || '')
           },
-          {title: '经营地址', key: 'company', sortable: true, minWidth: 135,
-            render: (h, params) => h('span', params.row.company.businessAddress||'')
+          {
+            title: '经营地址', key: 'company', sortable: true, minWidth: 135,
+            render: (h, params) => h('span', params.row.company.businessAddress || '')
           },
-          {title: '经营范围', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.businessScope||'')
+          {
+            title: '经营范围', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.businessScope || '')
           },
-          {title: '联系电话', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.operatorMobile||'')
+          {
+            title: '联系电话', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.operatorMobile || '')
           },
-          {title: '主修品牌', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.repairBrand||'')
+          {
+            title: '主修品牌', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.repairBrand || '')
           },
-          {title: '信誉等级', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.lastYearLevel||'')
+          {
+            title: '信誉等级', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.lastYearLevel || '')
           },
-          {title: '收费标准', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.repairBrand||'')
-          },
+          {
+            title: '收费标准', key: 'company', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', params.row.company.repairBrand || '')
+          }
         ],
-        tableData: [{"honor":'上海蓝途共享测试'}],
+        tableData: [{ 'honor': '上海蓝途共享测试' }],
 
-        search:{
-          companyName:'',
+        search: {
+          companyName: '',
           license: '',
-          type:'WHITELIST',
+          type: 'WHITELIST'
         },
         page: 1,
         limit: 10,
+        row: '',
         total: 0,
-        showTable:false,
+        showTable: false,
         showDetail: false,
-        detailData: null,
         clearTableSelect: null,
-        deleteArray:[],
+        ids:'',
       }
     },
-    mounted () {
-      // this.tableData=[{"honor":'上海蓝途共享测试'}];
+    mounted() {
       this.getList();
     },
-    methods:{
-        getList(){
-          let page=this.page-1;
-          let urlStr='';
-          for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
-          }
-
-          this.loading=true;
-          this.$axios.get('/core/company-group/query?size='+this.limit+'&page='+page+urlStr, {
-              
-          }).then( (res) => {
-            if(res.status===200){
-                  this.tableData=res.data.content;
-                  this.total=res.data.totalElements;
-                  this.loading=false;
-              }else{
-                this.loading=false;
-                // this.$Message.error(res.statusText);
-              }
-            
-          })
-          this.detailData= null;
-        },
-        onSelectionChange(selection){
-
-            console.log('onSelectionChange',selection);
-            this.deleteArray=selection;
-        },
-        //删除页面数据-------------
-        delFun(){
-          this.$Modal.confirm({
-              title:"系统提示!",
-              content:"确定要删除吗？",
-              onOk:this.delList,
-          })
-        },
-        delList(){
-            let deleteId='';
-            for(let i in this.deleteArray){
-              deleteId+=this.deleteArray[i]['id']+',';
-
-            }
-            deleteId=deleteId.slice(0,deleteId.length-1);
-            
-            this.$axios.delete('/core/company-group/'+deleteId,{
-                        
-                }).then( (res) => {
-                    if(res.status===200){
-                        this.closeDetail();
-                    }
-            })
-        },
-        changePage(page){
-          this.page= page
-          this.getList()
-        },
-        changePageSize(size){
-          this.limit= size
-          this.getList()
-        },
-        onRowClick( row, index){
-            console.log('row：',row);
-            this.detailData=row
-        },
-        closeDetail(){
-          this.detailData= null;
-          this.clearTableSelect= Math.random();
-          
-          this.getList();
-        },
-
-
+    computed:{
+      cando(){
+        return this.ids == '';
+      }
     },
-	}
+    methods: {
+		  del(){
+        this.$axios.delete('/monitoring/config/company-group/'+ this.ids).then((res) => {
+           this.$Message.success("删除成功");
+           this.getList();
+        })
+      },
+      getList() {
+        this.ids = '';
+        let page = this.page - 1;
+        this.loading = true
+        this.$axios.get('/monitoring/config/company-group/query?size=' + this.limit + '&page=' + page+"&type=WHITELIST"+"&companyName="+this.search.companyName+"&license="+this.search.license).then((res) => {
+               this.tableData = res.data.content;
+               this.total = res.data.totalElements;
+          this.loading = false;
+        })
+      },
+      onSelectionChange(res) {
+        let data = [];
+        for(let i in res){
+           data.push(res[i].id);
+        }
+        this.ids = data.join(",");
+       // console.log(JSON.stringify(res));
+      },
+      changePage(page) {
+        this.page = page
+        this.getList()
+      },
+      changePageSize(size) {
+        this.limit = size
+        this.getList()
+      },
+      onRowClick() {
+
+      }
+    }
+  }
 </script>
 
 <style scoped lang="less">
-.menu-manage{
+  .menu-manage {
 
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
+  }
+
+  .search-block {
+    display: inline-block;
+    width: 200px;
+    margin-right: 10px;
+  }
 </style>

@@ -727,8 +727,8 @@ export default {
           transform: translate(-50% , -50%);
           cursor: pointer;
         }
-        }
       }
+    }
 
     .minleft{
         display: inline-block;
