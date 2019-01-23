@@ -53,17 +53,13 @@
               </FormItem>
               <FormItem label="审核状态:">
                   <Select v-model="search.status" clearable>
-                    <!--<Option value="" selected>全部</Option>
-                    <Option value="true">是</Option>
-                    <Option value="false">否</Option>-->
+                    
                     <Option v-for="item in statusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="备案状态:">
                   <Select v-model="search.beianStatus" clearable>
-                    <!--<Option value="" selected>全部</Option>
-                    <Option value="true">是</Option>
-                    <Option value="false">否</Option>-->
+                    
                     <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
               </FormItem>
@@ -77,12 +73,12 @@
     <div slot="operate">
       <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
       <Button type="primary" v-if="accessBtn('add')" @click="type=Math.random();">导入</Button>
-      <Button type="primary" v-if="" @click="exportFun">导出</Button>
+      <Button type="primary" v-if="" @click="exportBut">导出</Button>
       <Button type="info" v-if="accessBtn('edit')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
       <!--<Button type="error" v-if="accessBtn('delete')" @click="delFun" :disabled="!detailData">删除</Button>-->
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
-    <upload-excel :type="type" :actionUrl="'/proxy/corp/manage/import'"></upload-excel>
+    <upload-excel :type="type" :actionUrl="'/proxy/corp/manage/import'" :title="'导入文件'"></upload-excel>
   </common-table>
 
 </template>
@@ -255,8 +251,16 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 
             })
         },
-        exportFun(){
+        exportBut(){
+          this.$Modal.confirm({
+              title:"系统提示!",
+              content:"确定要导出吗？",
+              onOk:this.exportFun,
 
+          })
+          
+        },
+        exportFun(){
           this.$axios({
             method: 'post',
             url: '/corp/manage/export',

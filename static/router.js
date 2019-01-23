@@ -618,7 +618,15 @@ export default [
         },
         component: resolve('center/driving-school/school-info-list.vue'),
       },
-
+      {
+        path: 'rescue-company',
+        meta: {
+          icon: '',
+          title: '清障施救牵引企业信息管理',
+          accessId: '',
+        },
+        component: resolve('center/operate/rescue-company.vue'),
+      },
 
       {
         path: 'for-you-service',

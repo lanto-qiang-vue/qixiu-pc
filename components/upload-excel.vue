@@ -34,9 +34,31 @@
       </div>
       <div slot="footer">
         <!--<Button type="success" @click="down" style="float:left;">下载模板</Button>-->
+        <Button type="error" @click="showModal=true" v-show="exportNum.errorCount">查看失败结果</Button>
         <Button type="primary" @click="upload">确定</Button>
         <Button type="error" @click="uploadClose">关闭</Button>
       </div>
+
+
+
+      <Modal
+        v-model="showModal"
+        title="失败记录"
+        width="500"
+        @on-visible-change=""
+        :scrollable="true"
+        :transfer= "true"
+        :footer-hide="true"
+        :mask-closable="false"
+        class="table-modal-detail"
+        :transition-names="['', '']"
+        
+        >
+        <div >
+            <Table :columns="columns10" :data="data9"></Table>
+        </div>
+      </Modal>
+
     </Modal>
   </div>
 </template>
@@ -49,8 +71,13 @@
         token: {token: ''},
         baseUrl: '',
         show: false,
+        showModal:false,
         exportNum:{},//导入数量计算-----
-
+        columns10: [
+          {title: '导入文件错误行号',key: 'num'},
+          {title: '错误原因',key: 'name'}
+        ],
+        data9: [],
       }
     },
     mounted() {
@@ -130,6 +157,20 @@
         // console.log('upload 数据',res);
         if(res.code=="0"){
           this.exportNum=res.item;
+          this.data9=[];
+          if(res.item.errorCount){
+            let temArr=res.item.errorMsg.split(',');
+            let temNum=res.item.errorRows.split(',');
+            for(let i in temArr){
+              let temObj={name:'',num:''};
+              temObj.name=temArr[i];
+              temObj.num=temNum[i];
+              this.data9.push(temObj);
+            }
+            
+            
+          }
+
         }else{
           this.$Message.error(res.status);
         }
