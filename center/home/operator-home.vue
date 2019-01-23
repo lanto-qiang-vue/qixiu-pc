@@ -12,7 +12,7 @@
     <img class="shanghai" src="/img/hotmap/shanghai.png"/>
 
     <div class="total mnypjt">
-      <label style="display: none"><span id="corptotal">test-54321</span></label>
+      <label ><span id="corptotal">test-54321</span></label>
       <label class="hasbg"><span id="join">test-54321</span></label>
       <label class="hasbg"><span id="using">test-54321</span></label>
     </div>
@@ -101,8 +101,8 @@ export default {
           let obj=JSON.parse(response.body);
           let usehxx= parseInt(obj.origin)==1? true: false
           $("#corptotal").text(obj.total);
-          // $("#join").text(obj.join);
-          $("#join").text(obj.total);
+          $("#join").text(obj.join);
+          // $("#join").text(obj.total);
           $("#using").text(obj.using);
           if(obj.locateCode) this.setPoint(false , usehxx, obj.locateCode)
         });
