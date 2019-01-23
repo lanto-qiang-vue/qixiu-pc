@@ -13,7 +13,7 @@
     class="table-modal-detail"
     :transition-names="['', '']">
     <div slot="header" class="header-inner">维修服务预约<span>（{{testTitle}}）</span></div>
-    <div >
+    <div style="padding-bottom: 10px;">
         <Collapse v-model="collapse">
         <Panel name="1">企业基本信息
         <Form ref="listSearch" :rules="ruleValidate"  :model="listSearch" :label-width="140" class="common-form" slot="content">
@@ -39,131 +39,161 @@
             <FormItem label="工商注册日期:" style="width: 45%;" prop="registerDate">
                 <DatePicker type="date" placeholder="请选择" style="width: 100%;" v-model="listSearch.registerDate"></DatePicker>
             </FormItem>
-            <FormItem label="经营地地址:" style="width: 45%;" prop="businessAddress">
+            <FormItem label="经营地地址:" style="width: 45%;" >
                 <Input type="text"  v-model="listSearch.businessAddress" placeholder="请输入经营地地址"></Input>
             </FormItem>
-            <FormItem label="经营地址区域:" style="width: 45%;" prop="businessRegion">
+            <FormItem label="经营地址区域:" style="width: 45%;" >
                 <Select v-model="listSearch.businessRegion">
                     <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="经营地址经度:" style="width: 45%;" prop="longitude">
+            <FormItem label="经营地址经度:" style="width: 45%;" >
                 <Input type="text"  v-model="listSearch.longitude" placeholder="请输入经营地址经度"></Input>
             </FormItem>
-            <FormItem label="经营地址维度:" style="width: 45%;" prop="latitude">
+            <FormItem label="经营地址维度:" style="width: 45%;" >
                 <Input type="text"  v-model="listSearch.latitude" placeholder="请输入经营地址维度"></Input>
             </FormItem>
 
-            <FormItem label="经营地址邮政编码:" style="width: 45%;" prop="postalCode">
+            <FormItem label="经营地址邮政编码:" style="width: 45%;" >
                 <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
             </FormItem>
-            <FormItem label="法定代表人:" style="width: 45%;" prop="legalName">
-                <Input type="text"  v-model="listSearch.legalName" placeholder=""></Input>
+            <FormItem label="法定代表人:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.legalName" placeholder="请输入法定代表人"></Input>
             </FormItem>
-            <FormItem label="代表人手机:" style="width: 45%;" prop="legalMobile">
-                <Input type="text"  v-model="listSearch.legalMobile" placeholder=""></Input>
+            <FormItem label="代表人手机:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.legalMobile" placeholder="请输入代表人手机"></Input>
             </FormItem>
-            <FormItem label="代表人固定电话:" style="width: 45%;" prop="legalTel">
-                <Input type="text"  v-model="listSearch.legalTel" placeholder=""></Input>
+            <FormItem label="代表人固定电话:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.legalTel" placeholder="请输入代表人固定电话"></Input>
             </FormItem>
-            <FormItem label="代表人邮箱:" style="width: 45%;" prop="legalEmail">
-                <Input type="text"  v-model="listSearch.legalEmail" placeholder=""></Input>
+            <FormItem label="代表人邮箱:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.legalEmail" placeholder="请输入代表人邮箱"></Input>
             </FormItem>
-            <FormItem label="日常经营管理负责人:" style="width: 45%;" prop="operatorName">
-                <Input type="text"  v-model="listSearch.operatorName" placeholder=""></Input>
+            <FormItem label="日常经营管理负责人:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.operatorName" placeholder="请输入日常经营管理负责人"></Input>
             </FormItem>
-            <FormItem label="负责人手机:" style="width: 45%;" prop="operatorMobile">
-                <Input type="text"  v-model="listSearch.operatorMobile" placeholder=""></Input>
+            <FormItem label="负责人手机:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.operatorMobile" placeholder="请输入负责人手机"></Input>
             </FormItem>
-            <FormItem label="负责人固定电话:" style="width: 45%;" prop="operatorTel">
-                <Input type="text" v-model="listSearch.operatorTel" placeholder=""></Input>
+            <FormItem label="负责人固定电话:" style="width: 45%;" >
+                <Input type="text" v-model="listSearch.operatorTel" placeholder="请输入负责人固定电话"></Input>
             </FormItem>
-            <FormItem label="负责人邮箱:" style="width: 45%;" prop="operatorEmail">
-                <Input type="text" v-model="listSearch.operatorEmail" placeholder=""></Input>
+            <FormItem label="负责人邮箱:" style="width: 45%;" >
+                <Input type="text" v-model="listSearch.operatorEmail" placeholder="请输入负责人邮箱"></Input>
             </FormItem>
-            <FormItem label="企业反馈电话:" style="width: 45%;" prop="complaintTel">
-                <Input type="text"  v-model="listSearch.complaintTel" placeholder=""></Input>
+            <FormItem label="企业反馈电话:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
-            <FormItem label="营业时间:" style="width: 45%;" prop="businessHours">
-                <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="" style="width: 100%;" v-model="listSearch.businessHours"></TimePicker>
+            <FormItem label="营业时间:" style="width: 45%;" >
+                <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择" style="width: 100%;" v-model="listSearch.businessHours"></TimePicker>
             </FormItem>
-            <FormItem label="管理机构与部门:" style="width: 45%;" prop="org">
+            <FormItem label="管理机构与部门:" style="width: 45%;" >
                 <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
             </FormItem>
-            <FormItem label="经营状态:" style="width: 45%;" prop="businessStatus">
+            <FormItem label="经营状态:" style="width: 45%;" >
                 <Select v-model="listSearch.businessStatus">
                     <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="备案状态:" style="width: 45%;" prop="beianStatus">
+            <FormItem label="备案状态:" style="width: 45%;" >
                 <Select v-model="listSearch.beianStatus">
                     <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="企业品牌:" style="width: 45%;" prop="brand">
-                <Input type="text"  v-model="listSearch.brand" placeholder=""></Input>
+            <FormItem label="企业品牌:" style="width: 45%;" >
+                <Input type="text"  v-model="listSearch.brand" placeholder="请输入企业品牌"></Input>
             </FormItem>
-            <FormItem label="企业主要业务范围:" style="width: 45%;" prop="businessSphere">
+            <FormItem label="企业主要业务范围:" style="width: 45%;" >
                 
                 <Select v-model="listSearch.businessSphere" multiple clearable>
                     <Option v-for="item in companySphere" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="其他主要业务范围:" style="width: 45%;" v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true">
-                <Input type="text"  v-model="listSearch.businessSphereOther" placeholder="" ></Input>
+                <Input type="text"  v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围" ></Input>
             </FormItem>
             <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
-                <Select v-model="listSearch.businessScope" >
-                    <Option v-for="item in repairType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                <Select v-model="listSearch.businessScope" @on-change="repairTypeFun">
+                    <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
-                    <Option v-for="item in oneCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in oneCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
-                    <Option v-for="item in twoCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in twoCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
-                    <Option v-for="item in threeCarType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in threeCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
-                    <Option v-for="item in motorcycle" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in motorcycle" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
-                    <Option v-for="item in carList" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in carList" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="总对总:" style="width: 45%;" prop="zdz">
+
+            <FormItem label="综合维修企业:" style="width: 45%;" >
+                
+                <i-switch size="large" v-model="listSearch.comprehensive">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+            <FormItem label="连锁经营企业:" style="width: 45%;" >
+                
+                <i-switch size="large" v-model="listSearch.chainBusiness">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+            <FormItem label="集团经营企业:" style="width: 45%;" >
+                
+                <i-switch size="large" v-model="listSearch.groupBusiness">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+            <FormItem label="使用好修修门店系统:" style="width: 45%;" >
+                
+                <i-switch size="large" v-model="listSearch.useHss">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+
+            <FormItem label="总对总:" style="width: 45%;" >
                 
                 <i-switch size="large" v-model="listSearch.zdz">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
             </FormItem>
-            <FormItem label="是否对接:" style="width: 45%;" prop="buttJoint">
+            <FormItem label="是否对接:" style="width: 45%;" >
                
                 <i-switch size="large" v-model="listSearch.buttJoint">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
             </FormItem>
-            <FormItem label="前台显示:" style="width: 45%;" prop="show">
+            <FormItem label="前台显示:" style="width: 45%;" >
                 
                   <i-switch size="large" v-model="listSearch.show">
                     <span slot="open">是</span>
                     <span slot="close">否</span>
                 </i-switch>
             </FormItem>
-            <FormItem label="特约维修:" style="width: 45%;" prop="special">
+            <FormItem label="特约维修:" style="width: 45%;" >
                 
                 
                   <i-switch size="large" v-model="listSearch.special">
@@ -174,12 +204,20 @@
             <FormItem label="特约维修品牌:" style="width: 45%;" v-show="listSearch.special?true:false">
                 <Input type="text"  v-model="listSearch.specialRepairBrand" placeholder="" ></Input>
             </FormItem>
-            <FormItem label="对接情况:" style="width: 92%;" >
+            <!--<FormItem label="对接情况:" style="width: 92%;" >
                 <Table border  :columns="columns10" :data="data9"></Table>
+            </FormItem>-->
+            <FormItem label="对接渠道:" style="width: 45%;" >
+                <Select v-model="listSearch.source" clearable style="width: 70%">
+                    <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                </Select>
+                <Button size="large" type="primary" @click="showAdd=true">新增</Button>
             </FormItem>
-
-            <FormItem label="企业服务优势自我描述:" style="width: 92%;" prop="desc">
-                <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder=""></Input>
+            <FormItem label="对接时间:" style="width: 45%;">
+                <Input type="text"  v-model="listSearch.buttJoinTime" placeholder="" readonly></Input>
+            </FormItem>
+            <FormItem label="企业服务优势自我描述:" style="width: 92%;" >
+                <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
             </FormItem>
 
 
@@ -190,7 +228,7 @@
             </Form>
             </Panel>
             <Panel name="2">企业信息
-                <Form  :label-width="140" class="common-form" slot="content">
+        <Form  :label-width="140" class="common-form" slot="content">
             <FormItem label="工时定额执行标准:" style="width: 45%;" >
                 <Select v-model="listSearch.workingHoursQuotaExecutionStandard">
                     <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
@@ -216,15 +254,6 @@
             <FormItem label="其他经济类型:" style="width: 45%;" v-show="listSearch.economicType==900?true:false">
                 <Input type="text"  v-model="listSearch.economicTypeOther" placeholder=""></Input>
             </FormItem>
-
-
-
-            <FormItem label="对接时间:" style="width: 45%;" >
-                
-                <DatePicker type="date" placeholder="请选择" style="width: 100%;" v-model="listSearch.updateTime" ></DatePicker>
-            </FormItem>
-            
-
             
             
             <FormItem label="企业员工总数:" style="width: 45%;">
@@ -239,19 +268,19 @@
             </FormItem>
 
             <FormItem label="经理人:" style="width: 45%;" >
-                <Input type="text"  v-model="listSearch.manager" placeholder="" ></Input>
+                <Input type="text"  v-model="listSearch.manager" placeholder="请输入经理人" ></Input>
             </FormItem>
             <FormItem label="服务负责人:" style="width: 45%;" >
-                <Input type="text" v-model="listSearch.serviceLeader" placeholder="" ></Input>
+                <Input type="text" v-model="listSearch.serviceLeader" placeholder="请输入服务负责人" ></Input>
             </FormItem>
             <FormItem label="技术负责人:" style="width: 45%;">
-                <Input type="text" v-model="listSearch.technologyLeader" placeholder="" ></Input>
+                <Input type="text" v-model="listSearch.technologyLeader" placeholder="请输入技术负责人" ></Input>
             </FormItem>
             <FormItem label="质量检验员:" style="width: 45%;" >
-                <Input type="text"  v-model="listSearch.qualityInspector" placeholder="" ></Input>
+                <Input type="text"  v-model="listSearch.qualityInspector" placeholder="请输入质量检验员" ></Input>
             </FormItem>
             <FormItem label="其他:" style="width: 45%;" >
-                <Input type="text"  v-model="listSearch.managerOther" placeholder="" ></Input>
+                <Input type="text"  v-model="listSearch.managerOther" placeholder="请输入其他" ></Input>
             </FormItem>
 
             <FormItem label="机工高级技师人数:" style="width: 45%;" >
@@ -418,16 +447,13 @@
                 <Input type="text"  v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
             <FormItem label="企业特色服务:" style="width: 92%;">
-                <Input type="textarea" :rows="1"  v-model="listSearch.specialService" placeholder=""></Input>
-            </FormItem>
-            <FormItem label="企业服务优势自我描述:" style="width: 92%;">
-                <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder=""></Input>
+                <Input type="textarea" :rows="1"  v-model="listSearch.specialService" placeholder="请输入企业特色服务"></Input>
             </FormItem>
             <FormItem label="企业自我简介:" style="width: 92%;">
-                <Input type="textarea" :rows="1"  v-model="listSearch.selfIntroduction" placeholder=""></Input>
+                <Input type="textarea" :rows="1"  v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
             </FormItem>
             <FormItem label="区级以上荣誉获得情况:" style="width: 92%;">
-                <Input type="textarea" :rows="1"  v-model="listSearch.honor" placeholder=""></Input>
+                <Input type="textarea" :rows="1"  v-model="listSearch.honor" placeholder="请输入区级以上荣誉获得情况"></Input>
             </FormItem>
             <FormItem label="是否愿意开通车大夫服务等在线维修服务:" style="width: 92%;">
                 
@@ -462,6 +488,41 @@
             <Button  size="large" type="error" @click="auditFun(false)">不通过</Button>
         </div>
     </Modal>
+
+
+    <Modal
+    v-model="showAdd"
+    title="新增"
+    width="300"
+    @on-visible-change="visibleChange"
+    :scrollable="true"
+    :transfer= "true"
+    :footer-hide="false"
+    :mask-closable="false"
+    
+    :transition-names="['', '']">
+
+    <div >
+        <Form  :label-width="100">
+
+            <FormItem label="对接渠道名称:">
+                <Input type="text"  v-model="sourceName" placeholder="请输入渠道名称" ></Input>
+            </FormItem>
+
+
+        </Form>
+    </div>
+    <div slot="footer">
+        <Button  size="large" type="primary" @click="addTypeName">提交</Button>
+        
+    </div>
+  </Modal>
+
+
+
+
+
+
     <!--<Spin size="large" fix v-if="spinShow"></Spin>-->
   </Modal>
   
@@ -484,6 +545,7 @@ export default {
             showChange:null,
             // spinShow:false,
             showModal:false,
+            showAdd:false,
             testTitle:'',
             modal1:false,
             manageType:[],//管理部门数据集合--------
@@ -499,22 +561,23 @@ export default {
                     },
             ],
             data9:[],
+            sourceName:'',//对接渠道名称----
             listSearch:{
                 "businessHours": "",//营业时间
                 "postalCode": "",//经营地址邮政编码------------------------------------------------
                 "businessRegion": "",//经营地址区域
                 "businessAddress": "",//经营地地址
                 "complaintTel": "",//企业反馈电话
-                "economicType": 1,//经济类型
+                "economicType": '',//经济类型
                 "economicTypeOther": "",
-                "employeeNumber": 1,//企业员工总数--------------------------
-                "floorSpace": 1,//企业目前占地面积-------------------------------
+                "employeeNumber": '',//企业员工总数--------------------------
+                "floorSpace": '',//企业目前占地面积-------------------------------
                 "honor": "",
                 "id": "",
-                "industryCategory": 1,//业户类别
+                "industryCategory": null,//业户类别
                 "industryCategoryOther": "",
                 "iso": false,
-                "latitude": "",
+                "latitude": 0,
                 "legalEmail": "",
                 "legalMobile": "",
                 "legalName": "",//法定代表人
@@ -522,7 +585,7 @@ export default {
                 "licence": "",//许可证号
                 "licenceBeginDate": "",//许可证有效期
                 "licenceEndDate": "",//许可证有效期
-                "longitude": "",
+                "longitude": 0,
                 "manager": "",
                 "managerOther": "",
                 "model": [],
@@ -535,7 +598,7 @@ export default {
                 "operatorName": "",
                 "operatorTel": "",
                 "qualityInspector": "",
-                "qualityReputationAssessmentLevel": 4,
+                "qualityReputationAssessmentLevel": '',
                 "registerAddress": "",//工商注册地址
                 "registerDate": "",//工商注册日期
                 "registerRegion": "",//工商注册地址区域
@@ -554,18 +617,18 @@ export default {
                 "throughEnvironmentalProtectionSpecialRenovation": false,
                 "throughSafetyProductionStandardization": false,
                 "workingHoursPrice": "",//工时单价
-                "workingHoursQuotaExecutionStandard": '',//工时定额执行标准
+                "workingHoursQuotaExecutionStandard": null,//工时定额执行标准
 
-                "beianStatus": 0,//备案状态---------------------------------------------
+                "beianStatus": 1,//备案状态---------------------------------------------
                 "brand": "",//企业品牌--------------------------------------------------
-                "businessScope": 0,//经营范围
+                "businessScope": '',//经营范围
                 "businessScope2": [
-                    0
+                    
                 ],//经营范围小类
                 "businessSphere": [],//主要业务范围
                 "businessSphereOther": "",//其他业务范围
-                "businessStatus": 0,//经营状态
-                "corpInfoId": 0,//企业id
+                "businessStatus": 1,//经营状态
+                "corpInfoId": '',//企业id
                 "dept": "",//管理部门
                 "desc": "",//自我描述
                 "zdz":false,//总对总
@@ -598,6 +661,13 @@ export default {
                 ],//钣金工
                 "updateTime": "",//更新时间--------------------
                 "buttJointInfoDtos":[],
+
+                "source":"",//对接渠道数据----------
+                "comprehensive":false,
+                "chainBusiness":false,
+                "groupBusiness":false,
+                "useHss":false,
+                "buttJoinTime":'',//对接时间---
             },
             ruleValidate: {
                 name:[{ required: true, message: '必填项不可为空', },],
@@ -606,108 +676,36 @@ export default {
                 registerAddress:[{ required: true, message: '必填项不可为空', },],
                 registerRegion:[{ required: true, message: '必填项不可为空', },],
                 registerDate:[{ required: true, message: '必填项不可为空', },],
-
-                businessAddress:[{ required: true, message: '必填项不可为空', },],
-                businessRegion:[{ required: true, message: '必填项不可为空', },],
-                longitude:[{ required: true, message: '必填项不可为空', },],
-                latitude:[{ required: true, message: '必填项不可为空', },],
-
-                postalCode:[{ required: true, message: '必填项不可为空', },],
-
-                legalName:[{ required: true, message: '必填项不可为空', },],
-                legalMobile:[{ required: true, message: '必填项不可为空', },
-                    // {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
-                ],
-                legalTel:[{ required: true, message: '必填项不可为空', },
-                    // {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
-                ],
-                
-                legalEmail:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/, message:'请输入正确的邮箱', trigger:'blur'}
-                ],
-                operatorName:[{ required: true, message: '必填项不可为空', },],
-                operatorMobile:[{ required: true, message: '必填项不可为空', },
-                    // {pattern:/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/, message:'请输入正确的手机号码', trigger:'blur'}
-                ],
-                operatorTel:[{ required: true, message: '必填项不可为空', },
-                    // {pattern:/0\d{2,3}-\d{7,8}/, message:'请输入正确的固定电话号码', trigger:'blur'}
-                ],
-                operatorEmail:[{ required: true, message: '必填项不可为空', },
-                    {pattern:/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/, message:'请输入正确的邮箱', trigger:'blur'}
-                ],
-                complaintTel:[{ required: true, message: '必填项不可为空', },],
-                businessHours:[{ required: true, message: '必填项不可为空', },],
-                org:[{ required: true, message: '必填项不可为空', },],
-                businessStatus:[{ required: true, message: '必填项不可为空', },],
-
-                beianStatus:[{ required: true, message: '必填项不可为空', },],
-                brand:[{ required: true, message: '必填项不可为空', },],
-                businessSphere:[{ required: true, message: '必填项不可为空', },],
                 businessScope:[{ required: true, message: '必填项不可为空', },],
-                zdz:[{ required: true, message: '必填项不可为空', },],
-                buttJoint:[{ required: true, message: '必填项不可为空', },],
-                show:[{ required: true, message: '必填项不可为空', },],
-                special:[{ required: true, message: '必填项不可为空', },],
-                desc:[{ required: true, message: '必填项不可为空', },],
+
 
             },//规则验证
             typeList:[],//学历类别数据------
+            channels:[],//对接渠道-----------
             //维修类别数据---------
             repairType:[
-                {code:"一类机动车维修",name:43},
-                {code:"二类机动车维修",name:44},
-                {code:"三类机动车维修",name:45},
-                {code:"摩托车维修",name:46},
-                {code:"汽车维修",name:47},
+                
             ],
             companyRepair:'',
             //一类机动车维修------
             oneCarType:[
-                {code:"小型车辆维修",name:48},
-                {code:"大、中型客车维修",name:49},
-                {code:"大、中型货车维修",name:50},
-                {code:"危险货车运输维修",name:51},
-                {code:"电动(油电混合)汽车维修",name:52},
-                {code:"燃气汽车维修",name:53},
+                
             ],
             //二类机动车维修-------
             twoCarType:[
-                {code:"小型车辆维修",name:54},
-                {code:"大、中型客车维修",name:55},
-                {code:"大、中型货车维修",name:56},
-                {code:"电动(油电混合)汽车维修",name:57},
-                {code:"燃气汽车维修",name:58},
+                
             ],
             //三类机动车维修-------
             threeCarType:[
-                {code:"发动机修理",name:59},
-                {code:"车身维修",name:60},
-                {code:"电气系统维修",name:61},
-                {code:"自动变速器维修",name:62},
-                {code:"车身清洁维护",name:63},
-
-                {code:"涂漆",name:64},
-                {code:"轮胎动平衡及修补",name:65},
-                {code:"四轮定位检测调整",name:66},
-                {code:"供油系统维护及油品更换",name:67},
-                {code:"喷油泵和喷油嘴维修",name:68},
-
-                {code:"曲轴修磨",name:69},
-                {code:"气缸镗磨",name:70},
-                {code:"散热器（水箱）维修",name:71},
-                {code:"空调维修",name:72},
-                {code:"车辆装潢（篷布坐垫及内装饰）",name:73},
-                {code:"车辆玻璃安装",name:74},
+                
             ],
             //摩托车维修
             motorcycle:[
-                {code:"一类",name:75},
-                {code:"二类",name:76},
+                
             ],
             //汽车维修
             carList:[
-                {code:"A类",name:77},
-                {code:"B类",name:78},
+                
             ],
             //企业主要业务
             companySphere:[],
@@ -772,7 +770,8 @@ export default {
                 {code:1,name:'待审核'},
                 {code:2,name:'审核成功'},
                 {code:3,name:'审核不成功'},
-            ]
+            ],
+            value:'',
 
         }
     },
@@ -791,6 +790,8 @@ export default {
             this.getPubliceType(30);
             this.getPubliceType(24);
             this.getCompanyArea();
+            this.getValuesByTypeFun(38);
+            this.getValuesByTypeFun(1);
             this.companyRepair='';
             this.manageArr=[];
             this.listSearch={
@@ -799,16 +800,16 @@ export default {
                 "businessRegion": "",//经营地址区域
                 "businessAddress": "",//经营地地址
                 "complaintTel": "",//企业反馈电话
-                "economicType": 1,//经济类型
+                "economicType": '',//经济类型
                 "economicTypeOther": "",
-                "employeeNumber": 1,//企业员工总数--------------------------
-                "floorSpace": 1,//企业目前占地面积-------------------------------
+                "employeeNumber": '',//企业员工总数--------------------------
+                "floorSpace": '',//企业目前占地面积-------------------------------
                 "honor": "",
                 "id": "",
-                "industryCategory": 1,//业户类别
+                "industryCategory": null,//业户类别
                 "industryCategoryOther": "",
                 "iso": false,
-                "latitude": "",
+                "latitude": 0,
                 "legalEmail": "",
                 "legalMobile": "",
                 "legalName": "",//法定代表人
@@ -816,7 +817,7 @@ export default {
                 "licence": "",//许可证号
                 "licenceBeginDate": "",//许可证有效期
                 "licenceEndDate": "",//许可证有效期
-                "longitude": "",
+                "longitude": 0,
                 "manager": "",
                 "managerOther": "",
                 "model": [],
@@ -829,39 +830,39 @@ export default {
                 "operatorName": "",
                 "operatorTel": "",
                 "qualityInspector": "",
-                "qualityReputationAssessmentLevel": 4,
+                "qualityReputationAssessmentLevel": '',
                 "registerAddress": "",//工商注册地址
                 "registerDate": "",//工商注册日期
                 "registerRegion": "",//工商注册地址区域
                 "rescue": false,
-                "selfDesc": "",
+                // "selfDesc": "",
                 "selfIntroduction": "",
                 "serviceCategory": [],
                 "serviceCategoryOther": "",
                 "serviceLeader": "",
                 "sincerity": false,
                 "sincerityYears": [],
-                "specialRepair": false,//-汽车销售、维修----------------------------
+                
                 "specialRepairBrand": "",
                 "specialService": "",
                 "technologyLeader": "",
                 "throughEnvironmentalProtectionSpecialRenovation": false,
                 "throughSafetyProductionStandardization": false,
                 "workingHoursPrice": "",//工时单价
-                "workingHoursQuotaExecutionStandard": '',//工时定额执行标准
+                "workingHoursQuotaExecutionStandard": null,//工时定额执行标准
 
-                "beianStatus": 0,//备案状态---------------------------------------------
+                "beianStatus": 1,//备案状态---------------------------------------------
                 "brand": "",//企业品牌--------------------------------------------------
-                "businessScope": 0,//经营范围
+                "businessScope": '',//经营范围
                 "businessScope2": [
-                    0
+                    
                 ],//经营范围小类
                 "businessSphere": [],//主要业务范围
                 "businessSphereOther": "",//其他业务范围
-                "businessStatus": 0,//经营状态
-                "corpInfoId": 0,//企业id
+                "businessStatus": 1,//经营状态
+                "corpInfoId": '',//企业id
                 "dept": "",//管理部门
-                "desc": "",//备注
+                "desc": "",//自我描述
                 "zdz":false,//总对总
                 "buttJoint":false,//是否对接
 
@@ -892,6 +893,13 @@ export default {
                 ],//钣金工
                 "updateTime": "",//更新时间--------------------
                 "buttJointInfoDtos":[],
+
+                "source":"",//对接渠道数据----------
+                "comprehensive":false,
+                "chainBusiness":false,
+                "groupBusiness":false,
+                "useHss":false,
+                "buttJoinTime":'',//对接时间---
             };
 
             if(this.detailData){
@@ -916,7 +924,9 @@ export default {
                         if(i=="businessHours"){
                             this.listSearch[i]=resData[i].split('-');
                         }
-                        else{
+                        else if(i=="source"){
+                            this.listSearch[i]=resData[i];
+                        }else{
                             if(resData[i]){
                                 this.listSearch[i]=resData[i];
                             }
@@ -930,14 +940,36 @@ export default {
                     this.testTitle=getName(this.statusArr,this.listSearch.status);
 
                     this.data9=this.listSearch["buttJointInfoDtos"];
+
+                    if(this.listSearch['businessScope']){
+                        this.repairTypeFun(this.listSearch['businessScope']);
+                    }
                 }
                 // this.spinShow=false;
                 this.$Spin.hide();
            })
         },
         //选择维修类别时带的参数--------
-        repairTypeFun(name,val){
-            console.log(name,val);
+        repairTypeFun(val){
+            if(!val){
+                return;
+            }
+            this.$axios.get('/dict/value/'+val, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    if(val==43){
+                        this.oneCarType=res.data.items;
+                    }else if(val==44){
+                        this.twoCarType=res.data.items;
+                    }else if(val==45){
+                        this.threeCarType=res.data.items;
+                    }else if(val==46){
+                        this.motorcycle=res.data.items;
+                    }else if(val==47){
+                        this.carList=res.data.items;
+                    }
+                }
+           })
         },
         //新增一个企业数据---------
         addCompany(name){
@@ -945,6 +977,13 @@ export default {
                 this.listSearch["org"]=this.manageArr[0]||'';
                 this.listSearch["dept"]=this.manageArr[1]||'';
             }
+            let businessHours='';
+            console.log(this.listSearch.businessHours);
+            if(this.listSearch.businessHours.length>0&&this.listSearch.businessHours[0]&&this.listSearch.businessHours[1]){
+                businessHours=this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1];
+            }
+
+
 
             this.$refs[name].validate((valid) => {
 
@@ -957,7 +996,7 @@ export default {
                     "beianStatus": this.listSearch.beianStatus,
                     "brand": this.listSearch.brand,
                     "businessAddress": this.listSearch.businessAddress,
-                    "businessHours": (this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',
+                    "businessHours": businessHours,
                     "businessRegion": this.listSearch.businessRegion,
                     "businessScope": this.listSearch.businessScope,
                     "businessScope2": this.listSearch.businessScope2,
@@ -1031,12 +1070,17 @@ export default {
                     "workingHoursPrice": this.listSearch.workingHoursPrice,
                     "workingHoursQuotaExecutionStandard": this.listSearch.workingHoursQuotaExecutionStandard,
                     "zdz": this.listSearch.zdz,
-
+                    "source":this.listSearch.source,//对接渠道数据----------
+                    "comprehensive":this.listSearch.comprehensive,
+                    "chainBusiness":this.listSearch.chainBusiness,
+                    "groupBusiness":this.listSearch.groupBusiness,
+                    "useHss":this.listSearch.useHss,
+                    "buttJoinTime":this.listSearch.buttJoinTime,//对接时间---
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;
                     }else{
-                        this.$Message.error(res.data.status);
+                        // this.$Message.error(res.data.status);
                     }
                 })
             }else{
@@ -1045,7 +1089,7 @@ export default {
                     "beianStatus": this.listSearch.beianStatus,
                     "brand": this.listSearch.brand,
                     "businessAddress": this.listSearch.businessAddress,
-                    "businessHours": (this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1])||'',
+                    "businessHours": businessHours,
                     "businessRegion": this.listSearch.businessRegion,
                     "businessScope": this.listSearch.businessScope,
                     "businessScope2": this.listSearch.businessScope2,
@@ -1119,12 +1163,17 @@ export default {
                     "workingHoursPrice": this.listSearch.workingHoursPrice,
                     "workingHoursQuotaExecutionStandard": this.listSearch.workingHoursQuotaExecutionStandard,
                     "zdz": this.listSearch.zdz,
-
+                    "source":this.listSearch.source,//对接渠道数据----------
+                    "comprehensive":this.listSearch.comprehensive,
+                    "chainBusiness":this.listSearch.chainBusiness,
+                    "groupBusiness":this.listSearch.groupBusiness,
+                    "useHss":this.listSearch.useHss,
+                    "buttJoinTime":this.listSearch.buttJoinTime,//对接时间---
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;
                     }else{
-                        this.$Message.error(res.data.status);
+                        // this.$Message.error(res.data.status);
                     }
                 })
             }
@@ -1206,6 +1255,7 @@ export default {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.testTitle=getName(this.statusArr,status);
+                    this.listSearch.status=status;
                 }
                 
             })
@@ -1221,6 +1271,41 @@ export default {
                     // this.$Message.error(res.data.status);
                 }
            })
+        },
+        //获取业务数据接口----------
+        getValuesByTypeFun(id){
+            this.$axios.get('/dict/getValuesByTypeId/'+id, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    if(id==38){
+                        this.channels=res.data.items;
+                    }else if(id==1){
+                        this.repairType=res.data.items;
+                    }
+                    
+                }else{
+                    // this.$Message.error(res.data.status);
+                }
+           })
+        },
+        //新增自定义对接渠道---------------
+        addTypeName () {
+            if(!this.sourceName){
+                this.$Message.error("输入渠道名称");
+                return;
+            }
+            this.$axios.post('/dict/save', {
+
+                "typeName": "对接渠道",
+                "value": this.sourceName,
+          }).then( (res) => {
+            if(res.data.code=='0'){
+              this.getValuesByTypeFun(38);
+              this.sourceName="";
+              
+            }
+            this.showAdd=false;
+          })
         },
         
     },

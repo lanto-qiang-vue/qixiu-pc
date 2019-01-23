@@ -28,12 +28,13 @@
                   <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
+        <rescue-company-info :showDetail="showDetail"></rescue-company-info>
     </div>
     <div slot="operate">
       <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
       <Button type="info" v-if="" :disabled="deleteArray.length==0"  @click="delFun">查看|编辑</Button>
     </div>
-    <company-white-detail :showDetail="showDetail" @closeDetail="closeDetail"></company-white-detail>
+    
   </common-table>
 
 </template>
@@ -41,12 +42,13 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
+  import rescueCompanyInfo from './rescue-company-info.vue'
 
 	export default {
 		name: "rescue-company",
     components: {
       CommonTable,
-      companyWhiteDetail
+      rescueCompanyInfo
     },
     mixins: [funMixin],
     data(){
