@@ -15,7 +15,7 @@
               <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期" style="width: 300px"></DatePicker>
           </FormItem>
            <FormItem :label-width="0">
-             <Button type="primary" @click="getData">查询</Button>
+             <Button type="primary" @click="getData()">查询</Button>
            </FormItem>
         </Form>
       </div>
@@ -59,6 +59,7 @@
         searchType: 0,
         areaType: [],
         areaName: [],//区域名称获取。区域不重复。不用去重
+        secondArea:[],//二级区域
         dataObj: {},
         key1: '全部',//维修上传记录筛选key
         success1: 0,//
@@ -98,21 +99,23 @@
         return buildDate;
       },
       getData(code = "") {
+        if(code == ""){
+          this.key1 = "全部";
+        }
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
           this.$Message.info("数据查询需要选择时间段");
           return false;
         }
-        this.key1 = "全部";
         this.$Spin.show();
         let success = new Promise((resolve, reject) => {
-          this.$axios.$get('/monitoring/display/company/upload-not/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])).then(res => {
+          this.$axios.$get('/monitoring/display/company/upload-not/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])+"&deptCode="+code).then(res => {
             resolve(res)
           }, err => {
             reject(err)
           })
         })
         let error = new Promise((resolve, reject) => {
-          this.$axios.$get('/monitoring/display/company/upload-fault/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])).then(res => {
+          this.$axios.$get('/monitoring/display/company/upload-fault/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])+"&deptCode="+code).then(res => {
             resolve(res)
           }, err => {
             reject(err)
@@ -136,23 +139,26 @@
           }
           for (let i in res) {
             areaName.push(res[i].deptName)
-            dataObj[res[i].deptName] = { success: res[i].companyCount, error: errorData[res[i].deptName],code:res[i].deptCode }
+            dataObj[res[i].deptName] = { success: res[i].companyCount, error: errorData[res[i].deptName] || 0,code:res[i].deptCode }
             success1 += parseInt(res[i].companyCount);
           }
           if(code == ""){
             this.areaName = areaName;
             this.dataObj = dataObj;
+          }else{
+            this.secondArea = dataObj;
           }
           this.success1 = success1;
           this.error1 = error1;
           this.apiShow = true;
-          this.showChart(data,areaName);
+          this.showChart(data,areaName,dataObj);
           areaName.unshift('全部')
           this.$Spin.hide();
         })
       },
-      showChart(data,areaName) {
+      showChart(data,areaName,dataObj) {
         this.bar2 = echarts.init(document.getElementById('bar2'))
+          this.bar2.off('click');
          this.optionBar1 = {
           color: ['#C14DE8', '#0f0f0f'],
           tooltip: {
@@ -238,8 +244,8 @@
         let area = [], success = [], error = [];
         for (let i = 0; i < areaName.length; i++) {
           area.push(areaName[i])
-          success.push(this.dataObj[areaName[i]].success)
-          error.push(this.dataObj[areaName[i]].error)
+          success.push(dataObj[areaName[i]].success)
+          error.push(dataObj[areaName[i]].error)
         }
         this.optionBar1.xAxis[0].data = area
         this.optionBar1.series[0].data = success
@@ -247,8 +253,20 @@
         this.bar2.clear();
         this.bar2.setOption(this.optionBar1);
       this.bar2.on('click', (params)=>{
-        // console.log(params.name);
-        return false;
+        let deptCode;
+        let type;
+        if(this.dataObj.hasOwnProperty(params.name)){
+          deptCode = this.dataObj[params.name].code;
+        }else{
+          deptCode = this.secondArea[params.name].code;
+        }
+        console.log(deptCode,params);
+        if(params.seriesName == '未上传'){
+          type = 2;
+        }else{
+          type = 1;
+        }
+        this.$router.push({ path: '/center/repair-upload-error', query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1]),type:type } })
       });
 
       },
@@ -276,7 +294,7 @@
       searchTime(val){
 
       },
-      key1(){
+      key1(val){
         let area = [], success = [], error = [],success1 = 0,error1 = 0;
         if(this.key1 == "全部"){
           for (let i = 0; i < this.areaName.length; i++) {
@@ -296,25 +314,9 @@
             this.error1 = error1;
           }
           return;
+        }else{
+          this.getData(this.dataObj[val].code);
         }
-        console.log(JSON.stringify(this.dataObj));
-        // for (let i = 0; i < this.areaName.length; i++) {
-        //   if (this.areaName[i] ==  this.key1) {
-        //     area.push(this.areaName[i])
-        //     success.push(this.dataObj[this.areaName[i]].success)
-        //     success1 += parseInt(this.dataObj[this.areaName[i]].success);
-        //     error.push(this.dataObj[this.areaName[i]].error)
-        //     error1 += parseInt(this.dataObj[this.areaName[i]].error);
-        //     this.success1 = success1;
-        //     this.error1 = error1;
-        //     this.optionBar1.xAxis[0].data = area
-        //     this.optionBar1.series[0].data = success
-        //     this.optionBar1.series[1].data = error
-        //     this.bar2.setOption(this.optionBar1);
-        //   }else{
-        //
-        //   }
-        // }
       }
     },
   }
