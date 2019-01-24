@@ -254,7 +254,7 @@
         this.bar2.setOption(this.optionBar1);
       this.bar2.on('click', (params)=>{
         let deptCode;
-        let type;
+        let url;
         if(this.dataObj.hasOwnProperty(params.name)){
           deptCode = this.dataObj[params.name].code;
         }else{
@@ -262,11 +262,11 @@
         }
         console.log(deptCode,params);
         if(params.seriesName == '未上传'){
-          type = 2;
+          url = "/center/repair-upload";
         }else{
-          type = 1;
+          url = "/center/repair-upload-error";
         }
-        this.$router.push({ path: '/center/repair-upload-error', query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1]),type:type } })
+        this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1]),type:type } })
       });
 
       },
