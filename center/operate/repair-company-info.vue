@@ -496,6 +496,8 @@
         <Button v-if="accessBtn('edit')" size="large" type="primary" @click="addCompany('listSearch')">提交</Button>
         <Button v-if="accessBtn('edit')" size="large" type="primary" @click="showChange=Math.random(),detailId=listSearch.id">查看变更</Button>
         <Button v-if="accessBtn('edit')" size="large" type="primary" @click="modal1=true" :disabled="listSearch.status==2">审核</Button>
+        <Button v-show="(listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="resetKey" >重置密钥</Button>
+        <Button v-show="(!listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="addKey" >创建密钥</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
     <Modal v-model="modal1">
@@ -535,6 +537,39 @@
     </div>
   </Modal>
 
+  <!--密钥对接弹窗-->
+  <Modal
+    v-model="showKey"
+    title="对接密钥"
+    width="300"
+    @on-visible-change="visibleChangeKey"
+    :scrollable="true"
+    :transfer= "true"
+    :footer-hide="false"
+    :mask-closable="false"
+    :transition-names="['', '']">
+    <div >
+        <Form  :label-width="80">
+            <FormItem label="企业名称:">
+                <!--<Input type="text"  v-model="keyList.name" placeholder="请输入渠道名称" ></Input>-->
+                <div>{{keyList.name}}</div>
+            </FormItem>
+            <FormItem label="许可证号:">
+                <!--<Input type="text"  v-model="keyList.license" placeholder="请输入渠道名称" ></Input>-->
+                <div>{{keyList.license}}</div>
+            </FormItem>
+            <FormItem label="对接密钥:">
+                <!--<Input type="text"  v-model="keyList.secretKey" placeholder="请输入渠道名称" ></Input>-->
+                <!--<div id="biao1">{{keyList.secretKey}}</div>-->
+                <input type="text" value="" v-model="keyList.secretKey" readonly  id="biao1"/>
+            </FormItem>
+        </Form>
+    </div>
+    <div slot="footer">
+        <Button  size="large" type="primary" @click="copyUrl">复制到粘贴版</Button>
+        <Button  size="large" type="default" @click="showKey=false;">关闭</Button>
+    </div>
+  </Modal>
 
 
 
@@ -563,10 +598,16 @@ export default {
             // spinShow:false,
             showModal:false,
             showAdd:false,
+            showKey:false,//对接密钥显隐
             testTitle:'',
             modal1:false,
             manageType:[],//管理部门数据集合--------
             manageArr:[],
+            keyList:{
+                name:'',
+                license:'',
+                secretKey:''
+            },
             columns10: [
                     {
                         title: '对接渠道',
@@ -689,6 +730,8 @@ export default {
                 "contactName":'',
                 "contactPhone":'',
                 "erpName":'',
+                "code":'',//对接的秘钥---
+                "createKey":'',
             },
             ruleValidate: {
                 name:[{ required: true, message: '必填项不可为空', },],
@@ -925,6 +968,8 @@ export default {
                 "contactName":'',
                 "contactPhone":'',
                 "erpName":'',
+                "code":'',//对接的秘钥---
+                "createKey":'',
             };
 
             if(this.detailData){
@@ -951,7 +996,9 @@ export default {
                         }
                         else if(i=="source"){
                             this.listSearch[i]=resData[i];
-                        }else{
+                        }else if(i=="createKey"){
+                            this.listSearch[i]=resData[i];
+                        }{
                             if(resData[i]){
                                 this.listSearch[i]=resData[i];
                             }
@@ -1396,12 +1443,59 @@ export default {
             this.showAdd=false;
           })
         },
+        //创建密钥接口----------
+        addKey(){
+            this.$Modal.confirm({
+              title:"系统提示!",
+              content:"确定要创建吗？",
+              onOk:this.corpKey,
+          })
+        },
+        //重置密钥接口------------
+        resetKey(){
+            this.$Modal.confirm({
+              title:"系统提示!",
+              content:"确定要重置吗？",
+              onOk:this.corpKey,
+          })
+        },
+        corpKey(){
+            this.$axios.get('/corp/manage/key/'+this.listSearch.id, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    for(let i in res.data.item){
+                        this.keyList[i]=res.data.item[i];
+                    }
+                    this.showKey=true;
+                }
+            })
+
+        },
+        //复制到粘贴版-----
+        copyUrl(){
+            var Url2=document.getElementById("biao1");
+            Url2.select(); // 选择对象
+            document.execCommand("Copy"); // 执行浏览器复制命令
+            this.$Message.info("对接密钥已复制好，可贴粘。");
+        },
+        //密钥接口关闭时触发--------
+        visibleChangeKey(){
+            if(status === false){
+                    for(let i in this.keyList){
+                        this.keyList[i]='';
+                    }
+            }
+        }
         
     },
 }
 </script>
 
 <style scoped lang="less">
+#biao1{
+    border: none;
+    color: #515a6e;
+}
 .content-list{
     width: 100%;
     height: 45px;

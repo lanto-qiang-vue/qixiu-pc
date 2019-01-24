@@ -1,28 +1,28 @@
 <template>
   <div>
     <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从2018-12-23至2018-12-28,闵行区维修记录上传存在错误的企业总数为:{{total}}家</span></div>
-<common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
-                @changePage="changePage" @changePageSize="changePageSize"
-                :show="showTable" :page="page"  :loading="loading">
-    <div  slot="search"  >
-        <Form :label-width="110" class="common-form">
-              <FormItem label="企业名称:">
-                  <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
-              </FormItem>
-              <FormItem label="许可证号:">
-                  <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
-              </FormItem>
-              <FormItem :label-width="0" style="width: 80px;">
-                  <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
-              </FormItem>
-        </Form>
-    </div>
-    <div slot="operate">
-      <Button type="primary" v-if="">导出全部</Button>
-      <Button type="error" v-if="">提醒全部</Button>
-    </div>
+      <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
+                    @changePage="changePage" @changePageSize="changePageSize"
+                    :show="showTable" :page="page"  :loading="loading">
+        <div  slot="search"  >
+            <Form :label-width="110" class="common-form">
+                  <FormItem label="企业名称:">
+                      <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
+                  </FormItem>
+                  <FormItem label="许可证号:">
+                      <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
+                  </FormItem>
+                  <FormItem :label-width="0" style="width: 80px;">
+                      <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+                  </FormItem>
+            </Form>
+        </div>
+        <div slot="operate">
+          <!--<Button type="primary" v-if="">导出全部</Button>-->
+          <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
+        </div>
 
-  </common-table>
+      </common-table>
   </div>
 </template>
 
@@ -39,23 +39,7 @@ export default {
     data(){
 		  return{
         loading:false,
-        columns: [
-
-          {title: '企业名称', key: 'companyName', minWidth: 120,
-          },
-          {title: '期间上传数', key: 'recordTotalCount', sortable: true, minWidth: 120,
-          },
-          {title: '错误记录数', key: 'recordFaultCount', sortable: true, minWidth: 135,
-          },
-          {title: '错误率', key: 'probability', sortable: true, minWidth: 120,
-          },
-          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
-            render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
-          },
-          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.honor||'')
-          },
-        ],
+        columns: [],
         tableData: [],
 
         search:{
@@ -73,10 +57,91 @@ export default {
         detailData: null,
         clearTableSelect: null,
         deleteArray:[],
+        temObjectData:'',//临时存储提醒字段数据------------
+        uploadUrl:'',//通用链接-----
       }
     },
     mounted () {
-    this.getList();
+      let routerData=this.$route;
+      if(routerData.path=="/center/repair-upload-error"){
+        this.columns=[
+          {title: '企业名称', key: 'companyName', minWidth: 120,
+          },
+          {title: '期间上传数', key: 'recordTotalCount', sortable: true, minWidth: 120,
+          },
+          {title: '错误记录数', key: 'recordFaultCount', sortable: true, minWidth: 135,
+          },
+          {title: '错误率', key: 'probability', sortable: true, minWidth: 120,
+          },
+          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+            render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+          },
+          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+            render: (h, params) => {
+                  return h('div', [
+                      h('Button', {
+                          props: {
+                              type: 'warning',
+                              size: 'small'
+                          },
+                          on: {
+                              click: () => {
+                                  this.temObjectData=params.row;
+                                  this.$Modal.confirm({
+                                      title:"提醒通知!",
+                                      content:"确定要发送提醒吗？",
+                                      onOk:this.sendCountFun,
+                                  })
+                              }
+                          }
+                      }, '发送提醒')
+                  ]);
+            }
+          },
+        ];
+        this.uploadUrl="/monitoring/display/company/upload-fault/query";
+
+        this.getList();
+      }else if(routerData.path=="/center/repair-upload"){
+        this.columns=[
+          {title: '企业名称', key: 'companyName', minWidth: 120,
+          },
+          {title: '最后一次上传记录时间', key: 'lastTime', sortable: true, minWidth: 120,
+          },
+          {title: '联系方式', key: 'telephone', sortable: true, minWidth: 135,
+          },
+          
+          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+            render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+          },
+          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+            render: (h, params) => {
+                  return h('div', [
+                      h('Button', {
+                          props: {
+                              type: 'warning',
+                              size: 'small'
+                          },
+                          on: {
+                              click: () => {
+                                  this.temObjectData=params.row;
+                                  this.$Modal.confirm({
+                                      title:"提醒通知!",
+                                      content:"确定要发送提醒吗？",
+                                      onOk:this.sendCountFun,
+                                  })
+                              }
+                          }
+                      }, '发送提醒')
+                  ]);
+            }
+          },
+        ];
+        this.uploadUrl="/monitoring/display/company/upload-not/query";
+        this.getList();
+
+      }
+          
     },
     methods:{
         getList(){
@@ -86,7 +151,7 @@ export default {
             urlStr+='&'+i+'='+this.search[i];
           }
           this.loading=true;
-          this.$axios.get('/monitoring/display/company/upload-fault/query?size='+this.limit+'&page='+page+urlStr, {
+          this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
               
           }).then( (res) => {
             if(res.status == 200){
@@ -108,7 +173,72 @@ export default {
         changePageSize(size){
           this.limit= size
           this.getList()
+        },
+        //提醒通知--------------------
+        sendCountFun(){
+            
+            if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
+                this.$axios.post('/monitoring/message/company-docking/upload-not', {
+                      "companyCode": this.temObjectData.companyCode,
+                      "startDate ": this.search.startDate,
+                      "endDate" :this.search.endDate,
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getList();
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
+                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
+                      "companyCode": this.temObjectData.companyCode,
+                      "startDate ": this.search.startDate,
+                      "endDate" :this.search.endDate,
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getList();
+                  }
+                })
+            }
+            
+        },
+        //提醒全部通知----------------------------
+        sendAllCountFun(){
+            
+            this.$Modal.confirm({
+                title:"提醒通知!",
+                content:"确定要給全部发送提醒吗？",
+                onOk:this.sendAll,
+            })
+
+            
+        },
+        sendAll(){
+            
+            if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
+                this.$axios.post('/monitoring/message/company-docking/upload-not', {
+                      "companyName": this.search.companyName||null,
+                      "license": this.search.license||null,
+                      "startDate ": this.search.startDate,
+                      "endDate" :this.search.endDate,
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getList();
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
+                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
+                      "companyName": this.search.companyName||null,
+                      "license": this.search.license||null,
+                      "startDate ": this.search.startDate,
+                      "endDate" :this.search.endDate,
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getList();
+                  }
+                })
+            }
+
         }
+
     },
 	}
 </script>
