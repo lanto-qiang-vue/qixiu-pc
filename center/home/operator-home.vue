@@ -12,7 +12,8 @@
     <img class="shanghai" src="/img/hotmap/shanghai.png"/>
 
     <div class="total mnypjt">
-      <label ><span id="corptotal">test-54321</span></label>
+      <!--<label ><span id="corptotal">test-54321</span></label>-->
+      <label class="hasbg"><span id="corptotal">test-54321</span></label>
       <label class="hasbg"><span id="join">test-54321</span></label>
       <label class="hasbg"><span id="using">test-54321</span></label>
     </div>
@@ -207,7 +208,7 @@ export default {
     display: block;
   }
   .total label:nth-child(1) span{
-    background: url("/img/hotmap/label1.png") no-repeat left center;
+    background: url("/img/hotmap/label4.png") no-repeat 1.5vw center;
     background-size: 45% auto;
   }
   .total label:nth-child(2) span{
