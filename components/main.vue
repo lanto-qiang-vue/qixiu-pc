@@ -79,8 +79,7 @@ export default {
   },
   mounted(){
     console.log('main-mounted', this.$route)
-    this.checkButt();
-    // this.funAuth('sss')
+    // this.checkButt();
   },
   methods: {
      checkButt(){
