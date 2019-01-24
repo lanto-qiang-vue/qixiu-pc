@@ -207,6 +207,23 @@
             <!--<FormItem label="对接情况:" style="width: 92%;" >
                 <Table border  :columns="columns10" :data="data9"></Table>
             </FormItem>-->
+            <FormItem label="使用结算软件:" style="width: 45%;" >
+                  <i-switch size="large" v-model="listSearch.useErp">
+                    <span slot="open">是</span>
+                    <span slot="close">否</span>
+                </i-switch>
+            </FormItem>
+            <FormItem label="Erp提供商姓名:" style="width: 45%;" v-show="listSearch.useErp?true:false">
+                <Input type="text"  v-model="listSearch.contactName" placeholder="请输入Erp提供商姓名" ></Input>
+            </FormItem>
+            <FormItem label="Erp提供商电话:" style="width: 45%;" v-show="listSearch.useErp?true:false">
+                <Input type="text"  v-model="listSearch.contactPhone" placeholder="请输入Erp提供商电话" ></Input>
+            </FormItem>
+            <FormItem label="Erp企业名称:" style="width: 45%;" v-show="listSearch.useErp?true:false">
+                <Input type="text"  v-model="listSearch.erpName" placeholder="请输入Erp企业名称" ></Input>
+            </FormItem>
+
+
             <FormItem label="对接渠道:" style="width: 45%;" >
                 <Select v-model="listSearch.source" clearable style="width: 70%">
                     <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
@@ -668,6 +685,10 @@ export default {
                 "groupBusiness":false,
                 "useHss":false,
                 "buttJoinTime":'',//对接时间---
+                "useErp":false,
+                "contactName":'',
+                "contactPhone":'',
+                "erpName":'',
             },
             ruleValidate: {
                 name:[{ required: true, message: '必填项不可为空', },],
@@ -900,6 +921,10 @@ export default {
                 "groupBusiness":false,
                 "useHss":false,
                 "buttJoinTime":'',//对接时间---
+                "useErp":false,
+                "contactName":'',
+                "contactPhone":'',
+                "erpName":'',
             };
 
             if(this.detailData){
@@ -973,18 +998,74 @@ export default {
         },
         //新增一个企业数据---------
         addCompany(name){
+
+            if((this.listSearch.businessSphere.indexOf(88)!=-1)&&(!this.listSearch.businessSphereOther)){
+                this.$Message.error("请填写其他主要业务范围");
+                return;
+            }
+
+            if((this.listSearch.special)&&(!this.listSearch.specialRepairBrand)){
+                this.$Message.error("请填写特约维修品牌");
+                return;
+            }
+
+            if((this.listSearch.industryCategory==9)&&(!this.listSearch.industryCategoryOther)){
+                this.$Message.error("请填写其他业户类别");
+                return;
+            }
+
+            if((this.listSearch.economicType==900)&&(!this.listSearch.economicTypeOther)){
+                this.$Message.error("请填写其他经济类型");
+                return;
+            }
+
+            if((this.listSearch.model.indexOf(6)!=-1)&&(!this.listSearch.modelOther)){
+                this.$Message.error("请填写主修品牌");
+                return;
+            }
+
+            if((this.listSearch.serviceCategory.indexOf(300007)!=-1)&&(!this.listSearch.serviceCategoryOther)){
+                this.$Message.error("请填写其他服务种类");
+                return;
+            }
+
+            if((this.listSearch.sincerity)&&(this.listSearch.sincerityYears.length==0)){
+                this.$Message.error("请填写成为全国诚信维修企业的年份");
+                return;
+            }
+            if((this.listSearch.useErp)&&(!this.listSearch.contactName)){
+                
+                this.$Message.error("请填写Erp提供商姓名");
+                return;
+            }
+
+            if((this.listSearch.useErp)&&(!this.listSearch.contactPhone)){
+                
+                this.$Message.error("请填写Erp提供商电话");
+                return;
+            }
+
+            if((this.listSearch.useErp)&&(!this.listSearch.erpName)){
+                
+                this.$Message.error("请填写Erp企业名称");
+                return;
+            }
+
+
+            console.log(this.manageArr);
             if(this.manageArr.length>0){
                 this.listSearch["org"]=this.manageArr[0]||'';
                 this.listSearch["dept"]=this.manageArr[1]||'';
+            }else{
+                this.listSearch["org"]='';
+                this.listSearch["dept"]='';
             }
+
             let businessHours='';
             console.log(this.listSearch.businessHours);
             if(this.listSearch.businessHours.length>0&&this.listSearch.businessHours[0]&&this.listSearch.businessHours[1]){
                 businessHours=this.listSearch.businessHours[0]+'-'+this.listSearch.businessHours[1];
             }
-
-
-
             this.$refs[name].validate((valid) => {
 
                 if (valid) {
@@ -1018,7 +1099,7 @@ export default {
                     "industryCategory": this.listSearch.industryCategory,
                     "industryCategoryOther": this.listSearch.industryCategoryOther,
                     "iso": this.listSearch.iso,
-                    "latitude": this.listSearch.latitude,
+                    "latitude": this.listSearch.latitude||0,
                     "legalEmail": this.listSearch.legalEmail,
                     "legalMobile": this.listSearch.legalMobile,
                     "legalName": this.listSearch.legalName,
@@ -1028,7 +1109,7 @@ export default {
                     "licenceEndDate": formatDate(this.listSearch.licenceEndDate),
                     "linkmanName": this.listSearch.linkmanName,
                     "linkmanTel": this.listSearch.linkmanTel,
-                    "longitude": this.listSearch.longitude,
+                    "longitude": this.listSearch.longitude||0,
                     "machinists": this.listSearch.machinists,
                     "manager": this.listSearch.manager,
                     "managerOther": this.listSearch.managerOther,
@@ -1076,6 +1157,10 @@ export default {
                     "groupBusiness":this.listSearch.groupBusiness,
                     "useHss":this.listSearch.useHss,
                     "buttJoinTime":this.listSearch.buttJoinTime,//对接时间---
+                    "useErp":this.listSearch.useErp,
+                    "contactName":this.listSearch.contactName,
+                    "contactPhone":this.listSearch.contactPhone,
+                    "erpName":this.listSearch.erpName,
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;
@@ -1111,7 +1196,7 @@ export default {
                     "industryCategory": this.listSearch.industryCategory,
                     "industryCategoryOther": this.listSearch.industryCategoryOther,
                     "iso": this.listSearch.iso,
-                    "latitude": this.listSearch.latitude,
+                    "latitude": this.listSearch.latitude||0,
                     "legalEmail": this.listSearch.legalEmail,
                     "legalMobile": this.listSearch.legalMobile,
                     "legalName": this.listSearch.legalName,
@@ -1121,7 +1206,7 @@ export default {
                     "licenceEndDate": formatDate(this.listSearch.licenceEndDate),
                     "linkmanName": this.listSearch.linkmanName,
                     "linkmanTel": this.listSearch.linkmanTel,
-                    "longitude": this.listSearch.longitude,
+                    "longitude": this.listSearch.longitude||0,
                     "machinists": this.listSearch.machinists,
                     "manager": this.listSearch.manager,
                     "managerOther": this.listSearch.managerOther,
@@ -1169,6 +1254,10 @@ export default {
                     "groupBusiness":this.listSearch.groupBusiness,
                     "useHss":this.listSearch.useHss,
                     "buttJoinTime":this.listSearch.buttJoinTime,//对接时间---
+                    "useErp":this.listSearch.useErp,
+                    "contactName":this.listSearch.contactName,
+                    "contactPhone":this.listSearch.contactPhone,
+                    "erpName":this.listSearch.erpName,
                 }).then( (res) => {
                     if(res.data.code=='0'){
                         this.showModal=false;

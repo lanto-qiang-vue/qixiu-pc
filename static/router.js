@@ -813,6 +813,15 @@ export default [
         },
         component: resolve('center/logininfo/maintain-data-manage.vue'),
       },
+      {
+        path: 'repair-upload-error',
+        meta: {
+          icon: '',
+          title: '维修记录上传情况',
+          accessId: '',
+        },
+        component: resolve('center/operate/repair-upload-error.vue'),
+      },
     ]
   },
   {

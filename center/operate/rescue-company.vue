@@ -3,25 +3,24 @@
 <template>
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page"  :loading="loading" @changeSelect="onSelectionChange">
+                :show="showTable" :page="page"  :loading="loading">
     <div  slot="search"  >
         <Form :label-width="110" class="common-form">
               <FormItem label="企业名称:">
-                  <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
+                  <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
               </FormItem>
               <FormItem label="许可证号:">
                   <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
               </FormItem>
               <FormItem label="救援区域:">
                   
-                <Select v-model="search.license" clearable>
-                    <Option v-for="item in businessType" :value="item.key" :key="item.key">{{ item.name }}</Option>
-                  </Select>
+                <Select v-model="search.rescueAreas" clearable multiple>
+                    <Option v-for="item in rescueArea" :value="item.code" :key="item.code">{{ item.name }}</Option>
+                </Select>
               </FormItem>
               <FormItem label="状态:">
-                  
-                  <Select v-model="search.license" clearable>
-                    <Option v-for="item in businessType" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                  <Select v-model="search.status" clearable>
+                    <Option v-for="item in statusType" :value="item.code" :key="item.code">{{ item.name }}</Option>
                   </Select>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
@@ -55,38 +54,43 @@
 		  return{
         loading:false,
         columns: [
-          {title: '序号',  width: 70,align:'center', sortable: true,type:'index'
+          {title: '序号',  width: 70,align:'center', type:'index'
             // render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
           },
-          {title: '清障施救牵引企业名称', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.companyName||'')
+          {title: '清障施救牵引企业名称', key: 'name',  minWidth: 180,
+            // render: (h, params) => h('span', params.row.company.companyName||'')
           },
-          {title: '许可证号', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.license||'')
+          {title: '许可证号', key: 'license',  minWidth: 120,
+            // render: (h, params) => h('span', params.row.company.license||'')
           },
-          {title: '状态', key: 'company', sortable: true, minWidth: 135,
-            render: (h, params) => h('span', params.row.company.businessAddress||'')
+          {title: '状态', key: 'status',  minWidth: 135,
+            // render: (h, params) => h('span', params.row.company.businessAddress||'')
           },
-          {title: '救援区域', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.businessScope||'')
+          {title: '救援区域', key: 'rescueAreas',  minWidth: 120,
+            // render: (h, params) => h('span', params.row.company.businessScope||'')
           },
-          {title: '服务周期', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.operatorMobile||'')
+          {title: '服务周期', key: 'serviceCycles',  minWidth: 120,
+            // render: (h, params) => h('span', params.row.company.operatorMobile||'')
           },
-          {title: '服务时间', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.repairBrand||'')
+          {title: '服务时间', key: 'serviceTime',  minWidth: 120,
+            // render: (h, params) => h('span', params.row.company.repairBrand||'')
           },
-          {title: '服务电话', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.lastYearLevel||'')
+          {title: '服务电话', key: 'serviceHotLine',  minWidth: 120,
+            // render: (h, params) => h('span', params.row.company.lastYearLevel||'')
           },
           
         ],
-        tableData: [{"company":'上海蓝途共享测试'}],
-        businessType:[],
+        tableData: [],
+        statusType:[
+          {code:1,name:'有效'},
+          {code:0,name:'无效'},
+        ],
+        rescueArea:[],//救援区域----
         search:{
-          companyName:'',
-          license: '',
-          type:'WHITELIST',
+          "license": "",
+          "name": "",
+          "rescueAreas": [],
+          "status": ''
         },
         page: 1,
         limit: 10,
@@ -99,39 +103,40 @@
       }
     },
     mounted () {
-      // this.tableData=[{"honor":'上海蓝途共享测试'}];
-    //   this.getList();
+      
+      this.getList();
+      this.getAreaList();
     },
     methods:{
         getList(){
-          let page=this.page-1;
-          let urlStr='';
-          for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
-          }
-
           this.loading=true;
-          this.$axios.get('/core/company-group/query?size='+this.limit+'&page='+page+urlStr, {
-              
+          this.$axios.post('/corp/rt/list', {
+              "license": "",
+                "name": "",
+                "pageNo": this.page,
+                "pageSize": this.limit,
+                "rescueAreas": [],
+                "status": 0
           }).then( (res) => {
-            if(res.status===200){
-                  this.tableData=res.data.content;
-                  this.total=res.data.totalElements;
-                  this.loading=false;
-              }else{
-                this.loading=false;
-                // this.$Message.error(res.statusText);
-              }
-            
+            if(res.data.code==0){
+                  this.tableData=res.data.items;
+                  this.total=res.data.total;
+             }
+            this.loading=false;
           })
-          this.detailData= null;
+          
         },
-        onSelectionChange(selection){
+        getAreaList(){
 
-            console.log('onSelectionChange',selection);
-            this.deleteArray=selection;
+            this.$axios.get('/area/query', {
+            }).then( (res) => {
+              if(res.data.code==0){
+                  this.rescueArea=res.data.items;
+                  
+             }
+            })
         },
-        //删除页面数据-------------
+        //删除页面数据------------
         delFun(){
           this.$Modal.confirm({
               title:"系统提示!",

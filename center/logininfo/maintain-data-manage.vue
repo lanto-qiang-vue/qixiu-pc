@@ -39,7 +39,7 @@
           <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b></div>
           <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key1">
-              <Option v-for="item in areaName" :value="item">{{item}}</Option>
+              <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
             </Select></div>
         </div>
         <div>
@@ -97,7 +97,7 @@
         let buildDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
         return buildDate;
       },
-      getData() {
+      getData(code = "") {
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
           this.$Message.info("数据查询需要选择时间段");
           return false;
@@ -125,8 +125,8 @@
         if(res.status == 404 && data.status == 404){
           return false;
         }
-          this.areaName = []
-          this.dataObj = {}
+          let areaName = []
+          let dataObj = {}
           let errorData = {}
           let success1 = 0
           let error1 = 0
@@ -135,19 +135,23 @@
             error1 += parseInt(data[i].companyCount);
           }
           for (let i in res) {
-            this.areaName.push(res[i].deptName)
-            this.dataObj[res[i].deptName] = { success: res[i].companyCount, error: errorData[res[i].deptName] }
+            areaName.push(res[i].deptName)
+            dataObj[res[i].deptName] = { success: res[i].companyCount, error: errorData[res[i].deptName],code:res[i].deptCode }
             success1 += parseInt(res[i].companyCount);
+          }
+          if(code == ""){
+            this.areaName = areaName;
+            this.dataObj = dataObj;
           }
           this.success1 = success1;
           this.error1 = error1;
-          this.areaName.unshift('全部')
           this.apiShow = true;
-          this.showChart();
+          this.showChart(data,areaName);
+          areaName.unshift('全部')
           this.$Spin.hide();
         })
       },
-      showChart(data) {
+      showChart(data,areaName) {
         this.bar2 = echarts.init(document.getElementById('bar2'))
          this.optionBar1 = {
           color: ['#C14DE8', '#0f0f0f'],
@@ -232,13 +236,10 @@
           ]
         }
         let area = [], success = [], error = [];
-        for (let i = 0; i < this.areaName.length; i++) {
-          if (this.areaName[i] == '全部') {
-            continue
-          }
-          area.push(this.areaName[i])
-          success.push(this.dataObj[this.areaName[i]].success)
-          error.push(this.dataObj[this.areaName[i]].error)
+        for (let i = 0; i < areaName.length; i++) {
+          area.push(areaName[i])
+          success.push(this.dataObj[areaName[i]].success)
+          error.push(this.dataObj[areaName[i]].error)
         }
         this.optionBar1.xAxis[0].data = area
         this.optionBar1.series[0].data = success
@@ -246,7 +247,7 @@
         this.bar2.clear();
         this.bar2.setOption(this.optionBar1);
       this.bar2.on('click', (params)=>{
-        console.log(params.seriesName);
+        // console.log(params.name);
         return false;
       });
 
@@ -265,26 +266,6 @@
         this.$router.push({
           path: '/center/review-manage',
           query: { companyName: row.companyName, type: this.searchType, name: 'clp' }
-        })
-      },
-      getList() {
-        let strUrl = ''
-        if (this.searchType == 0) {
-          strUrl += '&type=0'
-        } else if (this.searchType == 1) {
-          strUrl += '&type=1'
-        }
-        this.loading = true
-        this.$axios.get('/comment/complaint/maintain/query/statistics?size=10&page=0' + strUrl, {}).then((res) => {
-
-          if (res.status === 200) {
-            this.notifyData = res.data.content
-            this.loading = false
-          } else {
-            // this.$Message.error(res.statusText);
-            this.loading = false
-          }
-
         })
       },
       onChange(value) {
@@ -316,23 +297,24 @@
           }
           return;
         }
-        for (let i = 0; i < this.areaName.length; i++) {
-          if (this.areaName[i] ==  this.key1) {
-            area.push(this.areaName[i])
-            success.push(this.dataObj[this.areaName[i]].success)
-            success1 += parseInt(this.dataObj[this.areaName[i]].success);
-            error.push(this.dataObj[this.areaName[i]].error)
-            error1 += parseInt(this.dataObj[this.areaName[i]].error);
-            this.success1 = success1;
-            this.error1 = error1;
-            this.optionBar1.xAxis[0].data = area
-            this.optionBar1.series[0].data = success
-            this.optionBar1.series[1].data = error
-            this.bar2.setOption(this.optionBar1);
-          }else{
-
-          }
-        }
+        console.log(JSON.stringify(this.dataObj));
+        // for (let i = 0; i < this.areaName.length; i++) {
+        //   if (this.areaName[i] ==  this.key1) {
+        //     area.push(this.areaName[i])
+        //     success.push(this.dataObj[this.areaName[i]].success)
+        //     success1 += parseInt(this.dataObj[this.areaName[i]].success);
+        //     error.push(this.dataObj[this.areaName[i]].error)
+        //     error1 += parseInt(this.dataObj[this.areaName[i]].error);
+        //     this.success1 = success1;
+        //     this.error1 = error1;
+        //     this.optionBar1.xAxis[0].data = area
+        //     this.optionBar1.series[0].data = success
+        //     this.optionBar1.series[1].data = error
+        //     this.bar2.setOption(this.optionBar1);
+        //   }else{
+        //
+        //   }
+        // }
       }
     },
   }
