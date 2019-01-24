@@ -1220,7 +1220,7 @@ export default {
         line-height: 18px;
         padding-top: 7px;
         min-height: 30px;
-        max-height: 70px;
+        max-height: 61px;
         overflow: hidden;
       }
     }
