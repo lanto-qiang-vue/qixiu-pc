@@ -822,6 +822,15 @@ export default [
         },
         component: resolve('center/operate/repair-upload-error.vue'),
       },
+      {
+        path: 'repair-upload',
+        meta: {
+          icon: '',
+          title: '维修记录上传情况',
+          accessId: '',
+        },
+        component: resolve('center/operate/repair-upload-error.vue'),
+      },
     ]
   },
   {
