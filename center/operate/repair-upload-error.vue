@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从2018-12-23至2018-12-28,闵行区维修记录上传存在错误的企业总数为:{{total}}家</span></div>
+    <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从2018-12-23至2018-12-28,{{areaName}}维修记录上传存在错误的企业总数为:{{total}}家</span></div>
       <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                     @changePage="changePage" @changePageSize="changePageSize"
                     :show="showTable" :page="page"  :loading="loading">
@@ -45,9 +45,9 @@ export default {
         search:{
           companyName:'',
           license: '',
-          deptCode:310100,
-          startDate:'2018-01-01',
-          endDate:'2019-01-01',
+          deptCode:"",
+          startDate:'',
+          endDate:'',
         },
         page: 1,
         limit: 10,
@@ -59,10 +59,17 @@ export default {
         deleteArray:[],
         temObjectData:'',//临时存储提醒字段数据------------
         uploadUrl:'',//通用链接-----
+        areaName:'',
       }
     },
     mounted () {
       let routerData=this.$route;
+      let queryData=this.$route.query;
+      this.search.deptCode=queryData.deptCode;
+      this.search.startDate=queryData.startDate;
+      this.search.endDate=queryData.endDate;
+      this.areaName=queryData.deptName;
+      console.log("queryData",queryData);
       if(routerData.path=="/center/repair-upload-error"){
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
