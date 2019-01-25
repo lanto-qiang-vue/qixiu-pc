@@ -20,8 +20,7 @@
         </Form>
       </div>
       <div class="center">
-
-
+        <!--各区维修记录上传情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
           <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
@@ -42,7 +41,26 @@
               <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
             </Select></div>
         </div>
-        <div>
+        <!--各区推送阅读情况-->
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+          <div id="bar3" style="width: 100%;height: 600px;"></div>
+          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
+            <div style="float:left;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>未上传企业: {{success1}}家</b></div>
+            </div>
+            <div style="float:left;padding-left:20px;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>错误记录企业: {{error1}}家</b></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b></div>
+          <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
+            <Select style="width:150px;" v-model="key1">
+              <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
+            </Select></div>
         </div>
       </div>
 
@@ -60,6 +78,7 @@
         areaType: [],
         areaName: [],//区域名称获取。区域不重复。不用去重
         secondArea:[],//二级区域
+        stage:1,//区分阶段
         dataObj: {},
         key1: '全部',//维修上传记录筛选key
         success1: 0,//
@@ -99,12 +118,15 @@
         return buildDate;
       },
       getData(code = "") {
-        if(code == ""){
-          this.key1 = "全部";
-        }
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
           this.$Message.info("数据查询需要选择时间段");
           return false;
+        }
+        if(code == ""){
+          this.stage = 1;
+          this.key1 = "全部";
+        }else{
+          this.stage = 2;
         }
         this.$Spin.show();
         let success = new Promise((resolve, reject) => {
@@ -151,12 +173,12 @@
           this.success1 = success1;
           this.error1 = error1;
           this.apiShow = true;
-          this.showChart(data,areaName,dataObj);
+          this.showChart(areaName,dataObj);
           areaName.unshift('全部')
           this.$Spin.hide();
         })
       },
-      showChart(data,areaName,dataObj) {
+      showChart(areaName,dataObj) {
         this.bar2 = echarts.init(document.getElementById('bar2'))
           this.bar2.off('click');
          this.optionBar1 = {
@@ -252,7 +274,18 @@
         this.optionBar1.series[1].data = error
         this.bar2.clear();
         this.bar2.setOption(this.optionBar1);
-      this.bar2.on('click', (params)=>{
+        let self = this.bar2;
+        let that = this;
+        this.bar2.getZr().on('click', function (params) {
+          var pointInPixel= [params.offsetX, params.offsetY];
+          if (self.containPixel('grid',pointInPixel)) {
+            var xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
+            if(that.stage == 1){
+              that.key1 = that.areaName[xIndex+1];
+            }
+          }
+        });
+         this.bar2.on('click', (params)=>{
         let deptCode;
         let url;
         if(this.dataObj.hasOwnProperty(params.name)){
@@ -266,7 +299,9 @@
         }else{
           url = "/center/repair-upload-error";
         }
-        this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1]) } })
+
+        this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1])} })
+
       });
 
       },
@@ -297,6 +332,7 @@
       key1(val){
         let area = [], success = [], error = [],success1 = 0,error1 = 0;
         if(this.key1 == "全部"){
+          this.stage = 1;
           for (let i = 0; i < this.areaName.length; i++) {
             if (this.areaName[i] == '全部') {
               continue
