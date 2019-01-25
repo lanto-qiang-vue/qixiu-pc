@@ -20,8 +20,30 @@
         </Form>
       </div>
       <div class="center">
+        <!--各区维修记录上传情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
+          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
+            <div style="float:left;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>未上传企业: {{success1}}家</b></div>
+            </div>
+            <div style="float:left;padding-left:20px;">
+              <div
+                style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;padding-left:10px;"><b>错误记录企业: {{error1}}家</b></div>
+            </div>
+          </div>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b></div>
+          <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
+            <Select style="width:150px;" v-model="key1">
+              <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
+            </Select></div>
+        </div>
+        <!--各区推送阅读情况-->
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+          <div id="bar3" style="width: 100%;height: 600px;"></div>
           <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
             <div style="float:left;">
               <div
@@ -151,12 +173,12 @@
           this.success1 = success1;
           this.error1 = error1;
           this.apiShow = true;
-          this.showChart(data,areaName,dataObj);
+          this.showChart(areaName,dataObj);
           areaName.unshift('全部')
           this.$Spin.hide();
         })
       },
-      showChart(data,areaName,dataObj) {
+      showChart(areaName,dataObj) {
         this.bar2 = echarts.init(document.getElementById('bar2'))
           this.bar2.off('click');
          this.optionBar1 = {
