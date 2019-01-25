@@ -20,8 +20,6 @@
         </Form>
       </div>
       <div class="center">
-
-
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
           <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
@@ -42,8 +40,6 @@
               <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
             </Select></div>
         </div>
-        <div>
-        </div>
       </div>
 
     </div>
@@ -60,6 +56,7 @@
         areaType: [],
         areaName: [],//区域名称获取。区域不重复。不用去重
         secondArea:[],//二级区域
+        stage:1,//区分阶段
         dataObj: {},
         key1: '全部',//维修上传记录筛选key
         success1: 0,//
@@ -99,12 +96,15 @@
         return buildDate;
       },
       getData(code = "") {
-        if(code == ""){
-          this.key1 = "全部";
-        }
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
           this.$Message.info("数据查询需要选择时间段");
           return false;
+        }
+        if(code == ""){
+          this.stage = 1;
+          this.key1 = "全部";
+        }else{
+          this.stage = 2;
         }
         this.$Spin.show();
         let success = new Promise((resolve, reject) => {
@@ -252,7 +252,18 @@
         this.optionBar1.series[1].data = error
         this.bar2.clear();
         this.bar2.setOption(this.optionBar1);
-      this.bar2.on('click', (params)=>{
+        let self = this.bar2;
+        let that = this;
+        this.bar2.getZr().on('click', function (params) {
+          var pointInPixel= [params.offsetX, params.offsetY];
+          if (self.containPixel('grid',pointInPixel)) {
+            var xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
+            if(that.stage == 1){
+              that.key1 = that.areaName[xIndex+1];
+            }
+          }
+        });
+         this.bar2.on('click', (params)=>{
         let deptCode;
         let url;
         if(this.dataObj.hasOwnProperty(params.name)){
@@ -266,7 +277,7 @@
         }else{
           url = "/center/repair-upload-error";
         }
-        this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1]),type:type } })
+        this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1])} })
       });
 
       },
@@ -297,6 +308,7 @@
       key1(val){
         let area = [], success = [], error = [],success1 = 0,error1 = 0;
         if(this.key1 == "全部"){
+          this.stage = 1;
           for (let i = 0; i < this.areaName.length; i++) {
             if (this.areaName[i] == '全部') {
               continue
