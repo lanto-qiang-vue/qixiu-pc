@@ -8,8 +8,7 @@
       <div style="text-align: center;line-height: 24px;" v-show="exportNum.count">
         <h3>导入结果</h3>
         <p class="content">导入成功数：{{exportNum.count-exportNum.errorCount}}</p>
-        <p class="content">导入失败数：{{exportNum.errorCount}}</p>
-        <p class="content">导入失败行号：{{exportNum.errorRows}}</p>
+        <p class="content">导入失败数：<span style="color: #ed4014;">{{exportNum.errorCount}}</span></p>
       </div>
       <div style="text-align:left;">
         <Upload
@@ -33,7 +32,7 @@
         <div>{{filename}}</div>
       </div>
       <div slot="footer">
-        <!--<Button type="success" @click="down" style="float:left;">下载模板</Button>-->
+        <Button type="success" @click="down" style="float:left;">下载模板</Button>
         <Button type="error" @click="showModal=true" v-show="exportNum.errorCount">查看失败结果</Button>
         <Button type="primary" @click="upload">确定</Button>
         <Button type="error" @click="uploadClose">关闭</Button>
@@ -177,7 +176,7 @@
         this.filename = "请选择文件";
       },
       down() {
-        window.location.href =  this.downUrl;
+        window.location.href = "/企业信息导入模板.xlsx";
       },
     }
   }

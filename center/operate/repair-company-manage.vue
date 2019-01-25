@@ -15,7 +15,7 @@
               <FormItem label="经营范围:">
                   <Select v-model="search.businessScope" clearable>
                     
-                    <Option v-for="item in repairType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="是否对接:">
@@ -158,12 +158,12 @@ import funMixin from '~/components/fun-auth-mixim.js'
         clearTableSelect: null,
         //维修类别数据---------
         repairType:[
-            {code:"全部",name:""},
-            {code:"一类机动车维修",name:1},
-            {code:"二类机动车维修",name:2},
-            {code:"三类机动车维修",name:3},
-            {code:"摩托车维修",name:4},
-            {code:"汽车维修",name:5},
+            // {code:"全部",name:""},
+            // {code:"一类机动车维修",name:1},
+            // {code:"二类机动车维修",name:2},
+            // {code:"三类机动车维修",name:3},
+            // {code:"摩托车维修",name:4},
+            // {code:"汽车快修",name:5},
         ],
         beianStatusArr:[
           {code:"全部",name:""},
@@ -182,6 +182,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
     },
     mounted () {
       this.getBusinessType();
+      this.getValuesByTypeFun(1);
       this.getList();
     },
     methods:{
@@ -305,6 +306,19 @@ import funMixin from '~/components/fun-auth-mixim.js'
 
                     this.businessType=res.data.items;
                     
+                }
+           })
+        },
+        getValuesByTypeFun(id){
+            this.$axios.get('/dict/getValuesByTypeId/'+id, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    if(id==1){
+                        this.repairType=res.data.items;
+                    }
+                    
+                }else{
+                    // this.$Message.error(res.data.status);
                 }
            })
         },

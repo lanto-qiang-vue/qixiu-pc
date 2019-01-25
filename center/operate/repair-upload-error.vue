@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从2018-12-23至2018-12-28,{{areaName}}维修记录上传存在错误的企业总数为:{{total}}家</span></div>
+    <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从{{search.startDate}}至{{search.endDate}},{{areaName}}维修记录上传存在错误的企业总数为:{{total}}家</span></div>
       <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                     @changePage="changePage" @changePageSize="changePageSize"
                     :show="showTable" :page="page"  :loading="loading">
@@ -20,11 +20,26 @@
         <div slot="operate">
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
+          <Button type="default"  @click="$router.go(-1)">返回</Button>
+          <div class="publice-button"  @mouseenter="enter" ><Icon class="publice-button-i" type="md-help" /></div>
+          
         </div>
-
       </common-table>
+
+      
+    <Modal v-model="modal3" 
+      :footer-hide="true"
+      :mask-closable="false">
+        <p class="publice-info">提醒模板说明</p>
+        <p class="publice-info" style="padding-bottom: 10px;">{{titleTop}}</p>
+        <p>{{contentTop}}</p>
+        <p style="height: 80px;"></p>
+    </Modal>
+
   </div>
 </template>
+
+
 
 <script>
 import CommonTable from '~/components/common-table.vue'
@@ -60,6 +75,11 @@ export default {
         temObjectData:'',//临时存储提醒字段数据------------
         uploadUrl:'',//通用链接-----
         areaName:'',
+        modal3: false,
+
+        titleTop:'',
+        contentTop:'',
+
       }
     },
     mounted () {
@@ -69,7 +89,8 @@ export default {
       this.search.startDate=queryData.startDate;
       this.search.endDate=queryData.endDate;
       this.areaName=queryData.deptName;
-      console.log("queryData",queryData);
+
+      // console.log("queryData",queryData);
       if(routerData.path=="/center/repair-upload-error"){
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
@@ -107,6 +128,7 @@ export default {
           },
         ];
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
+
 
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
@@ -192,6 +214,11 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
+
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况，请按规定及时上传";
+
+                    this.modal3=true;
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
@@ -202,6 +229,11 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
+
+                    this.titleTop="（上传维修记录存在错误）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+                    this.modal3=true;
+
                   }
                 })
             }
@@ -229,6 +261,9 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
+                    this.modal3=true;
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
@@ -240,10 +275,29 @@ export default {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
+                    this.titleTop="（上传维修记录存在错误）";
+                    this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+                    this.modal3=true;
                   }
                 })
             }
 
+        },
+        //上传模板类--------
+        enter(){
+          if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
+              this.titleTop="（未上传维修记录）";
+              this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
+          }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
+              this.titleTop="（上传维修记录存在错误）";
+              this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+          }
+          
+          this.modal3=true;
+        },
+        leave(){
+          console.log('2')
+          this.modal3=false;
         }
 
     },
@@ -258,6 +312,24 @@ export default {
   display: inline-block;
   width: 200px;
   margin-right: 10px;
+}
+.publice-button{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  display: inline-block;
+  font-size: 20px;
+  text-align: center;
+  line-height: 32px;
+}
+.publice-button-i{
+  padding-bottom: 4px;
+}
+.publice-info{
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
 

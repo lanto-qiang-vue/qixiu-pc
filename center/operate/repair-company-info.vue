@@ -237,11 +237,6 @@
                 <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
             </FormItem>
 
-
-
-
-
-
             </Form>
             </Panel>
             <Panel name="2">企业信息
@@ -251,7 +246,7 @@
                     <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="工时单价:" style="width: 45%;" >
+            <FormItem label="工时单价:" style="width: 45%;" prop="workingHoursPrice">
                 <Input type="text"  v-model="listSearch.workingHoursPrice" placeholder="请输入工时单价"></Input>
             </FormItem>
             <FormItem label="业户类别:" style="width: 45%;" >
@@ -741,6 +736,7 @@ export default {
                 registerRegion:[{ required: true, message: '必填项不可为空', },],
                 registerDate:[{ required: true, message: '必填项不可为空', },],
                 businessScope:[{ required: true, message: '必填项不可为空', },],
+                workingHoursPrice:[{ message: '最多两位小数位', trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,}],
 
 
             },//规则验证
@@ -993,19 +989,22 @@ export default {
                     for(let i in resData){
                         if(i=="businessHours"){
                             this.listSearch[i]=resData[i].split('-');
-                        }
-                        else if(i=="source"){
+                            // console.log(this.listSearch[i]);
+                        }else if(i=="source"){
                             this.listSearch[i]=resData[i];
                         }else if(i=="createKey"){
                             this.listSearch[i]=resData[i];
-                        }{
+                        }else{
                             if(resData[i]){
+                                console.log(i);
                                 this.listSearch[i]=resData[i];
                             }
                             
                         }
                         
                     }
+
+                    // console.log("this.listSearch",this.listSearch);
                     this.manageArr=[];
                     this.manageArr.push(this.listSearch.org);
                     this.manageArr.push(this.listSearch.dept);
