@@ -850,7 +850,7 @@ export default {
             this.getPubliceType(30);
             this.getPubliceType(24);
             this.getCompanyArea();
-            this.getValuesByTypeFun(38);
+            this.getValuesByTypeFun(33);
             this.getValuesByTypeFun(1);
             this.companyRepair='';
             this.manageArr=[];
@@ -1412,7 +1412,7 @@ export default {
             this.$axios.get('/dict/getValuesByTypeId/'+id, {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    if(id==38){
+                    if(id==33){
                         this.channels=res.data.items;
                     }else if(id==1){
                         this.repairType=res.data.items;
