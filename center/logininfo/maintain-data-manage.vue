@@ -15,7 +15,7 @@
               <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期" style="width: 300px"></DatePicker>
           </FormItem>
            <FormItem :label-width="0">
-             <Button type="primary" @click="getData()">查询</Button>
+             <Button type="primary" @click="getAll()">查询</Button>
            </FormItem>
         </Form>
       </div>
@@ -48,15 +48,15 @@
             <div style="float:left;">
               <div
                 style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>未上传企业: {{success1}}家</b></div>
+              <div style="float:left;padding-left:10px;"><b>未上传未读企业: {{success1}}家</b></div>
             </div>
             <div style="float:left;padding-left:20px;">
               <div
                 style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>错误记录企业: {{error1}}家</b></div>
+              <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{error1}}家</b></div>
             </div>
           </div>
-          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b></div>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区推送未读情况</b></div>
           <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key1">
               <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
@@ -105,6 +105,10 @@
       })
     },
     methods: {
+      getAll(){
+        this.getData();
+        this.getRead();
+      },
       minus(day){
         let date = new Date();
         let buildDate1 = new Date();
@@ -112,10 +116,20 @@
         let buildDate2 = new Date(time);
         this.searchTime = [buildDate2,buildDate1];
         this.getData();
+        this.getRead();
       },
       toymd(date){
         let buildDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
         return buildDate;
+      },
+      getRead(code = ""){
+        if(this.searchTime[0] == "" || this.searchTime[1] == ""){
+          //缺少时间由getData抛出
+          return false;
+        }
+        this.$axios.$get('/monitoring/display/company/docking-unread/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])+"&deptCode="+code).then(res => {
+
+        })
       },
       getData(code = "") {
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
@@ -293,7 +307,6 @@
         }else{
           deptCode = this.secondArea[params.name].code;
         }
-        console.log(deptCode,params);
         if(params.seriesName == '未上传'){
           url = "/center/repair-upload";
         }else{
@@ -304,7 +317,6 @@
 
       },
       onRowClickTop(row) {
-        // console.log(row);
         let rowData = ''
         if (row.category) {
           rowData = row.category
