@@ -312,7 +312,9 @@
         }else{
           url = "/center/repair-upload-error";
         }
+
         this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1])} })
+
       });
 
       },

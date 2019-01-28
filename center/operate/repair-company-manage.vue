@@ -15,7 +15,7 @@
               <FormItem label="经营范围:">
                   <Select v-model="search.businessScope" clearable>
                     
-                    <Option v-for="item in repairType" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                    <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="是否对接:">
@@ -66,16 +66,16 @@
 
               
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
       <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="primary" v-if="accessBtn('add')" @click="type=Math.random();">导入</Button>
-      <Button type="primary" v-if="" @click="exportBut">导出</Button>
-      <Button type="info" v-if="accessBtn('edit')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
-      <!--<Button type="error" v-if="accessBtn('delete')" @click="delFun" :disabled="!detailData">删除</Button>-->
+      <Button type="primary" v-if="accessBtn('import')" @click="type=Math.random();">导入</Button>
+      <Button type="primary" v-if="accessBtn('export')" @click="exportBut">导出</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
     <upload-excel :type="type" :actionUrl="'/proxy/corp/manage/import'" :title="'导入文件'"></upload-excel>
@@ -158,12 +158,12 @@ import funMixin from '~/components/fun-auth-mixim.js'
         clearTableSelect: null,
         //维修类别数据---------
         repairType:[
-            {code:"全部",name:""},
-            {code:"一类机动车维修",name:1},
-            {code:"二类机动车维修",name:2},
-            {code:"三类机动车维修",name:3},
-            {code:"摩托车维修",name:4},
-            {code:"汽车维修",name:5},
+            // {code:"全部",name:""},
+            // {code:"一类机动车维修",name:1},
+            // {code:"二类机动车维修",name:2},
+            // {code:"三类机动车维修",name:3},
+            // {code:"摩托车维修",name:4},
+            // {code:"汽车快修",name:5},
         ],
         beianStatusArr:[
           {code:"全部",name:""},
@@ -182,6 +182,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
     },
     mounted () {
       this.getBusinessType();
+      this.getValuesByTypeFun(1);
       this.getList();
     },
     methods:{
@@ -305,6 +306,19 @@ import funMixin from '~/components/fun-auth-mixim.js'
 
                     this.businessType=res.data.items;
                     
+                }
+           })
+        },
+        getValuesByTypeFun(id){
+            this.$axios.get('/dict/getValuesByTypeId/'+id, {
+            }).then( (res) => {
+                if(res.data.code=='0'){
+                    if(id==1){
+                        this.repairType=res.data.items;
+                    }
+                    
+                }else{
+                    // this.$Message.error(res.data.status);
                 }
            })
         },
