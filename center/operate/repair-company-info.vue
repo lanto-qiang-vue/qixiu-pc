@@ -489,10 +489,10 @@
     </div>
     <div slot="footer">
         <Button v-if="accessBtn('edit')" size="large" type="primary" @click="addCompany('listSearch')">提交</Button>
-        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="showChange=Math.random(),detailId=listSearch.id">查看变更</Button>
-        <Button v-if="accessBtn('edit')" size="large" type="primary" @click="modal1=true" :disabled="listSearch.status==2">审核</Button>
-        <Button v-show="(listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="resetKey" >重置密钥</Button>
-        <Button v-show="(!listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="addKey" >创建密钥</Button>
+        <Button v-if="accessBtn('changelist')" v-show="detailData" size="large" type="primary" @click="showChange=Math.random(),detailId=listSearch.id">查看变更</Button>
+        <Button v-if="accessBtn('audit')" v-show="detailData" size="large" type="primary" @click="modal1=true" :disabled="listSearch.status==2">审核</Button>
+        <Button v-if="accessBtn('create')" v-show="(listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="resetKey" >重置密钥</Button>
+        <Button v-if="accessBtn('create')" v-show="(!listSearch.createKey&&listSearch.code)" size="large" type="primary" @click="addKey" >创建密钥</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
     <Modal v-model="modal1">

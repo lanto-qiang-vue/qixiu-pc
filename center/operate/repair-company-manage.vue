@@ -66,16 +66,16 @@
 
               
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
       <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="primary" v-if="accessBtn('add')" @click="type=Math.random();">导入</Button>
-      <Button type="primary" v-if="" @click="exportBut">导出</Button>
-      <Button type="info" v-if="accessBtn('edit')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
-      <!--<Button type="error" v-if="accessBtn('delete')" @click="delFun" :disabled="!detailData">删除</Button>-->
+      <Button type="primary" v-if="accessBtn('import')" @click="type=Math.random();">导入</Button>
+      <Button type="primary" v-if="accessBtn('export')" @click="exportBut">导出</Button>
+      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
     <upload-excel :type="type" :actionUrl="'/proxy/corp/manage/import'" :title="'导入文件'"></upload-excel>
