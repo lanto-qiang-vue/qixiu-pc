@@ -228,7 +228,7 @@
                 <Select v-model="listSearch.source" clearable style="width: 70%">
                     <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
                 </Select>
-                <Button size="large" type="primary" @click="showAdd=true">新增</Button>
+                <Button size="large" type="primary" @click="showAdd=true,sourceName=''">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" style="width: 45%;">
                 <Input type="text"  v-model="listSearch.buttJoinTime" placeholder="" readonly></Input>
@@ -508,7 +508,7 @@
     v-model="showAdd"
     title="新增"
     width="300"
-    @on-visible-change="visibleChange"
+    @on-visible-change=""
     :scrollable="true"
     :transfer= "true"
     :footer-hide="false"
@@ -1435,7 +1435,7 @@ export default {
                 "value": this.sourceName,
           }).then( (res) => {
             if(res.data.code=='0'){
-              this.getValuesByTypeFun(38);
+              this.getValuesByTypeFun(33);
               this.sourceName="";
               
             }
