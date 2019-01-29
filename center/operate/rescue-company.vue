@@ -27,11 +27,11 @@
                   <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
-        <rescue-company-info :showDetail="showDetail"></rescue-company-info>
+        <rescue-company-info :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></rescue-company-info>
     </div>
     <div slot="operate">
       <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="info" v-if="" :disabled="deleteArray.length==0"  @click="delFun">查看|编辑</Button>
+      <Button type="info" v-if="" :disabled="!detailData"  @click="showDetail=Math.random();">查看|编辑</Button>
     </div>
     
   </common-table>
@@ -54,30 +54,14 @@
 		  return{
         loading:false,
         columns: [
-          {title: '序号',  width: 70,align:'center', type:'index'
-            // render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
-          },
-          {title: '清障施救牵引企业名称', key: 'name',  minWidth: 180,
-            // render: (h, params) => h('span', params.row.company.companyName||'')
-          },
-          {title: '许可证号', key: 'license',  minWidth: 120,
-            // render: (h, params) => h('span', params.row.company.license||'')
-          },
-          {title: '状态', key: 'status',  minWidth: 135,
-            // render: (h, params) => h('span', params.row.company.businessAddress||'')
-          },
-          {title: '救援区域', key: 'rescueAreas',  minWidth: 120,
-            // render: (h, params) => h('span', params.row.company.businessScope||'')
-          },
-          {title: '服务周期', key: 'serviceCycles',  minWidth: 120,
-            // render: (h, params) => h('span', params.row.company.operatorMobile||'')
-          },
-          {title: '服务时间', key: 'serviceTime',  minWidth: 120,
-            // render: (h, params) => h('span', params.row.company.repairBrand||'')
-          },
-          {title: '服务电话', key: 'serviceHotLine',  minWidth: 120,
-            // render: (h, params) => h('span', params.row.company.lastYearLevel||'')
-          },
+          {title: '序号',  width: 70,align:'center', type:'index'},
+          {title: '清障施救牵引企业名称', key: 'name',  minWidth: 180},
+          {title: '许可证号', key: 'license',  minWidth: 120},
+          {title: '状态', key: 'status',  minWidth: 135},
+          {title: '救援区域', key: 'rescueAreas',  minWidth: 120},
+          {title: '服务周期', key: 'serviceCycles',  minWidth: 120},
+          {title: '服务时间', key: 'serviceTime',  minWidth: 120},
+          {title: '服务电话', key: 'serviceHotLine',  minWidth: 120},
           
         ],
         tableData: [],
@@ -111,12 +95,12 @@
         getList(){
           this.loading=true;
           this.$axios.post('/corp/rt/list', {
-              "license": "",
-                "name": "",
+                "license": this.search.license,
+                "name": this.search.name,
                 "pageNo": this.page,
                 "pageSize": this.limit,
-                "rescueAreas": [],
-                "status": 0
+                "rescueAreas": this.search.rescueAreas,
+                "status": this.search.status,
           }).then( (res) => {
             if(res.data.code==0){
                   this.tableData=res.data.items;
@@ -131,35 +115,12 @@
             this.$axios.get('/area/query', {
             }).then( (res) => {
               if(res.data.code==0){
-                  this.rescueArea=res.data.items;
-                  
-             }
+                    this.rescueArea=res.data.items;
+                    
+              }
             })
         },
-        //删除页面数据------------
-        delFun(){
-          this.$Modal.confirm({
-              title:"系统提示!",
-              content:"确定要删除吗？",
-              onOk:this.delList,
-          })
-        },
-        delList(){
-            let deleteId='';
-            for(let i in this.deleteArray){
-              deleteId+=this.deleteArray[i]['id']+',';
 
-            }
-            deleteId=deleteId.slice(0,deleteId.length-1);
-            
-            this.$axios.delete('/core/company-group/'+deleteId,{
-                        
-                }).then( (res) => {
-                    if(res.status===200){
-                        this.closeDetail();
-                    }
-            })
-        },
         changePage(page){
           this.page= page
           this.getList()

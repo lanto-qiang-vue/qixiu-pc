@@ -12,7 +12,7 @@
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
-    <div slot="header" class="header-inner">维修服务预约<span>（{{testTitle}}）</span></div>
+    <div slot="header" class="header-inner">维修企业信息<span>（{{testTitle}}）</span></div>
     <div style="padding-bottom: 10px;">
         <Collapse v-model="collapse">
         <Panel name="1">企业基本信息
@@ -32,7 +32,7 @@
                 <Input type="text" v-model="listSearch.registerAddress" placeholder="请输入工商注册地址"></Input>
             </FormItem>
             <FormItem label="工商注册地址区域:" style="width: 45%;" prop="registerRegion">
-                <Select v-model="listSearch.registerRegion">
+                <Select v-model="listSearch.registerRegion" :transfer= "true">
                     <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                 </Select>
             </FormItem>
@@ -43,7 +43,7 @@
                 <Input type="text"  v-model="listSearch.businessAddress" placeholder="请输入经营地地址"></Input>
             </FormItem>
             <FormItem label="经营地址区域:" style="width: 45%;" >
-                <Select v-model="listSearch.businessRegion">
+                <Select v-model="listSearch.businessRegion" :transfer= "true">
                     <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                 </Select>
             </FormItem>
@@ -91,12 +91,12 @@
                 <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
             </FormItem>
             <FormItem label="经营状态:" style="width: 45%;" >
-                <Select v-model="listSearch.businessStatus">
+                <Select v-model="listSearch.businessStatus" :transfer= "true">
                     <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="备案状态:" style="width: 45%;" >
-                <Select v-model="listSearch.beianStatus">
+                <Select v-model="listSearch.beianStatus" :transfer= "true">
                     <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
@@ -105,7 +105,7 @@
             </FormItem>
             <FormItem label="企业主要业务范围:" style="width: 45%;" >
                 
-                <Select v-model="listSearch.businessSphere" multiple clearable>
+                <Select v-model="listSearch.businessSphere" multiple clearable :transfer= "true">
                     <Option v-for="item in companySphere" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -113,32 +113,32 @@
                 <Input type="text"  v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围" ></Input>
             </FormItem>
             <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
-                <Select v-model="listSearch.businessScope" @on-change="repairTypeFun">
+                <Select v-model="listSearch.businessScope" @on-change="repairTypeFun" @on-open-change="onOpenChange" :transfer= "true">
                     <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false">
-                <Select v-model="listSearch.businessScope2" multiple clearable>
+            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false" prop="businessScope2">
+                <Select v-model="listSearch.businessScope2" multiple clearable :transfer= "true">
                     <Option v-for="item in oneCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false">
-                <Select v-model="listSearch.businessScope2" multiple clearable>
+            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false" prop="businessScope2">
+                <Select v-model="listSearch.businessScope2" multiple clearable :transfer= "true">
                     <Option v-for="item in twoCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false">
-                <Select v-model="listSearch.businessScope2" multiple clearable>
+            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false" prop="businessScope2">
+                <Select v-model="listSearch.businessScope2" multiple clearable :transfer= "true">
                     <Option v-for="item in threeCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false">
-                <Select v-model="listSearch.businessScope2" multiple clearable>
+            <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false" prop="businessScope2">
+                <Select v-model="listSearch.businessScope2" multiple clearable :transfer= "true">
                     <Option v-for="item in motorcycle" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false">
-                <Select v-model="listSearch.businessScope2" multiple clearable>
+            <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false" prop="businessScope2">
+                <Select v-model="listSearch.businessScope2" multiple clearable :transfer= "true">
                     <Option v-for="item in carList" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -225,10 +225,10 @@
 
 
             <FormItem label="对接渠道:" style="width: 45%;" >
-                <Select v-model="listSearch.source" clearable style="width: 70%">
+                <Select v-model="listSearch.source" clearable style="width: 70%" :transfer= "true">
                     <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
                 </Select>
-                <Button size="large" type="primary" @click="showAdd=true">新增</Button>
+                <Button size="large" type="primary" @click="showAdd=true,sourceName=''">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" style="width: 45%;">
                 <Input type="text"  v-model="listSearch.buttJoinTime" placeholder="" readonly></Input>
@@ -242,7 +242,7 @@
             <Panel name="2">企业信息
         <Form  :label-width="140" class="common-form" slot="content">
             <FormItem label="工时定额执行标准:" style="width: 45%;" >
-                <Select v-model="listSearch.workingHoursQuotaExecutionStandard">
+                <Select v-model="listSearch.workingHoursQuotaExecutionStandard" :transfer= "true">
                     <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
@@ -250,7 +250,7 @@
                 <Input type="text"  v-model="listSearch.workingHoursPrice" placeholder="请输入工时单价"></Input>
             </FormItem>
             <FormItem label="业户类别:" style="width: 45%;" >
-                <Select v-model="listSearch.industryCategory">
+                <Select v-model="listSearch.industryCategory" :transfer= "true">
                     <Option v-for="item in households" :value="item.name" :key="item.name">{{ item.code }}</Option>
                 </Select>
             </FormItem>
@@ -259,7 +259,7 @@
             </FormItem>
             <FormItem label="经济类型:" style="width: 45%;">
                 
-                <Select v-model="listSearch.economicType">
+                <Select v-model="listSearch.economicType" :transfer= "true">
                     <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -269,12 +269,12 @@
             
             
             <FormItem label="企业员工总数:" style="width: 45%;">
-                <Select v-model="listSearch.employeeNumber" >
+                <Select v-model="listSearch.employeeNumber" :transfer= "true">
                     <Option v-for="item in companyStaff" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="企业目前占地面积:" style="width: 45%;">
-                <Select v-model="listSearch.floorSpace" >
+                <Select v-model="listSearch.floorSpace" :transfer= "true">
                     <Option v-for="item in companyArea" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -508,7 +508,7 @@
     v-model="showAdd"
     title="新增"
     width="300"
-    @on-visible-change="visibleChange"
+    @on-visible-change=""
     :scrollable="true"
     :transfer= "true"
     :footer-hide="false"
@@ -736,6 +736,8 @@ export default {
                 registerRegion:[{ required: true, message: '必填项不可为空', },],
                 registerDate:[{ required: true, message: '必填项不可为空', },],
                 businessScope:[{ required: true, message: '必填项不可为空', },],
+                businessScope2:[{ required: true, message: '必填项不可为空', },],
+                
                 workingHoursPrice:[{ message: '最多两位小数位', trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,}],
 
 
@@ -1041,6 +1043,11 @@ export default {
                     }
                 }
            })
+        },
+        onOpenChange(flag){
+            if(flag===false){
+                this.listSearch['businessScope2']='';
+            }
         },
         //新增一个企业数据---------
         addCompany(name){
@@ -1435,7 +1442,7 @@ export default {
                 "value": this.sourceName,
           }).then( (res) => {
             if(res.data.code=='0'){
-              this.getValuesByTypeFun(38);
+              this.getValuesByTypeFun(33);
               this.sourceName="";
               
             }
