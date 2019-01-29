@@ -26,7 +26,7 @@ const devConfig={
   apiUrl: 'http://192.168.169.231:8888/',
   // apiUrl: 'https://www.test.shanghaiqixiu.org/proxy/',
   
-  // apiUrl: 'http://192.168.169.114:8481/',
+  // apiUrl: 'http://192.168.169.117:8888/',
 
   // repairUrl: 'http://118.25.35.172:7210/',
   repairUrl: 'http://192.168.169.230:7210/',

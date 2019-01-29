@@ -255,6 +255,7 @@
         });
         //选中跳转
         this.bar3.on('click', (params)=>{
+          console.log(params);
           let name = params.name;
           let arr;
           let store;
