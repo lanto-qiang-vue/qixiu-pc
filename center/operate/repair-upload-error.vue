@@ -20,7 +20,7 @@
         <div slot="operate" style="position:relative;">
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
-          <Button type="default"  @click="$router.go(-1)">返回</Button>
+          <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
           <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
 
         </div>
@@ -131,7 +131,7 @@ export default {
           },
         ];
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
-
+        this.topContent="维修记录上传存在错误"
 
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
@@ -169,6 +169,7 @@ export default {
             }
           },
         ];
+        this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
         this.getList();
 
@@ -208,45 +209,47 @@ export default {
                 }
               },
           ];
+          this.topContent="提醒（未上传维修记录）未读"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
           this.getReadInfo();
       }else if(routerData.path=="/center/repair-error-noread"){
           this.typeName=queryData.type;
-           this.columns=[
-          {title: '企业名称', key: 'companyName', minWidth: 120,
-          },
-          {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
-          },
-          {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
-          },
-          {title: '错误率', key: 'probability',  minWidth: 120,
-          },
-          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
-            render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
-          },
-          {title: '操作', key: 'honor',  minWidth: 120,
-            render: (h, params) => {
-                  return h('div', [
-                      h('Button', {
-                          props: {
-                              type: 'warning',
-                              size: 'small'
-                          },
-                          on: {
-                              click: () => {
-                                  this.temObjectData=params.row;
-                                  this.$Modal.confirm({
-                                      title:"提醒通知!",
-                                      content:"确定要发送提醒吗？",
-                                      onOk:this.sendCountFun,
-                                  })
-                              }
-                          }
-                      }, '发送提醒')
-                  ]);
-            }
-          },
-        ];
+          this.columns=[
+            {title: '企业名称', key: 'companyName', minWidth: 120,
+            },
+            {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+            },
+            {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+            },
+            {title: '错误率', key: 'probability',  minWidth: 120,
+            },
+            {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+              render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+            },
+            {title: '操作', key: 'honor',  minWidth: 120,
+              render: (h, params) => {
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'warning',
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    this.temObjectData=params.row;
+                                    this.$Modal.confirm({
+                                        title:"提醒通知!",
+                                        content:"确定要发送提醒吗？",
+                                        onOk:this.sendCountFun,
+                                    })
+                                }
+                            }
+                        }, '发送提醒')
+                    ]);
+              }
+            },
+          ];
+          this.topContent="提醒（维修记录上传存在错误）"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
           this.getReadInfo();
       }
@@ -313,12 +316,13 @@ export default {
         },
         //提醒通知--------------------
         sendCountFun(){
-            
+            let urlData="";
+            urlData+="companyCode="+this.temObjectData.companyCode;
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.search.endDate;
+
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-not', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -330,10 +334,7 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-fault?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -345,12 +346,8 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
-              
-                this.$axios.post('/monitoring/message/company-docking/unread', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
-                      "type":this.typeName,
+                urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -362,11 +359,9 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
-                this.$axios.post('/monitoring/message/company-docking/unread', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
-                      "type":this.typeName,
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
+                      
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -392,13 +387,14 @@ export default {
             
         },
         sendAll(){
-            
+            let urlData="";
+            urlData+="companyName="+(this.search.companyName||null);
+            urlData+="license="+(this.search.license||null);
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.search.endDate;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-not', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
+                      
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -408,11 +404,7 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-fault?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -422,12 +414,8 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
-                this.$axios.post('/monitoring/message/company-docking/unread', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
-                      "type":this.typeName,
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -439,12 +427,8 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
-                this.$axios.post('/monitoring/message/company-docking/unread', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
-                      "type":this.typeName,
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -463,19 +447,19 @@ export default {
           if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
               this.titleTop="（未上传维修记录）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
-              this.topContent="未上传维修记录"
+              
           }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
               this.titleTop="（上传维修记录存在错误）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
-              this.topContent="维修记录上传存在错误"
+              
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
               this.titleTop="（未上传维修记录）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
-              this.topContent="提醒（未上传维修记录）未读"
+              
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
               this.titleTop="（上传维修记录存在错误）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
-              this.topContent="提醒（维修记录上传存在错误）"
+              
           }
           
           this.modal3=true;
