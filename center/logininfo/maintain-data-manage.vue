@@ -224,11 +224,11 @@
               },
               axisLabel: {
                 interval: 0,
-                rotate: 0
-              }
+                rotate: 0,
+                padding: [4, 20]
+              },
+              triggerEvent: true,
             }
-
-
           ],
           yAxis: [
             {
@@ -290,15 +290,15 @@
         this.bar2.setOption(this.optionBar1);
         let self = this.bar2;
         let that = this;
-        this.bar2.getZr().on('click', function (params) {
-          var pointInPixel= [params.offsetX, params.offsetY];
-          if (self.containPixel('grid',pointInPixel)) {
-            var xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
-            if(that.stage == 1){
-              that.key1 = that.areaName[xIndex+1];
-            }
-          }
-        });
+        // this.bar2.getZr().on('click', function (params) {
+        //   var pointInPixel= [params.offsetX, params.offsetY];
+        //   if (self.containPixel('grid',pointInPixel)) {
+        //     var xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
+        //     if(that.stage == 1){
+        //       that.key1 = that.areaName[xIndex+1];
+        //     }
+        //   }
+        // });
          this.bar2.on('click', (params)=>{
         let deptCode;
         let url;
