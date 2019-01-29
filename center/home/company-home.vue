@@ -158,7 +158,6 @@
       // this.checkButt();
       console.log(this.visitDate);
 
-
       // this.getServerDate();
 
       this.getNotify();
