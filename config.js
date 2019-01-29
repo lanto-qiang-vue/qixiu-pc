@@ -23,8 +23,8 @@ const devConfig={
   port: '3333',
   // apiUrl: 'http://212.64.5.54:8888/',
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
-  // apiUrl: 'http://192.168.169.231:8888/',
-  apiUrl: 'https://www.test.shanghaiqixiu.org/proxy/',
+  apiUrl: 'http://192.168.169.231:8888/',
+  // apiUrl: 'https://www.test.shanghaiqixiu.org/proxy/',
   
   // apiUrl: 'http://192.168.169.114:8481/',
 

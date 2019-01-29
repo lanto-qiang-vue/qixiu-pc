@@ -48,18 +48,18 @@
             <div style="float:left;">
               <div
                 style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>未上传未读企业: {{success1}}家</b></div>
+              <div style="float:left;padding-left:10px;"><b>未上传未读企业: {{count1}}家</b></div>
             </div>
             <div style="float:left;padding-left:20px;">
               <div
                 style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{error1}}家</b></div>
+              <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{count2}}家</b></div>
             </div>
           </div>
           <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区推送未读情况</b></div>
           <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
-            <Select style="width:150px;" v-model="key1">
-              <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
+            <Select style="width:150px;" v-model="key3">
+              <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
             </Select></div>
         </div>
       </div>
@@ -78,16 +78,24 @@
         areaType: [],
         areaName: [],//区域名称获取。区域不重复。不用去重
         secondArea:[],//二级区域
+        readArea:[],//阅读区域下拉
         stage:1,//区分阶段
+        readStage:1,//未读阶段
         dataObj: {},
         key1: '全部',//维修上传记录筛选key
+        key3:'',//read筛选key
         success1: 0,//
         error1: 0,
+        count1:0,//未上传阅读数
+        count2:0,//上传错误阅读数
         bar2:null,
+        bar3:null,
         optionBar1:null,
+        optionBar3:null,
         buttonType:1,
         apiShow:false,//api慢我就不显示
         searchTime:null,
+        readList:[],//未读区域数据
       }
     },
     mounted() {
@@ -96,6 +104,9 @@
         if(window.innerWidth!= self.windowInnerWidth){
           if(self.bar2){
             self.bar2.resize();
+          }
+          if(self.bar3){
+            self.bar3.resize();
           }
         }
       }
@@ -115,12 +126,10 @@
         let time = date.getTime() - day * 3600 * 24 * 1000;
         let buildDate2 = new Date(time);
         this.searchTime = [buildDate2,buildDate1];
-        this.getData();
-        this.getRead();
+        this.getAll();
       },
       toymd(date){
-        let buildDate = date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
-        return buildDate;
+        return date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate();
       },
       getRead(code = ""){
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
@@ -128,8 +137,161 @@
           return false;
         }
         this.$axios.$get('/monitoring/display/company/docking-unread/count?startDate='+this.toymd(this.searchTime[0])+'&endDate='+this.toymd(this.searchTime[1])+"&deptCode="+code).then(res => {
-
+         let data = res;
+         if(code == ""){
+           this.readList = res;
+           let area = [];
+           for(let i in data){
+             area.push({deptName:data[i].deptName,deptCode:data[i].deptCode});
+           }
+           area.unshift({deptName:'全部',deptCode:0})
+           this.readArea = area;
+           //交给计算属性key3
+           this.showRead(data,true);
+           this.key3 = 0;
+         }else{
+           this.showRead(data,false);
+           this.readStage = 2;
+         }
         })
+      },
+      showRead(data,flag = false){
+        this.bar3 = echarts.init(document.getElementById('bar3'))
+        this.bar3.off('click');
+        this.optionBar3 = {
+          color: ['#C14DE8', '#0f0f0f'],
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+              label: { show: true }
+            }
+          },
+          selected:{
+            '未上传未读': true,
+            // 不选中'系列2'
+            '存在错误未读': true,
+          },
+          grid: {},
+          legend: {
+            data: ['未上传未读', '存在错误未读'],
+            top: 15,
+            right: '30%'
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: [],
+              axisTick: {
+                alignWithLabel: true
+              },
+              axisLabel: {
+                interval: 0,
+                rotate: 0
+              }
+            }
+
+
+          ],
+          yAxis: [
+            {
+              min:0,
+              max:5,
+              type: 'value'
+            }
+          ],
+          series: [
+            {
+              barGap: 0,
+              // label: labelOption,
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                  color: '#61A0A8'
+                }
+              },
+              name: '未上传未读',
+              type: 'bar',
+              data: [],
+              barGap: '20%',
+              stack: '数量'
+            },
+            {
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  color: '#C23431'
+                }
+              },
+              name: '存在错误未读',
+              type: 'bar',
+              data: [],
+              barGap: '20%',
+              stack: '数量'
+            }
+          ]
+        }
+        //阴影展开
+        let self = this.bar3;
+        let that = this;
+        this.bar3.getZr().on('click', function (params) {
+          if(that.readStage == 2) return;
+          let pointInPixel= [params.offsetX, params.offsetY];
+          if (self.containPixel('grid',pointInPixel)) {
+            let index = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
+            that.key3 = that.readList[index].deptCode;
+          }
+        });
+        //选中跳转
+        this.bar3.on('click', (params)=>{
+          let name = params.name;
+          let arr;
+          let store;
+          if(that.readStage == 1){
+            store = this.readList;
+          }else{
+            store = data;
+          }
+          arr = data.filter(function(obj){
+            return obj.deptName == name;
+          });
+          let deptCode = arr[0].deptCode;
+          alert(deptCode);
+          if(params.seriesName == "存在错误未读"){
+
+          }else{
+
+          }
+        });
+        if(flag){
+          return;
+        }
+        let area = [], success = [], error = [],count1 = 0,count2 = 0;
+        for (let i = 0; i < data.length; i++) {
+          area.push(data[i].deptName);
+          error.push(data[i].notUpload);
+          count1 += data[i].notUpload;
+          success.push(data[i].uploadFault);
+          count2 += data[i].uploadFault;
+        }
+        this.count1 = count1;
+        this.count2 = count2;
+        this.optionBar3.xAxis[0].data = area
+        this.optionBar3.series[0].data = success
+        this.optionBar3.series[1].data = error
+        this.bar3.clear();
+        this.bar3.setOption(this.optionBar3);
       },
       getData(code = "") {
         if(this.searchTime[0] == "" || this.searchTime[1] == ""){
@@ -291,9 +453,9 @@
         let self = this.bar2;
         let that = this;
         this.bar2.getZr().on('click', function (params) {
-          var pointInPixel= [params.offsetX, params.offsetY];
+          let pointInPixel= [params.offsetX, params.offsetY];
           if (self.containPixel('grid',pointInPixel)) {
-            var xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
+            let xIndex = self.convertFromPixel({seriesIndex: 0}, [params.offsetX, params.offsetY])[0];
             if(that.stage == 1){
               that.key1 = that.areaName[xIndex+1];
             }
@@ -312,9 +474,7 @@
         }else{
           url = "/center/repair-upload-error";
         }
-
         this.$router.push({ path:url, query: { deptCode: deptCode,deptName:params.name,startDate:this.toymd(this.searchTime[0]),endDate:this.toymd(this.searchTime[1])} })
-
       });
 
       },
@@ -365,6 +525,29 @@
         }else{
           this.getData(this.dataObj[val].code);
         }
+      },
+      key3(val){
+       if(val == 0){
+         this.readStage = 1;
+         let data = this.readList;
+         let area = [], success = [], error = [],count1 = 0,count2 = 0;
+         for (let i = 0; i < data.length; i++) {
+           area.push(data[i].deptName);
+           error.push(data[i].notUpload);
+           count1 += data[i].notUpload;
+           success.push(data[i].uploadFault);
+           count2 += data[i].uploadFault;
+         }
+         this.count1 = count1;
+         this.count2 = count2;
+         this.optionBar3.xAxis[0].data = area
+         this.optionBar3.series[0].data = success
+         this.optionBar3.series[1].data = error
+         this.bar3.clear();
+         this.bar3.setOption(this.optionBar3);
+       }else{
+         this.getRead(val);
+       }
       }
     },
   }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="line-height:40px;font-size:18px;padding-left:10px;"><span style="color:orange;">从{{search.startDate}}至{{search.endDate}},{{areaName}}维修记录上传存在错误的企业总数为:{{total}}家</span></div>
+    <div style="line-height:40px;font-size:14px;padding-left:10px;"><span style="color:black;">从{{search.startDate}}至{{search.endDate}},{{areaName}}维修记录上传存在错误的企业总数为:<span style="color:red;">{{total}}</span>家</span></div>
       <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                     @changePage="changePage" @changePageSize="changePageSize"
                     :show="showTable" :page="page"  :loading="loading">
@@ -17,23 +17,23 @@
                   </FormItem>
             </Form>
         </div>
-        <div slot="operate">
+        <div slot="operate" style="position:relative;">
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)">返回</Button>
-          <div class="publice-button"  @mouseenter="enter" ><Icon class="publice-button-i" type="md-help" /></div>
-          
+          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
+
         </div>
       </common-table>
 
       
     <Modal v-model="modal3" 
       :footer-hide="true"
+           width="400"
       :mask-closable="false">
         <p class="publice-info">提醒模板说明</p>
-        <p class="publice-info" style="padding-bottom: 10px;">{{titleTop}}</p>
-        <p>{{contentTop}}</p>
-        <p style="height: 80px;"></p>
+        <p class="publice-info" style="padding-bottom: 10px;color:rgba(0,0,0,0.34);">{{titleTop}}</p>
+        <p style="margin-bottom:30px;">{{contentTop}}</p>
     </Modal>
 
   </div>
@@ -314,14 +314,15 @@ export default {
   margin-right: 10px;
 }
 .publice-button{
-  width: 32px;
-  height: 32px;
+  width: 25px;
+  height: 25px;
+  background-color:#D6D6D6;
+  color:white;
   border-radius: 50%;
   border: 1px solid #ccc;
   display: inline-block;
   font-size: 20px;
   text-align: center;
-  line-height: 32px;
 }
 .publice-button-i{
   padding-bottom: 4px;
