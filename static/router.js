@@ -817,7 +817,7 @@ export default [
         path: 'repair-upload-error',
         meta: {
           icon: '',
-          title: '维修记录上传情况',
+          title: '维修记录上传错误情况',
           accessId: '',
         },
         component: resolve('center/operate/repair-upload-error.vue'),
@@ -826,7 +826,25 @@ export default [
         path: 'repair-upload',
         meta: {
           icon: '',
-          title: '维修记录上传情况',
+          title: '维修记录未上传情况',
+          accessId: '',
+        },
+        component: resolve('center/operate/repair-upload-error.vue'),
+      },
+      {
+        path: 'repair-upload-noread',
+        meta: {
+          icon: '',
+          title: '维修记录未上传情况未读企业',
+          accessId: '',
+        },
+        component: resolve('center/operate/repair-upload-error.vue'),
+      },
+      {
+        path: 'repair-error-noread',
+        meta: {
+          icon: '',
+          title: '维修记录上传错误情况未读企业',
           accessId: '',
         },
         component: resolve('center/operate/repair-upload-error.vue'),

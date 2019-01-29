@@ -60,7 +60,7 @@ export default {
         search:{
           companyName:'',
           license: '',
-          deptCode:"",
+          // deptCode:"",
           startDate:'',
           endDate:'',
         },
@@ -85,9 +85,13 @@ export default {
     mounted () {
       let routerData=this.$route;
       let queryData=this.$route.query;
-      this.search.deptCode=queryData.deptCode;
-      this.search.startDate=queryData.startDate;
-      this.search.endDate=queryData.endDate;
+      // this.search.deptCode=queryData.deptCode;
+      // this.search.startDate=queryData.startDate;
+      this.search.startDate='2018-12-30';
+      
+      // this.search.endDate=queryData.endDate;
+      this.search.endDate='2019-01-28';
+      
       this.areaName=queryData.deptName;
 
       // console.log("queryData",queryData);
@@ -95,16 +99,16 @@ export default {
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
           },
-          {title: '期间上传数', key: 'recordTotalCount', sortable: true, minWidth: 120,
+          {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
           },
-          {title: '错误记录数', key: 'recordFaultCount', sortable: true, minWidth: 135,
+          {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
           },
-          {title: '错误率', key: 'probability', sortable: true, minWidth: 120,
+          {title: '错误率', key: 'probability',  minWidth: 120,
           },
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+          {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
                   return h('div', [
                       h('Button', {
@@ -135,15 +139,15 @@ export default {
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
           },
-          {title: '最后一次上传记录时间', key: 'lastTime', sortable: true, minWidth: 120,
+          {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
           },
-          {title: '联系方式', key: 'telephone', sortable: true, minWidth: 135,
+          {title: '联系方式', key: 'telephone',  minWidth: 135,
           },
           
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+          {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
                   return h('div', [
                       h('Button', {
@@ -169,6 +173,43 @@ export default {
         this.uploadUrl="/monitoring/display/company/upload-not/query";
         this.getList();
 
+      }else if(routerData.path=="/center/repair-upload-noread"){
+          this.columns=[
+            {title: '企业名称', key: 'companyName', minWidth: 120,
+              },
+              {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+              },
+              {title: '联系方式', key: 'telephone',  minWidth: 135,
+              },
+              
+              {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+                render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+              },
+              {title: '操作', key: 'honor',  minWidth: 120,
+                render: (h, params) => {
+                      return h('div', [
+                          h('Button', {
+                              props: {
+                                  type: 'warning',
+                                  size: 'small'
+                              },
+                              on: {
+                                  click: () => {
+                                      this.temObjectData=params.row;
+                                      this.$Modal.confirm({
+                                          title:"提醒通知!",
+                                          content:"确定要发送提醒吗？",
+                                          onOk:this.sendCountFun,
+                                      })
+                                  }
+                              }
+                          }, '发送提醒')
+                      ]);
+                }
+              },
+          ];
+          this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.getReadInfo();
       }
           
     },
@@ -179,6 +220,29 @@ export default {
           for(let i in this.search){
             urlStr+='&'+i+'='+this.search[i];
           }
+          this.loading=true;
+          this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
+              
+          }).then( (res) => {
+            if(res.status == 200){
+              this.total = res.data.totalElements;
+              let data = res.data.content;
+              for(let i in data){
+                 data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+              }
+              this.tableData = data;
+              this.loading = false;
+            }
+          })
+          this.detailData= null;
+        },
+        getReadInfo(){
+          let page=this.page-1;
+          let urlStr='';
+          for(let i in this.search){
+            urlStr+='&'+i+'='+this.search[i];
+          }
+          urlStr+='&type=NOT_UPLOAD'
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
               
@@ -223,6 +287,21 @@ export default {
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-fault', {
+                      "companyCode": this.temObjectData.companyCode,
+                      "startDate ": this.search.startDate,
+                      "endDate" :this.search.endDate,
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getList();
+
+                    this.titleTop="（上传维修记录存在错误）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+                    this.modal3=true;
+
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"){
+                this.$axios.post('/monitoring/message/company-docking/unread', {
                       "companyCode": this.temObjectData.companyCode,
                       "startDate ": this.search.startDate,
                       "endDate" :this.search.endDate,
