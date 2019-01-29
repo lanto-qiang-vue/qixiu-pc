@@ -113,31 +113,31 @@
                 <Input type="text"  v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围" ></Input>
             </FormItem>
             <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
-                <Select v-model="listSearch.businessScope" @on-change="repairTypeFun">
+                <Select v-model="listSearch.businessScope" @on-change="repairTypeFun" @on-open-change="onOpenChange">
                     <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false">
+            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==43?true:false" prop="businessScope2">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
                     <Option v-for="item in oneCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false">
+            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==44?true:false" prop="businessScope2">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
                     <Option v-for="item in twoCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false">
+            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="listSearch.businessScope==45?true:false" prop="businessScope2">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
                     <Option v-for="item in threeCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false">
+            <FormItem label="摩托车维修:" style="width: 45%;" v-show="listSearch.businessScope==46?true:false" prop="businessScope2">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
                     <Option v-for="item in motorcycle" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false">
+            <FormItem label="汽车维修:" style="width: 45%;" v-show="listSearch.businessScope==47?true:false" prop="businessScope2">
                 <Select v-model="listSearch.businessScope2" multiple clearable>
                     <Option v-for="item in carList" :value="item.id" :key="item.id">{{ item.name }}</Option>
                 </Select>
@@ -736,6 +736,8 @@ export default {
                 registerRegion:[{ required: true, message: '必填项不可为空', },],
                 registerDate:[{ required: true, message: '必填项不可为空', },],
                 businessScope:[{ required: true, message: '必填项不可为空', },],
+                businessScope2:[{ required: true, message: '必填项不可为空', },],
+                
                 workingHoursPrice:[{ message: '最多两位小数位', trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,}],
 
 
@@ -1041,6 +1043,11 @@ export default {
                     }
                 }
            })
+        },
+        onOpenChange(flag){
+            if(flag===false){
+                this.listSearch['businessScope2']='';
+            }
         },
         //新增一个企业数据---------
         addCompany(name){
