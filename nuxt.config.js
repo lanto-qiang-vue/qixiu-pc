@@ -69,7 +69,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    port: config.port,
+    port: process.env.NODE_ENV==='development'?config.port: '',
     prefix: '/proxy/',
     proxy: true,
   },
