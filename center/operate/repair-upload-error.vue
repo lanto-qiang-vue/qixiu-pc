@@ -21,7 +21,7 @@
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)">返回</Button>
-          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
+          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help"/></div>
 
         </div>
       </common-table>
@@ -325,7 +325,8 @@ export default {
   text-align: center;
 }
 .publice-button-i{
-  padding-bottom: 4px;
+  padding-bottom: 10px;
+  line-height:25px;
 }
 .publice-info{
   text-align: center;

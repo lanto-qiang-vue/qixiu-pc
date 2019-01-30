@@ -22,7 +22,7 @@
                         style="width: 300px"></DatePicker>
           </FormItem>
           <FormItem :label-width="0">
-            <Button type="primary" @click="getAll()">查询</Button>
+            <Button type="primary" @click="getAll">查询</Button>
           </FormItem>
         </Form>
       </div>
@@ -71,6 +71,10 @@
               <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
             </Select></div>
         </div>
+        <!--试点企业维修点评情况-->
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+          <div id="bar" style="width: 100%;height: 650px;"></div>
+        </div>
       </div>
 
     </div>
@@ -104,7 +108,9 @@
         buttonType: 1,
         apiShow: false,//api慢我就不显示
         searchTime: null,
-        readList: []//未读区域数据
+        readList: [],//未读区域数据
+        optionBar: null,
+        bar: null
       }
     },
     mounted() {
@@ -117,6 +123,9 @@
           if (self.bar3) {
             self.bar3.resize()
           }
+          if (self.bar) {
+            self.bar.resize()
+          }
         }
       }
 
@@ -128,6 +137,7 @@
       getAll() {
         this.getData()
         this.getRead()
+        this.getComment()
       },
       minus(day) {
         let date = new Date()
@@ -197,9 +207,9 @@
               axisLabel: {
                 interval: 0,
                 rotate: 0,
-                padding:[4,20]
+                padding: [4, 20]
               },
-              triggerEvent:true,
+              triggerEvent: true
             }
 
 
@@ -229,8 +239,9 @@
               name: '未上传未读',
               type: 'bar',
               data: [],
-              barGap: '20%',
-              stack: '数量'
+              barGap: '20',
+              stack: '数量',
+              barMaxWidth: 100
             },
             {
               label: {
@@ -248,12 +259,13 @@
               type: 'bar',
               data: [],
               barGap: '20%',
-              stack: '数量'
+              stack: '数量',
+              barMaxWidth: 100
             }
           ]
         }
         //阴影展开
-        let that = this;
+        let that = this
         // this.bar3.getZr().on('click', function(params) {
         //   if (that.readStage == 2) return
         //   let pointInPixel = [params.offsetX, params.offsetY]
@@ -264,7 +276,7 @@
         // })
         //选中跳转
         this.bar3.on('click', (params) => {
-          let name = params.name || params.value;
+          let name = params.name || params.value
           let arr
           let url
           let store
@@ -278,16 +290,16 @@
             return obj.deptName == name
           })
           let deptCode = arr[0].deptCode
-          if(params.componentType == 'xAxis' && that.readStage == 1){
-           that.key3 = deptCode;
-           return;
+          if (params.componentType == 'xAxis' && that.readStage == 1) {
+            that.key3 = deptCode
+            return
           }
           if (params.seriesName == '存在错误未读') {
-            url = "repair-error-noread";
-            type = "UPLOAD_FAULT";
+            url = 'repair-error-noread'
+            type = 'UPLOAD_FAULT'
           } else {
-            url = "repair-upload-noread";
-            type = "NOT_UPLOAD";
+            url = 'repair-upload-noread'
+            type = 'NOT_UPLOAD'
           }
           this.$router.push({
             path: url,
@@ -296,7 +308,7 @@
               deptName: params.name,
               startDate: this.toymd(this.searchTime[0]),
               endDate: this.toymd(this.searchTime[1]),
-              type:type,
+              type: type
             }
           })
         })
@@ -318,6 +330,163 @@
         this.optionBar3.series[1].data = error
         this.bar3.clear()
         this.bar3.setOption(this.optionBar3)
+      },
+      getComment(code = '') {
+        this.$axios.$get('/monitoring/display/company/upload-comment/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.searchTime[1]) + '&deptCode=' + code).then(res => {
+          let data = {}
+          for (let i in res) {
+            let probability
+            //还有除以0异常
+            if (res[i].recordTotalCount == 0) {
+              probability = 0
+            } else {
+              probability = (res[i].commentCount / res[i].recordTotalCount).toFixed(2)
+            }
+            data[res[i].companyName] = {
+              success: res[i].recordTotalCount, error: res[i].commentCount,
+              gl: probability
+            }
+          }
+          console.log(JSON.stringify(data))
+          this.showComment(data)
+        })
+      },
+      showComment(data) {
+        let obj = data
+        // let obj = {'a1':{success:100,error:10,gl:0.1},'a2':{success:200,error:20,gl:0.1},'a3':{success:300,error:30,gl:0.1}};
+        this.bar = echarts.init(document.getElementById('bar'))
+        this.bar.off('click')
+        this.optionBar = {
+          color: ['#C14DE8', '#0f0f0f'],
+          title:{
+            show:true,
+            text:'企业维修点评情况(top20)',
+            x:'center',
+          },
+          tooltip: {
+            trigger: 'axis',
+            formatter: function(params) {
+              let company = params[0].axisValue
+              let str = company + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>记录数:' + obj[company].success + '条<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#C23431"></div>评论数:' + obj[company].error + '条<br/>'
+              str += "占比:"+obj[company].gl * 100 + "%";
+              return str
+            },
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+              label: { show: true }
+            }
+          },
+          selected: {
+            '记录数': true,
+            // 不选中'系列2'
+            '评论数': true
+          },
+          grid: {
+            bottom: 120
+          },
+          legend: {
+            data: ['记录数', '评论数'],
+            bottom: 10
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: [],
+              axisTick: {
+                alignWithLabel: true
+              },
+              axisLabel: {
+                interval: 0,
+                rotate: 0,
+                formatter: function(params) {
+                  return params.replace(/(.{3})/g, '$1\n')
+                }
+              },
+              triggerEvent: true
+            }
+
+
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                show: true,
+                interval: 'auto',
+                formatter: function(value) {
+                  return value * 100 + '%'
+                }
+              }
+            }
+          ],
+          series: [
+            {
+              barGap: 0,
+              // label: labelOption,
+              label: {
+                show: true,
+                position: 'top',
+                formatter: function(params) {
+                  return obj[params.name].success
+                }
+
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                  color: '#61A0A8'
+                }
+              },
+              name: '记录数',
+              type: 'bar',
+              data: [],
+              barGap: '-100%',
+              barMaxWidth: 100
+            },
+            {
+              label: {
+                show: true,
+                position: 'inside',
+                formatter: function(params) {
+                  if (obj[params.name].error == 0) return ''
+                  return obj[params.name].error + '\n' + '占比' + '\n' + obj[params.name].gl * 100 + '%'
+                }
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  color: '#C23431'
+                }
+              },
+              name: '评论数',
+              type: 'bar',
+              data: [],
+              z: 10,
+              barMaxWidth: 100
+            }
+          ]
+        }
+        let company = []
+        let gl = []
+        let one = []
+        for (let item in obj) {
+          company.push(item)
+          gl.push(obj[item].gl)
+          one.push(1)
+        }
+        this.optionBar.xAxis[0].data = company
+        this.optionBar.series[0].data = one
+        this.optionBar.series[1].data = gl
+        this.bar.clear()
+        this.bar.setOption(this.optionBar)
+        this.bar.on('click', (params) => {
+          console.log(params)
+        })
       },
       getData(code = '') {
         if (this.searchTime[0] == '' || this.searchTime[1] == '') {
@@ -417,9 +586,9 @@
               axisLabel: {
                 interval: 0,
                 rotate: 0,
-                padding:[4,20],
+                padding: [4, 20]
               },
-              triggerEvent:true,
+              triggerEvent: true
             }
 
 
@@ -449,7 +618,8 @@
               type: 'bar',
               data: [],
               barGap: '20%',
-              stack: '数量'
+              stack: '数量',
+              barMaxWidth: 100
             },
             {
               label: {
@@ -467,7 +637,8 @@
               type: 'bar',
               data: [],
               barGap: '20%',
-              stack: '数量'
+              stack: '数量',
+              barMaxWidth: 100
             }
           ]
         }
@@ -482,9 +653,9 @@
         this.optionBar1.series[1].data = error
         this.bar2.clear()
         this.bar2.setOption(this.optionBar1)
-        let that = this;
+        let that = this
         this.bar2.on('click', (params) => {
-          let name = params.name || params.value;
+          let name = params.name || params.value
           let deptCode
           let url
           if (this.dataObj.hasOwnProperty(name)) {
@@ -492,9 +663,9 @@
           } else {
             deptCode = this.secondArea[name].code
           }
-          if(that.stage == 1 && params.componentType == 'xAxis'){
-            that.key1 = name;
-            return false;
+          if (that.stage == 1 && params.componentType == 'xAxis') {
+            that.key1 = name
+            return false
           }
           if (params.seriesName == '未上传') {
             url = '/center/repair-upload'
