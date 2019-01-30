@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="line-height:40px;font-size:14px;padding-left:10px;"><span style="color:black;">从{{search.startDate}}至{{search.endDate}},{{areaName}}维修记录上传存在错误的企业总数为:<span style="color:red;">{{total}}</span>家</span></div>
+    <div style="line-height:40px;font-size:14px;padding-left:10px;"><span style="color:black;">从{{search.startDate}}至{{search.endDate}},{{areaName}}{{topContent}}的企业总数为:<span style="color:red;">{{total}}</span>家</span></div>
       <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                     @changePage="changePage" @changePageSize="changePageSize"
                     :show="showTable" :page="page"  :loading="loading">
@@ -20,8 +20,8 @@
         <div slot="operate" style="position:relative;">
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
-          <Button type="default"  @click="$router.go(-1)">返回</Button>
-          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help"/></div>
+          <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
+          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
 
         </div>
       </common-table>
@@ -60,7 +60,7 @@ export default {
         search:{
           companyName:'',
           license: '',
-          deptCode:"",
+          // deptCode:"",
           startDate:'',
           endDate:'',
         },
@@ -74,7 +74,9 @@ export default {
         deleteArray:[],
         temObjectData:'',//临时存储提醒字段数据------------
         uploadUrl:'',//通用链接-----
-        areaName:'',
+        areaName:'',//区域名称------
+        typeName:'',//类型名称------
+        topContent:'',//头部内容---
         modal3: false,
 
         titleTop:'',
@@ -87,6 +89,7 @@ export default {
       let queryData=this.$route.query;
       this.search.deptCode=queryData.deptCode;
       this.search.startDate=queryData.startDate;
+      
       this.search.endDate=queryData.endDate;
       this.areaName=queryData.deptName;
 
@@ -95,16 +98,16 @@ export default {
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
           },
-          {title: '期间上传数', key: 'recordTotalCount', sortable: true, minWidth: 120,
+          {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
           },
-          {title: '错误记录数', key: 'recordFaultCount', sortable: true, minWidth: 135,
+          {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
           },
-          {title: '错误率', key: 'probability', sortable: true, minWidth: 120,
+          {title: '错误率', key: 'probability',  minWidth: 120,
           },
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+          {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
                   return h('div', [
                       h('Button', {
@@ -128,22 +131,22 @@ export default {
           },
         ];
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
-
+        this.topContent="维修记录上传存在错误"
 
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
           },
-          {title: '最后一次上传记录时间', key: 'lastTime', sortable: true, minWidth: 120,
+          {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
           },
-          {title: '联系方式', key: 'telephone', sortable: true, minWidth: 135,
+          {title: '联系方式', key: 'telephone',  minWidth: 135,
           },
           
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor', sortable: true, minWidth: 120,
+          {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
                   return h('div', [
                       h('Button', {
@@ -166,9 +169,89 @@ export default {
             }
           },
         ];
+        this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
         this.getList();
 
+      }else if(routerData.path=="/center/repair-upload-noread"){
+          this.typeName=queryData.type;
+          this.columns=[
+            {title: '企业名称', key: 'companyName', minWidth: 120,
+              },
+              {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+              },
+              {title: '联系方式', key: 'telephone',  minWidth: 135,
+              },
+              
+              {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+                render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+              },
+              {title: '操作', key: 'honor',  minWidth: 120,
+                render: (h, params) => {
+                      return h('div', [
+                          h('Button', {
+                              props: {
+                                  type: 'warning',
+                                  size: 'small'
+                              },
+                              on: {
+                                  click: () => {
+                                      this.temObjectData=params.row;
+                                      this.$Modal.confirm({
+                                          title:"提醒通知!",
+                                          content:"确定要发送提醒吗？",
+                                          onOk:this.sendCountFun,
+                                      })
+                                  }
+                              }
+                          }, '发送提醒')
+                      ]);
+                }
+              },
+          ];
+          this.topContent="提醒（未上传维修记录）未读"
+          this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.getReadInfo();
+      }else if(routerData.path=="/center/repair-error-noread"){
+          this.typeName=queryData.type;
+          this.columns=[
+            {title: '企业名称', key: 'companyName', minWidth: 120,
+            },
+            {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+            },
+            {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+            },
+            {title: '错误率', key: 'probability',  minWidth: 120,
+            },
+            {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+              render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
+            },
+            {title: '操作', key: 'honor',  minWidth: 120,
+              render: (h, params) => {
+                    return h('div', [
+                        h('Button', {
+                            props: {
+                                type: 'warning',
+                                size: 'small'
+                            },
+                            on: {
+                                click: () => {
+                                    this.temObjectData=params.row;
+                                    this.$Modal.confirm({
+                                        title:"提醒通知!",
+                                        content:"确定要发送提醒吗？",
+                                        onOk:this.sendCountFun,
+                                    })
+                                }
+                            }
+                        }, '发送提醒')
+                    ]);
+              }
+            },
+          ];
+          this.topContent="提醒（维修记录上传存在错误）"
+          this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.getReadInfo();
       }
           
     },
@@ -195,6 +278,34 @@ export default {
           })
           this.detailData= null;
         },
+        getReadInfo(){
+          let page=this.page-1;
+          let urlStr='';
+          for(let i in this.search){
+            urlStr+='&'+i+'='+this.search[i];
+          }
+          urlStr+='&type='+this.typeName;
+          this.loading=true;
+          this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
+              
+          }).then( (res) => {
+            if(res.status == 200){
+              this.total = res.data.totalElements;
+              let data = res.data.content;
+              for(let i in data){
+                  if(data[i].recordFaultCount&&data[i].recordTotalCount){
+                    data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                  }else{
+                    data[i]["probability"] = '0';
+                  } 
+                 
+              }
+              this.tableData = data;
+              this.loading = false;
+            }
+          })
+          this.detailData= null;
+        },
         changePage(page){
           this.page= page
           this.getList()
@@ -205,12 +316,13 @@ export default {
         },
         //提醒通知--------------------
         sendCountFun(){
-            
+            let urlData="";
+            urlData+="companyCode="+this.temObjectData.companyCode;
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.search.endDate;
+
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-not', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -222,16 +334,40 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
-                      "companyCode": this.temObjectData.companyCode,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-fault?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
 
                     this.titleTop="（上传维修记录存在错误）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+                    this.modal3=true;
+
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
+                urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getReadInfo();
+
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
+                    this.modal3=true;
+
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
+                      
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getReadInfo();
+
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
                     this.modal3=true;
 
                   }
@@ -251,13 +387,14 @@ export default {
             
         },
         sendAll(){
-            
+            let urlData="";
+            urlData+="companyName="+(this.search.companyName||null);
+            urlData+="license="+(this.search.license||null);
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.search.endDate;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-not', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
+                      
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -267,17 +404,39 @@ export default {
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
-                this.$axios.post('/monitoring/message/company-docking/upload-fault', {
-                      "companyName": this.search.companyName||null,
-                      "license": this.search.license||null,
-                      "startDate ": this.search.startDate,
-                      "endDate" :this.search.endDate,
+                this.$axios.post('/monitoring/message/company-docking/upload-fault?'+urlData, {
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
                     this.titleTop="（上传维修记录存在错误）";
                     this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
                     this.modal3=true;
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getReadInfo();
+
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
+                    this.modal3=true;
+
+                  }
+                })
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
+              urlData+="&type="+this.typeName;
+                this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
+                }).then( (res) => {
+                  if(res.data.code=='0'){
+                    this.getReadInfo();
+
+                    this.titleTop="（未上传维修记录）";
+                    this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
+                    this.modal3=true;
+
                   }
                 })
             }
@@ -288,9 +447,19 @@ export default {
           if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
               this.titleTop="（未上传维修记录）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
+              
           }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
               this.titleTop="（上传维修记录存在错误）";
               this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+              
+          }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
+              this.titleTop="（未上传维修记录）";
+              this.contentTop="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
+              
+          }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
+              this.titleTop="（上传维修记录存在错误）";
+              this.contentTop="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
+              
           }
           
           this.modal3=true;
@@ -325,8 +494,7 @@ export default {
   text-align: center;
 }
 .publice-button-i{
-  padding-bottom: 10px;
-  line-height:25px;
+  padding-bottom: 4px;
 }
 .publice-info{
   text-align: center;
