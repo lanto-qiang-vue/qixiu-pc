@@ -44,7 +44,6 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
-
 export default {
     name: "repair-upload-error",
     components: {
@@ -85,6 +84,7 @@ export default {
       }
     },
     mounted () {
+      // console.log(this.accessBtn('view'));
       let routerData=this.$route;
       let queryData=this.$route.query;
       this.search.deptCode=queryData.deptCode;
@@ -492,9 +492,7 @@ export default {
   display: inline-block;
   font-size: 20px;
   text-align: center;
-}
-.publice-button-i{
-  padding-bottom: 4px;
+  line-height:20px;
 }
 .publice-info{
   text-align: center;
