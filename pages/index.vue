@@ -421,25 +421,25 @@ export default {
       // article10281016,
       // article10281017,
     ]).then(([resQuestion, resCdf, resArticle ]) => {
-      // let latest= res10281013.concat(res10281020)
-      // let hottest= deepClone(latest)
+      let latest= resArticle.middle10281013
+      let hottest= deepClone(latest)
       // latest.sort(function (a,b) {
       //   return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
       // })
-      // for (let i in hottest){
-      //   let temp={}
-      //   let randomIndex = Math.floor(Math.random()*(hottest.length-1));
-      //   temp= hottest[i]
-      //   hottest[i]= hottest[randomIndex]
-      //   hottest[randomIndex]= temp
-      // }
+      for (let i in hottest){
+        let temp={}
+        let randomIndex = Math.floor(Math.random()*(hottest.length-1));
+        temp= hottest[i]
+        hottest[i]= hottest[randomIndex]
+        hottest[randomIndex]= temp
+      }
       return {
         questionList: resQuestion,
         cdfList: resCdf,
         articleBanner: resArticle.left10281019,
         articleMiddle: {
-          latest: resArticle.middle10281013,
-          hottest: resArticle.middle10281020,
+          latest: latest,
+          hottest: hottest,
         },
         articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
         isGetData: true
