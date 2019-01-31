@@ -274,6 +274,9 @@ export default {
           for(let i in this.search){
             urlStr+='&'+i+'='+this.search[i];
           }
+          if(this.typeName != ''){
+            urlStr += '&type='+this.typeName;
+          }
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
               
@@ -378,7 +381,7 @@ export default {
                   if(res.data.code=='0'){
                     this.getReadInfo();
 
-                    this.titleTop="（未上传维修记录）";
+                    this.titleTop="（维修记录存在错误）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
                     this.modal3=true;
 

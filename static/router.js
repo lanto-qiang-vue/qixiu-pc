@@ -613,7 +613,7 @@ export default [
         path: 'maintain-report-manage',
         meta: {
           icon: '',
-          title: '维修数据上报管理',
+          title: '数据监控',
           accessId: '',
         },
         component: resolve('center/operate/maintain-report-manage.vue'),
