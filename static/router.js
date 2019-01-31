@@ -596,7 +596,7 @@ export default [
         meta: {
           icon: '',
           title: '企业白名单',
-          accessId: '',
+          accessId: '/center/company-white-list',
         },
         component: resolve('center/operate/company-white-list.vue'),
       },
@@ -623,7 +623,7 @@ export default [
         meta: {
           icon: '',
           title: '清障施救牵引企业信息管理',
-          accessId: '',
+          accessId: '/center/rescue-company',
         },
         component: resolve('center/operate/rescue-company.vue'),
       },
@@ -809,7 +809,7 @@ export default [
         meta: {
           icon: '',
           title: '维修数据管理',
-          accessId: '',
+          accessId: '/center/maintain-data-manage',
         },
         component: resolve('center/logininfo/maintain-data-manage.vue'),
       },

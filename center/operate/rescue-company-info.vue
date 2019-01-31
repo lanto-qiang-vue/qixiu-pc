@@ -86,7 +86,6 @@ export default {
     components: {},
     data(){
 		return{
-            
             showModal:false,
             
             listSearch:{
@@ -185,11 +184,9 @@ export default {
                     for(let i in resData){
                         this.listSearch[i]=resData[i];
                     }
-
                     this.listSearch['serviceTime']=[];
                     this.listSearch['serviceTime'].push(this.listSearch['serviceTimeMin']);
                     this.listSearch['serviceTime'].push(this.listSearch['serviceTimeMax']);
-
                 }
                 
                 this.$Spin.hide();
@@ -209,17 +206,14 @@ export default {
         
         //新增一个企业数据---------
         addCompany(name){
-            
-
             this.$refs[name].validate((valid) => {
-
                 if (valid) {
 
                     if(this.detailData){
                 
                 this.$axios.post('/corp/rt/update',{
                     "id":this.listSearch.id,
-                    "basementNum": this.listSearch.beianStatus,
+                    "basementNum": this.listSearch.basementNum,
                     "heavyVehicleNum": this.listSearch.heavyVehicleNum,
                     "info": this.listSearch.info,
                     "license": this.listSearch.license,
@@ -245,7 +239,7 @@ export default {
                 })
             }else{
                 this.$axios.post('/corp/rt/add',{
-                    "basementNum": this.listSearch.beianStatus,
+                    "basementNum": this.listSearch.basementNum,
                     "heavyVehicleNum": this.listSearch.heavyVehicleNum,
                     "info": this.listSearch.info,
                     "license": this.listSearch.license,
