@@ -121,7 +121,7 @@ export default {
         },
         //新增白名单------
         addCompanyList(companyCode){
-            this.$axios.post('/monitoring/config/company-group/',{
+            this.$axios.post('/monitoring/config/company-group',{
                 "companyCode": companyCode,
                 "type": "WHITELIST"
             }).then( (res) => {
