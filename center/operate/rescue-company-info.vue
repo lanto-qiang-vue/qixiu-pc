@@ -51,11 +51,11 @@
                 </CheckboxGroup>
             </FormItem>
             <FormItem label="企业车辆信息:" style="width: 90%;" prop="heavyVehicleNum">
-                <div class="search-block">重型车辆数<InputNumber :max="10" :min="1" v-model="listSearch.heavyVehicleNum" style="width: 100px; margin-left: 5px;"></InputNumber></div>
-                <div class="search-block">中型车辆数<InputNumber :max="10" :min="1" v-model="listSearch.mediumVehicleNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
-                <div class="search-block">轻型车辆数<InputNumber :max="10" :min="1" v-model="listSearch.lightVehicleNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
-                <div class="search-block">小修车辆数<InputNumber :max="10" :min="1" v-model="listSearch.minorRepairNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
-                <div class="search-block">地库车辆数<InputNumber :max="10" :min="1" v-model="listSearch.basementNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
+                <div class="search-block">重型车辆数<InputNumber  :min="0" v-model="listSearch.heavyVehicleNum" style="width: 100px; margin-left: 5px;"></InputNumber></div>
+                <div class="search-block">中型车辆数<InputNumber  :min="0" v-model="listSearch.mediumVehicleNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
+                <div class="search-block">轻型车辆数<InputNumber  :min="0" v-model="listSearch.lightVehicleNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
+                <div class="search-block">小修车辆数<InputNumber  :min="0" v-model="listSearch.minorRepairNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
+                <div class="search-block">地库车辆数<InputNumber  :min="0" v-model="listSearch.basementNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
                 
             </FormItem>
             <FormItem label="企业简介:" style="width: 90%;" >
