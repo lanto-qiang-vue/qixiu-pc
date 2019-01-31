@@ -613,7 +613,7 @@ export default [
         path: 'maintain-report-manage',
         meta: {
           icon: '',
-          title: '维修数据上报管理',
+          title: '数据监控',
           accessId: '',
         },
         component: resolve('center/operate/maintain-report-manage.vue'),
@@ -803,51 +803,51 @@ export default [
         },
         component: resolve('center/manage-service/review-manage.vue'),
       },
-      {
-        path: 'maintain-data-manage',
-        meta: {
-          icon: '',
-          title: '数据监控',
-          accessId: '/center/maintain-data-manage',
-        },
-        component: resolve('center/logininfo/maintain-data-manage.vue'),
-      },
-      {
-        path: 'repair-upload-error',
-        meta: {
-          icon: '',
-          title: '维修记录上传错误情况',
-          accessId: '',
-        },
-        component: resolve('center/operate/repair-upload-error.vue'),
-      },
-      {
-        path: 'repair-upload',
-        meta: {
-          icon: '',
-          title: '维修记录未上传情况',
-          accessId: '',
-        },
-        component: resolve('center/operate/repair-upload-error.vue'),
-      },
-      {
-        path: 'repair-upload-noread',
-        meta: {
-          icon: '',
-          title: '维修记录未上传情况未读企业',
-          accessId: '',
-        },
-        component: resolve('center/operate/repair-upload-error.vue'),
-      },
-      {
-        path: 'repair-error-noread',
-        meta: {
-          icon: '',
-          title: '维修记录上传错误情况未读企业',
-          accessId: '',
-        },
-        component: resolve('center/operate/repair-upload-error.vue'),
-      },
+      // {
+      //   path: 'maintain-data-manage',
+      //   meta: {
+      //     icon: '',
+      //     title: '数据监控',
+      //     accessId: '/center/maintain-data-manage',
+      //   },
+      //   component: resolve('center/logininfo/maintain-data-manage.vue'),
+      // },
+      // {
+      //   path: 'repair-upload-error',
+      //   meta: {
+      //     icon: '',
+      //     title: '维修记录上传错误情况',
+      //     accessId: '',
+      //   },
+      //   component: resolve('center/operate/repair-upload-error.vue'),
+      // },
+      // {
+      //   path: 'repair-upload',
+      //   meta: {
+      //     icon: '',
+      //     title: '维修记录未上传情况',
+      //     accessId: '',
+      //   },
+      //   component: resolve('center/operate/repair-upload-error.vue'),
+      // },
+      // {
+      //   path: 'repair-upload-noread',
+      //   meta: {
+      //     icon: '',
+      //     title: '维修记录未上传情况未读企业',
+      //     accessId: '',
+      //   },
+      //   component: resolve('center/operate/repair-upload-error.vue'),
+      // },
+      // {
+      //   path: 'repair-error-noread',
+      //   meta: {
+      //     icon: '',
+      //     title: '维修记录上传错误情况未读企业',
+      //     accessId: '',
+      //   },
+      //   component: resolve('center/operate/repair-upload-error.vue'),
+      // },
     ]
   },
   {
