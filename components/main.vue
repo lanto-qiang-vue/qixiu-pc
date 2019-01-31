@@ -79,13 +79,13 @@ export default {
   },
   mounted(){
     console.log('main-mounted', this.$route)
-    let roles= this.$store.state.user.userInfo.roles;
-    for(let i in roles){
-      if(roles[i].code == 'weixiuqiye'){
-        this.checkButt();
-        break;
-      }
-    }
+    // let roles= this.$store.state.user.userInfo.roles;
+    // for(let i in roles){
+    //   if(roles[i].code == 'weixiuqiye'){
+    //     this.checkButt();
+    //     break;
+    //   }
+    // }
   },
   methods: {
      checkButt(){

@@ -285,7 +285,12 @@ export default {
               this.total = res.data.totalElements;
               let data = res.data.content;
               for(let i in data){
-                 data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                if(data[i].recordFaultCount&&data[i].recordTotalCount){
+                  alert(1);
+                  data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                }else{
+                  data[i]["probability"] = '0';
+                }
               }
               this.tableData = data;
               this.loading = false;
@@ -309,6 +314,7 @@ export default {
               let data = res.data.content;
               for(let i in data){
                   if(data[i].recordFaultCount&&data[i].recordTotalCount){
+                    alert(1);
                     data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
                   }else{
                     data[i]["probability"] = '0';
@@ -407,6 +413,7 @@ export default {
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
             urlData+="&endDate="+this.search.endDate;
+            urlData+="&deptCode="+this.search.deptCode;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
                       
