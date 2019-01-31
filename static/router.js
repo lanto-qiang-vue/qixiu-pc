@@ -94,6 +94,15 @@ export default [
         component: resolve('center/home/operator-home.vue'),
       },
       {
+        path: 'rescue-company',
+        meta: {
+          icon: '',
+          title: '清障施救牵引企业信息管理',
+          accessId: '/center/rescue-company',
+        },
+        component: resolve('center/operate/rescue-company.vue'),
+      },
+      {
         path: 'shandong-map',
         meta: {
           icon: '',
@@ -618,16 +627,6 @@ export default [
         },
         component: resolve('center/driving-school/school-info-list.vue'),
       },
-      {
-        path: 'rescue-company',
-        meta: {
-          icon: '',
-          title: '清障施救牵引企业信息管理',
-          accessId: '/center/rescue-company',
-        },
-        component: resolve('center/operate/rescue-company.vue'),
-      },
-
       {
         path: 'for-you-service',
         meta: {
