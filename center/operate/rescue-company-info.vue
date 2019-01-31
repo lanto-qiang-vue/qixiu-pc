@@ -20,11 +20,11 @@
             <FormItem label="许可证号:" style="width: 45%;" prop="license">
                 <Input type="text" v-model="listSearch.license" placeholder="请输入许可证号"></Input>
             </FormItem>
-            
+
             <FormItem label="负责人:" style="width: 45%;" prop="operator">
                 <Input type="text"  v-model="listSearch.operator" placeholder="请输入负责人"></Input>
             </FormItem>
-            
+
             <FormItem label="负责人电话:" style="width: 45%;" prop="operatorMobileNo">
                 <Input type="text"  v-model="listSearch.operatorMobileNo" placeholder="请输入负责人电话" ></Input>
             </FormItem>
@@ -36,7 +36,7 @@
                     <Option v-for="item in rescueArea" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            
+
             <FormItem label="服务时间:" style="width: 45%;" prop="serviceTime">
                 <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择" style="width: 100%;" v-model="listSearch.serviceTime"></TimePicker>
             </FormItem>
@@ -61,16 +61,16 @@
             <FormItem label="企业简介:" style="width: 90%;" >
                 <Input type="textarea" :rows="1" v-model="listSearch.info" placeholder="请输入企业简介"></Input>
             </FormItem>
-            
+
         </Form>
 
-        
+
     </div>
     <div slot="footer">
         <Button v-if="" size="large" v-if="accessBtn('add') || accessBtn('edit')" type="primary" @click="addCompany('listSearch')">提交</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
-    
+
   </Modal>
 </template>
 
@@ -87,7 +87,7 @@ export default {
     data(){
 		return{
             showModal:false,
-            
+
             listSearch:{
                 "basementNum": 0,
                 "heavyVehicleNum": 0,
@@ -120,7 +120,7 @@ export default {
                 serviceCycles:[{ required: true, message: '必填项不可为空', },],
                 heavyVehicleNum:[{ required: true, message: '必填项不可为空', },],
                 serviceTime:[{ required: true, message: '必填项不可为空', },],
-                
+
 
             },//规则验证
             serviceCyclesArr:[
@@ -167,12 +167,12 @@ export default {
             if(this.detailData){
                 this.getDetail(this.detailData.id);
             }else{
-                
+
             }
-            
+
         },
     },
-    
+
     methods:{
         getDetail(id){
             // this.spinShow=true;
@@ -188,7 +188,7 @@ export default {
                     this.listSearch['serviceTime'].push(this.listSearch['serviceTimeMin']);
                     this.listSearch['serviceTime'].push(this.listSearch['serviceTimeMax']);
                 }
-                
+
                 this.$Spin.hide();
            })
         },
@@ -199,18 +199,18 @@ export default {
             }).then( (res) => {
               if(res.data.code==0){
                     this.rescueArea=res.data.items;
-                    
+
               }
             })
         },
-        
+
         //新增一个企业数据---------
         addCompany(name){
             this.$refs[name].validate((valid) => {
                 if (valid) {
 
                     if(this.detailData){
-                
+
                 this.$axios.post('/corp/rt/update',{
                     "id":this.listSearch.id,
                     "basementNum": this.listSearch.basementNum,
@@ -267,8 +267,8 @@ export default {
                 }
             });
 
-            
-            
+
+
         },
         visibleChange(status){
           if(status === false){
@@ -276,7 +276,7 @@ export default {
             this.$refs['listSearch'].resetFields();
           }
         },
-        
+
     },
 }
 </script>
@@ -302,7 +302,7 @@ export default {
     span{
         float: right;
     }
-    
+
 }
 .content-p{
     padding-left: 55px;
@@ -318,7 +318,7 @@ export default {
   .r-list-search{
     width: 100%;
     padding: 10px 0;
-    
+
 
   }
 
@@ -327,7 +327,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 200px;
       min-width: 200px;
-      
+
       .red{
         color: red;
       }
