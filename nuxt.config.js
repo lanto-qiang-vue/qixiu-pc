@@ -3,7 +3,7 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
-module.exports = {
+let conf= {
   mode: 'universal',
 
   server: {
@@ -69,7 +69,6 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    port: config.port,
     prefix: '/proxy/',
     proxy: true,
   },
@@ -115,4 +114,8 @@ module.exports = {
     }
   }
 }
+if( process.env.NODE_ENV==='development'){
+  conf.axios.port= config.port
+}
 
+module.exports =conf
