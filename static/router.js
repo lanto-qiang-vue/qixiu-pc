@@ -94,6 +94,15 @@ export default [
         component: resolve('center/home/operator-home.vue'),
       },
       {
+        path: 'rescue-company',
+        meta: {
+          icon: '',
+          title: '清障施救牵引企业信息管理',
+          accessId: '/center/rescue-company',
+        },
+        component: resolve('center/operate/rescue-company.vue'),
+      },
+      {
         path: 'shandong-map',
         meta: {
           icon: '',
@@ -228,6 +237,15 @@ export default [
           accessId: '/center/operate-complaint',
         },
         component: resolve('center/operate/operate-complaint.vue'),
+      },
+      {
+        path: 'company-white-list',
+        meta: {
+          icon: '',
+          title: '企业白名单',
+          accessId: '/center/company-white-list',
+        },
+        component: resolve('center/operate/company-white-list.vue'),
       },
       {
         path: 'unaccess',
@@ -591,15 +609,6 @@ export default [
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
-      {
-        path: 'company-white-list',
-        meta: {
-          icon: '',
-          title: '企业白名单',
-          accessId: '',
-        },
-        component: resolve('center/operate/company-white-list.vue'),
-      },
        {
         path: 'maintain-report-manage',
         meta: {
@@ -618,16 +627,6 @@ export default [
         },
         component: resolve('center/driving-school/school-info-list.vue'),
       },
-      {
-        path: 'rescue-company',
-        meta: {
-          icon: '',
-          title: '清障施救牵引企业信息管理',
-          accessId: '',
-        },
-        component: resolve('center/operate/rescue-company.vue'),
-      },
-
       {
         path: 'for-you-service',
         meta: {
@@ -808,8 +807,8 @@ export default [
         path: 'maintain-data-manage',
         meta: {
           icon: '',
-          title: '维修数据管理',
-          accessId: '',
+          title: '数据监控',
+          accessId: '/center/maintain-data-manage',
         },
         component: resolve('center/logininfo/maintain-data-manage.vue'),
       },

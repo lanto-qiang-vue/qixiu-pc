@@ -21,8 +21,17 @@
           <!--<Button type="primary" v-if="">导出全部</Button>-->
           <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
-          <div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
-
+          <!--<div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>-->
+          <Tooltip placement="right" class="myTotilp" theme="light">
+            <div class="publice-button" style=";top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
+            <div slot="content">
+              <p class="publice-info">提醒模板说明{{title}}</p>
+              <div style="width:400px;height:100px;white-space:normal;word-break:break-all;word-wrap:break-word">
+                <p class="publice-info" style="padding-bottom: 10px;color:rgba(0,0,0,0.34);">{{title}}</p>
+                <p>{{description}}</p>
+              </div>
+            </div>
+          </Tooltip>
         </div>
       </common-table>
 
@@ -79,6 +88,8 @@ export default {
         modal3: false,
 
         titleTop:'',
+        title:'',
+        description:'',
         contentTop:'',
 
       }
@@ -172,6 +183,7 @@ export default {
         this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
         this.getList();
+        this.enter();
 
       }else if(routerData.path=="/center/repair-upload-noread"){
           this.typeName=queryData.type;
@@ -253,7 +265,7 @@ export default {
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
           this.getReadInfo();
       }
-          
+          this.enter();
     },
     methods:{
         getList(){
@@ -445,24 +457,24 @@ export default {
         //上传模板类--------
         enter(){
           if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
-              this.titleTop="（未上传维修记录）";
-              this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
+              this.title="（未上传维修记录）";
+              this.description="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
               
           }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
-              this.titleTop="（上传维修记录存在错误）";
-              this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
+              this.title="（上传维修记录存在错误）";
+              this.description="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
               
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
-              this.titleTop="（未上传维修记录）";
-              this.contentTop="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
+              this.title="（未上传维修记录）";
+              this.description="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
               
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
-              this.titleTop="（上传维修记录存在错误）";
-              this.contentTop="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
+              this.title="（上传维修记录存在错误）";
+              this.description="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
               
           }
-          
-          this.modal3=true;
+          // alert(this.title);
+          // this.modal3=true;
         },
         leave(){
           console.log('2')
@@ -472,7 +484,11 @@ export default {
     },
 	}
 </script>
-
+<style lang="less">
+  .myTotilp .ivu-tooltip-light .ivu-tooltip-inner{
+    max-width:500px;
+  }
+</style>
 <style scoped lang="less">
 .menu-manage{
 
