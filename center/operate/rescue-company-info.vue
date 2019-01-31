@@ -56,7 +56,7 @@
                 <div class="search-block">轻型车辆数<InputNumber  :min="0" v-model="listSearch.lightVehicleNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
                 <div class="search-block">小修车辆数<InputNumber  :min="0" v-model="listSearch.minorRepairNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
                 <div class="search-block">地库车辆数<InputNumber  :min="0" v-model="listSearch.basementNum" style="width: 100px;margin-left: 5px;"></InputNumber></div>
-                
+
             </FormItem>
             <FormItem label="企业简介:" style="width: 90%;" >
                 <Input type="textarea" :rows="1" v-model="listSearch.info" placeholder="请输入企业简介"></Input>
