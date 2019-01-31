@@ -689,7 +689,7 @@ export const signIn = ({ route, store, $axios, Message, Modal, Spin},toRedirect)
 }
 
 export const formatArticle =(content)=>{
-  let text= content? content.replace(/<\/?.+?>/g,"").replace(/\ +/g,"").replace(/[ ]/g,"").replace(/[\r\n]/g,"").replace(/&nbsp;/ig, "") :'';
+  let text= content? content.replace(/<\/?.+?>/g,"").replace(/\ +/g,"").replace(/[ ]/g,"").replace(/[\r\n]/g,"").replace(/&nbsp;/ig, "").replace(/&ldquo;/ig, "“").replace(/&rdquo;/ig, "”") :'';
   // console.log(content)
   return text
 }
