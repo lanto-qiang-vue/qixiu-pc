@@ -294,6 +294,9 @@
             that.key3 = deptCode
             return
           }
+          if(params.componentType == 'xAxis' && that.readStage == 2){
+            return;
+          }
           if (params.seriesName == '存在错误未读') {
             url = 'repair-error-noread'
             type = 'UPLOAD_FAULT'
@@ -484,9 +487,9 @@
         this.optionBar.series[1].data = gl
         this.bar.clear()
         this.bar.setOption(this.optionBar)
-        this.bar.on('click', (params) => {
-          this.$router.push({ path: '/center/record-repair', query: {name:params.name } })
-        })
+        // this.bar.on('click', (params) => {
+        //   this.$router.push({ path: '/center/record-repair', query: {name:params.name } })
+        // })
       },
       getData(code = '') {
         if (this.searchTime[0] == '' || this.searchTime[1] == '') {
@@ -666,6 +669,9 @@
           if (that.stage == 1 && params.componentType == 'xAxis') {
             that.key1 = name
             return false
+          }
+          if(that.stage ==2 && params.componentType == 'xAxis'){
+            return false;
           }
           if (params.seriesName == '未上传') {
             url = '/center/repair-upload'

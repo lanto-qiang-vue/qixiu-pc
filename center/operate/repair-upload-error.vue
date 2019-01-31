@@ -400,8 +400,8 @@ export default {
         },
         sendAll(){
             let urlData="";
-            urlData+="companyName="+(this.search.companyName||null);
-            urlData+="license="+(this.search.license||null);
+            urlData+="companyName="+(this.search.companyName|| "");
+            urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
             urlData+="&endDate="+this.search.endDate;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
