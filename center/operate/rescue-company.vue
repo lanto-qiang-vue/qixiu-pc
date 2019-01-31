@@ -24,14 +24,14 @@
                   </Select>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
         <rescue-company-info :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></rescue-company-info>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
-      <Button type="info" v-if="" :disabled="!detailData"  @click="showDetail=Math.random();">查看|编辑</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="info" v-if="accessBtn('edit') || accessBtn('view')" :disabled="!detailData"  @click="showDetail=Math.random();">查看|编辑</Button>
     </div>
     
   </common-table>

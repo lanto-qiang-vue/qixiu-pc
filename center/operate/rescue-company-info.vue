@@ -67,7 +67,8 @@
         
     </div>
     <div slot="footer">
-        <Button v-if="" size="large" type="primary" @click="addCompany('listSearch')">提交</Button>
+        <Button v-if="" size="large" v-if="accessBtn('add')" type="primary" @click="addCompany('listSearch')">提交</Button>
+      <Button v-if="" size="large" v-if="accessBtn('edit')" type="primary" @click="addCompany('listSearch')">提交</Button>
         <Button  size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
     
