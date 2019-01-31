@@ -230,6 +230,15 @@ export default [
         component: resolve('center/operate/operate-complaint.vue'),
       },
       {
+        path: 'company-white-list',
+        meta: {
+          icon: '',
+          title: '企业白名单',
+          accessId: '/center/company-white-list',
+        },
+        component: resolve('center/operate/company-white-list.vue'),
+      },
+      {
         path: 'unaccess',
         meta: {
           icon: '',
@@ -591,15 +600,6 @@ export default [
         },
         component: resolve('center/operate/transportationCompany-record.vue'),
       },
-      {
-        path: 'company-white-list',
-        meta: {
-          icon: '',
-          title: '企业白名单',
-          accessId: '/center/company-white-list',
-        },
-        component: resolve('center/operate/company-white-list.vue'),
-      },
        {
         path: 'maintain-report-manage',
         meta: {
@@ -808,7 +808,7 @@ export default [
         path: 'maintain-data-manage',
         meta: {
           icon: '',
-          title: '维修数据管理',
+          title: '数据监控',
           accessId: '/center/maintain-data-manage',
         },
         component: resolve('center/logininfo/maintain-data-manage.vue'),

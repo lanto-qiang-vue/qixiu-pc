@@ -485,7 +485,7 @@
         this.bar.clear()
         this.bar.setOption(this.optionBar)
         this.bar.on('click', (params) => {
-          console.log(params)
+          this.$router.push({ path: '/center/record-repair', query: {name:params.name } })
         })
       },
       getData(code = '') {
@@ -692,8 +692,6 @@
         this.$router.push({ path: '/center/record-company', query: { category: rowData, name: 'top' } })
       },
       onRowClick(row) {
-        // console.log(row);
-
         this.$router.push({
           path: '/center/review-manage',
           query: { companyName: row.companyName, type: this.searchType, name: 'clp' }
