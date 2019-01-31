@@ -595,7 +595,22 @@ export default {
     background: white;
   }
   .swiper-button-prev, .swiper-button-next{
-    background-size: 20px auto;
+    /*background-size: 20px auto;*/
+    background: none;
+
+    &:before{
+      content: '';
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid rgba(0, 0, 0, 0.3);
+      border-left: 2px solid rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 12px;
+      transform: rotate(-45deg);
+    }
+  }
+  .swiper-button-next:before{
+    transform: rotate(135deg);
   }
 }
 @import "./red-index.less";
