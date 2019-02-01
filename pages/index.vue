@@ -425,7 +425,7 @@ export default {
       // article10281016,
       // article10281017,
     ]).then(([resQuestion, resCdf, resArticle ]) => {
-      let latest= resArticle.middle10281013
+      let latest= resArticle.middle10281020
       let hottest= deepClone(latest)
       // latest.sort(function (a,b) {
       //   return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
