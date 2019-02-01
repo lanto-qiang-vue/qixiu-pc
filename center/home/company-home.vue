@@ -168,6 +168,9 @@
           if(res.status == 200){
             this.buttData = res.data.content;
           }
+          if(res.data.content.length == 0){
+            this.showType = true;
+          }
         })
       },
       changeButt(row){
