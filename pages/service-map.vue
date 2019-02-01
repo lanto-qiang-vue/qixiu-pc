@@ -622,7 +622,7 @@ export default {
                 '</ul>'+
                 '<div class="button-block"  v-show="is164">' +
                   '<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
-                  '<Button :to="\'/apdatasment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
+                  '<Button :to="\'/appointment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
                   '<Button :to="\'/garage-info/\'+datas.sid" type="info">查看详情</Button>'+
                 '</div>'+
                 '</div>'+
