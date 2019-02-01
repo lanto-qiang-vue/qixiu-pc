@@ -39,6 +39,7 @@
     data() {
       return {
         loading: false,
+        levelList:['AAA','AA','A','B','未考核'],
         columns: [
           {
             type: 'selection',
@@ -71,7 +72,7 @@
           },
           {
             title: '信誉等级', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.lastYearLevel || '')
+            render: (h, params) => h('span', this.levelList[params.row.company.lastYearLevel] || '')
           },
           {
             title: '收费标准', key: 'company', sortable: true, minWidth: 120,
@@ -114,7 +115,7 @@
         this.ids = '';
         let page = this.page - 1;
         this.loading = true
-        this.$axios.get('/monitoring/config/company-group/query?size=' + this.limit + '&page=' + page+"&type=WHITELIST"+"&companyName="+this.search.companyName+"&license="+this.search.license).then((res) => {
+        this.$axios.get('/monitoring/config/company-group/query?size=' + this.limit + '&page=' + page+"&type=WHITELIST"+"&companyName="+encodeURI(this.search.companyName)+"&license="+this.search.license).then((res) => {
                this.tableData = res.data.content;
                this.total = res.data.totalElements;
           this.loading = false;

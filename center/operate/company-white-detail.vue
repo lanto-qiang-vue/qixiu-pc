@@ -41,6 +41,7 @@ export default {
     },
     data(){
 		return{
+		        levelList:['AAA','AA','A','B','未考核'],
             spinShow:false,
             showModal:false,
             columns: [
@@ -53,6 +54,7 @@ export default {
                 {title: '联系电话', key: 'operatorMobile', sortable: true, minWidth: 120,
                 },
                 {title: '信誉等级', key: 'lastYearLevel', sortable: true, minWidth: 120,
+                  render: (h, params) => h('span', this.levelList[params.row.lastYearLevel] || "")
                 },
               {
                 title: '操作', key: 'lastYearLevel', sortable: true, minWidth: 120,
