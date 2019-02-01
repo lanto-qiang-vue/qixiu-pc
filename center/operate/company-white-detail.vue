@@ -20,7 +20,7 @@
                   <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="page=1,getDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="page=1,getDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>

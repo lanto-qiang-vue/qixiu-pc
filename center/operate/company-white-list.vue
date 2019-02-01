@@ -17,10 +17,10 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random()">新增</Button>
-      <Button type="error" v-if="" :disabled="cando" @click="del">删除</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random()">新增</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="cando" @click="del">删除</Button>
     </div>
-    <company-white-detail :showDetail="showDetail" @refresh="page=1,getList()"></company-white-detail>
+    <company-white-detail :showDetail="showDetail" v-if="accessBtn('list')" @refresh="page=1,getList()"></company-white-detail>
   </common-table>
 
 </template>
