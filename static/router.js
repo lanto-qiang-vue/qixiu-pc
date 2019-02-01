@@ -149,6 +149,15 @@ export default [
         component: resolve('center/my/my-visit.vue'),
       },
       {
+        path: 'maintain-data-manage',
+        meta: {
+          icon: '',
+          title: '数据监控',
+          accessId: '/center/maintain-data-manage',
+        },
+        component: resolve('center/logininfo/maintain-data-manage.vue'),
+      },
+      {
         path: 'my-order',
         meta: {
           icon: '',
@@ -804,20 +813,12 @@ export default [
         component: resolve('center/manage-service/review-manage.vue'),
       },
       {
-        path: 'maintain-data-manage',
-        meta: {
-          icon: '',
-          title: '数据监控',
-          accessId: '/center/maintain-data-manage',
-        },
-        component: resolve('center/logininfo/maintain-data-manage.vue'),
-      },
-      {
         path: 'repair-upload-error',
         meta: {
           icon: '',
           title: '维修记录上传错误情况',
-          accessId: '',
+          accessId: '/center/repair-upload-error',
+          hideMenu: true
         },
         component: resolve('center/operate/repair-upload-error.vue'),
       },
@@ -826,7 +827,8 @@ export default [
         meta: {
           icon: '',
           title: '维修记录未上传情况',
-          accessId: '',
+          accessId: '/center/repair-upload',
+          hideMenu: true
         },
         component: resolve('center/operate/repair-upload-error.vue'),
       },
@@ -835,7 +837,8 @@ export default [
         meta: {
           icon: '',
           title: '维修记录未上传情况未读企业',
-          accessId: '',
+          accessId: '/center/repair-upload-noread',
+          hideMenu: true
         },
         component: resolve('center/operate/repair-upload-error.vue'),
       },
@@ -844,7 +847,8 @@ export default [
         meta: {
           icon: '',
           title: '维修记录上传错误情况未读企业',
-          accessId: '',
+          accessId: '/center/repair-error-noread',
+          hideMenu: true
         },
         component: resolve('center/operate/repair-upload-error.vue'),
       },

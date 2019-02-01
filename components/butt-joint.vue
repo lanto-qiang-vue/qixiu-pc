@@ -1,6 +1,6 @@
 <template>
   <!--组件先放这里先-->
-  <div>
+  <div class="butt-joint">
   <Modal
     v-model="commentModal"
     title="请先填写平台对接人"
@@ -10,7 +10,7 @@
     :transfer="false"
     :footer-hide="false"
     :mask-closable="false"
-
+    :z-index="1000"
     :transition-names="['', '']">
     <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:400px;">
       <FormItem label="平台对接人:" prop="contactName">
@@ -74,7 +74,6 @@
           this.$Modal.confirm({
             title:'系统提示',
             content:'确认保存吗?',
-           'z-index':1100,
             onOk:()=>{
               if(!this.closableType){
                 this.$axios.post(url,this.formData).then((res) => {
@@ -125,6 +124,10 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="less">
+.butt-joint{
+  .ivu-modal-mask,.ivu-modal-wrap{
+    z-index: 1000!important;
+  }
+}
 </style>

@@ -13,13 +13,13 @@
                       <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
                   </FormItem>
                   <FormItem :label-width="0" style="width: 80px;">
-                      <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+                      <Button type="primary" v-if="accessBtn('query')" @click="page=1,getList()">搜索</Button>
                   </FormItem>
             </Form>
         </div>
         <div slot="operate" style="position:relative;">
           <!--<Button type="primary" v-if="">导出全部</Button>-->
-          <Button type="primary" v-if="" @click="sendAllCountFun">提醒全部</Button>
+          <Button type="primary" v-if="accessBtn('message')" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
           <!--<div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>-->
           <Tooltip placement="right" class="myTotilp" theme="light">
@@ -120,24 +120,26 @@ export default {
           },
           {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
-                  return h('div', [
-                      h('Button', {
-                          props: {
-                              type: 'warning',
-                              size: 'small'
-                          },
-                          on: {
-                              click: () => {
-                                  this.temObjectData=params.row;
-                                  this.$Modal.confirm({
-                                      title:"提醒通知!",
-                                      content:"确定要发送提醒吗？",
-                                      onOk:this.sendCountFun,
-                                  })
-                              }
-                          }
-                      }, '发送提醒')
-                  ]);
+               if(this.accessBtn('message')){
+                 return h('div', [
+                   h('Button', {
+                     props: {
+                       type: 'warning',
+                       size: 'small'
+                     },
+                     on: {
+                       click: () => {
+                         this.temObjectData=params.row;
+                         this.$Modal.confirm({
+                           title:"提醒通知!",
+                           content:"确定要发送提醒吗？",
+                           onOk:this.sendCountFun,
+                         })
+                       }
+                     }
+                   }, '发送提醒')
+                 ]);
+               }
             }
           },
         ];
@@ -159,24 +161,26 @@ export default {
           },
           {title: '操作', key: 'honor',  minWidth: 120,
             render: (h, params) => {
-                  return h('div', [
-                      h('Button', {
-                          props: {
-                              type: 'warning',
-                              size: 'small'
-                          },
-                          on: {
-                              click: () => {
-                                  this.temObjectData=params.row;
-                                  this.$Modal.confirm({
-                                      title:"提醒通知!",
-                                      content:"确定要发送提醒吗？",
-                                      onOk:this.sendCountFun,
-                                  })
-                              }
-                          }
-                      }, '发送提醒')
-                  ]);
+              if(this.accessBtn('message')){
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'warning',
+                      size: 'small'
+                    },
+                    on: {
+                      click: () => {
+                        this.temObjectData=params.row;
+                        this.$Modal.confirm({
+                          title:"提醒通知!",
+                          content:"确定要发送提醒吗？",
+                          onOk:this.sendCountFun,
+                        })
+                      }
+                    }
+                  }, '发送提醒')
+                ]);
+              }
             }
           },
         ];
@@ -200,24 +204,26 @@ export default {
               },
               {title: '操作', key: 'honor',  minWidth: 120,
                 render: (h, params) => {
-                      return h('div', [
-                          h('Button', {
-                              props: {
-                                  type: 'warning',
-                                  size: 'small'
-                              },
-                              on: {
-                                  click: () => {
-                                      this.temObjectData=params.row;
-                                      this.$Modal.confirm({
-                                          title:"提醒通知!",
-                                          content:"确定要发送提醒吗？",
-                                          onOk:this.sendCountFun,
-                                      })
-                                  }
-                              }
-                          }, '发送提醒')
-                      ]);
+                  if(this.accessBtn('message')){
+                    return h('div', [
+                      h('Button', {
+                        props: {
+                          type: 'warning',
+                          size: 'small'
+                        },
+                        on: {
+                          click: () => {
+                            this.temObjectData=params.row;
+                            this.$Modal.confirm({
+                              title:"提醒通知!",
+                              content:"确定要发送提醒吗？",
+                              onOk:this.sendCountFun,
+                            })
+                          }
+                        }
+                      }, '发送提醒')
+                    ]);
+                  }
                 }
               },
           ];
@@ -240,24 +246,26 @@ export default {
             },
             {title: '操作', key: 'honor',  minWidth: 120,
               render: (h, params) => {
-                    return h('div', [
-                        h('Button', {
-                            props: {
-                                type: 'warning',
-                                size: 'small'
-                            },
-                            on: {
-                                click: () => {
-                                    this.temObjectData=params.row;
-                                    this.$Modal.confirm({
-                                        title:"提醒通知!",
-                                        content:"确定要发送提醒吗？",
-                                        onOk:this.sendCountFun,
-                                    })
-                                }
-                            }
-                        }, '发送提醒')
-                    ]);
+                if(this.accessBtn('message')){
+                  return h('div', [
+                    h('Button', {
+                      props: {
+                        type: 'warning',
+                        size: 'small'
+                      },
+                      on: {
+                        click: () => {
+                          this.temObjectData=params.row;
+                          this.$Modal.confirm({
+                            title:"提醒通知!",
+                            content:"确定要发送提醒吗？",
+                            onOk:this.sendCountFun,
+                          })
+                        }
+                      }
+                    }, '发送提醒')
+                  ]);
+                }
               }
             },
           ];
@@ -286,7 +294,6 @@ export default {
               let data = res.data.content;
               for(let i in data){
                 if(data[i].recordFaultCount&&data[i].recordTotalCount){
-                  alert(1);
                   data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
                 }else{
                   data[i]["probability"] = '0';
@@ -314,7 +321,6 @@ export default {
               let data = res.data.content;
               for(let i in data){
                   if(data[i].recordFaultCount&&data[i].recordTotalCount){
-                    alert(1);
                     data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
                   }else{
                     data[i]["probability"] = '0';

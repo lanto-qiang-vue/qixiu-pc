@@ -39,7 +39,7 @@
     data() {
       return {
         loading: false,
-        levelList:['AAA','AA','A','B','未考核'],
+        levelList:['未考核','AAA','AA','A','B'],
         columns: [
           {
             type: 'selection',

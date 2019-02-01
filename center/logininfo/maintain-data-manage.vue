@@ -22,7 +22,6 @@
               <Button style="width: 60px;" shape="circle"  @click="buttonType=2,minus(30)"
                       v-if="buttonType == 3">1个月
               </Button>
-            </Button>
           </FormItem>
           <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
             <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
@@ -354,7 +353,7 @@
             if (res[i].recordTotalCount == 0) {
               probability = 0
             } else {
-              probability = (res[i].commentCount / res[i].recordTotalCount).toFixed(6);
+              probability = (res[i].commentCount / res[i].recordTotalCount * 10000).toFixed(2) / 10000;
             }
             data[res[i].companyName] = {
               success: res[i].recordTotalCount, error: res[i].commentCount,
