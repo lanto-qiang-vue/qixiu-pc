@@ -16,6 +16,13 @@
             <Button style="width: 60px;" shape="circle" type="primary" @click="buttonType=2,minus(30)"
                     v-if="buttonType == 2">1个月
             </Button>
+            <Button style="width: 60px;"  shape="circle" v-if="buttonType == 3"
+                    @click="buttonType=1,minus(7)">7天
+              </Button>
+              <Button style="width: 60px;" shape="circle"  @click="buttonType=2,minus(30)"
+                      v-if="buttonType == 3">1个月
+              </Button>
+            </Button>
           </FormItem>
           <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
             <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
@@ -138,6 +145,13 @@
         this.getData()
         this.getRead()
         this.getComment()
+      },
+      computedTime(day){
+        let date = new Date()
+        let buildDate1 = new Date()
+        let time = date.getTime() - day * 3600 * 24 * 1000
+        let buildDate2 = new Date(time)
+        return [buildDate2, buildDate1];
       },
       minus(day) {
         let date = new Date()
@@ -315,15 +329,12 @@
             }
           })
         })
-        if (flag) {
-          return
-        }
         let area = [], success = [], error = [], count1 = 0, count2 = 0
         for (let i = 0; i < data.length; i++) {
           area.push(data[i].deptName)
-          error.push(data[i].notUpload)
+          success.push(data[i].notUpload)
           count1 += data[i].notUpload
-          success.push(data[i].uploadFault)
+          error.push(data[i].uploadFault)
           count2 += data[i].uploadFault
         }
         this.count1 = count1
@@ -343,14 +354,13 @@
             if (res[i].recordTotalCount == 0) {
               probability = 0
             } else {
-              probability = (res[i].commentCount / res[i].recordTotalCount).toFixed(2)
+              probability = (res[i].commentCount / res[i].recordTotalCount).toFixed(6);
             }
             data[res[i].companyName] = {
               success: res[i].recordTotalCount, error: res[i].commentCount,
               gl: probability
             }
           }
-          console.log(JSON.stringify(data))
           this.showComment(data)
         })
       },
@@ -709,7 +719,20 @@
     },
     watch: {
       searchTime(val) {
-
+        // alert(JSON.stringify(this.computedTime(7)));
+        let start;
+        let end;
+         if(this.searchTime[0] != '' && this.searchTime[1] != ""){
+            start = this.toymd(this.searchTime[0]);
+            end  = this.toymd(this.searchTime[1]);
+         }
+        if(this.toymd(this.computedTime(7)[0]) == start && this.toymd(this.computedTime(7)[1]) == end){
+          this.buttonType = 1;
+        }else if(this.toymd(this.computedTime(30)[0]) == start &&this.toymd(this.computedTime(30)[1]) == end){
+          this.buttonType = 2;
+        }else{
+          this.buttonType = 3;
+        }
       },
       key1(val) {
         let area = [], success = [], error = [], success1 = 0, error1 = 0
@@ -740,12 +763,14 @@
         if (val == 0) {
           this.readStage = 1
           let data = this.readList
+          console.log("分割");
+          console.log(JSON.stringify(data));
           let area = [], success = [], error = [], count1 = 0, count2 = 0
           for (let i = 0; i < data.length; i++) {
             area.push(data[i].deptName)
-            error.push(data[i].notUpload)
+            success.push(data[i].notUpload)
             count1 += data[i].notUpload
-            success.push(data[i].uploadFault)
+            error.push(data[i].uploadFault)
             count2 += data[i].uploadFault
           }
           this.count1 = count1

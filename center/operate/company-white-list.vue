@@ -17,10 +17,10 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random()">新增</Button>
-      <Button type="error" v-if="" :disabled="cando" @click="del">删除</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random()">新增</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="cando" @click="del">删除</Button>
     </div>
-    <company-white-detail :showDetail="showDetail" @refresh="page=1,getList()"></company-white-detail>
+    <company-white-detail :showDetail="showDetail" v-if="accessBtn('list')" @refresh="page=1,getList()"></company-white-detail>
   </common-table>
 
 </template>
@@ -39,6 +39,7 @@
     data() {
       return {
         loading: false,
+        levelList:['AAA','AA','A','B','未考核'],
         columns: [
           {
             type: 'selection',
@@ -71,7 +72,7 @@
           },
           {
             title: '信誉等级', key: 'company', sortable: true, minWidth: 120,
-            render: (h, params) => h('span', params.row.company.lastYearLevel || '')
+            render: (h, params) => h('span', this.levelList[params.row.company.lastYearLevel] || '')
           },
           {
             title: '收费标准', key: 'company', sortable: true, minWidth: 120,
@@ -105,7 +106,7 @@
     },
     methods: {
 		  del(){
-        this.$axios.delete('/monitoring/config/company-group/'+ this.ids).then((res) => {
+        this.$axios.delete('/monitoring/config/company-group?id='+ this.ids).then((res) => {
            this.$Message.success("删除成功");
            this.getList();
         })
@@ -114,7 +115,7 @@
         this.ids = '';
         let page = this.page - 1;
         this.loading = true
-        this.$axios.get('/monitoring/config/company-group/query?size=' + this.limit + '&page=' + page+"&type=WHITELIST"+"&companyName="+this.search.companyName+"&license="+this.search.license).then((res) => {
+        this.$axios.get('/monitoring/config/company-group/query?size=' + this.limit + '&page=' + page+"&type=WHITELIST"+"&companyName="+encodeURI(this.search.companyName)+"&license="+this.search.license).then((res) => {
                this.tableData = res.data.content;
                this.total = res.data.totalElements;
           this.loading = false;

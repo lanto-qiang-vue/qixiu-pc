@@ -20,7 +20,7 @@
                   <Input type="text" v-model="search.name" placeholder="请输入企业名称"></Input>
               </FormItem>
               <FormItem :label-width="0" style="width: 60px;">
-                  <Button type="primary" v-if="" @click="page=1,getDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="page=1,getDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
@@ -41,6 +41,7 @@ export default {
     },
     data(){
 		return{
+		        levelList:['AAA','AA','A','B','未考核'],
             spinShow:false,
             showModal:false,
             columns: [
@@ -53,6 +54,7 @@ export default {
                 {title: '联系电话', key: 'operatorMobile', sortable: true, minWidth: 120,
                 },
                 {title: '信誉等级', key: 'lastYearLevel', sortable: true, minWidth: 120,
+                  render: (h, params) => h('span', this.levelList[params.row.lastYearLevel] || "")
                 },
               {
                 title: '操作', key: 'lastYearLevel', sortable: true, minWidth: 120,
