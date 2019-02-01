@@ -315,9 +315,6 @@
             }
           })
         })
-        if (flag) {
-          return
-        }
         let area = [], success = [], error = [], count1 = 0, count2 = 0
         for (let i = 0; i < data.length; i++) {
           area.push(data[i].deptName)
@@ -350,7 +347,6 @@
               gl: probability
             }
           }
-          console.log(JSON.stringify(data))
           this.showComment(data)
         })
       },
@@ -740,6 +736,8 @@
         if (val == 0) {
           this.readStage = 1
           let data = this.readList
+          console.log("分割");
+          console.log(JSON.stringify(data));
           let area = [], success = [], error = [], count1 = 0, count2 = 0
           for (let i = 0; i < data.length; i++) {
             area.push(data[i].deptName)

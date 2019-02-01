@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="dblock" v-if="false">
+    <div class="dblock">
       <h1 class="dtitle">平台对接人</h1>
       <div class="center">
         <div class="inline-box">
@@ -66,7 +66,7 @@
       </div>
 
     </div>
-<butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt"></butt-joint>
+<butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt" stage="2"></butt-joint>
   </div>
 </template>
 
@@ -155,7 +155,7 @@
         let newDate=formatDate(oDate, 'yyyy-MM-dd');
         this.visitDate.unshift(newDate);
       }
-      // this.checkButt();
+      this.checkButt();
       console.log(this.visitDate);
 
       // this.getServerDate();

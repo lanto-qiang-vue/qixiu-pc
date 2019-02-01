@@ -7,9 +7,10 @@
     width="525"
     :scrollable="true"
     :closable="closableType"
-    :transfer="true"
+    :transfer="false"
     :footer-hide="false"
     :mask-closable="false"
+
     :transition-names="['', '']">
     <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:400px;">
       <FormItem label="平台对接人:" prop="contactName">
@@ -49,7 +50,7 @@
 
   export default {
     name: 'butt-joint',
-    props:['type','dataInit'],
+    props:['type','dataInit','stage'],
     data(){
       return {
         commentModal2:false,
@@ -72,6 +73,7 @@
           this.$Modal.confirm({
             title:'系统提示',
             content:'确认保存吗?',
+           'z-index':1100,
             onOk:()=>{
               if(!this.closableType){
                 this.$axios.post(url,this.formData).then((res) => {
@@ -79,6 +81,7 @@
                   if(res.data.code == 0){
                     this.$Message.success("保存成功");
                     this.commentModal = false;
+                   if(this.stage == 1) this.$router.push({ path: '/center/company-home'})
                   }
                   if(res.data.code=='1000'){
                     this.showErcode= true
