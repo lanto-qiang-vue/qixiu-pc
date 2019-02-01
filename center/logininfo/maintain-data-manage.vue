@@ -318,9 +318,9 @@
         let area = [], success = [], error = [], count1 = 0, count2 = 0
         for (let i = 0; i < data.length; i++) {
           area.push(data[i].deptName)
-          error.push(data[i].notUpload)
+          success.push(data[i].notUpload)
           count1 += data[i].notUpload
-          success.push(data[i].uploadFault)
+          error.push(data[i].uploadFault)
           count2 += data[i].uploadFault
         }
         this.count1 = count1
@@ -741,9 +741,9 @@
           let area = [], success = [], error = [], count1 = 0, count2 = 0
           for (let i = 0; i < data.length; i++) {
             area.push(data[i].deptName)
-            error.push(data[i].notUpload)
+            success.push(data[i].notUpload)
             count1 += data[i].notUpload
-            success.push(data[i].uploadFault)
+            error.push(data[i].uploadFault)
             count2 += data[i].uploadFault
           }
           this.count1 = count1
