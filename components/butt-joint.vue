@@ -81,7 +81,7 @@
                   if(res.data.code == 0){
                     this.$Message.success("保存成功");
                     this.commentModal = false;
-                   if(this.stage == 1) this.$router.push({ path: '/center/company-home'});
+                    this.$emit('refresh');
                   }
                   if(res.data.code=='1000'){
                     this.showErcode= true
