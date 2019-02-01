@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="line-height:40px;font-size:14px;padding-left:10px;"><span style="color:black;">从{{search.startDate}}至{{search.endDate}},{{areaName}}{{topContent}}的企业总数为:<span style="color:red;">{{total}}</span>家</span></div>
+    <div style="line-height:40px;font-size:14px;padding-left:10px;"><span style="color:black;">从{{search.startDate}}至{{search.endDate}},{{areaName}}{{topContent}}的企业总数为:<span style="color:red;">{{staticTotal}}</span>家</span></div>
       <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                     @changePage="changePage" @changePageSize="changePageSize"
                     :show="showTable" :page="page"  :loading="loading">
@@ -74,6 +74,8 @@ export default {
         },
         page: 1,
         limit: 10,
+        role:true,
+        staticTotal:0,
         total: 0,
         showTable:false,
         showDetail: false,
@@ -290,6 +292,10 @@ export default {
               
           }).then( (res) => {
             if(res.status == 200){
+              if(this.role){
+                this.staticTotal = res.data.totalElements;
+                this.role = false;
+              }
               this.total = res.data.totalElements;
               let data = res.data.content;
               for(let i in data){
@@ -357,7 +363,7 @@ export default {
                     this.titleTop="（未上传维修记录）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况，请按规定及时上传";
 
-                    this.modal3=true;
+                    // this.modal3=true;
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
@@ -368,7 +374,7 @@ export default {
 
                     this.titleTop="（上传维修记录存在错误）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
-                    this.modal3=true;
+                    // this.modal3=true;
 
                   }
                 })
@@ -381,7 +387,7 @@ export default {
 
                     this.titleTop="（未上传维修记录）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
-                    this.modal3=true;
+                    // this.modal3=true;
 
                   }
                 })
@@ -395,7 +401,7 @@ export default {
 
                     this.titleTop="（维修记录存在错误）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
-                    this.modal3=true;
+                    // this.modal3=true;
 
                   }
                 })
@@ -428,7 +434,7 @@ export default {
                     this.getList();
                     this.titleTop="（未上传维修记录）";
                     this.contentTop="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
-                    this.modal3=true;
+                    // this.modal3=true;
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
@@ -438,7 +444,7 @@ export default {
                     this.getList();
                     this.titleTop="（上传维修记录存在错误）";
                     this.contentTop="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
-                    this.modal3=true;
+                    // this.modal3=true;
                   }
                 })
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
@@ -450,7 +456,7 @@ export default {
 
                     this.titleTop="（未上传维修记录）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
-                    this.modal3=true;
+                    // this.modal3=true;
 
                   }
                 })
@@ -463,7 +469,7 @@ export default {
 
                     this.titleTop="（未上传维修记录）";
                     this.contentTop=this.temObjectData.companyName+"，您门店在"+this.search.startDate+"至"+this.search.endDate+"所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
-                    this.modal3=true;
+                    // this.modal3=true;
 
                   }
                 })

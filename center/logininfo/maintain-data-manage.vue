@@ -24,7 +24,7 @@
               </Button>
           </FormItem>
           <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
-            <DatePicker type="daterange" v-model="searchTime" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
+            <DatePicker type="daterange" v-model="searchTime" :options="options" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
                         style="width: 300px"></DatePicker>
           </FormItem>
           <FormItem :label-width="0">
@@ -95,6 +95,13 @@
       return {
         searchType: 0,
         areaType: [],
+        options: {
+          disabledDate (date) {
+            let now = new Date();
+            let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+            return date > d1;
+          }
+        },
         areaName: [],//区域名称获取。区域不重复。不用去重
         secondArea: [],//二级区域
         readArea: [],//阅读区域下拉
@@ -137,6 +144,7 @@
 
       $.getScript('/libs/echarts.common.min.js', () => {
         this.minus(7)
+        this.add1(new Date());
       })
     },
     methods: {
@@ -147,14 +155,14 @@
       },
       computedTime(day){
         let date = new Date()
-        let buildDate1 = new Date()
+        let buildDate1 = new Date(date.getTime() - 1 * 3600 * 24 * 1000)
         let time = date.getTime() - day * 3600 * 24 * 1000
         let buildDate2 = new Date(time)
         return [buildDate2, buildDate1];
       },
       minus(day) {
         let date = new Date()
-        let buildDate1 = new Date()
+        let buildDate1 = new Date(date.getTime() - 1 * 3600 * 24 * 1000)
         let time = date.getTime() - day * 3600 * 24 * 1000
         let buildDate2 = new Date(time)
         this.searchTime = [buildDate2, buildDate1]
@@ -163,12 +171,16 @@
       toymd(date) {
         return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
       },
+      add1(date){
+        let now = date;
+        return new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+      },
       getRead(code = '') {
         if (this.searchTime[0] == '' || this.searchTime[1] == '') {
           //缺少时间由getData抛出
           return false
         }
-        this.$axios.$get('/monitoring/display/company/docking-unread/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.searchTime[1]) + '&deptCode=' + code).then(res => {
+        this.$axios.$get('/monitoring/display/company/docking-unread/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.add1(this.searchTime[1])) + '&deptCode=' + code).then(res => {
           let data = res
           if (code == '') {
             this.readList = res
@@ -345,7 +357,7 @@
         this.bar3.setOption(this.optionBar3)
       },
       getComment(code = '') {
-        this.$axios.$get('/monitoring/display/company/upload-comment/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.searchTime[1]) + '&deptCode=' + code).then(res => {
+        this.$axios.$get('/monitoring/display/company/upload-comment/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.add1(this.searchTime[1])) + '&deptCode=' + code).then(res => {
           let data = {}
           for (let i in res) {
             let probability
@@ -416,7 +428,7 @@
                   return params.replace(/(.{3})/g, '$1\n')
                 }
               },
-              triggerEvent: true
+              triggerEvent: false
             }
 
 
@@ -513,14 +525,14 @@
         }
         this.$Spin.show()
         let success = new Promise((resolve, reject) => {
-          this.$axios.$get('/monitoring/display/company/upload-not/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.searchTime[1]) + '&deptCode=' + code).then(res => {
+          this.$axios.$get('/monitoring/display/company/upload-not/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.add1(this.searchTime[1])) + '&deptCode=' + code).then(res => {
             resolve(res)
           }, err => {
             reject(err)
           })
         })
         let error = new Promise((resolve, reject) => {
-          this.$axios.$get('/monitoring/display/company/upload-fault/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.searchTime[1]) + '&deptCode=' + code).then(res => {
+          this.$axios.$get('/monitoring/display/company/upload-fault/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.add1(this.searchTime[1])) + '&deptCode=' + code).then(res => {
             resolve(res)
           }, err => {
             reject(err)
