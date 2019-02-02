@@ -77,10 +77,10 @@
               <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
             </Select></div>
         </div>
-        <!--试点企业维修点评情况-->
-        <!--<div class="inline-box" style="width:100%;position:relative;margin-top:20px;">-->
-        <!--<div id="bar" style="width: 100%;height: 650px;"></div>-->
-      <!--</div>-->
+        试点企业维修点评情况
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+          <div id="bar" style="width: 100%;height: 650px;"></div>
+        </div>
       </div>
 
     </div>
@@ -151,7 +151,7 @@
       getAll() {
         this.getData()
         this.getRead()
-        // this.getComment()
+        this.getComment()
       },
       computedTime(day){
         let date = new Date()
