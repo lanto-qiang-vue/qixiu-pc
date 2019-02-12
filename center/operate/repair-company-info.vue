@@ -999,7 +999,7 @@
         } else {
 
         }
-        console.log('this.listSearch.status', this.listSearch.status)
+        // console.log('this.listSearch.status', this.listSearch.status)
         this.testTitle = getName(this.statusArr, this.listSearch.status)
       }
     },
