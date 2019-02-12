@@ -93,15 +93,7 @@ export default [
         },
         component: resolve('center/home/operator-home.vue'),
       },
-      {
-        path: 'rescue-company',
-        meta: {
-          icon: '',
-          title: '清障施救牵引企业信息管理',
-          accessId: '/center/rescue-company',
-        },
-        component: resolve('center/operate/rescue-company.vue'),
-      },
+
       {
         path: 'shandong-map',
         meta: {
@@ -130,6 +122,55 @@ export default [
         },
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
+
+
+
+
+      {
+        path: 'answer-questions',
+        meta: {
+          icon: '',
+          title: '车大夫回答问题(专家)',
+          accessId: '/center/answer-questions',
+        },
+        component: resolve('center/car-doctor/car-doctor-manage.vue'),
+      },
+
+
+      {
+        path: 'user-login-list',
+        meta: {
+          icon: '',
+          title: '用户行为日志列表(运营商)',
+          accessId: '/center/user-login-list',
+        },
+        component: resolve('center/operate/user-login-list.vue'),
+      },
+
+
+
+      {
+        path: 'unaccess',
+        meta: {
+          icon: '',
+          title: '无权限',
+          accessId: 999,
+        },
+        component: resolve('center/index.vue'),
+      },
+
+    ]
+  },
+  {
+    path: '/menumy',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '我的',
+      accessId: '/menumy',
+    },
+    component: Main,
+    children: [
       {
         path: 'my-questions',
         meta: {
@@ -147,15 +188,6 @@ export default [
           accessId: '/center/my-visit',
         },
         component: resolve('center/my/my-visit.vue'),
-      },
-      {
-        path: 'maintain-data-manage',
-        meta: {
-          icon: '',
-          title: '数据监控',
-          accessId: '/center/maintain-data-manage',
-        },
-        component: resolve('center/logininfo/maintain-data-manage.vue'),
       },
       {
         path: 'my-order',
@@ -188,84 +220,38 @@ export default [
         path: 'my-notes',
         meta: {
           icon: '',
-          title: '通知管理(车主)',
+          title: '我的通知',
           accessId: '/center/my-notes',
         },
         component: resolve('center/my/my-notes.vue'),
       },
       {
-        path: 'answer-questions',
+        path: 'account-info',
         meta: {
           icon: '',
-          title: '车大夫回答问题(专家)',
-          accessId: '/center/answer-questions',
+          title: '账号信息',
+          accessId: '/center/account-info',
         },
-        component: resolve('center/car-doctor/car-doctor-manage.vue'),
+        component: resolve('center/account/account-info.vue'),
       },
       {
-        path: 'bind-car-audit',
+        path: 'change-password',
         meta: {
           icon: '',
-          title: '绑定车辆审核(运营商)',
-          accessId: '/center/bind-car-audit',
+          title: '修改密码',
+          accessId: '/center/updatePass',
         },
-        component: resolve('center/operate/bind-car-audit.vue'),
+        component: resolve('center/account/change-password.vue'),
       },
       {
-        path: 'repair-company-manage',
+        path: 'change-phone',
         meta: {
           icon: '',
-          title: '维修企业信息管理(运营商)',
-          accessId: '/center/repair-company-manage',
+          title: '修改手机',
+          accessId: '/center/change-phone',
         },
-        component: resolve('center/operate/repair-company-manage.vue'),
+        component: resolve('center/account/change-phone.vue'),
       },
-      {
-        path: 'user-login-list',
-        meta: {
-          icon: '',
-          title: '用户行为日志列表(运营商)',
-          accessId: '/center/user-login-list',
-        },
-        component: resolve('center/operate/user-login-list.vue'),
-      },
-      {
-        path: 'company-qualify-manage',
-        meta: {
-          icon: '',
-          title: '企业合格证使用信息管理(管理部门)',
-          accessId: '/center/company-qualify-manage',
-        },
-        component: resolve('center/company-info/company-qualify-manage.vue'),
-      },
-      {
-        path: 'operate-complaint',
-        meta: {
-          icon: '',
-          title: '反馈管理(运营)',
-          accessId: '/center/operate-complaint',
-        },
-        component: resolve('center/operate/operate-complaint.vue'),
-      },
-      {
-        path: 'company-white-list',
-        meta: {
-          icon: '',
-          title: '企业白名单',
-          accessId: '/center/company-white-list',
-        },
-        component: resolve('center/operate/company-white-list.vue'),
-      },
-      {
-        path: 'unaccess',
-        meta: {
-          icon: '',
-          title: '无权限',
-          accessId: 999,
-        },
-        component: resolve('center/index.vue'),
-      },
-
 
     ]
   },
@@ -279,33 +265,7 @@ export default [
     },
     component: Main,
     children: [
-      {
-        path: 'account-info',
-        meta: {
-          icon: '',
-          title: '账号信息',
-          accessId: '/center/account-info',
-        },
-        component: resolve('center/account/account-info.vue'),
-      },
-      {
-        path: 'change-phone',
-        meta: {
-          icon: '',
-          title: '更换手机号码',
-          accessId: '/center/change-phone',
-        },
-        component: resolve('center/account/change-phone.vue'),
-      },
-      {
-        path: 'change-password',
-        meta: {
-          icon: '',
-          title: '修改密码',
-          accessId: '/center/updatePass',
-        },
-        component: resolve('center/account/change-password.vue'),
-      },
+
     ]
   },
   {
@@ -346,15 +306,6 @@ export default [
         component: resolve('center/system/role-manage.vue'),
       },
       {
-        path: 'banner-manage',
-        meta: {
-          icon: '',
-          title: '广告管理',
-          accessId:'/center/banner-manage',
-        },
-        component: resolve('center/system/banner-manage.vue'),
-      },
-      {
         path: 'user-manage',
         meta: {
           icon: '',
@@ -372,18 +323,6 @@ export default [
         },
         component: resolve('center/system/system-type-manage.vue'),
       },
-    ]
-  },
-  {
-    path: '/menu16',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '文章管理',
-      accessId: '/menu16',
-    },
-    component: Main,
-    children: [
       {
         path: 'article-type',
         meta: {
@@ -393,28 +332,71 @@ export default [
         },
         component: resolve('center/articles/article-type-list.vue'),
       },
-      {
-        path: 'article-manage',
-        meta: {
-          icon: '',
-          title: '文章列表',
-          accessId: '/center/article-manage',
-        },
-        component: resolve('center/articles/article-list.vue'),
-      },
-      {
-        path: 'article-manage/detail',
-        meta: {
-          icon: '',
-          title: '文章详情',
+    ]
+  },
+  {
+    path: '/menu122',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '企业员工人才管理',
+      accessId: '/menu122',
+    },
+    component: Main,
+    children: [
 
-          // accessId: 59,
-        },
-        component: resolve('center/articles/article-detail.vue'),
-      },
     ]
   },
 
+  {
+    path: '/menu31',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '服务管理（企业）',
+      accessId: '/menu31',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'visit-company',
+        meta: {
+          icon: '',
+          title: '上门服务订单',
+          accessId: '/center/visit-company',
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-company',
+        meta: {
+          icon: '',
+          title: '预约服务订单',
+          accessId: '/center/order-company',
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },
+      {
+        path: 'complaint-manage',
+        meta: {
+
+          icon: '',
+          title: '反馈管理',
+          accessId: '/center/complaint-manage',
+        },
+        component: resolve('center/company/complaint-manage.vue'),
+      },
+      {
+        path: 'company-note-manage',
+        meta: {
+          icon: '',
+          title: '通知管理',
+          accessId: '/center/company-note-manage',
+        },
+        component: resolve('center/company/company-note-manage.vue'),
+      },
+    ]
+  },
   {
     path: '/menu17',
     alias: '/center',
@@ -423,22 +405,14 @@ export default [
       title: '企业信息管理',
       accessId: '/menu17',
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
-      {
-        path: 'repored',
-        meta: {
-          icon: '',
-          title: '维修数据上报查询',
-          accessId: '/center/repored',
-        },
-        component: resolve('center/company/repored.vue'),
-      },
+
       {
         path: 'staff-query',
         meta: {
           icon: '',
-          title: '企业员工查询',
+          title: '企业员工管理',
           accessId: '/center/staff-query',
         },
         component: resolve('center/company/staff-query.vue'),
@@ -454,25 +428,6 @@ export default [
         component: resolve('center/company/staff-detail.vue'),
       },
       {
-        path: 'company-repair-qualify',
-        meta: {
-          icon: '',
-          title: '企业合格证使用信息登记',
-          accessId: '/center/company-repair-qualify',
-        },
-        component: resolve('center/company/company-repair-qualify.vue'),
-      },
-      {
-        path: 'complaint-manage',
-        meta: {
-
-          icon: '',
-          title: '反馈管理',
-          accessId: '/center/complaint-manage',
-        },
-        component: resolve('center/company/complaint-manage.vue'),
-      },
-        {
         path: 'quality-manage',
         meta: {
           icon: '',
@@ -482,113 +437,26 @@ export default [
         component: resolve('center/company-info/quality-manage.vue'),
       },
       {
-        path: 'company-note-manage',
+        path: 'company-repair-qualify',
         meta: {
           icon: '',
-          title: '通知管理',
-          accessId: '/center/company-note-manage',
+          title: '企业合格证使用信息登记',
+          accessId: '/center/company-repair-qualify',
         },
-        component: resolve('center/company/company-note-manage.vue'),
+        component: resolve('center/company/company-repair-qualify.vue'),
       },
+      {
+        path: 'repored',
+        meta: {
+          icon: '',
+          title: '维修数据上报查询',
+          accessId: '/center/repored',
+        },
+        component: resolve('center/company/repored.vue'),
+      },
+
+
     ]
-  },
-  {
-    path: '/menu122',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '企业员工人才管理',
-      accessId: '/menu122',
-    },
-    component: resolve('components/main.vue'),
-    children: [
-      {
-        path: 'by-company',
-        meta: {
-          icon: '',
-          title: '按维修企业查询',
-          accessId: '/center/by-company',
-        },
-        component: resolve('center/company/by-company.vue'),
-      },
-      {
-        path: 'employees-query',
-        meta: {
-          icon: '',
-          title: '按维修企业员工查询',
-          accessId: '/center/employees-query',
-        },
-        component: resolve('center/company/staff-query.vue'),
-      },
-      {
-        path: 'employees-detail',
-        meta: {
-          icon: '',
-          title: '企业员工详情',
-          accessId: '/center/employees-detail',
-          hideMenu: true
-        },
-        component: resolve('center/company/staff-detail.vue'),
-      },
-    ]
-  },
-      {
-    path: '/menu30',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '服务管理',
-      accessId: '/menu30',
-    },
-    component: resolve('components/main.vue'),
-    children: [
-      {
-        path: 'visit-manage',
-        meta: {
-          icon: '',
-          title: '上门服务管理',
-          accessId: '/center/visit-manage',
-        },
-        component: resolve('center/operate/visit-manage.vue'),
-      },
-      {
-        path: 'order-manage',
-        meta: {
-          icon: '',
-          title: '预约服务管理',
-          accessId: '/center/order-manage',
-        },
-        component: resolve('center/operate/order-manage.vue'),
-      },]
-  },
-  {
-    path: '/menu31',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '企业服务管理',
-      accessId: '/menu31',
-    },
-    component: resolve('components/main.vue'),
-    children: [
-      {
-        path: 'visit-company',
-        meta: {
-          icon: '',
-          title: '上门服务管理',
-          accessId: '/center/visit-company',
-        },
-        component: resolve('center/operate/visit-manage.vue'),
-      },
-      {
-        path: 'order-company',
-        meta: {
-          icon: '',
-          title: '预约服务管理',
-          accessId: '/center/order-company',
-        },
-        component: resolve('center/operate/order-manage.vue'),
-      },]
   },
   {
     path: '/menu18',
@@ -598,43 +466,17 @@ export default [
       title: '运输管理',
       accessId: '/menu18',
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
-      {
-        path: 'transportationCompany-manage',
-        meta: {
-          icon: '',
-          title: '运输企业信息管理',
-          accessId: '/center/transportationCompany-manage',
-        },
-        component: resolve('center/operate/transportationCompany-manage.vue'),
-      },
-      {
-        path: 'transportationCompany-record',
-        meta: {
-          icon: '',
-          title: '运输车辆技术档案',
-          accessId: '/center/transportationCompany-record',
-        },
-        component: resolve('center/operate/transportationCompany-record.vue'),
-      },
+
        {
         path: 'maintain-report-manage',
         meta: {
           icon: '',
-          title: '数据监控',
+          title: '维修数据上报管理',
           accessId: '',
         },
         component: resolve('center/operate/maintain-report-manage.vue'),
-      },
-       {
-        path: 'school-info-list',
-        meta: {
-          icon: '',
-          title: '驾校信息管理',
-          accessId: '',
-        },
-        component: resolve('center/driving-school/school-info-list.vue'),
       },
       {
         path: 'for-you-service',
@@ -647,56 +489,7 @@ export default [
       },
     ]
   },
-  {
-    path: '/menu19',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '车大夫管理(运营)',
-      accessId: '/menu19',
-    },
-    component: resolve('components/main.vue'),
-    children: [{
-      path: 'carDoctor-manage',
-      meta: {
-        icon: '',
-        title: '车大夫专家管理',
-        accessId: '/center/carDoctor-manage',
-      },
-      component: resolve('center/operate/carDoctor-manage.vue'),
-    },
-      {
-        path: 'carDoctor-question-manage',
-        meta: {
-          icon: '',
-          title: '车大夫问题管理',
-          accessId: '/center/carDoctor-question-manage',
-        },
-        component: resolve('center/operate/carDoctor-question-manage.vue'),
-      },
-      {
-        path: 'carDoctor-answer-manage',
-        meta: {
-          icon: '',
-          title: '车大夫回答管理',
-          accessId:  '/center/carDoctor-answer-manage',
-        },
-        component: resolve('center/operate/carDoctor-answer-manage.vue'),
-      },
 
-
-      // {
-      //   path: 'company-repair-data',
-      //   meta: {
-      //     icon: '',
-      //     title: '反馈管理',
-      //     accessId: 410,
-      //   },
-      //   component: resolve('center/company/company-repair-data.vue'),
-      // },
-
-      ]
-  },
   {
     path: '/menuschool',
     alias: '/center',
@@ -705,32 +498,8 @@ export default [
       title: '驾校管理(运营)',
       accessId: '/menuschool',
     },
-    component: resolve('components/main.vue'),
-    children: [{
-      path: 'school-info',
-      meta: {
-        icon: '',
-        title: '驾校信息管理',
-        accessId: '/center/school-info-list',
-      },
-      component: resolve('center/driving-school/school-info-list.vue'),
-    },{
-      path: 'base-list',
-      meta: {
-        icon: '',
-        title: '驾校基地管理',
-        accessId: '/center/base-list',
-      },
-      component: resolve('center/driving-school/school-base-list.vue'),
-    },{
-      path: 'apply-list',
-      meta: {
-        icon: '',
-        title: '驾校报名管理',
-        accessId: '/center/apply-list',
-      },
-      component: resolve('center/driving-school/school-apply-list.vue'),
-    },]
+    component: Main,
+    children: []
   },
 
   //管理中心
@@ -739,16 +508,16 @@ export default [
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
-      title: '电子健康档案',
+      title: '日常监管',
       accessId: '/menu21',
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
       {
         path: 'record-company',
         meta: {
           icon: '',
-          title: '根据维修企业查找',
+          title: '维修企业管理',
           accessId: '/center/record-company',
           keepAlive: true
         },
@@ -758,60 +527,42 @@ export default [
         path: 'record-repair',
         meta: {
           icon: '',
-          title: '根据维修记录查找',
+          title: '维修记录管理',
           accessId: '/center/record-repair',
           keepAlive: true
         },
         component: resolve('center/manage-service/record-repair.vue'),
       },
-    ]
-  },
-  {
-    path: '/menu22',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '管理服务',
-      accessId: '/menu22',
-    },
-    component: resolve('components/main.vue'),
-    children: [
       {
-        path: 'note-manage',
+        path: 'maintain-data-manage',
         meta: {
           icon: '',
-          title: '通知管理',
-          accessId: '/center/note-manage',
+          title: '上传监控',
+          accessId: '/center/maintain-data-manage',
         },
-        component: resolve('center/manage-service/note-manage.vue'),
+        component: resolve('center/logininfo/maintain-data-manage.vue'),
       },
       {
-        path: 'note-audit',
+        path: 'enterprise-sign',
         meta: {
           icon: '',
-          title: '通知审核',
-          accessId: '/center/note-audit',
+          title: '企业签到监管',
+          accessId: '/center/enterprise-sign',
+
         },
-        component: resolve('center/manage-service/note-audit.vue'),
+        component: resolve('center/logininfo/enterprise-sign.vue'),
       },
       {
-        path: 'file-manage',
+        path: 'manage-sign',
         meta: {
           icon: '',
-          title: '文件管理',
-          accessId: '/center/file-manage',
+          title: '管理部门登录情况',
+          accessId: '/center/manage-sign',
+
         },
-        component: resolve('center/logininfo/file-manage.vue'),
+        component: resolve('center/logininfo/manage-sign.vue'),
       },
-      {
-        path: 'review-manage',
-        meta: {
-          icon: '',
-          title: '反馈管理',
-          accessId: '/center/review-manage',
-        },
-        component: resolve('center/manage-service/review-manage.vue'),
-      },
+
       {
         path: 'repair-upload-error',
         meta: {
@@ -855,6 +606,56 @@ export default [
     ]
   },
   {
+    path: '/menu22',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '管理服务',
+      accessId: '/menu22',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'note-manage',
+        meta: {
+          icon: '',
+          title: '通知管理',
+          accessId: '/center/note-manage',
+        },
+        component: resolve('center/manage-service/note-manage.vue'),
+      },
+      {
+        path: 'note-audit',
+        meta: {
+          icon: '',
+          title: '通知审核',
+          accessId: '/center/note-audit',
+        },
+        component: resolve('center/manage-service/note-audit.vue'),
+      },
+      {
+        path: 'review-manage',
+        meta: {
+          icon: '',
+          title: '反馈管理',
+          accessId: '/center/review-manage',
+        },
+        component: resolve('center/manage-service/review-manage.vue'),
+      },
+      {
+        path: 'file-manage',
+        meta: {
+          icon: '',
+          title: '文件管理',
+          accessId: '/center/file-manage',
+        },
+        component: resolve('center/logininfo/file-manage.vue'),
+      },
+
+
+    ]
+  },
+  {
     path: '/menu23',
     alias: '/center',
     meta: {
@@ -862,28 +663,9 @@ export default [
       title: '登录信息',
       accessId: '/menu23',
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
-      {
-        path: 'enterprise-sign',
-        meta: {
-          icon: '',
-          title: '企业签到信息',
-          accessId: '/center/enterprise-sign',
 
-        },
-        component: resolve('center/logininfo/enterprise-sign.vue'),
-      },
-      {
-        path: 'manage-sign',
-        meta: {
-          icon: '',
-          title: '管理部门登录信息',
-          accessId: '/center/manage-sign',
-
-        },
-        component: resolve('center/logininfo/manage-sign.vue'),
-      },
 
     ]
   },
@@ -892,10 +674,10 @@ export default [
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
-      title: '企业资料',
+      title: '企业信息管理(管理部门)',
       accessId: '/menu24',
     },
-    component: resolve('components/main.vue'),
+    component: Main,
     children: [
       {
         path: 'company-info-manage',
@@ -915,7 +697,253 @@ export default [
         },
         component: resolve('center/company-info/quality-manage.vue'),
       },
+      {
+        path: 'company-qualify-manage',
+        meta: {
+          icon: '',
+          title: '企业合格证使用信息管理(管理部门)',
+          accessId: '/center/company-qualify-manage',
+        },
+        component: resolve('center/company-info/company-qualify-manage.vue'),
+      },
+      {
+        path: 'by-company',
+        meta: {
+          icon: '',
+          title: '按企业查询员工',
+          accessId: '/center/by-company',
+        },
+        component: resolve('center/company/by-company.vue'),
+      },
+      {
+        path: 'employees-query',
+        meta: {
+          icon: '',
+          title: '查询员工',
+          accessId: '/center/employees-query',
+        },
+        component: resolve('center/company/staff-query.vue'),
+      },
+      {
+        path: 'employees-detail',
+        meta: {
+          icon: '',
+          title: '企业员工详情',
+          accessId: '/center/employees-detail',
+          hideMenu: true
+        },
+        component: resolve('center/company/staff-detail.vue'),
+      },
     ]
-  }
+  },
+  {
+    path: '/com-info-operate',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '企业信息管理(运营)',
+      accessId: '/com-info-operate',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'repair-company-manage',
+        meta: {
+          icon: '',
+          title: '维修企业信息管理(运营)',
+          accessId: '/center/repair-company-manage',
+        },
+        component: resolve('center/operate/repair-company-manage.vue'),
+      },
+      {
+        path: 'school-info',
+        meta: {
+          icon: '',
+          title: '驾校信息管理',
+          accessId: '/center/school-info-list',
+        },
+        component: resolve('center/driving-school/school-info-list.vue'),
+      },{
+        path: 'base-list',
+        meta: {
+          icon: '',
+          title: '驾校基地管理',
+          accessId: '/center/base-list',
+        },
+        component: resolve('center/driving-school/school-base-list.vue'),
+      },
+      {
+        path: 'rescue-company',
+        meta: {
+          icon: '',
+          title: '清障施救牵引企业信息管理',
+          accessId: '/center/rescue-company',
+        },
+        component: resolve('center/operate/rescue-company.vue'),
+      },
+      {
+        path: 'company-white-list',
+        meta: {
+          icon: '',
+          title: '白名单管理',
+          accessId: '/center/company-white-list',
+        },
+        component: resolve('center/operate/company-white-list.vue'),
+      },
+      {
+        path: 'transportationCompany-manage',
+        meta: {
+          icon: '',
+          title: '运输企业信息管理',
+          accessId: '/center/transportationCompany-manage',
+        },
+        component: resolve('center/operate/transportationCompany-manage.vue'),
+      },
+      {
+        path: 'transportationCompany-record',
+        meta: {
+          icon: '',
+          title: '运输车辆技术档案',
+          accessId: '/center/transportationCompany-record',
+        },
+        component: resolve('center/operate/transportationCompany-record.vue'),
+      },
+    ]
+  },
+  {
+    path: '/serve-operate',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '服务管理(运营)',
+      accessId: '/serve-operate',
+    },
+    component: Main,
+    children: [
+      {
+        path: 'visit-manage',
+        meta: {
+          icon: '',
+          title: '上门服务管理',
+          accessId: '/center/visit-manage',
+        },
+        component: resolve('center/operate/visit-manage.vue'),
+      },
+      {
+        path: 'order-manage',
+        meta: {
+          icon: '',
+          title: '预约服务管理',
+          accessId: '/center/order-manage',
+        },
+        component: resolve('center/operate/order-manage.vue'),
+      },
+      {
+        path: 'operate-complaint',
+        meta: {
+          icon: '',
+          title: '反馈管理(运营)',
+          accessId: '/center/operate-complaint',
+        },
+        component: resolve('center/operate/operate-complaint.vue'),
+      },
+      {
+        path: 'apply-list',
+        meta: {
+          icon: '',
+          title: '驾校报名管理',
+          accessId: '/center/apply-list',
+        },
+        component: resolve('center/driving-school/school-apply-list.vue'),
+      },
+    ]
+  },
+  {
+    path: '/audit-operate',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '审核管理',
+      accessId: '/audit-operate',
+    },
+    component: Main,
+    children: [
+      {
+      path: 'carDoctor-manage',
+      meta: {
+        icon: '',
+        title: '车大夫专家管理',
+        accessId: '/center/carDoctor-manage',
+      },
+      component: resolve('center/operate/carDoctor-manage.vue'),
+    },
+      {
+        path: 'carDoctor-question-manage',
+        meta: {
+          icon: '',
+          title: '车大夫问题管理',
+          accessId: '/center/carDoctor-question-manage',
+        },
+        component: resolve('center/operate/carDoctor-question-manage.vue'),
+      },
+      {
+        path: 'carDoctor-answer-manage',
+        meta: {
+          icon: '',
+          title: '车大夫回答管理',
+          accessId:  '/center/carDoctor-answer-manage',
+        },
+        component: resolve('center/operate/carDoctor-answer-manage.vue'),
+      },
+      {
+        path: 'bind-car-audit',
+        meta: {
+          icon: '',
+          title: '绑定车辆审核',
+          accessId: '/center/bind-car-audit',
+        },
+        component: resolve('center/operate/bind-car-audit.vue'),
+      },
+      {
+        path: '/matter-operate',
+        alias: '/center',
+        meta: {
+          icon: 'logo-buffer',
+          title: '内容运营',
+          accessId: '/matter-operate',
+        },
+        component: Main,
+        children: [
+          {
+            path: 'article-manage',
+            meta: {
+              icon: '',
+              title: '文章管理',
+              accessId: '/center/article-manage',
+            },
+            component: resolve('center/articles/article-list.vue'),
+          },
+          {
+            path: 'article-manage/detail',
+            meta: {
+              icon: '',
+              title: '文章详情',
+            },
+            component: resolve('center/articles/article-detail.vue'),
+          },
+          {
+            path: 'banner-manage',
+            meta: {
+              icon: '',
+              title: '广告管理',
+              accessId:'/center/banner-manage',
+            },
+            component: resolve('center/system/banner-manage.vue'),
+          },
+        ]
+      },
+
+    ]
+  },
 
 ]

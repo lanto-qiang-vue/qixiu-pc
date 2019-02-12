@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="dblock">
-      <h1 class="dtitle">平台对接人</h1>
+      <h1 class="dtitle">企业联系人（用于接收汽修平台公众号通知）</h1>
       <div class="center">
         <div class="inline-box">
           <Table :columns="buttColumns" :data="buttData"  width="800"
@@ -89,8 +89,8 @@
         showType:false,
         dataInit:null,
         buttColumns:[
-          {title: '对接人姓名', key: 'contactName',  minWidth: 100,},
-          {title: '对接人手机号', key: 'contactMobile',  minWidth: 100,},
+          {title: '联系人', key: 'contactName',  minWidth: 100,},
+          {title: '联系人手机', key: 'contactMobile',  minWidth: 100,},
           {title: '操作', key: 'cz',  minWidth: 100,
             render: (h, params) => {
               let buttonContent= '更改';
