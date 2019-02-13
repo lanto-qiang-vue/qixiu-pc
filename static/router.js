@@ -123,9 +123,6 @@ export default [
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
 
-
-
-
       {
         path: 'answer-questions',
         meta: {
@@ -256,19 +253,6 @@ export default [
     ]
   },
   {
-    path: '/menu8',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '账号管理',
-      accessId: '/menu8',
-    },
-    component: Main,
-    children: [
-
-    ]
-  },
-  {
     path: '/menu15',
     alias: '/center',
     meta: {
@@ -334,19 +318,7 @@ export default [
       },
     ]
   },
-  {
-    path: '/menu122',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '企业员工人才管理',
-      accessId: '/menu122',
-    },
-    component: Main,
-    children: [
 
-    ]
-  },
 
   {
     path: '/menu31',
@@ -490,17 +462,6 @@ export default [
     ]
   },
 
-  {
-    path: '/menuschool',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '驾校管理(运营)',
-      accessId: '/menuschool',
-    },
-    component: Main,
-    children: []
-  },
 
   //管理中心
   {
@@ -655,26 +616,13 @@ export default [
 
     ]
   },
-  {
-    path: '/menu23',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '登录信息',
-      accessId: '/menu23',
-    },
-    component: Main,
-    children: [
 
-
-    ]
-  },
   {
     path: '/menu24',
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
-      title: '企业信息管理(管理部门)',
+      title: '企业信息(管理端)',
       accessId: '/menu24',
     },
     component: Main,
@@ -904,45 +852,44 @@ export default [
         },
         component: resolve('center/operate/bind-car-audit.vue'),
       },
+    ]
+  },
+  {
+    path: '/matter-operate',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '内容运营',
+      accessId: '/matter-operate',
+    },
+    component: Main,
+    children: [
       {
-        path: '/matter-operate',
-        alias: '/center',
+        path: 'article-manage',
         meta: {
-          icon: 'logo-buffer',
-          title: '内容运营',
-          accessId: '/matter-operate',
+          icon: '',
+          title: '文章管理',
+          accessId: '/center/article-manage',
         },
-        component: Main,
-        children: [
-          {
-            path: 'article-manage',
-            meta: {
-              icon: '',
-              title: '文章管理',
-              accessId: '/center/article-manage',
-            },
-            component: resolve('center/articles/article-list.vue'),
-          },
-          {
-            path: 'article-manage/detail',
-            meta: {
-              icon: '',
-              title: '文章详情',
-            },
-            component: resolve('center/articles/article-detail.vue'),
-          },
-          {
-            path: 'banner-manage',
-            meta: {
-              icon: '',
-              title: '广告管理',
-              accessId:'/center/banner-manage',
-            },
-            component: resolve('center/system/banner-manage.vue'),
-          },
-        ]
+        component: resolve('center/articles/article-list.vue'),
       },
-
+      {
+        path: 'article-manage/detail',
+        meta: {
+          icon: '',
+          title: '文章详情',
+        },
+        component: resolve('center/articles/article-detail.vue'),
+      },
+      {
+        path: 'banner-manage',
+        meta: {
+          icon: '',
+          title: '广告管理',
+          accessId:'/center/banner-manage',
+        },
+        component: resolve('center/system/banner-manage.vue'),
+      },
     ]
   },
 

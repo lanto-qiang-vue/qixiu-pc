@@ -25,11 +25,11 @@ const devConfig={
   // apiUrl: 'http://gateway.qixiu.lanto.com/',
   apiUrl: 'http://192.168.169.231:8888/',
   // apiUrl: 'https://www.test.shanghaiqixiu.org/proxy/',
-  
+
   // apiUrl: 'http://192.168.169.117:8888/',
 
-  // repairUrl: 'http://118.25.35.172:7210/',
-  repairUrl: 'http://192.168.169.230:7210/',
+  repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+  // repairUrl: 'http://192.168.169.230:7210/',
 
   socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',

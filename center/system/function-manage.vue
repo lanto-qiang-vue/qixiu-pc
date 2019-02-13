@@ -21,16 +21,17 @@
           <Input type="text" v-model="search.uri" ></Input>
         </FormItem>
         <FormItem :label-width="0">
-          
+
             <Button type="primary" @click="page=1;getList()">搜索</Button>
-            
-          
+
+
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
       <Button type="success" v-if=""  @click="selectRow={},showDetail= Math.random()">新增</Button>
       <Button type="primary" v-if=""  @click="showDetail= Math.random()" :disabled="!selectRow.id">修改</Button>
+      <Button type="error" v-if=""  @click="deleteFun" :disabled="!selectRow.id">删除</Button>
     </div>
   </common-table>
   <function-manage-detail :data="selectRow" :menuList="menuList" :show="showDetail" :total="total"
@@ -109,6 +110,19 @@
           // console.log(res)
           this.tableData= res.items
           this.total= res.total
+        })
+      },
+      deleteFun(){
+        this.$Modal.confirm({
+          title: '确定删除“'+ this.selectRow.name+'”？',
+          onOk: ()=> {
+            this.$axios.$post('/function/delete/'+ this.selectRow.id, {}).then( (res) => {
+              if(res.code== '0'){
+                this.$Message.success('删除成功')
+                this.getList()
+              }
+            })
+          }
         })
       },
       changePage(page){

@@ -27,7 +27,7 @@
 
         <div class="right" v-show="info.rating">
           <div class="point"><span>{{info.rating}}</span>分</div>
-          <div class="avg"><span id="average"></span>低于同类平均水平</div>
+          <div class="avg"><span id="average"></span>{{parseFloat(info.rating)>3?'高':'低'}}于同类平均水平</div>
           <div class="star" v-if="info.rating">
             <img src="/img/garage-info/yellow.png"  v-for="i in parseInt(info.rating)" :key="i">
           </div>
