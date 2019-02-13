@@ -3,7 +3,7 @@
   <div class="butt-joint">
   <Modal
     v-model="commentModal"
-    title="请先填写平台对接人"
+    title="请填写企业联系人"
     width="525"
     :scrollable="true"
     :closable="closableType"
@@ -13,10 +13,10 @@
     :z-index="1000"
     :transition-names="['', '']">
     <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:400px;">
-      <FormItem label="平台对接人:" prop="contactName">
+      <FormItem label="联系人姓名:" prop="contactName">
         <Input type="text" v-model="formData.contactName"  placeholder="请输入平台对接人名称"></Input>
       </FormItem>
-      <FormItem label="手机号码:" prop="contactMobile">
+      <FormItem label="联系人手机:" prop="contactMobile">
         <Input type="text" v-model="formData.contactMobile" placeholder="请输入手机号码"></Input>
       </FormItem>
     </Form>
@@ -28,7 +28,7 @@
         <div style="float:left;width:429px;">
           <div style="font-size:16px;padding-top:7px;"><b>提示!</b></div>
           <div style="width:373px;line-height:20px;">
-           你输入的平台对接人或手机号码没有在平台注册,请用手机扫一扫关注并注册上海汽修平台后在进行填写对接人信息。
+           你输入的企业联系人手机号码没有在平台注册,请用手机扫一扫关注并注册上海汽修平台后在进行填写联系人信息。
           </div>
         </div>
       </div>
