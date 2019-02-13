@@ -16,6 +16,7 @@
                           style="width: 49%"></DatePicker>
               <DatePicker type="date" v-model="listSearch.licenceEndDate" placeholder="结束日期"
                           style="width: 49%"></DatePicker>
+                          
             </FormItem>
 
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
@@ -82,7 +83,7 @@
                           style="width: 100%;" v-model="listSearch.businessHours"></TimePicker>
             </FormItem>
             <FormItem label="管理机构与部门:" style="width: 45%;" prop="manageArr">
-              <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
+              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr"></Cascader>
             </FormItem>
             <FormItem label="经营状态:" style="width: 45%;">
               <Select v-model="listSearch.businessStatus" :transfer="true">
@@ -486,14 +487,14 @@
             <FormItem label="是否愿意开通车大夫服务等在线维修服务:" style="width: 92%;">
 
               <i-switch size="large" v-model="listSearch.openOnlineRepairService">
-                <span slot="open">愿意</span>
-                <span slot="close">不愿意</span>
+                <span slot="open">是</span>
+                <span slot="close">否</span>
               </i-switch>
             </FormItem>
             <FormItem label="是否愿意开通在线商务服务:" style="width: 92%;">
               <i-switch size="large" v-model="listSearch.openOnlineBusinessService">
-                <span slot="open">愿意</span>
-                <span slot="close">不愿意</span>
+                <span slot="open">是</span>
+                <span slot="close">否</span>
               </i-switch>
 
             </FormItem>
@@ -533,9 +534,12 @@
 
 
 <script>
-import { deepClone } from '~/static/util.js'
+import { deepClone } from '~/static/util.js'  
+import { formatDate } from '@/static/tools'
+
 let initList={
           'businessHours': '',//营业时间
+          'businessHours1': '',//营业时间--
           'postalCode': '',//经营地址邮政编码------------------------------------------------
           'businessRegion': '',//经营地址区域
           'businessAddress': '',//经营地地址
@@ -644,16 +648,17 @@ let initList={
           'erpName': '',
           'code': '',//对接的秘钥---
           'createKey': '',
-          'manageArr':'',
+          'manageArr':[],
         };
 export default {
     name: "common-company-info",
-    props: ['showInfo', 'listSearch'],
+    props: ['showInfo', 'infoId','showSaveInfo','clearRules'],
     components: {},
     data(){
         return{
             collapse: '1',
             showAdd: false,
+            listSearch:deepClone(initList),
             ruleValidate: {
                 name: [{ required: true, message: '必填项不可为空' }],
                 licence: [{ required: true, message: '必填项不可为空' }],
@@ -763,30 +768,142 @@ export default {
         this.getValuesByTypeFun(33)
         this.getValuesByTypeFun(1)
         this.getType()
-
-        this.listSearch=deepClone(initList);
-        console.log("this.listSearch",this.listSearch);
     },
     watch:{
-        listSearch(){
-            // this.listSearch={};
-            // for(let i in this.listDetail){
-            //     this.listSearch[i]=this.listDetail[i];
-            // }
-            // if (this.listSearch['businessScope']) {
-            //     console.log(this.listSearch['businessScope']);
-            //   this.repairTypeFun(this.listSearch['businessScope'])
-            // }
-        },
         showInfo(){
-            if (this.listSearch['businessScope']) {
-                console.log(this.listSearch['businessScope']);
-              this.repairTypeFun(this.listSearch['businessScope'])
+            if(this.infoId){
+                this.getDetail(this.infoId);
+            }else{
+                this.listSearch=deepClone(initList);
+                console.log('触发了',this.listSearch);
             }
+            
+        },
+        showSaveInfo(){
+            this.rulesData('listSearch');
+        },
+        clearRules(){
+            this.yearsArr = {
+                begin: '',
+                end: ''
+            }
+            this.$refs['listSearch'].resetFields();
+            console.log('清除了数据');
         }
 
     },
     methods:{
+        //获取详情--------
+        getDetail(id) {
+            // this.spinShow=true;
+            this.$Spin.show()
+            this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
+            if (res.data.code == '0') {
+                let resData = res.data.item
+                for (let i in resData) {
+                    if (i == 'businessHours') {
+                        this.listSearch[i] = resData[i].split('-')
+                        // console.log(this.listSearch[i]);
+                    } else if (i == 'source') {
+                        this.listSearch[i] = resData[i]
+                    } else if (i == 'createKey') {
+                        this.listSearch[i] = resData[i]
+                    } else {
+                        if (resData[i]) {
+                            console.log(i)
+                            this.listSearch[i] = resData[i]
+                        }
+
+                    }
+                }
+
+                
+                this.listSearch.manageArr = []
+                this.listSearch.manageArr.push(this.listSearch.org)
+                this.listSearch.manageArr.push(this.listSearch.dept)
+                if (this.listSearch['businessScope']) {
+                    console.log(this.listSearch['businessScope']);
+                    this.repairTypeFun(this.listSearch['businessScope'])
+                }
+            }
+            // this.spinShow=false;
+            this.$Spin.hide()
+            })
+      },
+      //数据校验--------
+      rulesData(name){
+          if ((this.listSearch.businessSphere.indexOf(88) != -1) && (!this.listSearch.businessSphereOther)) {
+          this.$Message.error('请填写其他主要业务范围')
+          return
+        }
+
+        if ((this.listSearch.special) && (!this.listSearch.specialRepairBrand)) {
+          this.$Message.error('请填写特约维修品牌')
+          return
+        }
+
+        if ((this.listSearch.industryCategory == 9) && (!this.listSearch.industryCategoryOther)) {
+          this.$Message.error('请填写其他业户类别')
+          return
+        }
+
+        if ((this.listSearch.economicType == 900) && (!this.listSearch.economicTypeOther)) {
+          this.$Message.error('请填写其他经济类型')
+          return
+        }
+
+        if ((this.listSearch.model.indexOf(6) != -1) && (!this.listSearch.modelOther)) {
+          this.$Message.error('请填写主修品牌')
+          return
+        }
+
+        if ((this.listSearch.serviceCategory.indexOf(300007) != -1) && (!this.listSearch.serviceCategoryOther)) {
+          this.$Message.error('请填写其他服务种类')
+          return
+        }
+
+        if ((this.listSearch.sincerity) && (this.listSearch.sincerityYears.length == 0)) {
+          this.$Message.error('请填写成为全国诚信维修企业的年份')
+          return
+        }
+        if ((this.listSearch.useErp) && (!this.listSearch.contactName)) {
+
+          this.$Message.error('请填写Erp提供商姓名')
+          return
+        }
+
+        if ((this.listSearch.useErp) && (!this.listSearch.contactPhone)) {
+
+          this.$Message.error('请填写Erp提供商电话')
+          return
+        }
+
+        if ((this.listSearch.useErp) && (!this.listSearch.erpName)) {
+
+          this.$Message.error('请填写Erp企业名称')
+          return
+        }
+
+
+        if (this.listSearch.manageArr.length > 0) {
+          this.listSearch['org'] = this.listSearch.manageArr[0] || ''
+          this.listSearch['dept'] = this.listSearch.manageArr[1] || ''
+        } else {
+          this.listSearch['org'] = ''
+          this.listSearch['dept'] = ''
+        }
+
+        this.listSearch.businessHours1 = '';
+        
+        if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
+          this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
+        }
+        this.$refs[name].validate((valid) => {
+          if (valid) {
+              this.$emit('saveInfoFun')
+          }
+        })
+      },
       //选择维修类别时带的参数--------
       repairTypeFun(val) {
         if (!val) {
@@ -908,7 +1025,148 @@ export default {
 }
 </script>
 <style lang="less">
+  #biao1 {
+    border: none;
+    color: #515a6e;
+  }
 
+  .content-list {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    overflow: hidden;
+    img {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ccc;
+      float: left;
+    }
+    h3 {
+      float: left;
+      height: 45px;
+      line-height: 45px;
+      margin-left: 10px;
+    }
+    span {
+      float: right;
+    }
+
+  }
+
+  .content-p {
+    padding-left: 55px;
+  }
+
+  .menu-manage {
+
+  }
+
+  .search-block {
+    display: inline-block;
+    width: 200px;
+    margin-right: 10px;
+  }
+
+  .r-list-search {
+    width: 100%;
+    padding: 10px 0;
+
+  }
+
+  .pic-card {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    width: 200px;
+    min-width: 200px;
+
+    .red {
+      color: red;
+    }
+    .pic-body {
+      width: 100%;
+      height: 150px;
+      /*border: 1px solid #dcdee2;*/
+      position: relative;
+      .no-pic {
+        width: 250px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .pic {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+      }
+      .button {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        text-align: center;
+        > * {
+          margin: 0 5px;
+          vertical-align: top;
+        }
+        .up-img {
+          display: inline-block;
+          overflow: hidden;
+          position: relative;
+          .input {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            font-size: 0;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  .yearClass {
+    width: 110px;
+    height: 25px;
+    border: 1px solid #dcdee2;
+    line-height: 25px;
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .header-inner {
+    display: inline-block;
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #17233d;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    span {
+      color: red;
+    }
+  }
+
+  .modelClass {
+    text-align: center;
+    height: 150px;
+    line-height: 150px;
+    font-size: 18px;
+    font-weight: bold;
+  }
 </style>
 
 
