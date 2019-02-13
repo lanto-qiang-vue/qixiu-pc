@@ -123,9 +123,6 @@ export default [
         component: resolve('center/repairInfo/repair-info-detail.vue'),
       },
 
-
-
-
       {
         path: 'answer-questions',
         meta: {
@@ -256,19 +253,6 @@ export default [
     ]
   },
   {
-    path: '/menu8',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '账号管理',
-      accessId: '/menu8',
-    },
-    component: Main,
-    children: [
-
-    ]
-  },
-  {
     path: '/menu15',
     alias: '/center',
     meta: {
@@ -334,19 +318,7 @@ export default [
       },
     ]
   },
-  {
-    path: '/menu122',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '企业员工人才管理',
-      accessId: '/menu122',
-    },
-    component: Main,
-    children: [
 
-    ]
-  },
 
   {
     path: '/menu31',
@@ -490,17 +462,6 @@ export default [
     ]
   },
 
-  {
-    path: '/menuschool',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '驾校管理(运营)',
-      accessId: '/menuschool',
-    },
-    component: Main,
-    children: []
-  },
 
   //管理中心
   {
@@ -655,20 +616,7 @@ export default [
 
     ]
   },
-  {
-    path: '/menu23',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '登录信息',
-      accessId: '/menu23',
-    },
-    component: Main,
-    children: [
 
-
-    ]
-  },
   {
     path: '/menu24',
     alias: '/center',

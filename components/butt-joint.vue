@@ -36,7 +36,6 @@
     <div style="margin:0 auto;width:126px;"><img src="/img/garage-info/shqx_wx.png" style="height:126px;"></div>
     <div style="margin:0 auto;width:126px;text-align:center;font-size:14px;"><b>上海汽修平台公众号</b></div>
     </div>
-      <!--<div v-show="showErcode">二维码</div>-->
     <div slot="footer">
       <Button  type="primary" @click="submit('formData')">保存 </Button>
     </div>
@@ -56,12 +55,12 @@
         commentModal2:false,
         closableType:false,
         commentModal:false,
-        showErcode: false,
+        showErcode: true,
         formData:{contactMobile:'',contactName:''},
         formData2:{contactMobile:'',contactName:''},
         rules:{
           contactName:{required:true,message:'对接人必填'},
-          contactMobile:{required:true,message:'填写正确的手机号', pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,},
+          contactMobile:{required:true,message:'填写正确的手机号', pattern: /^1[3456789]\d{9}$/,},
         },
       }
     },
