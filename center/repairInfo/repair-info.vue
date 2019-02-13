@@ -4,7 +4,7 @@
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading">
-    <div  slot="search"  >
+    <div  slot="search">
       <Form :label-width="80" class="common-form">
             <FormItem label="车牌号:">
                 <Input type="text" v-model="search.input" placeholder="请输入车牌号"></Input>
@@ -13,9 +13,9 @@
                 <Input type="text" v-model="search.select" placeholder="请输入车架号"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
+                <Button type="primary"  @click="page=1,closeDetail()">搜索</Button>
             </FormItem>
-        </Form>
+      </Form>
     </div>
     <div slot="operate">
       <Button type="info" v-if="accessBtn('view')" @click="searchFun" :disabled="!detailData">查看</Button>
@@ -23,7 +23,7 @@
       <Button type="primary" v-if="accessBtn('bind')"  @click="showDetail=Math.random()" >绑定本人车辆</Button>
       <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
     </div>
-    
+
 </common-table>
 <bind-my-car :showDetail='showDetail' @closeDetail="closeDetail"></bind-my-car>
 <bind-other-car :showDetail='showOtherDetail' @closeDetail="closeDetail"></bind-other-car>
@@ -71,8 +71,8 @@
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-        
-        
+
+
       }
     },
     mounted () {
@@ -112,7 +112,7 @@
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
-          
+
           this.getList();
         },
         //解绑按钮-------
@@ -142,10 +142,10 @@
                 content:"绑定车辆信息正在审核中，请审核通过后再查看",
             })
           }
-          
+
         }
 
-        
+
     },
 	}
 </script>

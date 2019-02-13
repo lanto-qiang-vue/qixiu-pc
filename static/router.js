@@ -622,7 +622,7 @@ export default [
     alias: '/center',
     meta: {
       icon: 'logo-buffer',
-      title: '企业信息管理(管理部门)',
+      title: '企业信息(管理端)',
       accessId: '/menu24',
     },
     component: Main,
@@ -852,45 +852,44 @@ export default [
         },
         component: resolve('center/operate/bind-car-audit.vue'),
       },
+    ]
+  },
+  {
+    path: '/matter-operate',
+    alias: '/center',
+    meta: {
+      icon: 'logo-buffer',
+      title: '内容运营',
+      accessId: '/matter-operate',
+    },
+    component: Main,
+    children: [
       {
-        path: '/matter-operate',
-        alias: '/center',
+        path: 'article-manage',
         meta: {
-          icon: 'logo-buffer',
-          title: '内容运营',
-          accessId: '/matter-operate',
+          icon: '',
+          title: '文章管理',
+          accessId: '/center/article-manage',
         },
-        component: Main,
-        children: [
-          {
-            path: 'article-manage',
-            meta: {
-              icon: '',
-              title: '文章管理',
-              accessId: '/center/article-manage',
-            },
-            component: resolve('center/articles/article-list.vue'),
-          },
-          {
-            path: 'article-manage/detail',
-            meta: {
-              icon: '',
-              title: '文章详情',
-            },
-            component: resolve('center/articles/article-detail.vue'),
-          },
-          {
-            path: 'banner-manage',
-            meta: {
-              icon: '',
-              title: '广告管理',
-              accessId:'/center/banner-manage',
-            },
-            component: resolve('center/system/banner-manage.vue'),
-          },
-        ]
+        component: resolve('center/articles/article-list.vue'),
       },
-
+      {
+        path: 'article-manage/detail',
+        meta: {
+          icon: '',
+          title: '文章详情',
+        },
+        component: resolve('center/articles/article-detail.vue'),
+      },
+      {
+        path: 'banner-manage',
+        meta: {
+          icon: '',
+          title: '广告管理',
+          accessId:'/center/banner-manage',
+        },
+        component: resolve('center/system/banner-manage.vue'),
+      },
     ]
   },
 

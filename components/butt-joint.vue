@@ -19,7 +19,7 @@
         <Input type="text" v-model="formData.contactName"  placeholder="请输入平台对接人名称"></Input>
       </FormItem>
       <FormItem label="联系人手机:" prop="contactMobile">
-        <Input type="text" v-model="formData.contactMobile" maxlength="11" placeholder="请输入手机号码"></Input>
+        <Input type="text" v-model="formData.contactMobile" :maxlength="11" placeholder="请输入手机号码"></Input>
       </FormItem>
     </Form>
     <div v-show="showErcode" class="step">
