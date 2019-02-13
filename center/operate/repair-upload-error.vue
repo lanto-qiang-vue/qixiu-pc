@@ -18,12 +18,12 @@
             </Form>
         </div>
         <div slot="operate" style="position:relative;">
-          <!--<Button type="primary" v-if="">导出全部</Button>-->
+          <Button type="primary" v-if="accessBtn('export')" @click="exportAllData">导出全部</Button>
           <Button type="primary" v-if="accessBtn('message')" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
           <!--<div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>-->
           <Tooltip placement="right" class="myTotilp" theme="light">
-            <div class="publice-button" style=";top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
+            <div class="publice-button" style="top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
             <div slot="content">
               <p class="publice-info">提醒模板说明{{title}}</p>
               <div style="width:400px;height:100px;white-space:normal;word-break:break-all;word-wrap:break-word">
@@ -93,6 +93,7 @@ export default {
         title:'',
         description:'',
         contentTop:'',
+        exportUrl:"",
 
       }
     },
@@ -147,7 +148,7 @@ export default {
         ];
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
         this.topContent="维修记录上传存在错误"
-
+        this.exportUrl="/monitoring/display/company/upload-fault/download";
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
         this.columns=[
@@ -188,6 +189,7 @@ export default {
         ];
         this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
+        this.exportUrl="/monitoring/display/company/upload-not/download";
         this.getList();
         this.enter();
 
@@ -231,6 +233,7 @@ export default {
           ];
           this.topContent="提醒（未上传维修记录）未读"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.exportUrl="/monitoring/display/company/docking-unread/download";
           this.getReadInfo();
       }else if(routerData.path=="/center/repair-error-noread"){
           this.typeName=queryData.type;
@@ -273,6 +276,7 @@ export default {
           ];
           this.topContent="提醒（维修记录上传存在错误）"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.exportUrl="/monitoring/display/company/docking-unread/download";
           this.getReadInfo();
       }
           this.enter();
@@ -323,6 +327,10 @@ export default {
               
           }).then( (res) => {
             if(res.status == 200){
+              if(this.role){
+                this.staticTotal = res.data.totalElements;
+                this.role = false;
+              }
               this.total = res.data.totalElements;
               let data = res.data.content;
               for(let i in data){
@@ -410,14 +418,11 @@ export default {
         },
         //提醒全部通知----------------------------
         sendAllCountFun(){
-            
             this.$Modal.confirm({
                 title:"提醒通知!",
-                content:"确定要給全部发送提醒吗？",
+                content:"确定要给全部发送提醒吗？",
                 onOk:this.sendAll,
             })
-
-            
         },
         sendAll(){
             let urlData="";
@@ -501,6 +506,41 @@ export default {
         leave(){
           console.log('2')
           this.modal3=false;
+        },
+        exportAllData(){
+            this.$Modal.confirm({
+                title:"提醒通知!",
+                content:"确定要导出全部吗？",
+                onOk:this.exportAllFun,
+            })
+        },
+        exportAllFun(){
+            let urlData="";
+            urlData+="companyName="+(this.search.companyName|| "");
+            urlData+="&license="+(this.search.license||"");
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.search.endDate;
+            urlData+="&deptCode="+this.search.deptCode;
+
+            if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
+            }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
+              urlData+="&type="+this.typeName;
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
+              urlData+="&type="+this.typeName;
+            }
+            this.$axios({method: 'get',url:this.exportUrl+'?'+urlData}).then((res) => {
+              let data = "\ufeff"+res.data;
+              let blob = new Blob([data], {type: 'text/csv,charset=UTF-8'});
+              let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+              let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+              let a = document.createElement('a');
+              a.download = headerName;
+              a.href = window.URL.createObjectURL(blob);
+              $("body").append(a);
+              a.click();
+              $(a).remove();
+            })
         }
 
     },
