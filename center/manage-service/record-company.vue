@@ -59,6 +59,9 @@
         <FormItem label="管理部门:">
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
+        <FormItem label="按年查询:">
+            <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="dateOptions"></DatePicker>
+        </FormItem>
         <FormItem label="按月查询:">
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
         </FormItem>
@@ -147,14 +150,7 @@ if(!thisData) {
     clearTableSelect: null,
     areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
-    businessType:[
-    //   {key:1,name:'营业'},
-    //   {key:2,name:'歇业'},
-    //   {key:3,name:'注销'},
-    //   {key:4,name:'空壳'},
-    //   {key:11,name:'内修'},
-    //   {key:20,name:'停业'},
-    ],//经营状态类型集合------
+    businessType:[],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
     isFlagType:[
       {code:"是",name:'是'},
@@ -314,6 +310,7 @@ activated(){
                 upData["dept"]=this.manageArr[1]||'';
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
+            // upData["year"]=formatDate(upData["year"],'yyyy-MM-dd');
             this.$axios.post('/vehicle/repair/query', {
                     "area": upData["area"],
                     "businessStatus": upData["businessStatus"],
@@ -330,6 +327,7 @@ activated(){
                     "show": upData["show"],
                     "special": upData["special"],
                     "uploadMonth": upData["uploadMonth"],
+                    // "year": upData["year"],
                     order:upData["order"],
                     index:upData["index"],
 
