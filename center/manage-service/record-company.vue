@@ -59,14 +59,11 @@
         <FormItem label="管理部门:">
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
-        <FormItem label="按年查询:">
-            <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="dateOptions"></DatePicker>
-        </FormItem>
         <FormItem label="按月查询:">
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
         </FormItem>
         <FormItem label="按年查询:">
-          <DatePicker v-model="searchList.year" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
+          <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="dateOptions"></DatePicker>
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
@@ -298,7 +295,7 @@ activated(){
                 }else if(i=='area'){
                   if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
-                }else if(this.searchList[i]){
+                }else if(this.searchList[i]!=null){
                     upData[i]=this.searchList[i];
                 }else{
                     upData[i]=null;
@@ -310,28 +307,8 @@ activated(){
                 upData["dept"]=this.manageArr[1]||'';
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
-            // upData["year"]=formatDate(upData["year"],'yyyy-MM-dd');
-            this.$axios.post('/vehicle/repair/query', {
-                    "area": upData["area"],
-                    "businessStatus": upData["businessStatus"],
-                    "buttJoin": upData["buttJoin"],
-                    "companyCategory": upData["companyCategory"],
-                    "companyName": upData["companyName"],
-                    "dept": upData["dept"],
-                    "inDays": upData["inDays"],
-                    "license": upData["license"],
-                    "minister": upData["minister"],
-                    "org": upData["org"],
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-                    "show": upData["show"],
-                    "special": upData["special"],
-                    "uploadMonth": upData["uploadMonth"],
-                    // "year": upData["year"],
-                    order:upData["order"],
-                    index:upData["index"],
-
-            }).then( (res) => {
+            upData["year"]=formatDate(upData["year"],'yyyy');
+            this.$axios.post('/vehicle/repair/query',upData).then( (res) => {
                 if(res.data.code=='0'){
                     this.tableData=res.data.items;
                     this.total=res.data.total;
