@@ -478,7 +478,7 @@ export default [
         path: 'record-company',
         meta: {
           icon: '',
-          title: '维修企业管理',
+          title: '维修记录管理(按企业)',
           accessId: '/center/record-company',
           keepAlive: true
         },
@@ -667,7 +667,7 @@ export default [
         path: 'employees-query',
         meta: {
           icon: '',
-          title: '查询员工',
+          title: '查询全部员工',
           accessId: '/center/employees-query',
         },
         component: resolve('center/company/staff-query.vue'),
