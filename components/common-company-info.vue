@@ -11,13 +11,18 @@
             <FormItem label="许可证号:" style="width: 45%;" prop="licence">
               <Input type="text" v-model="listSearch.licence" placeholder="请输入许可证号"></Input>
             </FormItem>
-            <FormItem label="许可证有效期:" style="width: 45%;" prop="licenceBeginDate">
-              <DatePicker type="date" v-model="listSearch.licenceBeginDate" placeholder="开始日期"
-                          style="width: 49%"></DatePicker>
-              <DatePicker type="date" v-model="listSearch.licenceEndDate" placeholder="结束日期"
-                          style="width: 49%"></DatePicker>
+            <FormItem label="许可证有效期:" style="width: 45%;" prop="licenceDate">
+              <DatePicker type="daterange" v-model="listSearch.licenceDate" placeholder="请选择"
+                          style="width: 100%;"></DatePicker>
+              
                           
             </FormItem>
+            <!--<FormItem label="许可证有效期结束日期:" style="width: 45%;" prop="licenceEndDate">
+              
+              <DatePicker type="date" v-model="listSearch.licenceEndDate" placeholder="结束日期"
+                          style="width: 100%;"></DatePicker>
+                          
+            </FormItem>-->
 
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
               <Input type="text" v-model="listSearch.registerAddress" placeholder="请输入工商注册地址"></Input>
@@ -559,6 +564,7 @@ let initList={
           'legalName': '',//法定代表人
           'legalTel': '',
           'licence': '',//许可证号
+          'licenceDate': '',//许可证有效期
           'licenceBeginDate': '',//许可证有效期
           'licenceEndDate': '',//许可证有效期
           'longitude': 0,
@@ -649,10 +655,99 @@ let initList={
           'code': '',//对接的秘钥---
           'createKey': '',
           'manageArr':[],
-        };
+};
+let uploadData={
+    'beianStatus': '',
+    'brand': '',
+    'businessAddress': '',
+    'businessHours': '',
+    'businessRegion': '',
+    'businessScope': '',
+    'businessScope2': '',
+    'businessSphere': '',
+    'businessSphereOther': '',
+    'businessStatus': '',
+    'buttJoint': '',
+    'complaintTel': '',
+    'corpInfoId': '',
+    'dept': '',
+    'desc': '',
+    'economicType': '',
+    'economicTypeOther': '',
+    'electricians': '',
+    'employeeNumber': '',
+    'floorSpace': '',
+    'honor': '',
+    'id': '',
+    'industryCategory': '',
+    'industryCategoryOther': '',
+    'iso': '',
+    'latitude': 0,
+    'legalEmail': '',
+    'legalMobile': '',
+    'legalName': '',
+    'legalTel': '',
+    'licence': '',
+    'licenceBeginDate': '',
+    'licenceEndDate': '',
+    'linkmanName': '',
+    'linkmanTel': '',
+    'longitude': 0,
+    'machinists': '',
+    'manager': '',
+    'managerOther': '',
+    'model': '',
+    'modelOther': '',
+    'name': '',
+    'offerOnsiteRepair': '',
+    'openOnlineBusinessService': '',
+    'openOnlineRepairService': '',
+    'operatorEmail': '',
+    'operatorMobile': '',
+    'operatorName': '',
+    'operatorTel': '',
+    'org': '',
+    'painters': '',
+    'postalCode': '',
+    'qualityInspector': '',
+    'qualityReputationAssessmentLevel': '',
+    'registerAddress': '',
+    'registerDate': '',
+    'registerRegion': '',
+    'rescue': '',
+    'selfIntroduction': '',
+    'serviceCategory': '',
+    'serviceCategoryOther': '',
+    'serviceLeader': '',
+    'show': '',
+    'sincerity': '',
+    'sincerityYears': '',
+    'special': '',
+    'specialRepairBrand': '',
+    'specialService': '',
+    'status': '',
+    'technologyLeader': '',
+    'throughEnvironmentalProtectionSpecialRenovation': '',
+    'throughSafetyProductionStandardization': '',
+    'tinbenders': '',
+    'updateTime': '',
+    'workingHoursPrice': '',
+    'workingHoursQuotaExecutionStandard': '',
+    'zdz': '',
+    'source': '',
+    'comprehensive': '',
+    'chainBusiness': '',
+    'groupBusiness': '',
+    'useHss': '',
+    'buttJoinTime': '',
+    'useErp': '',
+    'contactName': '',
+    'contactPhone': '',
+    'erpName': '',
+};
 export default {
     name: "common-company-info",
-    props: ['showInfo', 'infoId','showSaveInfo','clearRules'],
+    props: ['data'],
     components: {},
     data(){
         return{
@@ -662,7 +757,8 @@ export default {
             ruleValidate: {
                 name: [{ required: true, message: '必填项不可为空' }],
                 licence: [{ required: true, message: '必填项不可为空' }],
-                licenceBeginDate: [{ required: true, message: '必填项不可为空' }],
+                licenceDate: [{ required: true, message: '必填项不可为空' }],
+                
                 registerAddress: [{ required: true, message: '必填项不可为空' }],
                 registerRegion: [{ required: true, message: '必填项不可为空' }],
                 registerDate: [{ required: true, message: '必填项不可为空' }],
@@ -768,39 +864,25 @@ export default {
         this.getValuesByTypeFun(33)
         this.getValuesByTypeFun(1)
         this.getType()
+        
+    },
+    computed:{
+      isChange(){
+        return this.data.id;
+      }
     },
     watch:{
-        showInfo(){
-            if(this.infoId){
-                this.getDetail(this.infoId);
-            }else{
-                this.listSearch=deepClone(initList);
-                console.log('触发了',this.listSearch);
-            }
-            
-        },
-        showSaveInfo(){
-            this.rulesData('listSearch');
-        },
-        clearRules(){
-            this.yearsArr = {
-                begin: '',
-                end: ''
-            }
-            this.$refs['listSearch'].resetFields();
-            console.log('清除了数据');
-        }
-
+      isChange(){
+        this.mergeData();
+      },
     },
     methods:{
-        //获取详情--------
-        getDetail(id) {
-            // this.spinShow=true;
-            this.$Spin.show()
-            this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
-            if (res.data.code == '0') {
-                let resData = res.data.item
-                for (let i in resData) {
+      //数据合并-------------
+      mergeData(){
+          this.$refs['listSearch'].resetFields();
+          if(this.data.id){
+            let resData=this.data;
+            for (let i in resData) {
                     if (i == 'businessHours') {
                         this.listSearch[i] = resData[i].split('-')
                         // console.log(this.listSearch[i]);
@@ -813,11 +895,13 @@ export default {
                             console.log(i)
                             this.listSearch[i] = resData[i]
                         }
-
                     }
+                    
                 }
+                this.listSearch.licenceDate=[];
+                this.listSearch.licenceDate.push(this.listSearch.licenceBeginDate)
+                this.listSearch.licenceDate.push(this.listSearch.licenceEndDate)
 
-                
                 this.listSearch.manageArr = []
                 this.listSearch.manageArr.push(this.listSearch.org)
                 this.listSearch.manageArr.push(this.listSearch.dept)
@@ -825,13 +909,16 @@ export default {
                     console.log(this.listSearch['businessScope']);
                     this.repairTypeFun(this.listSearch['businessScope'])
                 }
+          }else{
+              this.listSearch=deepClone(initList);
+              this.yearsArr={
+                begin: '',
+                end: ''
             }
-            // this.spinShow=false;
-            this.$Spin.hide()
-            })
+          }
       },
       //数据校验--------
-      rulesData(name){
+      rulesData(){
           if ((this.listSearch.businessSphere.indexOf(88) != -1) && (!this.listSearch.businessSphereOther)) {
           this.$Message.error('请填写其他主要业务范围')
           return
@@ -893,14 +980,41 @@ export default {
           this.listSearch['dept'] = ''
         }
 
+        if (this.listSearch.licenceDate.length > 0) {
+          this.listSearch['licenceBeginDate'] = this.listSearch.licenceDate[0] || ''
+          this.listSearch['licenceEndDate'] = this.listSearch.licenceDate[1] || ''
+        }
+
         this.listSearch.businessHours1 = '';
         
         if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
           this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
         }
-        this.$refs[name].validate((valid) => {
+        this.$refs['listSearch'].validate((valid) => {
           if (valid) {
-              this.$emit('saveInfoFun')
+              let temData=deepClone(uploadData);
+              for(let i in temData){
+                if(i=='licenceBeginDate'){
+                    temData[i]=formatDate(this.listSearch.licenceBeginDate);
+                }else if(i=='licenceEndDate'){
+                    temData[i]=formatDate(this.listSearch.licenceEndDate);
+                }else if(i=='registerDate'){
+                    temData[i]=formatDate(this.listSearch.registerDate);
+                }else if(i=='updateTime'){
+                    temData[i]=formatDate(this.listSearch.updateTime);
+                }else if(i=='latitude'){
+                    temData[i]=this.listSearch.latitude || 0;
+                }else if(i=='longitude'){
+                    temData[i]=this.listSearch.longitude || 0;
+                }else if(i=='businessHours'){
+                    temData[i]=this.listSearch.businessHours1;
+                }else{
+                    temData[i]=this.listSearch[i];
+                }
+              }
+              this.$emit('saveInfoFun',temData);
+            
+              
           }
         })
       },

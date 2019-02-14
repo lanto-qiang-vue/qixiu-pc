@@ -4,7 +4,7 @@
     v-model="showModal"
     title="维修企业信息"
     width="90"
-    @on-visible-change="visibleChange"
+    
     :scrollable="true"
     :transfer="true"
     :footer-hide="false"
@@ -14,7 +14,7 @@
     <div slot="header" class="header-inner">维修企业信息<span>（{{testTitle}}）</span></div>
     <div style="padding-bottom: 10px;">
       
-      <common-company-info :showInfo="showInfo" :showSaveInfo="showSaveInfo" :infoId="infoId" :clearRules="clearRules" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
+      <common-company-info :data="listSearch" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
@@ -90,95 +90,7 @@
   import changeCompanyInfo from './change-company-info.vue'
   import { deepClone } from '~/static/util.js'
 
-  let uploadData={
-    'beianStatus': '',
-    'brand': '',
-    'businessAddress': '',
-    'businessHours': '',
-    'businessRegion': '',
-    'businessScope': '',
-    'businessScope2': '',
-    'businessSphere': '',
-    'businessSphereOther': '',
-    'businessStatus': '',
-    'buttJoint': '',
-    'complaintTel': '',
-    'corpInfoId': '',
-    'dept': '',
-    'desc': '',
-    'economicType': '',
-    'economicTypeOther': '',
-    'electricians': '',
-    'employeeNumber': '',
-    'floorSpace': '',
-    'honor': '',
-    'id': '',
-    'industryCategory': '',
-    'industryCategoryOther': '',
-    'iso': '',
-    'latitude': 0,
-    'legalEmail': '',
-    'legalMobile': '',
-    'legalName': '',
-    'legalTel': '',
-    'licence': '',
-    'licenceBeginDate': '',
-    'licenceEndDate': '',
-    'linkmanName': '',
-    'linkmanTel': '',
-    'longitude': 0,
-    'machinists': '',
-    'manager': '',
-    'managerOther': '',
-    'model': '',
-    'modelOther': '',
-    'name': '',
-    'offerOnsiteRepair': '',
-    'openOnlineBusinessService': '',
-    'openOnlineRepairService': '',
-    'operatorEmail': '',
-    'operatorMobile': '',
-    'operatorName': '',
-    'operatorTel': '',
-    'org': '',
-    'painters': '',
-    'postalCode': '',
-    'qualityInspector': '',
-    'qualityReputationAssessmentLevel': '',
-    'registerAddress': '',
-    'registerDate': '',
-    'registerRegion': '',
-    'rescue': '',
-    'selfIntroduction': '',
-    'serviceCategory': '',
-    'serviceCategoryOther': '',
-    'serviceLeader': '',
-    'show': '',
-    'sincerity': '',
-    'sincerityYears': '',
-    'special': '',
-    'specialRepairBrand': '',
-    'specialService': '',
-    'status': '',
-    'technologyLeader': '',
-    'throughEnvironmentalProtectionSpecialRenovation': '',
-    'throughSafetyProductionStandardization': '',
-    'tinbenders': '',
-    'updateTime': '',
-    'workingHoursPrice': '',
-    'workingHoursQuotaExecutionStandard': '',
-    'zdz': '',
-    'source': '',
-    'comprehensive': '',
-    'chainBusiness': '',
-    'groupBusiness': '',
-    'useHss': '',
-    'buttJoinTime': '',
-    'useErp': '',
-    'contactName': '',
-    'contactPhone': '',
-    'erpName': '',
-  };
+  
 
  
   export default {
@@ -220,83 +132,63 @@
     },
     watch: {
       manageArr(val){
-       if(val.length == 0){
-         this.listSearch.manageArr = "";
-       }else{
-         this.listSearch.manageArr = 1;
-       }
+        if(val.length == 0){
+          this.listSearch.manageArr = "";
+        }else{
+          this.listSearch.manageArr = 1;
+        }
       },
       showDetail() {
-        this.showModal = true;
-        
-        if (this.detailData) {
-          this.showInfo=Math.random();
-          this.infoId=this.detailData.id;
-          
-        } else {
-          this.showInfo=Math.random();
-          this.infoId=null;
+          this.showModal = true;
+          if (this.detailData) {
+            
+            this.getDetail(this.detailData.id);
+            this.testTitle = this.detailData.status;
+          } else {
+            this.listSearch = {};
+            this.testTitle = "待审核";
         }
-        this.listSearch = this.$refs.comA.listSearch;
-        this.testTitle = getName(this.statusArr, this.listSearch.status)
+        
       }
     },
 
     methods: {
-      
+      //获取详情--------
+        getDetail(id) {
+            this.$Spin.show()
+            this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
+            if (res.data.code == '0') {
+                let resData = res.data.item;
+                this.listSearch=resData;
+            }
+            this.$Spin.hide()
+            })
+      },
       
       //新增一个企业数据---------
       addCompany() {
-        this.showSaveInfo=Math.random();
+        this.$refs.comA.rulesData();
       },
       //保存数据------
-      saveInfoFun(){
-        this.listSearch=this.$refs.comA.listSearch;
-        let temData=deepClone(uploadData);
-        for(let i in temData){
-          if(i=='licenceBeginDate'){
-              temData[i]=formatDate(this.listSearch.licenceBeginDate);
-          }else if(i=='licenceEndDate'){
-              temData[i]=formatDate(this.listSearch.licenceEndDate);
-          }else if(i=='registerDate'){
-              temData[i]=formatDate(this.listSearch.registerDate);
-          }else if(i=='updateTime'){
-              temData[i]=formatDate(this.listSearch.updateTime);
-          }else if(i=='latitude'){
-              temData[i]=this.listSearch.latitude || 0;
-          }else if(i=='longitude'){
-              temData[i]=this.listSearch.longitude || 0;
-          }else if(i=='businessHours'){
-              temData[i]=this.listSearch.businessHours1;
-          }else{
-              temData[i]=this.listSearch[i];
-          }
-        }
+      saveInfoFun(temData){
+        
           if (this.detailData) {
-
               this.$axios.post('/corp/manage/update', temData).then((res) => {
                 if (res.data.code == '0') {
                   this.showModal = false
+                  this.$emit('closeDetail')
+
                 }
               })
             } else {
               this.$axios.post('/corp/manage/add', temData).then((res) => {
                 if (res.data.code == '0') {
                   this.showModal = false
+                  this.$emit('closeDetail')
                 }
               })
             }
       },
-
-      visibleChange(status) {
-        if (status === false) {
-          this.$emit('closeDetail')
-          
-          this.clearRules=Math.random();
-          // this.$refs['listSearch'].resetFields()
-        }
-      },
-      
       //审核是否通过-------------
       auditFun(flag) {
         let status = 1
@@ -312,7 +204,9 @@
         }).then((res) => {
           if (res.data.code == '0') {
             this.testTitle = getName(this.statusArr, status)
-            this.listSearch.status = status
+            // this.listSearch.status = status
+            this.showModal = false
+                  this.$emit('closeDetail')
           }
 
         })
