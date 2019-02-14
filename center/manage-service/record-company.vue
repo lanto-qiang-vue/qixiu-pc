@@ -18,6 +18,9 @@
         <FormItem label="许可证号:">
             <Input type="text" v-model="searchList.license" placeholder="请输入许可证号"></Input>
         </FormItem>
+        <FormItem label="维修品牌:">
+            <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
+        </FormItem>
          <FormItem label="企业类型:">
             <Select v-model="searchList.companyCategory" clearable>
                 <Option v-for="item in companyType" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -59,6 +62,9 @@
         <FormItem label="按月查询:">
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
         </FormItem>
+        <FormItem label="按年查询:">
+          <DatePicker v-model="searchList.year" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
+        </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
         </FormItem>
@@ -96,8 +102,10 @@ var searchList={
   "show": "",//是否前台显示
   "special": "",//是否特约
   "uploadMonth": "",//按月查询
-  order:'',//排序查询
-  index:''
+  order:0,//排序查询
+  index:13,
+  repairBrand: '',
+  year: ''
 }
 if(!thisData) {
   var thisData= {
@@ -127,25 +135,7 @@ if(!thisData) {
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
     ],
     tableData: [],
-    searchList:{
-      "area": {
-        key: ''
-      },//区域
-      "businessStatus": "",//企业状态
-      "buttJoin": "",//是否对接
-      "companyCategory": '',//维修企业类型
-      "companyName": "",//企业名称
-      "dept": '',//管理部门
-      "inDays": "",//未上传天数
-      "license": "",//许可证号
-      "minister": "",//是否总对总
-      "org": '',//管理部门
-      "show": "",//是否前台显示
-      "special": "",//是否特约
-      "uploadMonth": "",//按月查询
-      order:0,//排序查询
-      index:13
-    },
+    searchList: deepClone( searchList),
     manageArr:[],
     page: 1,
     limit: 10,
@@ -195,7 +185,7 @@ if(!thisData) {
     ],
     dateOptions: {
         disabledDate (date) {
-            
+
             let oDate=new Date();
             oDate.setMonth(oDate.getMonth());
             oDate.setDate(0);
@@ -438,7 +428,7 @@ activated(){
                 if(res.data.code=='0'){
 
                     this.businessType=res.data.items;
-                    
+
                 }
            })
         },
