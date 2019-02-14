@@ -262,10 +262,6 @@
               temData[i]=formatDate(this.listSearch.registerDate);
           }else if(i=='updateTime'){
               temData[i]=formatDate(this.listSearch.updateTime);
-          }else if(i=='latitude'){
-              temData[i]=this.listSearch.latitude || 0;
-          }else if(i=='longitude'){
-              temData[i]=this.listSearch.longitude || 0;
           }else if(i=='businessHours'){
               temData[i]=this.listSearch.businessHours1;
           }else{
