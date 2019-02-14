@@ -71,7 +71,7 @@
         </Form>
       </div>
       <div slot="footer">
-        <Button size="large" type="primary" @click="copyUrl">复制到粘贴版</Button>
+        <Button size="large" type="primary" @click="copyUrl">复制到粘贴板</Button>
         <Button size="large" type="default" @click="showKey=false;">关闭</Button>
       </div>
     </Modal>

@@ -656,115 +656,28 @@ let initList={
           'createKey': '',
           'manageArr':[],
 };
-let uploadData={
-    'beianStatus': '',
-    'brand': '',
-    'businessAddress': '',
-    'businessHours': '',
-    'businessRegion': '',
-    'businessScope': '',
-    'businessScope2': '',
-    'businessSphere': '',
-    'businessSphereOther': '',
-    'businessStatus': '',
-    'buttJoint': '',
-    'complaintTel': '',
-    'corpInfoId': '',
-    'dept': '',
-    'desc': '',
-    'economicType': '',
-    'economicTypeOther': '',
-    'electricians': '',
-    'employeeNumber': '',
-    'floorSpace': '',
-    'honor': '',
-    'id': '',
-    'industryCategory': '',
-    'industryCategoryOther': '',
-    'iso': '',
-    'latitude': 0,
-    'legalEmail': '',
-    'legalMobile': '',
-    'legalName': '',
-    'legalTel': '',
-    'licence': '',
-    'licenceBeginDate': '',
-    'licenceEndDate': '',
-    'linkmanName': '',
-    'linkmanTel': '',
-    'longitude': 0,
-    'machinists': '',
-    'manager': '',
-    'managerOther': '',
-    'model': '',
-    'modelOther': '',
-    'name': '',
-    'offerOnsiteRepair': '',
-    'openOnlineBusinessService': '',
-    'openOnlineRepairService': '',
-    'operatorEmail': '',
-    'operatorMobile': '',
-    'operatorName': '',
-    'operatorTel': '',
-    'org': '',
-    'painters': '',
-    'postalCode': '',
-    'qualityInspector': '',
-    'qualityReputationAssessmentLevel': '',
-    'registerAddress': '',
-    'registerDate': '',
-    'registerRegion': '',
-    'rescue': '',
-    'selfIntroduction': '',
-    'serviceCategory': '',
-    'serviceCategoryOther': '',
-    'serviceLeader': '',
-    'show': '',
-    'sincerity': '',
-    'sincerityYears': '',
-    'special': '',
-    'specialRepairBrand': '',
-    'specialService': '',
-    'status': '',
-    'technologyLeader': '',
-    'throughEnvironmentalProtectionSpecialRenovation': '',
-    'throughSafetyProductionStandardization': '',
-    'tinbenders': '',
-    'updateTime': '',
-    'workingHoursPrice': '',
-    'workingHoursQuotaExecutionStandard': '',
-    'zdz': '',
-    'source': '',
-    'comprehensive': '',
-    'chainBusiness': '',
-    'groupBusiness': '',
-    'useHss': '',
-    'buttJoinTime': '',
-    'useErp': '',
-    'contactName': '',
-    'contactPhone': '',
-    'erpName': '',
-};
 export default {
     name: "common-company-info",
     props: ['data'],
     components: {},
     data(){
+      let rulesObj={ required: true, message: '必填项不可为空' };
         return{
             collapse: '1',
             showAdd: false,
+            uploadData:{},
             listSearch:deepClone(initList),
             ruleValidate: {
-                name: [{ required: true, message: '必填项不可为空' }],
-                licence: [{ required: true, message: '必填项不可为空' }],
-                licenceDate: [{ required: true, message: '必填项不可为空' }],
+                name: [rulesObj],
+                licence: [rulesObj],
+                licenceDate: [rulesObj],
                 
-                registerAddress: [{ required: true, message: '必填项不可为空' }],
-                registerRegion: [{ required: true, message: '必填项不可为空' }],
-                registerDate: [{ required: true, message: '必填项不可为空' }],
-                businessScope: [{ required: true, message: '必填项不可为空' }],
-                businessScope2: [{ required: true, message: '必填项不可为空' }],
-                manageArr: [{required:true,message:'必填项不能为空'}],
+                registerAddress: [rulesObj],
+                registerRegion: [rulesObj],
+                registerDate: [rulesObj],
+                businessScope: [rulesObj],
+                businessScope2: [rulesObj],
+                manageArr: [rulesObj],
                 workingHoursPrice: [{ message: '最多两位小数位', trigger: 'change', pattern: /^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/ }]
 
 
@@ -880,6 +793,7 @@ export default {
       //数据合并-------------
       mergeData(){
           this.$refs['listSearch'].resetFields();
+          this.uploadData=this.data;
           if(this.data.id){
             let resData=this.data;
             for (let i in resData) {
@@ -992,7 +906,7 @@ export default {
         }
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
-              let temData=deepClone(uploadData);
+              let temData=deepClone(this.uploadData);
               for(let i in temData){
                 if(i=='licenceBeginDate'){
                     temData[i]=formatDate(this.listSearch.licenceBeginDate);
