@@ -14,7 +14,7 @@
     <div slot="header" class="header-inner">维修企业信息<span v-show="testTitle">（{{testTitle}}）</span></div>
     <div style="padding-bottom: 10px;">
 
-      <common-company-info :showInfo="showInfo" :showSaveInfo="showSaveInfo" :infoId="infoId" :clearRules="clearRules" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
+      <common-company-info :showInfo="showInfo" :showSaveInfo="showSaveInfo" :infoId="infoId" :clearRules="clearRules" ref="comA" @saveInfoFun="saveInfoFun" @getInfo="getInfo"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
@@ -24,7 +24,7 @@
               @click="showChange=Math.random(),detailId=listSearch.id">查看变更
       </Button>
       <Button v-if="accessBtn('audit')" v-show="detailData" size="large" type="primary" @click="modal1=true"
-              :disabled="listSearch.status==2">审核
+              :disabled="disabledAudit">审核
       </Button>
       <Button v-if="accessBtn('create')" v-show="(listSearch.createKey&&listSearch.code)" size="large" type="primary"
               @click="resetKey">重置密钥
@@ -218,6 +218,15 @@
 
       }
     },
+    computed:{
+      listSearchStatus(){
+        return this.listSearch.status
+      },
+      disabledAudit(){
+        console.log('disabledAudit',this.listSearchStatus, this.detailData&& this.detailData.status!='待审核', this.listSearchStatus!=1 || (this.detailData&& this.detailData.status!='待审核'))
+        return this.listSearchStatus!=1 || (this.detailData&& this.detailData.status!='待审核')
+      },
+    },
     watch: {
       manageArr(val){
        if(val.length == 0){
@@ -238,13 +247,15 @@
           this.infoId=null;
           this.testTitle= ''
         }
-        this.listSearch = this.$refs.comA.listSearch;
+        // this.listSearch = this.$refs.comA.listSearch;
         // this.testTitle = getName(this.statusArr, this.listSearch.status)
       }
     },
 
     methods: {
-
+      getInfo(info){
+        this.listSearch= info
+      },
 
       //新增一个企业数据---------
       addCompany() {
@@ -318,7 +329,6 @@
         })
         this.modal1 = false
       },
-
 
 
       //创建密钥接口----------

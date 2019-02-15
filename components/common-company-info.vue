@@ -802,6 +802,7 @@ export default {
             this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
             if (res.data.code == '0') {
                 let resData = res.data.item
+              this.$emit('getInfo', res.data.item)
                 for (let i in resData) {
                     if (i == 'businessHours') {
                         this.listSearch[i] = resData[i].split('-')
@@ -812,7 +813,7 @@ export default {
                         this.listSearch[i] = resData[i]
                     } else {
                         if (resData[i]) {
-                            console.log(i)
+                            // console.log(i)
                             this.listSearch[i] = resData[i]
                         }
 
