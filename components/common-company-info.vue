@@ -797,6 +797,7 @@ export default {
         getDetail(id) {
             // this.spinShow=true;
           this.$refs['listSearch'].resetFields();
+          this.listSearch=deepClone(initList),
             this.$Spin.show()
             this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
             if (res.data.code == '0') {
