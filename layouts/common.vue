@@ -39,7 +39,7 @@
                   <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
                 </ul>
             </Submenu>
-            <MenuItem name="head-menu-3" to="/center/repair-info-detail">
+            <MenuItem name="head-menu-3" to="/center/my-car-record">
                 电子健康档案系统
             </MenuItem>
             <MenuItem name="head-menu-4" to="/cdf">
