@@ -11,7 +11,7 @@
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
-    <div slot="header" class="header-inner">维修企业信息<span>（{{testTitle}}）</span></div>
+    <div slot="header" class="header-inner">维修企业信息<span v-show="testTitle">（{{testTitle}}）</span></div>
     <div style="padding-bottom: 10px;">
 
       <common-company-info :showInfo="showInfo" :showSaveInfo="showSaveInfo" :infoId="infoId" :clearRules="clearRules" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
@@ -232,13 +232,14 @@
         if (this.detailData) {
           this.showInfo=Math.random();
           this.infoId=this.detailData.id;
-
+          this.testTitle=this.detailData.status
         } else {
           this.showInfo=Math.random();
           this.infoId=null;
+          this.testTitle= ''
         }
         this.listSearch = this.$refs.comA.listSearch;
-        this.testTitle = getName(this.statusArr, this.listSearch.status)
+        // this.testTitle = getName(this.statusArr, this.listSearch.status)
       }
     },
 
