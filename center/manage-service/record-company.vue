@@ -60,10 +60,10 @@
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
         <FormItem label="按月查询:">
-            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
+            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions" @on-change="clear('year')"></DatePicker>
         </FormItem>
         <FormItem label="按年查询:">
-          <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="dateOptions"></DatePicker>
+          <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="yearOptions" @on-change="clear('uploadMonth')"></DatePicker>
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
@@ -133,6 +133,7 @@ if(!thisData) {
       },
       {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
+      {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
     ],
     tableData: [],
     searchList: deepClone( searchList),
@@ -178,7 +179,6 @@ if(!thisData) {
     ],
     dateOptions: {
         disabledDate (date) {
-
             let oDate=new Date();
             oDate.setMonth(oDate.getMonth());
             oDate.setDate(0);
@@ -188,6 +188,24 @@ if(!thisData) {
 
             return date && date.valueOf() >= oDate.getTime();
         }
+    },
+    yearOptions: {
+      disabledDate (date) {
+        let oDate=new Date(),nDate=new Date();
+        oDate.setFullYear(2018)
+        nDate.setFullYear(oDate.getFullYear()+1)
+        oDate.setMonth(0);
+        oDate.setDate(0);
+        oDate.setHours(0);
+        oDate.setMinutes(0);
+        oDate.setMilliseconds(0);
+        nDate.setMonth(0);
+        nDate.setDate(0);
+        nDate.setHours(0);
+        nDate.setMinutes(0);
+        nDate.setMilliseconds(0);
+        return date && (date.valueOf()< oDate.getTime() || date.valueOf() > nDate.getTime() );
+      }
     },
   }
 }
@@ -308,6 +326,8 @@ activated(){
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
             upData["year"]=formatDate(upData["year"],'yyyy');
+            upData.pageNo= this.page
+            upData.pageSize= this.limit
             this.$axios.post('/vehicle/repair/query',upData).then( (res) => {
                 if(res.data.code=='0'){
                     this.tableData=res.data.items;
@@ -431,6 +451,9 @@ activated(){
                 }
            })
         },
+      clear(item){
+          this.searchList[item]= null
+      },
         changePage(page){
           this.page= page
           this.getList()

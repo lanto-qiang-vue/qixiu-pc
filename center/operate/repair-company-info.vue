@@ -13,7 +13,7 @@
     :transition-names="['', '']">
     <div slot="header" class="header-inner">维修企业信息<span>（{{testTitle}}）</span></div>
     <div style="padding-bottom: 10px;">
-      
+
       <common-company-info :showInfo="showInfo" :showSaveInfo="showSaveInfo" :infoId="infoId" :clearRules="clearRules" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
@@ -180,7 +180,7 @@
     'erpName': '',
   };
 
- 
+
   export default {
     name: 'repair-company-info',
     props: ['showDetail', 'detailData'],
@@ -195,18 +195,18 @@
         showChange: null,
         // spinShow:false,
         showModal: false,
-        
+
         showKey: false,//对接密钥显隐
         testTitle: '',
         modal1: false,
-        
+
         keyList: {
           name: '',
           license: '',
           secretKey: ''
         },
         listSearch:'',
-        
+
         value: '',
         showInfo:null,
         //审核状态问题------
@@ -228,11 +228,11 @@
       },
       showDetail() {
         this.showModal = true;
-        
+
         if (this.detailData) {
           this.showInfo=Math.random();
           this.infoId=this.detailData.id;
-          
+
         } else {
           this.showInfo=Math.random();
           this.infoId=null;
@@ -243,8 +243,8 @@
     },
 
     methods: {
-      
-      
+
+
       //新增一个企业数据---------
       addCompany() {
         this.showSaveInfo=Math.random();
@@ -291,12 +291,12 @@
       visibleChange(status) {
         if (status === false) {
           this.$emit('closeDetail')
-          
+
           this.clearRules=Math.random();
-          // this.$refs['listSearch'].resetFields()
+          this.$refs['listSearch'].resetFields()
         }
       },
-      
+
       //审核是否通过-------------
       auditFun(flag) {
         let status = 1
@@ -318,9 +318,9 @@
         })
         this.modal1 = false
       },
-      
-      
-      
+
+
+
       //创建密钥接口----------
       addKey() {
         this.$Modal.confirm({
