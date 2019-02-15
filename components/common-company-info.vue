@@ -16,7 +16,7 @@
                           style="width: 49%"></DatePicker>
               <DatePicker type="date" v-model="listSearch.licenceEndDate" placeholder="结束日期"
                           style="width: 49%"></DatePicker>
-                          
+
             </FormItem>
 
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
@@ -534,7 +534,7 @@
 
 
 <script>
-import { deepClone } from '~/static/util.js'  
+import { deepClone } from '~/static/util.js'
 import { formatDate } from '@/static/tools'
 
 let initList={
@@ -777,7 +777,7 @@ export default {
                 this.listSearch=deepClone(initList);
                 console.log('触发了',this.listSearch);
             }
-            
+
         },
         showSaveInfo(){
             this.rulesData('listSearch');
@@ -796,6 +796,7 @@ export default {
         //获取详情--------
         getDetail(id) {
             // this.spinShow=true;
+          this.$refs['listSearch'].resetFields();
             this.$Spin.show()
             this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
             if (res.data.code == '0') {
@@ -817,7 +818,7 @@ export default {
                     }
                 }
 
-                
+
                 this.listSearch.manageArr = []
                 this.listSearch.manageArr.push(this.listSearch.org)
                 this.listSearch.manageArr.push(this.listSearch.dept)
@@ -894,7 +895,7 @@ export default {
         }
 
         this.listSearch.businessHours1 = '';
-        
+
         if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
           this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
         }

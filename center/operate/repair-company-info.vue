@@ -293,7 +293,6 @@
           this.$emit('closeDetail')
 
           this.clearRules=Math.random();
-          this.$refs['listSearch'].resetFields()
         }
       },
 
