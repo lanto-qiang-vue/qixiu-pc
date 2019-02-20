@@ -1,6 +1,6 @@
 <!--  修改用户信息   -->
 <template>
-    <div style="height: 100%;overflow: auto;">
+    <div>
         <div style="margin-top: 40px;">
             <Form ref="formData" :rules="ruleUser"  :model="formData" :label-width="120" class="common-form">
                 <FormItem label="用户账号:" style="width: 100%">

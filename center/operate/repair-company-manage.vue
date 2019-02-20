@@ -51,8 +51,14 @@
                     <Option v-for="item in businessType" :value="item.key" :key="item.key">{{ item.name }}</Option>
                   </Select>
               </FormItem>
-              <FormItem label="审核状态:">
+              <FormItem label="关键信息审核状态:">
                   <Select v-model="search.status" clearable>
+                    
+                    <Option v-for="item in statusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
+                  </Select>
+              </FormItem>
+              <FormItem label="一般信息审核状态:">
+                  <Select v-model="search.generalStatus" clearable>
                     
                     <Option v-for="item in statusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
@@ -71,10 +77,10 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
       <Button type="primary" v-if="accessBtn('import')" @click="type=Math.random();">导入</Button>
       <Button type="primary" v-if="accessBtn('export')" @click="exportBut">导出</Button>
-      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
 
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
@@ -104,7 +110,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
           
           {title: '区域', key: 'areaName', sortable: true, minWidth: 120,
           },
-          {title: '审核状态', key: 'status', sortable: true, minWidth: 120},
+          {title: '关键信息审核状态', key: 'status', sortable: true, minWidth: 120},
+          {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120},
           {title: '备案状态', key: 'beianStatus', sortable: true, minWidth: 135},
           {title: '企业名称', key: 'name', sortable: true, minWidth: 120},
           {title: '许可证号', key: 'licence', sortable: true, minWidth: 120,
@@ -147,6 +154,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
             "show": "",
             "special": "",
             "status": "",
+            "generalStatus":"",
             "totalToTotal": "",
         },
         page: 1,
@@ -157,14 +165,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
         detailData: null,
         clearTableSelect: null,
         //维修类别数据---------
-        repairType:[
-            // {code:"全部",name:""},
-            // {code:"一类机动车维修",name:1},
-            // {code:"二类机动车维修",name:2},
-            // {code:"三类机动车维修",name:3},
-            // {code:"摩托车维修",name:4},
-            // {code:"汽车快修",name:5},
-        ],
+        repairType:[],
         beianStatusArr:[
           {code:"全部",name:""},
           {code:"待备案",name:1},
@@ -199,6 +200,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 "show": this.search.show,
                 "special": this.search.special,
                 "status": this.search.status,
+                "generalStatus":this.search.generalStatus,
                 "totalToTotal": this.search.totalToTotal,
               "pageNo": this.page,
               "pageSize": this.limit,
@@ -233,25 +235,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
           
           this.getList();
         },
-        //删除按钮数据--------
-        delFun(){
-            this.$Modal.confirm({
-              title:"系统提示!",
-              content:"确定要删除吗？",
-              onOk:this.delList,
-          })
-        },
-        delList(){
-            this.$axios.post('/corp/del/'+this.detailData.corpId, {
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.closeDetail();
-                }else{
-                    this.$Message.error(res.data.status);
-                }
-                
-            })
-        },
+        
         exportBut(){
           this.$Modal.confirm({
               title:"系统提示!",
@@ -275,6 +259,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
               "show": this.search.show,
               "special": this.search.special,
               "status": this.search.status,
+              "generalStatus":this.search.generalStatus,
               "totalToTotal": this.search.totalToTotal,
               "pageNo": this.page,
               "pageSize": this.limit,

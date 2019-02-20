@@ -1,5 +1,5 @@
 <template>
-  <div style="width:450px;position:relative;">
+  <div style="width:100%;position:relative;">
     <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType">
     </Input>
     <span style="position:absolute;right:32px;top:2px;cursor: pointer;z-index: 100;font-size: 16px;" v-show="selectType" @click="closeSelect"><Icon type="ios-close-circle" /></span>
@@ -10,7 +10,7 @@
         stripe
         border
         height="400"
-        width="450"
+        
         :highlight-row="true"
         :loading="loading"
         :row-class-name="rowClassName"
@@ -42,7 +42,7 @@
   };
   export default {
     name: "unit-search-input",
-    props:['searchTableData',"showChange"],
+    props:['searchTableData',"showChange","tableData","flagData"],
     data(){
       return {
         inputData:'',
@@ -52,10 +52,7 @@
         timer:null,
         data:[],
         loading:false,
-        tableColumns:[
-          {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
-          {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
-        ],
+        tableColumns:[],
       }
     },
     watch:{
@@ -73,13 +70,13 @@
         
       }
     },
+    mounted(){
+      this.tableColumns=this.tableData;
+    },
     directives: {clickoutside},
     methods: {
       handleClose(e) {
-        
-        
         if(this.inputShow){
-          
           //  let row={};
           //   row['MODEL_NAME']=this.inputData;
           //   row['TID']='';
@@ -121,22 +118,74 @@
         },500);
       },
       getList(value){
-            this.loading=true;
-            let strUrl='';
-            strUrl+='&name='+this.inputData;
+            if(this.flagData==1){
+                this.loading=true;
+                let strUrl='';
+                strUrl+='&name='+this.inputData;
+                    
+                this.$axios.get('/training/driving/base/query?size=25&page=0'+strUrl, {
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.status===200){
+                        this.data=res.data.content;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+
+            }else if(this.flagData==2){
+                this.loading=true;
                 
-            this.$axios.get('/training/driving/base/query?size=25&page=0'+strUrl, {
-            }).then( (res) => {
-                console.log(res);
-                if(res.status===200){
-                    this.data=res.data.content;
-                    // this.total=res.data.totalElements;
-                    this.loading=false;
-                }else{
-                    this.loading=false;
-                    // this.$Message.error(res.statusText);
-                }
-            })
+                this.$axios.post('/corp/erp/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }else if(this.flagData==3){
+                this.loading=true;
+                
+                this.$axios.post('/corp/major/brand/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }else if(this.flagData==4){
+                this.loading=true;
+                
+                this.$axios.post('/corp/brand/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+                    
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }
+            
 
       },
     },

@@ -4,32 +4,34 @@
     v-model="showModal"
     title="维修企业信息"
     width="90"
-    
+    @on-visible-change="visibleChange"
     :scrollable="true"
     :transfer="true"
     :footer-hide="false"
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
-    <div slot="header" class="header-inner">维修企业信息<span>（{{testTitle}}）</span></div>
+    <div slot="header" class="header-inner">维修企业信息</div>
     <div style="padding-bottom: 10px;">
       
-      <common-company-info :data="listSearch" ref="comA" @saveInfoFun="saveInfoFun"></common-company-info>
+      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
     <div slot="footer">
-      <Button v-if="accessBtn('edit')" size="large" type="primary" @click="addCompany">提交</Button>
-      <Button v-if="accessBtn('changelist')" v-show="detailData" size="large" type="primary"
+      <Button  size="large" type="primary" @click="addCompany">保存</Button>
+      <Button  size="large" type="primary" @click="addCompany" v-if="isRequire">提交关键</Button>
+      <Button  size="large" type="primary" @click="addCompany" v-if="!isRequire">提交一般</Button>
+      <Button  size="large" type="primary" @click="modal1=true" v-if="isRequire">审核关键</Button>
+      <Button  size="large" type="primary" @click="modal2=true" v-if="!isRequire">审核一般</Button>
+      <Button  size="large" type="primary"
               @click="showChange=Math.random(),detailId=listSearch.id">查看变更
       </Button>
-      <Button v-if="accessBtn('audit')" v-show="detailData" size="large" type="primary" @click="modal1=true"
-              :disabled="listSearch.status==2">审核
-      </Button>
-      <Button v-if="accessBtn('create')" v-show="(listSearch.createKey&&listSearch.code)" size="large" type="primary"
+      
+      <Button  size="large" type="primary"
               @click="resetKey">重置密钥
       </Button>
-      <Button v-if="accessBtn('create')" v-show="(!listSearch.createKey&&listSearch.code)" size="large" type="primary"
+      <Button  size="large" type="primary"
               @click="addKey">创建密钥
       </Button>
       <Button size="large" type="default" @click="showModal=false;">返回</Button>
@@ -38,11 +40,40 @@
 
 
     <!--页面审核-->
-    <Modal v-model="modal1">
-      <p class="modelClass">审核是否通过</p>
+    <Modal v-model="modal1" title="审核">
+      <Form :label-width="120">
+        <FormItem label="关键信息审核结果:">
+            <RadioGroup v-model="auditInfo.status">
+                <Radio label="2">通过</Radio>
+                <Radio label="3">不通过</Radio>
+                
+            </RadioGroup>
+        </FormItem>
+        <FormItem label="不通过说明:" v-show="auditInfo.status==3">
+            <Input type="textarea" :rows="1" v-model="auditInfo.auditInfo" placeholder="请输入不通过说明"></Input>
+        </FormItem>
+    </Form>
       <div slot="footer">
-        <Button size="large" type="primary" @click="auditFun(true)">通过</Button>
-        <Button size="large" type="error" @click="auditFun(false)">不通过</Button>
+        <Button size="large" type="primary" @click="auditFun">提交</Button>
+      </div>
+    </Modal>
+
+    <!--页面审核-->
+    <Modal v-model="modal2" title="审核">
+      <Form :label-width="120">
+        <FormItem label="一般信息审核结果:">
+            <RadioGroup v-model="generalInfo.status">
+                <Radio label="2">通过</Radio>
+                <Radio label="3">不通过</Radio>
+                
+            </RadioGroup>
+        </FormItem>
+        <FormItem label="不通过说明:" v-show="generalInfo.status==3">
+            <Input type="textarea" :rows="1" v-model="generalInfo.auditInfo" placeholder="请输入不通过说明"></Input>
+        </FormItem>
+    </Form>
+      <div slot="footer">
+        <Button size="large" type="primary" @click="auditFun">提交</Button>
       </div>
     </Modal>
 
@@ -109,15 +140,17 @@
         showModal: false,
         
         showKey: false,//对接密钥显隐
-        testTitle: '',
-        modal1: false,
+        modal1: false,//关键信息审核弹出框
+        modal2:false,//一般信息弹出框
         
         keyList: {
           name: '',
           license: '',
           secretKey: ''
         },
-        listSearch:'',
+
+        listSearch:'',//关键数据-----
+        generalList:'',//一般数据-----
         
         value: '',
         showInfo:null,
@@ -127,26 +160,36 @@
             { code: 2, name: '审核成功' },
             { code: 3, name: '审核不成功' }
         ],
+        auditInfo:{
+          status:'',
+          auditInfo:'',
+        },//关键信息审核----
+        generalInfo:{
+          status:'',
+          auditInfo:'',
+        },//一般信息审核----
+        isRequire:true,//关键 一般flg
+
 
       }
     },
     watch: {
-      manageArr(val){
-        if(val.length == 0){
-          this.listSearch.manageArr = "";
-        }else{
-          this.listSearch.manageArr = 1;
-        }
-      },
       showDetail() {
           this.showModal = true;
           if (this.detailData) {
-            
             this.getDetail(this.detailData.id);
-            this.testTitle = this.detailData.status;
-          } else {
+            this.getDetail1(this.detailData.id);
+            
+
+          }else{
             this.listSearch = {};
-            this.testTitle = "待审核";
+            this.generalList = {};
+            setTimeout(()=>{
+                  this.$refs.comA.mergeData();
+                  this.$refs.comA.mergeOtherData();
+            },20)
+            
+
         }
         
       }
@@ -154,34 +197,81 @@
 
     methods: {
       //获取详情--------
-        getDetail(id) {
+      getDetail(id) {
             this.$Spin.show()
-            this.$axios.get('/corp/manage/detail/' + id, {}).then((res) => {
+            this.$axios.get('/corp/manage/crux/detail/yy/' + id, {}).then((res) => {
             if (res.data.code == '0') {
                 let resData = res.data.item;
                 this.listSearch=resData;
+                
+                
+                console.log('父级的数据情况--listSearch',this.listSearch);
             }
-            this.$Spin.hide()
+            setTimeout(()=>{
+              this.$refs.comA.mergeData();
+              this.$Spin.hide()
+            },20)
+            
+            })
+      },
+      getDetail1(id) {
+            this.$Spin.show()
+            this.$axios.get('/corp/manage/general/detail/yy/' + id, {}).then((res) => {
+            if (res.data.code == '0') {
+                let resData = res.data.item;
+                this.generalList=resData;
+
+                
+                
+                console.log('父级的数据情况--generalList',this.generalList);
+            }
+            setTimeout(()=>{
+                  this.$refs.comA.mergeOtherData();
+                  this.$Spin.hide()
+                },20)
+            
             })
       },
       
       //新增一个企业数据---------
       addCompany() {
-        this.$refs.comA.rulesData();
+        if (this.detailData) {
+            if(this.isRequire){
+              this.$refs.comA.rulesData2();
+            }else{
+              this.$refs.comA.rulesData3();
+            }
+        }else{
+            this.$refs.comA.rulesData();
+        }
+        
+        
       },
       //保存数据------
       saveInfoFun(temData){
-        
           if (this.detailData) {
-              this.$axios.post('/corp/manage/update', temData).then((res) => {
+              if(this.isRequire){
+                this.$axios.post('/corp/manage/crux/update/yy', temData).then((res) => {
                 if (res.data.code == '0') {
-                  this.showModal = false
-                  this.$emit('closeDetail')
+                    this.showModal = false
+                    this.$emit('closeDetail')
 
-                }
-              })
+                  }
+                })
+              }else{
+                this.$axios.post('/corp/manage/general/update/yy', temData).then((res) => {
+                  if (res.data.code == '0') {
+                    this.showModal = false
+                    this.$emit('closeDetail')
+                    this.listSearch = {};
+                    this.generalList = {};
+
+                  }
+                })
+              }
+              
             } else {
-              this.$axios.post('/corp/manage/add', temData).then((res) => {
+              this.$axios.post('/corp/manage/insert', temData).then((res) => {
                 if (res.data.code == '0') {
                   this.showModal = false
                   this.$emit('closeDetail')
@@ -190,31 +280,47 @@
             }
       },
       //审核是否通过-------------
-      auditFun(flag) {
-        let status = 1
-        if (flag) {
-          status = 2
-        } else {
-          status = 3
+      auditFun() {
+        if(this.isRequire){
+                this.$axios.post('/corp/manage/crux/audit/yy', {
+                  'corpId': this.detailData.id,
+                  'status': this.auditInfo.status,
+                  'auditInfo': this.auditInfo.auditInfo,
+                }).then((res) => {
+                  if (res.data.code == '0') {
+                    this.listSearch.status=this.auditInfo.status;
+                    this.listSearch.auditInfo=this.auditInfo.auditInfo;
+                    this.showModal = false;
+                    this.$emit('closeDetail');
+                  }
+
+                })
+                this.modal1 = false;
+        }else{
+                this.$axios.post('/corp/manage/general/audit/yy', {
+                  'corpId': this.detailData.id,
+                  'status': this.generalInfo.status,
+                  'auditInfo': this.generalInfo.auditInfo,
+                }).then((res) => {
+                  if (res.data.code == '0') {
+                    // this.listSearch.status=this.auditInfo.status;
+                    // this.listSearch.auditInfo=this.auditInfo.auditInfo;
+                    this.showModal = false;
+                    this.$emit('closeDetail');
+                  }
+
+                })
+                this.modal2 = false;
         }
-
-        this.$axios.post('/corp/manage/audit', {
-          'corpId': this.listSearch.id,
-          'status': status
-        }).then((res) => {
-          if (res.data.code == '0') {
-            this.testTitle = getName(this.statusArr, status)
-            // this.listSearch.status = status
-            this.showModal = false
-                  this.$emit('closeDetail')
-          }
-
-        })
-        this.modal1 = false
+        
       },
       
       
-      
+      visibleChange(status) {
+        if (status === false) {
+          this.$emit('closeDetail');
+        }
+      },
       //创建密钥接口----------
       addKey() {
         this.$Modal.confirm({
@@ -250,12 +356,22 @@
         this.$Message.info('对接密钥已复制好，可贴粘。')
       },
       //密钥接口关闭时触发--------
-      visibleChangeKey() {
+      visibleChangeKey(status) {
         if (status === false) {
           for (let i in this.keyList) {
             this.keyList[i] = ''
           }
         }
+      },
+      //tab页切换状态----------
+      tabStatusFun(name){
+        if(name=='name1'){
+          this.isRequire=true;
+        }else if(name=='name2'){
+          this.isRequire=false;
+        }
+        console.log('父级接收情况',name);
+
       }
 
     }
@@ -405,4 +521,8 @@
     font-size: 18px;
     font-weight: bold;
   }
+
+
+
+
 </style>

@@ -62,7 +62,7 @@
             </FormItem>
             <FormItem label="训练基地:"  style="width: 95%;" prop="drivingBase">
                 <div style="width: 450px;">
-                    <unit-search-input  :searchTableData="searchTableData" :showChange="showChange" @closeSelect="closeSelect" @onRowSelect="onRowSelect"></unit-search-input>
+                    <unit-search-input  :searchTableData="searchTableData" :showChange="showChange" :tableData="tableData" :flagData=1 @closeSelect="closeSelect" @onRowSelect="onRowSelect"></unit-search-input>
                 </div>
             </FormItem>
             <FormItem label="" style="width: 80%;"  v-if="data1.length">
@@ -177,6 +177,10 @@ export default {
                 {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
                 {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
             ],
+            tableData:[
+          {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
+          {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
+        ],
             data1: [],
             areaOption:[]
         }
