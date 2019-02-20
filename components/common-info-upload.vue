@@ -58,6 +58,7 @@
           console.log(data);
           this.uploadList=[];
           if(data){
+              console.log('进来图片的数据：',data);
               this.uploadList.push(data);
           }
             
