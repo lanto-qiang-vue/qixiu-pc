@@ -73,7 +73,7 @@
 
             </FormItem>
             <FormItem label="道路运输经营许可证:" style="width: 45%;" prop="dlysxkz">
-              
+
 
               <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun"></common-info-upload>
             </FormItem>
@@ -82,7 +82,7 @@
             </FormItem>
           </Form>
           </div>
-          
+
         </TabPane>
 <!--这边是第二步骤        -->
         <TabPane :label="label1" name="name2">
@@ -113,8 +113,8 @@
             <FormItem label="经营地址邮编:" style="width: 45%;">
               <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
             </FormItem>
-            
-            
+
+
             <!--<FormItem label="代表人固定电话:" style="width: 45%;">
               <Input type="text" v-model="listSearch.legalTel" placeholder="请输入代表人固定电话"></Input>
             </FormItem>
@@ -139,7 +139,7 @@
 
             <FormItem label="营业状态:" style="width: 45%;">
               <Select v-model="listSearch.yyState" :transfer="true" clearable>
-                
+
                 <Option value="true">营业中</Option>
                 <Option value="false" >休息中</Option>
               </Select>
@@ -164,8 +164,8 @@
                       v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true">
               <Input type="text" v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围"></Input>
             </FormItem>
-            
-            
+
+
             <FormItem label="备案状态:" style="width: 45%;">
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
@@ -222,7 +222,7 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            
+
 
             <FormItem label="综合维修企业:" style="width: 45%;">
 
@@ -259,8 +259,8 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            
-            
+
+
             <FormItem label="使用好修修门店系统:" style="width: 45%;">
 
               <i-switch size="large" v-model="listSearch.useHss">
@@ -289,7 +289,7 @@
               <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
             </FormItem>
 
-          
+
             <FormItem label="工时定额执行标准:" style="width: 45%;">
               <Select v-model="listSearch.workingHoursQuotaExecutionStandard" :transfer="true">
                 <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
@@ -450,7 +450,7 @@
                       v-show="(listSearch.model&&listSearch.model.indexOf(6)==-1)?false:true">
               <Input type="text" v-model="listSearch.modelOther" placeholder=""></Input>
             </FormItem>
-            
+
 
             <div></div>
             <FormItem label="通过ISO质量管理体系认证:" style="width: 230px;">
@@ -507,13 +507,13 @@
               <div class="yearClass">
                   {{item.startYear}} {{item.endYear?-item.endYear:''}}
               </div>
-              
+
               <div style="width: 150px;display: inline-block;margin-right: 20px;">
                   <common-info-upload :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
               </div>
               <Button size="large" type="error" @click="deleteYear(index)">删除</Button>
-              
-              
+
+
             </FormItem>
             <FormItem label="上年度质量信誉考核等级:" style="width: 92%;">
               <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel">
@@ -540,7 +540,7 @@
             <!--<FormItem label="企业特色服务:" style="width: 92%;">
               <Input type="textarea" :rows="1" v-model="listSearch.specialService" placeholder="请输入企业特色服务"></Input>
             </FormItem>-->
-            
+
             <FormItem label="是否愿意开通车大夫服务等在线维修服务:" style="width: 92%;">
 
               <i-switch size="large" v-model="listSearch.openOnlineRepairService">
@@ -565,14 +565,14 @@
                 <div style="width: 150px;display: inline-block;">
                   <common-info-upload :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
                 </div>
-                
+
               </div>
               <Button size="large" type="info" @click="addHoner">新增</Button>
             </FormItem>
           </Form>
         </TabPane>
     </Tabs>
-    
+
         <Modal
             v-model="showAdd"
             title="新增"
@@ -602,7 +602,7 @@
 
 
 <script>
-import { deepClone, imgToBase64,getName} from '~/static/util.js'  
+import { deepClone, imgToBase64,getName} from '~/static/util.js'
 import { formatDate } from '@/static/tools'
 import commonInfoUpload  from '~/components/common-info-upload.vue'
 import unitSearchInput from '~/components/unit-search-input.vue'
@@ -686,7 +686,7 @@ let initList={
     "erpName":'',
     "brandName":'',
     "majorBrandName":'',
-          
+
 };
 let initList1={
   "businessScope": '',
@@ -726,6 +726,7 @@ export default {
 
             ruleValidate: {
                 manageArr: [rulesObj],
+
                 workingHoursPrice: [{ message: '最多两位小数位', trigger: 'change', pattern: /^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/ }]
             },//规则验证
             ruleValidate1: {
@@ -831,28 +832,7 @@ export default {
                 imageUrl:'',
                 imageData:'',
             },
-            label: (h) => {
-                return h('div', [
-                    h('span', '维修企业关键信息'),
-                    h('span', {
-                                style: {
-                                    color:'red',
-                                }
-                            },
-                    this.textStatus)
-                ])
-            },
-            label1: (h) => {
-                return h('div', [
-                    h('span', '维修企业一般信息'),
-                    h('span', {
-                                style: {
-                                    color:'red',
-                                }
-                            },
-                    this.textStatus1)
-                ])
-            },
+
             textStatus:'(待审核)',
             textStatus1:'(待审核)',
             tabName:'name1',
@@ -888,7 +868,34 @@ export default {
         this.getType()
     },
     computed:{
-
+      label(){
+        let obj= this.calcStatus(this.requireList.status)
+        return (h) => {
+          return h('div', [
+            h('span', '维修企业关键信息'),
+            h('span', {
+                style: {
+                  color: obj.color,
+                }
+              },
+              '（'+obj.text+'）')
+          ])
+        }
+      },
+      label1(){
+        let obj= this.calcStatus(this.listSearch.generalStatus)
+        return (h) => {
+          return h('div', [
+            h('span', '维修企业一般信息'),
+            h('span', {
+                style: {
+                  color: obj.color,
+                }
+              },
+              '（'+obj.text+'）')
+          ])
+        }
+      }
     },
     watch:{
 
@@ -901,7 +908,7 @@ export default {
           this.$refs['requireList'].resetFields();
           this.uploadData=this.data;
 
-          
+
           if(this.data.id){
             let resData=this.data;
             let resData1=this.data1;
@@ -909,12 +916,12 @@ export default {
             console.log('进来的数据---',resData1);
 
             for (let i in resData) {
-                    
+
                 if (resData[i]) {
-                    
+
                     this.requireList[i] = resData[i]
                 }
-                    
+
             }
             this.requireList.licenceDate=[];
             this.requireList.licenceDate.push(this.requireList.licenceBeginDate)
@@ -927,10 +934,36 @@ export default {
 
 
             this.textStatus='('+getName(this.statusArr,this.requireList.status)+')';
-                
+
           }else{
               this.requireList=deepClone(initList1);
           }
+      },
+      calcStatus(status){
+        let obj={}
+        switch (status){
+          case 1:{
+            obj.text='待审核'
+            obj.color= 'orange'
+            break
+          }
+          case 2:{
+            obj.text='审核通过'
+            obj.color= 'green'
+            break
+          }
+          case 3:{
+            obj.text='审核不通过'
+            obj.color= 'red'
+            break
+          }
+         default :{
+            obj.text='新建'
+            obj.color= 'green'
+            break
+          }
+        }
+        return obj
       },
       mergeOtherData(){
         console.log('一般数据-----进入第一步监听');
@@ -943,7 +976,7 @@ export default {
             for (let i in resData1) {
               if (i == 'businessHours') {
                         this.listSearch[i] = resData1[i].split('-')
-                        
+
               }else if(i=='yyState'){
                 if(resData1[i]){
                   this.listSearch[i] = 'true';
@@ -955,18 +988,18 @@ export default {
                     this.listSearch[i] = resData1[i]
                 }
               }
-                
+
             }
 
             this.listSearch.manageArr = []
             this.listSearch.manageArr.push(this.listSearch.org)
             this.listSearch.manageArr.push(this.listSearch.dept)
 
-            
+
             this.textStatus1='('+getName(this.statusArr,this.listSearch.generalStatus)+')';
-                
+
           }else{
-              
+
               this.listSearch=deepClone(initList);
               this.yearsArr={
                   begin: '',
@@ -1070,7 +1103,7 @@ export default {
             this.listSearch.honerModels[i]['corpId']=this.listSearch.id;
           }
         }
-        
+
 
 
         if (this.listSearch.manageArr.length > 0) {
@@ -1083,7 +1116,7 @@ export default {
 
 
         this.listSearch.businessHours1 = '';
-        
+
         if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
           this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
         }
@@ -1104,14 +1137,14 @@ export default {
                     }else if(this.listSearch.yyState=='false'){
                       temData[i]=false;
                     }
-                    
+
                 }else{
                     temData[i]=this.listSearch[i];
                 }
               }
               this.$emit('saveInfoFun',temData);
-            
-              
+
+
           }else{
             this.tabName="name2";
           }
@@ -1146,8 +1179,8 @@ export default {
                 }
               }
               this.$emit('saveInfoFun',temData);
-            
-              
+
+
           }
         })
 
@@ -1220,7 +1253,7 @@ export default {
             this.listSearch.honerModels[i]['corpId']=this.listSearch.id;
           }
         }
-        
+
 
 
         if (this.listSearch.manageArr.length > 0) {
@@ -1233,7 +1266,7 @@ export default {
 
 
         this.listSearch.businessHours1 = '';
-        
+
         if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
           this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
         }
@@ -1256,15 +1289,15 @@ export default {
                     }else if(this.listSearch.yyState=='false'){
                       temData[i]=false;
                     }
-                    
+
                 }else{
                     temData[i]=this.listSearch[i];
                 }
               }
                console.log('sssssss',temData);
               this.$emit('saveInfoFun',temData);
-            
-              
+
+
           }
         })
       },
@@ -1453,7 +1486,7 @@ export default {
               }else{
                 this.requireList.mdmtz='';
               }
-              
+
             },
             //iso图片上传
             isoPicFun(val){
@@ -1463,7 +1496,7 @@ export default {
               }else{
                 this.listSearch.isoPic='';
               }
-              
+
             },
             //iso图片上传
             safePicFun(val){
@@ -1473,7 +1506,7 @@ export default {
               }else{
                 this.listSearch.safePic='';
               }
-              
+
             },
             //iso图片上传
             greenPicFun(val){
@@ -1483,7 +1516,7 @@ export default {
               }else{
                 this.listSearch.greenPic='';
               }
-              
+
             },
 
       //4s店事件监听------
@@ -1565,7 +1598,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 350px;
       min-width: 250px;
-      
+
       .red{
         color: red;
       }
@@ -1586,7 +1619,7 @@ export default {
             right: 0;
             background: rgba(0,0,0,.6);
         }
-        
+
         .no-pic{
           width: 250px;
           position: absolute;
