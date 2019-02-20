@@ -13,7 +13,7 @@
               <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"></Input>
             </FormItem>
             <FormItem label="许可证有效期:" style="width: 45%;" prop="licenceDate">
-              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;"></DatePicker>
+              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;" @on-open-change="onOpenChangeDate"></DatePicker>
             </FormItem>
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
               <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"></Input>
@@ -89,7 +89,7 @@
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
             <FormItem label="管理机构与部门:" style="width: 45%;" prop="manageArr">
-              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr"></Cascader>
+              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-visible-change="onVisibleChange"></Cascader>
             </FormItem>
             <FormItem label="经营地地址:" style="width: 45%;">
               <Input type="text" v-model="listSearch.businessAddress" placeholder="请输入经营地地址"></Input>
@@ -113,40 +113,26 @@
             <FormItem label="经营地址邮编:" style="width: 45%;">
               <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
             </FormItem>
-
-
-            <!--<FormItem label="代表人固定电话:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.legalTel" placeholder="请输入代表人固定电话"></Input>
-            </FormItem>
-            <FormItem label="代表人邮箱:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.legalEmail" placeholder="请输入代表人邮箱"></Input>
-            </FormItem>-->
             <FormItem label="经营负责人:" style="width: 45%;">
               <Input type="text" v-model="listSearch.operatorName" placeholder="请输入日常经营管理负责人"></Input>
             </FormItem>
             <FormItem label="经营负责人手机:" style="width: 45%;">
               <Input type="text" v-model="listSearch.operatorMobile" placeholder="请输入负责人手机"></Input>
             </FormItem>
-            <!--<FormItem label="负责人固定电话:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.operatorTel" placeholder="请输入负责人固定电话"></Input>
-            </FormItem>
-            <FormItem label="负责人邮箱:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.operatorEmail" placeholder="请输入负责人邮箱"></Input>
-            </FormItem>-->
+
             <FormItem label="业务联系电话:" style="width: 45%;">
               <Input type="text" v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
 
             <FormItem label="营业状态:" style="width: 45%;">
-              <Select v-model="listSearch.yyState" :transfer="true" clearable>
-
+              <Select v-model="listSearch.yyState" :transfer="true" clearable @on-change="onChangeS">
                 <Option value="true">营业中</Option>
                 <Option value="false" >休息中</Option>
               </Select>
             </FormItem>
             <FormItem label="营业时间:" style="width: 45%;">
               <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"
-                          style="width: 100%;" v-model="listSearch.businessHours"></TimePicker>
+                          style="width: 100%;" v-model="listSearch.businessHours1" @on-open-change="onOpenChangeTime"></TimePicker>
             </FormItem>
             <FormItem label="经营状态:" style="width: 45%;">
               <Select v-model="listSearch.businessStatus" :transfer="true">
@@ -161,7 +147,7 @@
               </Select>
             </FormItem>
             <FormItem label="其他主要业务范围:" style="width: 45%;"
-                      v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true">
+                      v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true" prop="businessSphereOther">
               <Input type="text" v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围"></Input>
             </FormItem>
 
@@ -171,9 +157,7 @@
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
             </FormItem>
-            <!--<FormItem label="企业品牌:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.brand" placeholder="请输入企业品牌"></Input>
-            </FormItem>-->
+
             <FormItem label="使用ERP软件:" style="width: 45%;">
               <!--<Input type="text" v-model="listSearch.erpId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.erpName" :showChange="showChange" :tableData="tableData" :flagData=2 @closeSelect="closeSelect" @onRowSelect="onRowSelect"></unit-search-input>
@@ -303,7 +287,7 @@
                 <Option v-for="item in households" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="其他业户类别:" style="width: 45%;" v-show="listSearch.industryCategory==9?true:false">
+            <FormItem label="其他业户类别:" style="width: 45%;" v-show="listSearch.industryCategory==9?true:false" prop="industryCategoryOther">
               <Input type="text" v-model="listSearch.industryCategoryOther" placeholder="" style="width: 100%;"></Input>
             </FormItem>
             <FormItem label="经济类型:" style="width: 45%;">
@@ -312,7 +296,7 @@
                 <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="其他经济类型:" style="width: 45%;" v-show="listSearch.economicType==900?true:false">
+            <FormItem label="其他经济类型:" style="width: 45%;" v-show="listSearch.economicType==900?true:false" prop="economicTypeOther">
               <Input type="text" v-model="listSearch.economicTypeOther" placeholder=""></Input>
             </FormItem>
 
@@ -447,7 +431,7 @@
               </CheckboxGroup>
             </FormItem>
             <FormItem label="其他维修车型:" style="width: 45%;"
-                      v-show="(listSearch.model&&listSearch.model.indexOf(6)==-1)?false:true">
+                      v-show="(listSearch.model&&listSearch.model.indexOf(6)==-1)?false:true" prop="modelOther">
               <Input type="text" v-model="listSearch.modelOther" placeholder=""></Input>
             </FormItem>
 
@@ -460,7 +444,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.iso">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.iso" prop="isoPic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.isoPic" :callback="'isoPicFun'" @isoPicFun="isoPicFun"></common-info-upload>
             </FormItem>
@@ -472,7 +456,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughSafetyProductionStandardization">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughSafetyProductionStandardization" prop="safePic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.safePic" :callback="'safePicFun'" @safePicFun="safePicFun"></common-info-upload>
             </FormItem>
@@ -484,7 +468,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughEnvironmentalProtectionSpecialRenovation">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
             </FormItem>
@@ -534,7 +518,7 @@
               </CheckboxGroup>
             </FormItem>
             <FormItem label="其他服务种类:" style="width: 45%;"
-                      v-show="(listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair">
+                      v-show="(listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair" prop="serviceCategoryOther">
               <Input type="text" v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
             <!--<FormItem label="企业特色服务:" style="width: 92%;">
@@ -567,7 +551,7 @@
                 </div>
 
               </div>
-              <Button size="large" type="info" @click="addHoner">新增</Button>
+              <Button size="default" type="info" icon="md-add" @click="addHoner" shape="circle"></Button>
             </FormItem>
           </Form>
         </TabPane>
@@ -613,7 +597,8 @@ let initList={
     "brandId": 0,
     "brandOther": "",
     "businessAddress": "",//----------
-    "businessHours": [],
+    "businessHours": '',
+    "businessHours1":[],
     "businessRegion": "",//----------
     "businessSphere": [],
     "businessSphereOther": "",
@@ -726,7 +711,87 @@ export default {
 
             ruleValidate: {
                 manageArr: [rulesObj],
-
+                businessSphereOther:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
+                      callback(new Error('请填写其他主要业务范围'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                majorBrandId:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.special && !value) {
+                      callback(new Error('请填写主修品牌'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                industryCategoryOther:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.industryCategory == 9 && !value) {
+                      callback(new Error('请填写其他业户类别'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                economicTypeOther:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.economicType == 900 && !value) {
+                      callback(new Error('请填写其他经济类型'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                modelOther:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.model.indexOf(6) != -1 && !value) {
+                      callback(new Error('请填写其他维修车型'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                serviceCategoryOther:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.serviceCategory.indexOf(300007) != -1 && !value) {
+                      callback(new Error('请填写其他服务种类'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                safePic:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.throughSafetyProductionStandardization&& !value) {
+                      callback(new Error('请完善通过安全生产标准化达标认证资料'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                isoPic:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.iso&& !value) {
+                      callback(new Error('请完善通过ISO质量管理体系认证资料'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
+                greenPic:[{
+                  validator: (rule, value, callback) => {
+                    if (this.$data.listSearch.throughEnvironmentalProtectionSpecialRenovation&& !value) {
+                      callback(new Error('请完善通过环保部门专项整治资料'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
                 workingHoursPrice: [{ message: '最多两位小数位', trigger: 'change', pattern: /^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/ }]
             },//规则验证
             ruleValidate1: {
@@ -852,21 +917,6 @@ export default {
             storeSpecialsArr:[],
         }
     },
-    mounted () {
-        this.token.token = this.$store.state.user.token;
-        this.getPubliceType(4)
-        this.getPubliceType(6)
-        this.getPubliceType(7)
-        this.getPubliceType(8)
-        this.getPubliceType(9)
-        this.getPubliceType(30)
-        this.getPubliceType(24)
-        this.getCompanyArea()
-        this.getValuesByTypeFun(33)
-        this.getValuesByTypeFun(1)
-        this.getValuesByTypeFun(34)
-        this.getType()
-    },
     computed:{
       label(){
         let obj= this.calcStatus(this.requireList.status)
@@ -900,13 +950,28 @@ export default {
     watch:{
 
     },
+    mounted () {
+      this.token.token = this.$store.state.user.token;
+      this.getPubliceType(4)
+      this.getPubliceType(6)
+      this.getPubliceType(7)
+      this.getPubliceType(8)
+      this.getPubliceType(9)
+      this.getPubliceType(30)
+      this.getPubliceType(24)
+      this.getCompanyArea()
+      this.getValuesByTypeFun(33)
+      this.getValuesByTypeFun(1)
+      this.getValuesByTypeFun(34)
+      this.getType()
+    },
     methods:{
       //数据合并-------------
       mergeData(){
           console.log('进入第一步监听',this.data);
           this.tabName="name1";
           this.$refs['requireList'].resetFields();
-          this.uploadData=this.data;
+          this.uploadData=deepClone(this.data);
 
 
           if(this.data.id){
@@ -938,6 +1003,8 @@ export default {
           }else{
               this.requireList=deepClone(initList1);
           }
+
+          this.$emit('initFun',this.requireList,1);
       },
       calcStatus(status){
         let obj={}
@@ -969,7 +1036,7 @@ export default {
         console.log('一般数据-----进入第一步监听');
           this.tabName="name1";
           this.$refs['listSearch'].resetFields();
-          this.uploadOtherData=this.data1;
+          this.uploadOtherData=deepClone(this.data1);
           if(this.data1.id){
             let resData1=this.data1;
 
@@ -980,6 +1047,8 @@ export default {
               }else if(i=='yyState'){
                 if(resData1[i]){
                   this.listSearch[i] = 'true';
+                }else if(i=='updateTime'){
+                    this.listSearch[i]=formatDate(resData1[i]);
                 }else{
                   this.listSearch[i] = 'false';
                 }
@@ -1012,24 +1081,15 @@ export default {
           }
 
           this.showChange=Math.random();
-
+          this.$emit('initFun',this.listSearch,2);
       },
       //数据校验1--------
       rulesData(){
         let temData={};
-        if (this.requireList.licenceDate.length > 0) {
-          this.requireList['licenceBeginDate'] = this.requireList.licenceDate[0] || ''
-          this.requireList['licenceEndDate'] = this.requireList.licenceDate[1] || ''
-        }
-
         this.$refs['requireList'].validate((valid) => {
           if (valid) {
               for(let i in this.requireList){
-                if(i=='licenceBeginDate'){
-                    temData[i]=formatDate(this.requireList.licenceBeginDate);
-                }else if(i=='licenceEndDate'){
-                    temData[i]=formatDate(this.requireList.licenceEndDate);
-                }else if(i=='registerDate'){
+                if(i=='registerDate'){
                     temData[i]=formatDate(this.requireList.registerDate);
                 }else{
                     temData[i]=this.requireList[i];
@@ -1039,50 +1099,6 @@ export default {
             this.tabName="name1";
           }
         })
-
-        if ((this.listSearch.businessSphere.indexOf(88) != -1) && (!this.listSearch.businessSphereOther)) {
-          this.$Message.error('请填写其他主要业务范围')
-          return
-        }
-
-        if ((this.listSearch.special) && (!this.listSearch.majorBrandId)) {
-          this.$Message.error('请填写主修品牌')
-          return
-        }
-
-        if ((this.listSearch.industryCategory == 9) && (!this.listSearch.industryCategoryOther)) {
-          this.$Message.error('请填写其他业户类别')
-          return
-        }
-
-        if ((this.listSearch.economicType == 900) && (!this.listSearch.economicTypeOther)) {
-          this.$Message.error('请填写其他经济类型')
-          return
-        }
-
-        if ((this.listSearch.model.indexOf(6) != -1) && (!this.listSearch.modelOther)) {
-          this.$Message.error('请填写其他维修车型')
-          return
-        }
-
-        if ((this.listSearch.serviceCategory.indexOf(300007) != -1) && (!this.listSearch.serviceCategoryOther)) {
-          this.$Message.error('请填写其他服务种类')
-          return
-        }
-
-        if ((this.listSearch.throughSafetyProductionStandardization) && (!this.listSearch.safePic)) {
-          this.$Message.error('请完善通过安全生产标准化达标认证资料')
-          return
-        }
-        if ((this.listSearch.iso) && (!this.listSearch.isoPic)) {
-          this.$Message.error('请完善通过ISO质量管理体系认证资料')
-          return
-        }
-
-        if ((this.listSearch.throughEnvironmentalProtectionSpecialRenovation) && (!this.listSearch.greenPic)) {
-          this.$Message.error('请完善通过环保部门专项整治资料')
-          return
-        }
 
         if (this.listSearch.sincerity) {
           for(let i in this.listSearch.sincerityYears){
@@ -1106,38 +1122,15 @@ export default {
 
 
 
-        if (this.listSearch.manageArr.length > 0) {
-          this.listSearch['org'] = this.listSearch.manageArr[0] || ''
-          this.listSearch['dept'] = this.listSearch.manageArr[1] || ''
-        } else {
-          this.listSearch['org'] = ''
-          this.listSearch['dept'] = ''
-        }
-
-
-        this.listSearch.businessHours1 = '';
-
-        if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
-          this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
-        }
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
               for(let i in this.listSearch){
-                if(i=='updateTime'){
-                    temData[i]=formatDate(this.listSearch.updateTime);
-                }else if(i=='latitude'){
+                if(i=='latitude'){
                     temData[i]=this.listSearch.latitude || 0;
                 }else if(i=='longitude'){
                     temData[i]=this.listSearch.longitude || 0;
                 }else if(i=='businessHours'){
                     temData[i]=this.listSearch.businessHours1;
-                }else if(i=='yyState'){
-                    if(this.listSearch.yyState=='true'){
-                      temData[i]=true;
-                    }else if(this.listSearch.yyState=='false'){
-                      temData[i]=false;
-                    }
-
                 }else{
                     temData[i]=this.listSearch[i];
                 }
@@ -1159,81 +1152,21 @@ export default {
       },
       //数据校验2--------
       rulesData2(){
-        if (this.requireList.licenceDate.length > 0) {
-          this.requireList['licenceBeginDate'] = this.requireList.licenceDate[0] || ''
-          this.requireList['licenceEndDate'] = this.requireList.licenceDate[1] || ''
-        }
-
         this.$refs['requireList'].validate((valid) => {
           if (valid) {
-              let temData=deepClone(this.uploadData);
-              for(let i in temData){
-                if(i=='licenceBeginDate'){
-                    temData[i]=formatDate(this.requireList.licenceBeginDate);
-                }else if(i=='licenceEndDate'){
-                    temData[i]=formatDate(this.requireList.licenceEndDate);
-                }else if(i=='registerDate'){
-                    temData[i]=formatDate(this.requireList.registerDate);
+              for(let i in this.uploadData){
+                if(i=='registerDate'){
+                    this.uploadData[i]=formatDate(this.requireList.registerDate);
                 }else{
-                    temData[i]=this.requireList[i];
+                    this.uploadData[i]=this.requireList[i];
                 }
               }
-              this.$emit('saveInfoFun',temData);
-
-
+              this.$emit('saveInfoFun',this.uploadData);
           }
         })
-
-
-
-
       },
       //数据校验3--------
       rulesData3(){
-        if ((this.listSearch.businessSphere.indexOf(88) != -1) && (!this.listSearch.businessSphereOther)) {
-          this.$Message.error('请填写其他主要业务范围')
-          return
-        }
-
-        if ((this.listSearch.special) && (!this.listSearch.majorBrandId)) {
-          this.$Message.error('请填写主修品牌')
-          return
-        }
-
-        if ((this.listSearch.industryCategory == 9) && (!this.listSearch.industryCategoryOther)) {
-          this.$Message.error('请填写其他业户类别')
-          return
-        }
-
-        if ((this.listSearch.economicType == 900) && (!this.listSearch.economicTypeOther)) {
-          this.$Message.error('请填写其他经济类型')
-          return
-        }
-
-        if ((this.listSearch.model.indexOf(6) != -1) && (!this.listSearch.modelOther)) {
-          this.$Message.error('请填写其他维修车型')
-          return
-        }
-
-        if ((this.listSearch.serviceCategory.indexOf(300007) != -1) && (!this.listSearch.serviceCategoryOther)) {
-          this.$Message.error('请填写其他服务种类')
-          return
-        }
-
-        if ((this.listSearch.throughSafetyProductionStandardization) && (!this.listSearch.safePic)) {
-          this.$Message.error('请完善通过安全生产标准化达标认证资料')
-          return
-        }
-        if ((this.listSearch.iso) && (!this.listSearch.isoPic)) {
-          this.$Message.error('请完善通过ISO质量管理体系认证资料')
-          return
-        }
-
-        if ((this.listSearch.throughEnvironmentalProtectionSpecialRenovation) && (!this.listSearch.greenPic)) {
-          this.$Message.error('请完善通过环保部门专项整治资料')
-          return
-        }
-
         if (this.listSearch.sincerity) {
           for(let i in this.listSearch.sincerityYears){
               if(!this.listSearch.sincerityYears[i]['honestPic']){
@@ -1255,48 +1188,20 @@ export default {
         }
 
 
-
-        if (this.listSearch.manageArr.length > 0) {
-          this.listSearch['org'] = this.listSearch.manageArr[0] || ''
-          this.listSearch['dept'] = this.listSearch.manageArr[1] || ''
-        } else {
-          this.listSearch['org'] = ''
-          this.listSearch['dept'] = ''
-        }
-
-
-        this.listSearch.businessHours1 = '';
-
-        if (this.listSearch.businessHours.length > 0 && this.listSearch.businessHours[0] && this.listSearch.businessHours[1]) {
-          this.listSearch.businessHours1 = this.listSearch.businessHours[0] + '-' + this.listSearch.businessHours[1]
-        }
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
-              let temData=deepClone(this.uploadOtherData);
-              console.log('sssssss',temData);
-              for(let i in temData){
-                if(i=='updateTime'){
-                    temData[i]=formatDate(this.listSearch.updateTime);
-                }else if(i=='latitude'){
-                    temData[i]=this.listSearch.latitude || 0;
+              for(let i in this.uploadOtherData){
+                if(i=='latitude'){
+                    this.uploadOtherData[i]=this.listSearch.latitude || 0;
                 }else if(i=='longitude'){
-                    temData[i]=this.listSearch.longitude || 0;
-                }else if(i=='businessHours'){
-                    temData[i]=this.listSearch.businessHours1;
-                }else if(i=='yyState'){
-                    if(this.listSearch.yyState=='true'){
-                      temData[i]=true;
-                    }else if(this.listSearch.yyState=='false'){
-                      temData[i]=false;
-                    }
+
+                    this.uploadOtherData[i]=this.listSearch.longitude || 0;
 
                 }else{
-                    temData[i]=this.listSearch[i];
+                    this.uploadOtherData[i]=this.listSearch[i];
                 }
               }
-               console.log('sssssss',temData);
-              this.$emit('saveInfoFun',temData);
-
+              this.$emit('saveInfoFun',this.uploadOtherData);
 
           }
         })
@@ -1540,6 +1445,33 @@ export default {
         onRowSelect2(val){
             this.listSearch.brandId=val.id;
             this.listSearch.brandName=val.name;
+        },
+        //时间选择------
+        onOpenChangeDate(status){
+          if(!status){
+            this.requireList['licenceBeginDate'] = formatDate(this.requireList.licenceDate[0]);
+            this.requireList['licenceEndDate'] = formatDate(this.requireList.licenceDate[1]);
+          }
+        },
+        onVisibleChange(status){
+            if(!status){
+              this.listSearch['org'] = this.listSearch.manageArr[0]||'';
+              this.listSearch['dept'] = this.listSearch.manageArr[1]||'';
+            }
+        },
+        onOpenChangeTime(status){
+            if(!status){
+              if (this.listSearch.businessHours1.length > 0 && this.listSearch.businessHours1[0] && this.listSearch.businessHours1[1]) {
+                this.listSearch.businessHours = this.listSearch.businessHours1[0] + '-' + this.listSearch.businessHours1[1]
+              }
+            }
+        },
+        onChangeS(val){
+          if(val=='true'){
+              this.listSearch.yyState=true;
+          }else if(val=='false'){
+              this.listSearch.yyState=false;
+          }
         }
     },
 }

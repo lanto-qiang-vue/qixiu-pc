@@ -14,12 +14,12 @@
     <div slot="header" class="header-inner">维修企业信息</div>
     <div style="padding-bottom: 10px;">
       
-      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
+      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun" @initFun="initFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
     <div slot="footer">
-      <Button  size="large" type="primary" @click="addCompany">保存</Button>
+      <!--<Button  size="large" type="primary" @click="addCompany">保存</Button>
       <Button  size="large" type="primary" @click="addCompany" v-if="isRequire">提交关键</Button>
       <Button  size="large" type="primary" @click="addCompany" v-if="!isRequire">提交一般</Button>
       <Button  size="large" type="primary" @click="modal1=true" v-if="isRequire">审核关键</Button>
@@ -32,6 +32,23 @@
               @click="resetKey">重置密钥
       </Button>
       <Button  size="large" type="primary"
+              @click="addKey">创建密钥
+      </Button>-->
+      <Button  size="large" type="primary" @click="addCompany" v-show="!detailData">保存</Button>
+      <Button  size="large" type="primary" @click="addCompany" v-if="" v-show="(isRequire&&detailData)">提交关键</Button>
+      <Button  size="large" type="primary" @click="addCompany" v-if="" v-show="(!isRequire&&detailData)">提交一般</Button>
+
+      <Button  size="large" type="primary" @click="modal1=true" v-if="" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核关键</Button>
+      <Button  size="large" type="primary" @click="modal2=true" v-if="" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus==2">审核一般</Button>
+
+      <Button  size="large" type="primary" v-show="detailData"
+              @click="showChange=Math.random(),detailId=listSearch.id">查看变更
+      </Button>
+      
+      <Button  size="large" type="primary" v-show="(generalList.createKey&&generalList.code)"
+              @click="resetKey">重置密钥
+      </Button>
+      <Button  size="large" type="primary" v-show="(!generalList.createKey&&generalList.code)"
               @click="addKey">创建密钥
       </Button>
       <Button size="large" type="default" @click="showModal=false;">返回</Button>
@@ -254,7 +271,7 @@
                 this.$axios.post('/corp/manage/crux/update/yy', temData).then((res) => {
                 if (res.data.code == '0') {
                     this.showModal = false
-                    this.$emit('closeDetail')
+                    
 
                   }
                 })
@@ -262,9 +279,6 @@
                 this.$axios.post('/corp/manage/general/update/yy', temData).then((res) => {
                   if (res.data.code == '0') {
                     this.showModal = false
-                    this.$emit('closeDetail')
-                    this.listSearch = {};
-                    this.generalList = {};
 
                   }
                 })
@@ -274,7 +288,7 @@
               this.$axios.post('/corp/manage/insert', temData).then((res) => {
                 if (res.data.code == '0') {
                   this.showModal = false
-                  this.$emit('closeDetail')
+                  
                 }
               })
             }
@@ -291,9 +305,8 @@
                     this.listSearch.status=this.auditInfo.status;
                     this.listSearch.auditInfo=this.auditInfo.auditInfo;
                     this.showModal = false;
-                    this.$emit('closeDetail');
+                    
                   }
-
                 })
                 this.modal1 = false;
         }else{
@@ -306,9 +319,7 @@
                     // this.listSearch.status=this.auditInfo.status;
                     // this.listSearch.auditInfo=this.auditInfo.auditInfo;
                     this.showModal = false;
-                    this.$emit('closeDetail');
                   }
-
                 })
                 this.modal2 = false;
         }
@@ -318,6 +329,14 @@
       
       visibleChange(status) {
         if (status === false) {
+          this.auditInfo={
+            status:'',
+            auditInfo:'',
+          }//关键信息审核----
+          this.generalInfo={
+            status:'',
+            auditInfo:'',
+          }//一般信息审核----
           this.$emit('closeDetail');
         }
       },
@@ -372,6 +391,14 @@
         }
         console.log('父级接收情况',name);
 
+      },
+      //初始数据----
+      initFun(val,status){
+        if(status==1){
+          this.listSearch=val;
+        }else if(status==2){
+          this.generalList=val;
+        }
       }
 
     }
