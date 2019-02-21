@@ -26,42 +26,17 @@
             </FormItem>
             <FormItem label="工商注册日期:" style="width: 45%;" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
-                          v-model="requireList.registerDate"></DatePicker>
+                          v-model="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
             <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
-              <Select v-model="requireList.businessScope" @on-change="repairTypeFun" @on-open-change="onOpenChange"
+              <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, true)"
                       :transfer="true">
                 <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="一类机动车维修:" style="width: 45%;" v-show="requireList.businessScope==43?true:false"
-                      prop="businessScope2">
+            <FormItem label="经营范围子类:" style="width: 45%;" prop="businessScope2">
               <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
-                <Option v-for="item in oneCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="二类机动车维修:" style="width: 45%;" v-show="requireList.businessScope==44?true:false"
-                      prop="businessScope2">
-              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
-                <Option v-for="item in twoCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="三类机动车维修:" style="width: 45%;" v-show="requireList.businessScope==45?true:false"
-                      prop="businessScope2">
-              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
-                <Option v-for="item in threeCarType" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="摩托车维修:" style="width: 45%;" v-show="requireList.businessScope==46?true:false"
-                      prop="businessScope2">
-              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
-                <Option v-for="item in motorcycle" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="汽车维修:" style="width: 45%;" v-show="requireList.businessScope==47?true:false"
-                      prop="businessScope2">
-              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
-                <Option v-for="item in carList" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                <Option v-for="item in businessScope2" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
             <FormItem label="法定代表人:" style="width: 45%;" prop="legalName">
@@ -92,7 +67,7 @@
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
             <FormItem label="经营地地址:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.businessAddress" placeholder="请输入经营地地址"></Input>
+              <Input type="text" v-model="listSearch.businessAddress" placeholder="请输入经营地地址" @on-change="changeBusinessAddress"></Input>
             </FormItem>
             <FormItem label="经营地址区域:" style="width: 45%;">
               <Select v-model="listSearch.businessRegion" :transfer="true">
@@ -330,99 +305,99 @@
 
             <FormItem label="机工高级技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[0]"
+              <InputNumber :min="0" v-model="listSearch.machinists[0]"
                            placeholder="高级技师人数"></InputNumber>
             </FormItem>
             <FormItem label="机工技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[1]"
+              <InputNumber :min="0" v-model="listSearch.machinists[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="机工高级人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[2]"
+              <InputNumber :min="0" v-model="listSearch.machinists[2]"
                            placeholder="高级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="机工中级人数:" style="width: 45%;">
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.machinists[3]"
+              <InputNumber :min="0" v-model="listSearch.machinists[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="电工高级技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[0]"
+              <InputNumber :min="0" v-model="listSearch.electricians[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="电工技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[1]"
+              <InputNumber :min="0" v-model="listSearch.electricians[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="电工高级人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[2]"
+              <InputNumber :min="0" v-model="listSearch.electricians[2]"
                            placeholder="高级人数"></InputNumber>
 
 
             </FormItem>
             <FormItem label="电工中级人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.electricians[3]"
+              <InputNumber :min="0" v-model="listSearch.electricians[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="钣金工高级技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[0]"
+              <InputNumber :min="0" v-model="listSearch.tinbenders[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="钣金工技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[1]"
+              <InputNumber :min="0" v-model="listSearch.tinbenders[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="钣金工高级人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[2]"
+              <InputNumber :min="0" v-model="listSearch.tinbenders[2]"
                            placeholder="高级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="钣金工中级人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.tinbenders[3]"
+              <InputNumber :min="0" v-model="listSearch.tinbenders[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="油漆工高级技师人数:" style="width: 45%;">
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[0]"
+              <InputNumber :min="0" v-model="listSearch.painters[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
             <FormItem label="油漆工技师人数:" style="width: 45%;">
 
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[1]" placeholder="技师人数"></InputNumber>
+              <InputNumber :min="0" v-model="listSearch.painters[1]" placeholder="技师人数"></InputNumber>
 
 
             </FormItem>
             <FormItem label="油漆工高级人数:" style="width: 45%;">
 
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[2]" placeholder="高级人数"></InputNumber>
+              <InputNumber :min="0" v-model="listSearch.painters[2]" placeholder="高级人数"></InputNumber>
 
 
             </FormItem>
             <FormItem label="油漆工中级人数:" style="width: 45%;">
 
 
-              <InputNumber :max="1000000000" :min="0" v-model="listSearch.painters[3]" placeholder="中级人数"></InputNumber>
+              <InputNumber :min="0" v-model="listSearch.painters[3]" placeholder="中级人数"></InputNumber>
 
             </FormItem>
             <FormItem label="企业主要维修车型:" style="width: 92%;">
@@ -474,30 +449,23 @@
             </FormItem>
             <div></div>
             <FormItem label="是否为全国诚信维修企业:" style="width: 92%;">
-              <i-switch size="large" v-model="listSearch.sincerity">
+              <i-switch size="large" v-model="listSearch.sincerity" @on-change="changeSincerity">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
 
             </FormItem>
 
-            <FormItem label="成为全国诚信维修企业的年份:" style="width: 92%;" v-show="listSearch.sincerity?true:false">
-              <!--<Input type="text"  v-model="listSearch.sincerityYears" placeholder="" style="width: 250px;"></Input>-->
-              <DatePicker type="year" v-model="yearsArr.begin" placeholder="开始日期" style="width: 100px;"></DatePicker>
-              <DatePicker type="year" v-model="yearsArr.end" placeholder="结束日期" style="width: 100px;"></DatePicker>
-              <Button size="large" type="primary" @click="addYear">新增</Button>
-            </FormItem>
-            <FormItem label="" style="width: 92%;" v-for="(item, index) in listSearch.sincerityYears">
-              <div class="yearClass">
-                  {{item.startYear}} {{item.endYear?-item.endYear:''}}
-              </div>
-
-              <div style="width: 150px;display: inline-block;margin-right: 20px;">
-                  <common-info-upload :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
-              </div>
-              <Button size="large" type="error" @click="deleteYear(index)">删除</Button>
-
-
+            <FormItem label="成为全国诚信维修企业的年份:" style="width: 92%;" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
+              <ul class="ivu-input" style="height: auto">
+                <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
+                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" v-model="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
+                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" v-model="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
+                  <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
+                  <Button type="error" @click="deleteYear(index)">删除</Button>
+                </li>
+              <Button type="primary" @click="addYear">添加</Button>
+              </ul>
             </FormItem>
             <FormItem label="上年度质量信誉考核等级:" style="width: 92%;">
               <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel">
@@ -542,16 +510,15 @@
             <FormItem label="企业自我简介:" style="width: 92%;">
               <Input type="textarea" :rows="1" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
             </FormItem>
-            <FormItem label="区级以上荣誉获得情况:" style="width: 92%;">
-              <!--<Input type="textarea" :rows="1" v-model="listSearch.honerModels" placeholder="请输入区级以上荣誉获得情况"></Input>-->
-              <div style="width: 460px;display: inline-block;margin-right: 20px;" v-for="(item,index) in listSearch.honerModels">
-                <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
-                <div style="width: 150px;display: inline-block;">
-                  <common-info-upload :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
-                </div>
-
-              </div>
-              <Button size="default" type="info" icon="md-add" @click="addHoner" shape="circle"></Button>
+            <FormItem label="区级以上荣誉获得情况:" style="width: 92%;" prop="honerModels">
+              <ul class="ivu-input" style="height: auto">
+                <li v-for="(item,index) in listSearch.honerModels" :key="index">
+                  <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
+                  <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
+                  <Button type="error" @click="deleteHonerModels(index)">删除</Button>
+                </li>
+                <Button type="primary" @click="addHoner">添加</Button>
+              </ul>
             </FormItem>
           </Form>
         </TabPane>
@@ -586,7 +553,7 @@
 
 
 <script>
-import { deepClone, imgToBase64,getName} from '~/static/util.js'
+import { deepClone, imgToBase64,getName, deepTurn} from '~/static/util.js'
 import { formatDate } from '@/static/tools'
 import commonInfoUpload  from '~/components/common-info-upload.vue'
 import unitSearchInput from '~/components/unit-search-input.vue'
@@ -609,6 +576,7 @@ let initList={
     "complaintTel": "",//----------
     "comprehensive": false,
     "corpInfoId": 0,
+    "createKey": false,
     "dept": "",
     "desc": "",
     "economicType": 0,
@@ -666,7 +634,7 @@ let initList={
     "useHss": false,
     "workingHoursPrice": "",
     "workingHoursQuotaExecutionStandard": 0,
-    "yyState": "true",
+    "yyState": 'true',
     "zdz": false,
     "erpName":'',
     "brandName":'',
@@ -681,7 +649,7 @@ let initList1={
   "dlysxkz": "",
   "id": '',
   "legalName": "",
-  "licenceDate":"",
+  "licenceDate":[],
   "licenceBeginDate": "",
   "licenceEndDate": "",
   "license": "",
@@ -792,12 +760,60 @@ export default {
                     }
                   }
                 }],
-                workingHoursPrice: [{ message: '最多两位小数位', trigger: 'change', pattern: /^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/ }]
+              sincerityYears:[{
+                validator: (rule, value, callback) => {
+                  // console.log('sincerityYears', value)
+                  let pass= false
+                  if (this.$data.listSearch.sincerityYears){
+                    if(value.length){
+                      pass= true
+                      for(let i in value){
+                        if(!value[i].startYear || !value[i].honestPic){
+                          pass= false
+                        }
+                      }
+                    }
+                  }else{
+                    pass= true
+                  }
+                  if(pass) callback()
+                  else callback(new Error('请完善成为全国诚信维修企业的年份的资料, [开始日期]和[上传图片]为必填项'));
+                }
+              }],
+                workingHoursPrice: [{ message: '最多两位小数位', trigger: 'change', pattern: /^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/ }],
+
+              honerModels:[{
+                validator: (rule, value, callback) => {
+                  console.log('honerModels', value)
+                  let pass= false
+                  if (value.length){
+                      pass= true
+                      for(let i in value){
+                        if(!value[i].name || !value[i].url){
+                          pass= false
+                        }
+                      }
+                  }else{
+                    pass= true
+                  }
+                  if(pass) callback()
+                  else callback(new Error('请完善区级以上荣誉获得情况, [荣誉情况]和[上传图片]为必填项'));
+                }
+              }]
             },//规则验证
             ruleValidate1: {
                 name: [rulesObj],
                 license: [rulesObj],
-                licenceDate: [rulesObj],
+                licenceDate: [rulesObj,{
+                  validator: (rule, value, callback) => {
+                    // console.log('licenceDate', value)
+                    if (!value[0] || !value[1]) {
+                      callback(new Error('必填项不可为空'));
+                    }else{
+                      callback();
+                    }
+                  }
+                }],
                 registerAddress: [rulesObj],
                 registerRegion: [rulesObj],
                 registerDate: [rulesObj],
@@ -809,11 +825,6 @@ export default {
                 dlysxkz: [rulesObj],
             },//规则验证
             sourceName: '',//对接渠道名称----
-            //成为全国诚信企业的数据--------
-            yearsArr: {
-                begin: '',
-                end: ''
-            },
             //审核状态问题------
             statusArr: [
                 { code: 0, name: '其他' },
@@ -828,16 +839,8 @@ export default {
             //维修类别数据---------
             repairType: [],
             companyRepair: '',
-            //一类机动车维修------
-            oneCarType: [],
-            //二类机动车维修-------
-            twoCarType: [],
-            //三类机动车维修-------
-            threeCarType: [],
-            //摩托车维修
-            motorcycle: [],
-            //汽车维修
-            carList: [],
+            //经营范围子类
+            businessScope2: [],
             //企业主要业务
             companySphere: [],
             //企业员工总数
@@ -898,8 +901,7 @@ export default {
                 imageData:'',
             },
 
-            textStatus:'(待审核)',
-            textStatus1:'(待审核)',
+
             tabName:'name1',
 
             showChange:null,
@@ -915,6 +917,7 @@ export default {
             ],
             //门店特色数据--
             storeSpecialsArr:[],
+          timer: null
         }
     },
     computed:{
@@ -967,46 +970,109 @@ export default {
     },
     methods:{
       //数据合并-------------
-      mergeData(){
-          console.log('进入第一步监听',this.data);
+      mergeData(datas){
+          // console.log('进入第一步监听',this.data);
           this.tabName="name1";
+
           this.$refs['requireList'].resetFields();
-          this.uploadData=deepClone(this.data);
-
           this.requireList=deepClone(initList1);
-          
 
-          if(this.data.id){
-            let resData=this.data;
-            let resData1=this.data1;
+          if(datas.id){
+            this.uploadData=deepClone(datas);
 
-            console.log('进来的数据---',resData1);
-
-            for (let i in resData) {
-
-                if (resData[i]) {
-
-                    this.requireList[i] = resData[i]
+            for (let i in this.uploadData) {
+                if (this.uploadData[i]) {
+                    this.requireList[i] = this.uploadData[i]
                 }
-
             }
-            this.requireList.licenceDate=[];
-            this.requireList.licenceDate.push(this.requireList.licenceBeginDate)
-            this.requireList.licenceDate.push(this.requireList.licenceEndDate)
+            this.requireList.licenceDate=[this.requireList.licenceBeginDate, this.requireList.licenceEndDate];
+
             if (this.requireList['businessScope']) {
-                console.log(this.requireList['businessScope']);
+                // console.log("this.requireList['businessScope']",this.requireList['businessScope']);
                 this.repairTypeFun(this.requireList['businessScope'])
             }
+          }else{
+            this.uploadData= this.requireList
+          }
+      },
 
+      mergeOtherData(datas){
+          this.$refs['listSearch'].resetFields();
+          this.listSearch=deepClone(initList);
+          if(datas.id){
+            this.uploadOtherData=deepClone(datas);
 
-
-            this.textStatus='('+getName(this.statusArr,this.requireList.status)+')';
+            for (let i in this.uploadOtherData) {
+              if (i == 'businessHours') {
+                this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
+              }else if(i=='yyState'){
+                  this.listSearch[i] = this.uploadOtherData[i].toString();
+              }else if(i=='sincerityYears'){
+                  this.listSearch[i]= this.uploadOtherData[i]?deepTurn(this.uploadOtherData[i]):[]
+              }else if(this.uploadOtherData[i]){
+                  this.listSearch[i] = this.uploadOtherData[i]
+              }
+            }
+            this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
 
           }else{
-              
+            this.uploadOtherData= this.listSearch
           }
 
-          this.$emit('initFun',this.requireList,1);
+          if(this.listSearch.fours){
+              this.listSearch.special=true;
+          }
+
+          this.showChange=Math.random();
+
+      },
+      //新建企业
+      rulesData(){
+        let temData={};
+        this.$refs.requireList.validate((valid1) => {
+          if (valid1) {
+            this.$refs.listSearch.validate((valid2) => {
+              if (valid2) {
+                for(let i in this.uploadData){
+                  this.uploadData[i]= this.requireList[i]
+                }
+                for(let i in this.uploadOtherData){
+                  this.uploadOtherData[i]=this.listSearch[i];
+                }
+                temData={...this.uploadData, ...this.uploadOtherData}
+                this.$emit('saveInfoFun',temData);
+              }else{
+                this.tabName="name2";
+              }
+            })
+          }else{
+            this.tabName="name1";
+          }
+        })
+      },
+      //关键信息校验--------
+      rulesData2(){
+        this.$refs['requireList'].validate((valid) => {
+          if (valid) {
+            for(let i in this.uploadData){
+              this.uploadData[i]= this.requireList[i]
+            }
+              this.$emit('saveInfoFun',this.uploadData);
+          }
+        })
+      },
+      //基本信息校验3--------
+      rulesData3(){
+
+        this.$refs['listSearch'].validate((valid) => {
+          if (valid) {
+              for(let i in this.uploadOtherData){
+                this.uploadOtherData[i]=this.listSearch[i];
+              }
+              this.$emit('saveInfoFun',this.uploadOtherData);
+
+          }
+        })
       },
       calcStatus(status){
         let obj={}
@@ -1026,7 +1092,7 @@ export default {
             obj.color= 'red'
             break
           }
-         default :{
+          default :{
             obj.text='新建'
             obj.color= 'green'
             break
@@ -1034,219 +1100,41 @@ export default {
         }
         return obj
       },
-      mergeOtherData(){
-        console.log('一般数据-----进入第一步监听');
-          this.tabName="name1";
-          this.$refs['listSearch'].resetFields();
-          this.uploadOtherData=deepClone(this.data1);
-          this.listSearch=deepClone(initList);
-          if(this.data1.id){
-            let resData1=this.data1;
-
-            for (let i in resData1) {
-              if (i == 'businessHours') {
-
-                        this.listSearch["businessHours1"] = resData1[i].split('-')
-
-
-              }else if(i=='yyState'){
-                if(resData1[i]){
-                  this.listSearch[i] = 'true';
-                }else if(i=='updateTime'){
-                    this.listSearch[i]=formatDate(resData1[i]);
-                }else{
-                  this.listSearch[i] = 'false';
-                }
-              }else{
-                if (resData1[i]) {
-                    this.listSearch[i] = resData1[i]
-                }
-              }
-
-            }
-
-            this.listSearch.manageArr = []
-            this.listSearch.manageArr.push(this.listSearch.org)
-            this.listSearch.manageArr.push(this.listSearch.dept)
-
-
-            this.textStatus1='('+getName(this.statusArr,this.listSearch.generalStatus)+')';
-
-          }else{
-              this.yearsArr={
-                  begin: '',
-                  end: ''
-              }
-          }
-
-          if(this.listSearch.fours){
-              this.listSearch.special=true;
-          }
-
-          this.showChange=Math.random();
-          this.$emit('initFun',this.listSearch,2);
-      },
-      //数据校验1--------
-      rulesData(){
-        let temData={};
-        this.$refs['requireList'].validate((valid) => {
-          if (valid) {
-              for(let i in this.requireList){
-                if(i=='registerDate'){
-                    temData[i]=formatDate(this.requireList.registerDate);
-                }else{
-                    temData[i]=this.requireList[i];
-                }
-              }
-          }else{
-            this.tabName="name1";
-          }
-        })
-
-        if (this.listSearch.sincerity) {
-          for(let i in this.listSearch.sincerityYears){
-              if(!this.listSearch.sincerityYears[i]['honestPic']){
-                this.$Message.error('请完善成为全国诚信维修企业的年份的资料')
-                return
-              }else{
-                this.listSearch.sincerityYears[i]['corpId']=this.listSearch.id;
-              }
-          }
-        }
-
-        for(let i in this.listSearch.honerModels){
-          if(!this.listSearch.honerModels[i]['name']&&(!this.listSearch.honerModels[i]['url'])){
-            this.$Message.error('请完善区级以上荣誉获得情况的资料')
-                return
-          }else{
-            this.listSearch.honerModels[i]['corpId']=this.listSearch.id;
-          }
-        }
-
-
-
-        this.$refs['listSearch'].validate((valid) => {
-          if (valid) {
-              for(let i in this.listSearch){
-                if(i=='latitude'){
-                    temData[i]=this.listSearch.latitude || 0;
-                }else if(i=='longitude'){
-                    temData[i]=this.listSearch.longitude || 0;
-                }else{
-                    temData[i]=this.listSearch[i];
-                }
-              }
-              this.$emit('saveInfoFun',temData);
-
-
-          }else{
-            this.tabName="name2";
-          }
-        })
-
-
-
-
-
-
-
-      },
-      //数据校验2--------
-      rulesData2(){
-        this.$refs['requireList'].validate((valid) => {
-          if (valid) {
-              for(let i in this.uploadData){
-                if(i=='registerDate'){
-                    this.uploadData[i]=formatDate(this.requireList.registerDate);
-                }else{
-                    this.uploadData[i]=this.requireList[i];
-                }
-              }
-              this.$emit('saveInfoFun',this.uploadData);
-          }
-        })
-      },
-      //数据校验3--------
-      rulesData3(){
-        if (this.listSearch.sincerity) {
-          for(let i in this.listSearch.sincerityYears){
-              if(!this.listSearch.sincerityYears[i]['honestPic']){
-                this.$Message.error('请完善成为全国诚信维修企业的年份的资料')
-                return
-              }else{
-                this.listSearch.sincerityYears[i]['corpId']=this.listSearch.id;
-              }
-          }
-        }
-
-        for(let i in this.listSearch.honerModels){
-          if(!this.listSearch.honerModels[i]['name']&&(!this.listSearch.honerModels[i]['url'])){
-            this.$Message.error('请完善区级以上荣誉获得情况的资料')
-                return
-          }else{
-            this.listSearch.honerModels[i]['corpId']=this.listSearch.id;
-          }
-        }
-
-
-        this.$refs['listSearch'].validate((valid) => {
-          if (valid) {
-              for(let i in this.uploadOtherData){
-                if(i=='latitude'){
-                    this.uploadOtherData[i]=this.listSearch.latitude || 0;
-                }else if(i=='longitude'){
-
-                    this.uploadOtherData[i]=this.listSearch.longitude || 0;
-
-                }else{
-                    this.uploadOtherData[i]=this.listSearch[i];
-                }
-              }
-              this.$emit('saveInfoFun',this.uploadOtherData);
-
-          }
-        })
-      },
       //选择维修类别时带的参数--------
-      repairTypeFun(val) {
+      repairTypeFun(val, clear) {
         if (!val) {
           return
         }
+        if(clear) this.requireList['businessScope2'] = ''
         this.$axios.get('/dict/value/' + val, {}).then((res) => {
           if (res.data.code == '0') {
-            if (val == 43) {
-              this.oneCarType = res.data.items
-            } else if (val == 44) {
-              this.twoCarType = res.data.items
-            } else if (val == 45) {
-              this.threeCarType = res.data.items
-            } else if (val == 46) {
-              this.motorcycle = res.data.items
-            } else if (val == 47) {
-              this.carList = res.data.items
-            }
+              this.businessScope2 = res.data.items
           }
         })
       },
-      onOpenChange(flag) {
-        if (flag === false) {
-          this.requireList['businessScope2'] = ''
+      changeRegisterDate(val){
+        this.requireList.registerDate= val||''
+      },
+      changeSincerity(state){
+        if(state){
+          this.addYear()
+        }else{
+          this.listSearch.sincerityYears= []
         }
       },
       //新增诚信企业年份------
       addYear() {
-        if (!this.yearsArr.begin) {
-          return
-        }
-        let objYear = { corpId: '', endYear: '', startYear: '' ,honestPic:''}
-        objYear['corpId'] = this.listSearch.id
-        objYear['startYear'] = formatDate(this.yearsArr.begin, 'yyyy')
-        objYear['endYear'] = formatDate(this.yearsArr.end, 'yyyy')
-
+        let objYear = { corpId: this.listSearch.id||'', endYear: '', startYear: '' ,honestPic:''}
         this.listSearch.sincerityYears.push(objYear)
+        this.$refs.listSearch.validateField('sincerityYears')
       },
       deleteYear(index){
         this.listSearch.sincerityYears.splice(index,1);
+        this.$refs.listSearch.validateField('sincerityYears')
+      },
+      changeSincerityYears(val, index, field){
+        this.listSearch.sincerityYears[index][field]= val
+        this.$refs.listSearch.validateField('sincerityYears')
       },
       honestPicFun(val,index){
         if(val[0]){
@@ -1254,19 +1142,26 @@ export default {
         }else{
           this.listSearch.sincerityYears[index]['honestPic']='';
         }
+        this.$refs.listSearch.validateField('sincerityYears')
       },
       //新增荣誉---
       addHoner(){
-        let objYear = { corpId: '', name: '', url: ''};
+        let objYear = { corpId: this.listSearch.id||'', name: '', url: ''};
         this.listSearch.honerModels.push(objYear)
+        this.$refs.listSearch.validateField('honerModels')
+      },
+      deleteHonerModels(index){
+        this.listSearch.honerModels.splice(index,1);
+        this.$refs.listSearch.validateField('honerModels')
       },
       honerFun(val,index){
-        console.log('出来的荣誉',val,index);
+        // console.log('出来的荣誉',val,index);
         if(val[0]){
           this.listSearch.honerModels[index]['url']=val[0];
         }else{
           this.listSearch.honerModels[index]['url']='';
         }
+        this.$refs.listSearch.validateField('honerModels')
       },
       //获取公共配置信息---------
       getPubliceType(id) {
@@ -1448,23 +1343,22 @@ export default {
             this.listSearch.brandName=val.name;
         },
         //时间选择------
-        onOpenChangeDate(status){
-          
-            if(this.requireList.licenceDate.length>0){
-                this.requireList['licenceBeginDate'] = formatDate(this.requireList.licenceDate[0]);
-            this.requireList['licenceEndDate'] = formatDate(this.requireList.licenceDate[1]);
-            }
-            
-          
+        onOpenChangeDate(res, res1, res2){
+            // console.log('this.requireList.licenceDate', res, res1, res2)
+            this.requireList.licenceBeginDate = res[0]
+            this.requireList.licenceEndDate = res[1]
         },
         onChangeM(status){
           console.log(this.listSearch.manageArr);
               this.listSearch['org'] = this.listSearch.manageArr[0]||'';
               this.listSearch['dept'] = this.listSearch.manageArr[1]||'';
         },
-        onChangeTime(status){
-              if (this.listSearch.businessHours1.length > 0 && this.listSearch.businessHours1[0] && this.listSearch.businessHours1[1]) {
-                this.listSearch.businessHours = this.listSearch.businessHours1[0] + '-' + this.listSearch.businessHours1[1]
+        onChangeTime(res){
+          // console.log('onChangeTime', res1, res2, res3)
+              if (res.length > 0 && res[0] && res[1]) {
+                this.listSearch.businessHours = res[0] + '-' + res[1]
+              }else{
+                this.listSearch.businessHours= ''
               }
         },
         onChangeS(val){
@@ -1473,7 +1367,13 @@ export default {
           }else if(val=='false'){
               this.listSearch.yyState=false;
           }
-        }
+        },
+      changeBusinessAddress(){
+        clearTimeout(this.timer)
+        this.timer= setTimeout(()=>{
+
+        },500)
+      }
     },
 }
 </script>

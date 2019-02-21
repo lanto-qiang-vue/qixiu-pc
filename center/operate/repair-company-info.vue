@@ -13,8 +13,8 @@
     :transition-names="['', '']">
     <div slot="header" class="header-inner">维修企业信息</div>
     <div style="padding-bottom: 10px;">
-      
-      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun" @initFun="initFun"></common-company-info>
+
+      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
@@ -27,7 +27,7 @@
       <Button  size="large" type="primary"
               @click="showChange=Math.random(),detailId=listSearch.id">查看变更
       </Button>
-      
+
       <Button  size="large" type="primary"
               @click="resetKey">重置密钥
       </Button>
@@ -44,7 +44,7 @@
       <Button  size="large" type="primary" v-show="detailData"
               @click="showChange=Math.random(),detailId=listSearch.id">查看变更
       </Button>
-      
+
       <Button  size="large" type="primary" v-show="(generalList.createKey&&generalList.code)"
               @click="resetKey">重置密钥
       </Button>
@@ -63,7 +63,7 @@
             <RadioGroup v-model="auditInfo.status">
                 <Radio label="2">通过</Radio>
                 <Radio label="3">不通过</Radio>
-                
+
             </RadioGroup>
         </FormItem>
         <FormItem label="不通过说明:" v-show="auditInfo.status==3">
@@ -82,7 +82,7 @@
             <RadioGroup v-model="generalInfo.status">
                 <Radio label="2">通过</Radio>
                 <Radio label="3">不通过</Radio>
-                
+
             </RadioGroup>
         </FormItem>
         <FormItem label="不通过说明:" v-show="generalInfo.status==3">
@@ -138,9 +138,9 @@
   import changeCompanyInfo from './change-company-info.vue'
   import { deepClone } from '~/static/util.js'
 
-  
 
- 
+
+
   export default {
     name: 'repair-company-info',
     props: ['showDetail', 'detailData'],
@@ -155,20 +155,20 @@
         showChange: null,
         // spinShow:false,
         showModal: false,
-        
+
         showKey: false,//对接密钥显隐
         modal1: false,//关键信息审核弹出框
         modal2:false,//一般信息弹出框
-        
+
         keyList: {
           name: '',
           license: '',
           secretKey: ''
         },
 
-        listSearch:'',//关键数据-----
-        generalList:'',//一般数据-----
-        
+        listSearch:{},//关键数据-----
+        generalList:{},//一般数据-----
+
         value: '',
         showInfo:null,
         //审核状态问题------
@@ -197,60 +197,43 @@
           if (this.detailData) {
             this.getDetail(this.detailData.id);
             this.getDetail1(this.detailData.id);
-            
-
           }else{
             this.listSearch = {};
             this.generalList = {};
-            setTimeout(()=>{
-                  this.$refs.comA.mergeData();
-                  this.$refs.comA.mergeOtherData();
-            },20)
-            
+            this.$refs.comA.mergeData({});
+            this.$refs.comA.mergeOtherData({});
+          }
 
-        }
-        
       }
     },
 
     methods: {
       //获取详情--------
       getDetail(id) {
-            this.$Spin.show()
-            this.$axios.get('/corp/manage/crux/detail/yy/' + id, {}).then((res) => {
+          this.$Spin.show()
+          this.$axios.get('/corp/manage/crux/detail/yy/' + id, {}).then((res) => {
             if (res.data.code == '0') {
                 let resData = res.data.item;
                 this.listSearch=resData;
-                
-                
-                console.log('父级的数据情况--listSearch',this.listSearch);
+                this.$refs.comA.mergeData(resData);
+                this.$Spin.hide()
+
             }
-            setTimeout(()=>{
-              this.$refs.comA.mergeData();
-              this.$Spin.hide()
-            },20)
-            
-            })
+          })
       },
       getDetail1(id) {
-            this.$Spin.show()
-            this.$axios.get('/corp/manage/general/detail/yy/' + id, {}).then((res) => {
+          this.$Spin.show()
+          this.$axios.get('/corp/manage/general/detail/yy/' + id, {}).then((res) => {
             if (res.data.code == '0') {
                 let resData = res.data.item;
                 this.generalList=resData;
-
-                
-                
-                console.log('父级的数据情况--generalList',this.generalList);
+              this.$refs.comA.mergeOtherData(resData);
+              this.$Spin.hide()
             }
-            setTimeout(()=>{
-                  this.$refs.comA.mergeOtherData();
-                  this.$Spin.hide()
-                },20)
-            
-            })
+          })
+
       },
-      
+
       //新增一个企业数据---------
       addCompany() {
         if (this.detailData) {
@@ -262,37 +245,27 @@
         }else{
             this.$refs.comA.rulesData();
         }
-        
-        
+
+
       },
       //保存数据------
       saveInfoFun(temData){
-          if (this.detailData) {
-              if(this.isRequire){
-                this.$axios.post('/corp/manage/crux/update/yy', temData).then((res) => {
-                if (res.data.code == '0') {
-                    this.showModal = false
-                    
-
-                  }
-                })
-              }else{
-                this.$axios.post('/corp/manage/general/update/yy', temData).then((res) => {
-                  if (res.data.code == '0') {
-                    this.showModal = false
-
-                  }
-                })
-              }
-              
-            } else {
-              this.$axios.post('/corp/manage/insert', temData).then((res) => {
-                if (res.data.code == '0') {
-                  this.showModal = false
-                  
-                }
-              })
-            }
+        let url=''
+        if (this.detailData) {
+          if(this.isRequire){
+            url= '/corp/manage/crux/update/yy'
+          }else{
+            url= '/corp/manage/general/update/yy'
+          }
+        } else {
+          url = '/corp/manage/insert'
+        }
+        this.$axios.post(url, temData).then((res) => {
+          if (res.data.code == '0') {
+            this.showModal = false
+            this.$emit('closeDetail');
+          }
+        })
       },
       //审核是否通过-------------
       auditFun() {
@@ -305,11 +278,12 @@
                   if (res.data.code == '0') {
                     this.listSearch.status=this.auditInfo.status;
                     this.listSearch.auditInfo=this.auditInfo.auditInfo;
-                    this.showModal = false;
-                    
+
+                    this.modal1 = false;
+                    this.$emit('closeDetail');
                   }
                 })
-                this.modal1 = false;
+
         }else{
                 this.$axios.post('/corp/manage/general/audit/yy', {
                   'corpId': this.detailData.id,
@@ -317,17 +291,19 @@
                   'auditInfo': this.generalInfo.auditInfo,
                 }).then((res) => {
                   if (res.data.code == '0') {
-                    // this.listSearch.status=this.auditInfo.status;
-                    // this.listSearch.auditInfo=this.auditInfo.auditInfo;
-                    this.showModal = false;
+                    this.generalList.generalStatus= this.generalInfo.status
+                    this.generalList.generalAuditInfo= this.generalInfo.auditInfo
+
+                    this.modal2 = false;
+                    this.$emit('closeDetail');
                   }
                 })
-                this.modal2 = false;
+
         }
-        
+
       },
-      
-      
+
+
       visibleChange(status) {
         if (status === false) {
           this.auditInfo={
@@ -338,7 +314,7 @@
             status:'',
             auditInfo:'',
           }//一般信息审核----
-          this.$emit('closeDetail');
+
         }
       },
       //创建密钥接口----------
@@ -393,14 +369,6 @@
         console.log('父级接收情况',name);
 
       },
-      //初始数据----
-      initFun(val,status){
-        if(status==1){
-          this.listSearch=val;
-        }else if(status==2){
-          this.generalList=val;
-        }
-      }
 
     }
   }

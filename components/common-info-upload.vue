@@ -1,6 +1,6 @@
 <template>
   <div style="width: 90%;">
-    
+
 
       <div class="demo-upload-list" v-for="item in uploadList">
         <img :src="item">
@@ -10,11 +10,11 @@
         </div>
       </div>
 
-    
+
         <Upload
         multiple
         :headers="{token:this.$store.state.user.token}"
-        
+
         :show-upload-list="false"
         :on-format-error="handleFormatError"
         :max-size="3072"
@@ -30,8 +30,8 @@
         </div>-->
         <Button icon="ios-cloud-upload-outline">{{this.description}}</Button>
         </Upload>
-    
-    
+
+
     <Modal title="查看图片" v-model="visible">
       <img :src="imgName" v-if="visible" style="width: 100%">
     </Modal>
@@ -61,7 +61,6 @@
               console.log('进来图片的数据：',data);
               this.uploadList.push(data);
           }
-            
       }
     },
     methods: {
@@ -104,7 +103,7 @@
       }
     },
     mounted() {
-
+      if(this.data) this.uploadList=[this.data];
     }
   }
 </script>
@@ -114,6 +113,7 @@
     width: 60px;
     height: 60px;
     text-align: center;
+    vertical-align: bottom;
     line-height: 60px;
     border: 1px solid transparent;
     border-radius: 4px;
