@@ -548,6 +548,34 @@ export const deepClone = (data) => {
 }
 
 /**
+ * @param {data} 任意参数
+ * @returns {Object}
+ * @description 任意数据深拷贝
+ */
+export const deepTurn = (data, totype) => {
+  let type = getType(data);
+  let obj;
+  if(type === 'array'){
+    obj = [];
+  } else if(type === 'object'){
+    obj = {};
+  } else {
+    //不再具有下一层次
+    return data!=null?data.toString():null;
+  }
+  if(type === 'array'){
+    for(let i = 0, len = data.length; i < len; i++){
+      obj.push(deepTurn(data[i]));
+    }
+  } else if(type === 'object'){
+    for(let key in data){
+      obj[key] = deepTurn(data[key]);
+    }
+  }
+  return obj;
+}
+
+/**
  * @param {thisfile} 图片文件
  * @param {callBack} 回调函数
  * @returns {base64, filename}
