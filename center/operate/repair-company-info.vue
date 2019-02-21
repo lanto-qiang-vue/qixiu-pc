@@ -366,7 +366,7 @@
         }else if(name=='name2'){
           this.isRequire=false;
         }
-        console.log('父级接收情况',name);
+        // console.log('父级接收情况',name);
 
       },
 
