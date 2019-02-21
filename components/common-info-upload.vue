@@ -55,7 +55,7 @@
     props:['description','callback','data','index'],
     watch:{
       data(data){
-          console.log(data);
+          console.log("进来前图片的数据：",data);
           this.uploadList=[];
           if(data){
               console.log('进来图片的数据：',data);
