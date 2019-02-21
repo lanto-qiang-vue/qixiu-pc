@@ -4,7 +4,7 @@
 <Modal
     v-model="commentModal"
     title="请填写企业联系人"
-    width="525"
+    width="540"
     :scrollable="true"
     :closable="closableType"
     :transfer="false"
@@ -14,16 +14,16 @@
     :transition-names="['', '']">
 
     <p class="remark">注：企业联系人为维修企业日常经营负责人，用于接收汽修平台公众号通知。</p>
-    <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:400px;">
-      <FormItem label="联系人姓名:" prop="contactName">
-        <Input type="text" v-model="formData.contactName"  placeholder="请输入平台对接人名称"></Input>
+    <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:420px;">
+      <FormItem label="企业联系人:" prop="contactName">
+        <Input type="text" v-model="formData.contactName"  placeholder="请输入企业联系人"></Input>
       </FormItem>
-      <FormItem label="联系人手机:" prop="contactMobile">
+      <FormItem label="手机号:" prop="contactMobile">
         <Input type="text" v-model="formData.contactMobile" :maxlength="11" placeholder="请输入手机号码"></Input>
       </FormItem>
     </Form>
     <div v-show="showErcode" class="step">
-      <h2>如果您填写的手机号还未登录过汽修平台微信，请按以下步骤操作：</h2>
+      <h2>如果您填写的手机号还未注册并登录过汽修平台微信，请按以下步骤操作：</h2>
       <li><span>1. 打开微信扫一扫，关注“上海汽修平台”微信公众号。</span>
         <img src="/img/garage-info/shqx_wx.png" style="height:126px;">
         <div>上海汽修平台公众号</div>
@@ -66,10 +66,7 @@
         if(this.stage == 1) this.$router.push({ path: '/center/company-home',query:{refresh:Math.random()}});
         this.$refs[name].validate((valid) => {
            if(valid){
-          this.$Modal.confirm({
-            title:'系统提示',
-            content:'确认保存吗?',
-            onOk:()=>{
+
               if(!this.closableType){
                 this.$axios.post(url,this.formData).then((res) => {
 
@@ -80,6 +77,17 @@
                   }
                   if(res.data.code=='1000'){
                     this.showErcode= true
+                    let oldTel= this.formData.contactMobile
+                    this.rules.contactMobile.push({
+                      validator: (rule, value, callback) => {
+                        if (value === oldTel) {
+                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
+                        } else {
+                          callback();
+                        }
+                      }
+                    })
+                    this.$refs.formData.validate()
                   }
                 })
               }else{
@@ -95,7 +103,7 @@
                     this.rules.contactMobile.push({
                       validator: (rule, value, callback) => {
                         if (value === oldTel) {
-                          callback(new Error('对不起，您输入的手机号还未登录过汽修平台微信'));
+                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
                         } else {
                           callback();
                         }
@@ -105,8 +113,6 @@
                   }
                 })
               }
-            }
-          });
            }else{
             // this.$Message.errro("请检查红框信息");
            }
@@ -117,7 +123,6 @@
       type(){
         this.$refs.formData.resetFields();
         if(this.dataInit == null){
-          this.formData = deepClone(this.formData2);
           this.closableType = false;
         }else{
           this.closableType = true;
@@ -139,7 +144,7 @@
     margin-bottom: 20px;
   }
   .step{
-    margin-top: 10px;
+    margin-top: 20px;
     padding: 0 20px;
     h2{
       font-size: 14px;
