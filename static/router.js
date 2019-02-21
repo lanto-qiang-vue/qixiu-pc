@@ -642,7 +642,8 @@ export default [
           title: '维修企业信息管理',
           accessId: '/center/company-info-manage',
         },
-        component: resolve('center/company-info/company-info-manage.vue'),
+        // component: resolve('center/company-info/company-info-manage.vue'),
+        component: resolve('center/operate/repair-company-manage.vue'),
       },
       {
         path: 'quality-manage',
