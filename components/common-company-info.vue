@@ -487,7 +487,7 @@
               <DatePicker type="year" v-model="yearsArr.end" placeholder="结束日期" style="width: 100px;"></DatePicker>
               <Button size="large" type="primary" @click="addYear">新增</Button>
             </FormItem>
-            <FormItem label="" style="width: 92%;" v-for="(item, index) in listSearch.sincerityYears">
+            <FormItem label="" style="width: 92%;" v-for="(item, index) in listSearch.sincerityYears" :key="item.startYear">
               <div class="yearClass">
                   {{item.startYear}} {{item.endYear?-item.endYear:''}}
               </div>
@@ -997,13 +997,6 @@ export default {
                 console.log(this.requireList['businessScope']);
                 this.repairTypeFun(this.requireList['businessScope'])
             }
-
-
-
-            this.textStatus='('+getName(this.statusArr,this.requireList.status)+')';
-
-          }else{
-              
           }
 
           this.$emit('initFun',this.requireList,1);
@@ -1046,8 +1039,8 @@ export default {
             for (let i in resData1) {
               if (i == 'businessHours') {
 
-                        this.listSearch["businessHours1"] = resData1[i].split('-')
-
+                    this.listSearch["businessHours1"] = resData1[i].split('-');
+                    this.listSearch["businessHours"] = resData1[i];
 
               }else if(i=='yyState'){
                 if(resData1[i]){
@@ -1069,8 +1062,8 @@ export default {
             this.listSearch.manageArr.push(this.listSearch.org)
             this.listSearch.manageArr.push(this.listSearch.dept)
 
-
-            this.textStatus1='('+getName(this.statusArr,this.listSearch.generalStatus)+')';
+            console.log('合并第一步的数据',this.listSearch);
+            
 
           }else{
               this.yearsArr={
@@ -1202,6 +1195,8 @@ export default {
                     this.uploadOtherData[i]=this.listSearch[i];
                 }
               }
+
+              console.log('合并第一步的数据',this.listSearch,this.uploadOtherData);
               this.$emit('saveInfoFun',this.uploadOtherData);
 
           }
@@ -1449,20 +1444,21 @@ export default {
         },
         //时间选择------
         onOpenChangeDate(status){
-          
+            console.log('日期',status,this.requireList.licenceDate);
             if(this.requireList.licenceDate.length>0){
                 this.requireList['licenceBeginDate'] = formatDate(this.requireList.licenceDate[0]);
-            this.requireList['licenceEndDate'] = formatDate(this.requireList.licenceDate[1]);
+                this.requireList['licenceEndDate'] = formatDate(this.requireList.licenceDate[1]);
             }
             
           
         },
         onChangeM(status){
-          console.log(this.listSearch.manageArr);
+          console.log('管理机构',status,this.listSearch.manageArr);
               this.listSearch['org'] = this.listSearch.manageArr[0]||'';
               this.listSearch['dept'] = this.listSearch.manageArr[1]||'';
         },
         onChangeTime(status){
+            console.log('营业时间',status,this.listSearch.businessHours1);
               if (this.listSearch.businessHours1.length > 0 && this.listSearch.businessHours1[0] && this.listSearch.businessHours1[1]) {
                 this.listSearch.businessHours = this.listSearch.businessHours1[0] + '-' + this.listSearch.businessHours1[1]
               }
