@@ -13,7 +13,7 @@
               <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"></Input>
             </FormItem>
             <FormItem label="许可证有效期:" style="width: 45%;" prop="licenceDate">
-              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;" @on-open-change="onOpenChangeDate"></DatePicker>
+              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;" @on-change="onOpenChangeDate"></DatePicker>
             </FormItem>
             <FormItem label="工商注册地址:" style="width: 45%;" prop="registerAddress">
               <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"></Input>
@@ -89,7 +89,7 @@
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
             <FormItem label="管理机构与部门:" style="width: 45%;" prop="manageArr">
-              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-visible-change="onVisibleChange"></Cascader>
+              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
             <FormItem label="经营地地址:" style="width: 45%;">
               <Input type="text" v-model="listSearch.businessAddress" placeholder="请输入经营地地址"></Input>
@@ -135,7 +135,7 @@
             </FormItem>
             <FormItem label="营业时间:" style="width: 45%;">
               <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"
-                          style="width: 100%;" v-model="listSearch.businessHours1" @on-open-change="onOpenChangeTime"></TimePicker>
+                          style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>
             </FormItem>
             <FormItem label="经营状态:" style="width: 45%;">
               <Select v-model="listSearch.businessStatus" :transfer="true">
@@ -970,7 +970,7 @@ export default {
           this.tabName="name1";
           this.$refs['requireList'].resetFields();
           this.uploadData=deepClone(this.data);
-
+          this.requireList=deepClone(initList1);
           
           if(this.data.id){
             let resData=this.data;
@@ -999,7 +999,7 @@ export default {
             this.textStatus='('+getName(this.statusArr,this.requireList.status)+')';
                 
           }else{
-              this.requireList=deepClone(initList1);
+              
           }
 
           this.$emit('initFun',this.requireList,1);
@@ -1009,12 +1009,13 @@ export default {
           this.tabName="name1";
           this.$refs['listSearch'].resetFields();
           this.uploadOtherData=deepClone(this.data1);
+          this.listSearch=deepClone(initList);
           if(this.data1.id){
             let resData1=this.data1;
 
             for (let i in resData1) {
               if (i == 'businessHours') {
-                        this.listSearch[i] = resData1[i].split('-')
+                        this.listSearch["businessHours1"] = resData1[i].split('-')
                         
               }else if(i=='yyState'){
                 if(resData1[i]){
@@ -1041,7 +1042,7 @@ export default {
                 
           }else{
               
-              this.listSearch=deepClone(initList);
+              
               this.yearsArr={
                   begin: '',
                   end: ''
@@ -1102,8 +1103,6 @@ export default {
                     temData[i]=this.listSearch.latitude || 0;
                 }else if(i=='longitude'){
                     temData[i]=this.listSearch.longitude || 0;
-                }else if(i=='businessHours'){
-                    temData[i]=this.listSearch.businessHours1;
                 }else{
                     temData[i]=this.listSearch[i];
                 }
@@ -1421,23 +1420,23 @@ export default {
         },
         //时间选择------
         onOpenChangeDate(status){
-          if(!status){
-            this.requireList['licenceBeginDate'] = formatDate(this.requireList.licenceDate[0]);
+          
+            if(this.requireList.licenceDate.length>0){
+                this.requireList['licenceBeginDate'] = formatDate(this.requireList.licenceDate[0]);
             this.requireList['licenceEndDate'] = formatDate(this.requireList.licenceDate[1]);
-          }
+            }
+            
+          
         },
-        onVisibleChange(status){
-            if(!status){
+        onChangeM(status){
+          console.log(this.listSearch.manageArr);
               this.listSearch['org'] = this.listSearch.manageArr[0]||'';
               this.listSearch['dept'] = this.listSearch.manageArr[1]||'';
-            }
         },
-        onOpenChangeTime(status){
-            if(!status){
+        onChangeTime(status){
               if (this.listSearch.businessHours1.length > 0 && this.listSearch.businessHours1[0] && this.listSearch.businessHours1[1]) {
                 this.listSearch.businessHours = this.listSearch.businessHours1[0] + '-' + this.listSearch.businessHours1[1]
               }
-            }
         },
         onChangeS(val){
           if(val=='true'){

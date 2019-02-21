@@ -193,6 +193,7 @@
     watch: {
       showDetail() {
           this.showModal = true;
+          this.isRequire=true;
           if (this.detailData) {
             this.getDetail(this.detailData.id);
             this.getDetail1(this.detailData.id);
