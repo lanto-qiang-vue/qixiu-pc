@@ -28,6 +28,23 @@
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
                           v-model="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
+
+            <FormItem label="经营地地址:" style="width: 45%;" prop="businessAddress">
+              <Input type="text" v-model="requireList.businessAddress" placeholder="请输入经营地地址" @on-change="changeBusinessAddress"></Input>
+            </FormItem>
+            <FormItem label="经营地址区域:" style="width: 45%;" prop="businessRegion">
+              <Select v-model="requireList.businessRegion" :transfer="true">
+                <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
+                </Option>
+              </Select>
+            </FormItem>
+            <FormItem label="经营地址经度:" style="width: 45%;" prop="longitude">
+              <Input type="text" v-model="requireList.longitude" placeholder="请输入经营地址经度"></Input>
+            </FormItem>
+            <FormItem label="经营地址维度:" style="width: 45%;" prop="latitude">
+              <Input type="text" v-model="requireList.latitude" placeholder="请输入经营地址维度"></Input>
+            </FormItem>
+
             <FormItem label="经营范围:" style="width: 45%;" prop="businessScope">
               <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, true)"
                       :transfer="true">
@@ -66,24 +83,11 @@
             <FormItem label="管理机构与部门:" style="width: 45%;" prop="manageArr">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
-            <FormItem label="经营地地址:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.businessAddress" placeholder="请输入经营地地址" @on-change="changeBusinessAddress"></Input>
-            </FormItem>
-            <FormItem label="经营地址区域:" style="width: 45%;">
-              <Select v-model="listSearch.businessRegion" :transfer="true">
-                <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
-                </Option>
-              </Select>
-            </FormItem>
+            
             <FormItem label="法人手机:" style="width: 45%;">
               <Input type="text" v-model="listSearch.legalMobile" placeholder="请输入代表人手机"></Input>
             </FormItem>
-            <FormItem label="经营地址经度:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.longitude" placeholder="请输入经营地址经度"></Input>
-            </FormItem>
-            <FormItem label="经营地址维度:" style="width: 45%;">
-              <Input type="text" v-model="listSearch.latitude" placeholder="请输入经营地址维度"></Input>
-            </FormItem>
+            
 
             <FormItem label="经营地址邮编:" style="width: 45%;">
               <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
@@ -563,12 +567,12 @@ let initList={
     "beianStatus": 1,
     "brandId": 0,
     "brandOther": "",
-    "businessAddress": "",//----------
+    
     "businessHours": '',
     "businessHours1":[],
-    "businessRegion": "",//----------
+    
     "businessSphere": [],
-    "businessSphereOther": "",
+    "businessSphereOther": '',
     "businessStatus": 0,
     "buttJoint": false,
     "buttJointTime": "",
@@ -596,9 +600,9 @@ let initList={
     "industryCategoryOther": "",
     "iso": false,
     "isoPic": "",
-    "latitude": 0,
+    
     "legalMobile": "",//----------
-    "longitude": 0,
+    
     "machinists": [0,0,0,0],
     "manager": "",
     "managerOther": "",
@@ -659,7 +663,11 @@ let initList1={
   "registerDate": "",
   "registerRegion": "",
   "status": 0,
-  "yyzz": ""
+  "yyzz": "",
+  "businessAddress": "",//----------
+  "businessRegion": "",//----------
+  "longitude": 0,
+  "latitude": 0,
 }
 export default {
     name: "common-company-info",
@@ -681,6 +689,7 @@ export default {
                 manageArr: [rulesObj],
                 businessSphereOther:[{
                   validator: (rule, value, callback) => {
+                    
                     if (this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
                       callback(new Error('请填写其他主要业务范围'));
                     }else{
@@ -689,6 +698,7 @@ export default {
                   }
                 }],
                 majorBrandId:[{
+                  
                   validator: (rule, value, callback) => {
                     if (this.$data.listSearch.special && !value) {
                       callback(new Error('请填写主修品牌'));
@@ -698,6 +708,7 @@ export default {
                   }
                 }],
                 industryCategoryOther:[{
+                  
                   validator: (rule, value, callback) => {
                     if (this.$data.listSearch.industryCategory == 9 && !value) {
                       callback(new Error('请填写其他业户类别'));
@@ -717,6 +728,7 @@ export default {
                 }],
                 modelOther:[{
                   validator: (rule, value, callback) => {
+                    
                     if (this.$data.listSearch.model.indexOf(6) != -1 && !value) {
                       callback(new Error('请填写其他维修车型'));
                     }else{
@@ -726,6 +738,7 @@ export default {
                 }],
                 serviceCategoryOther:[{
                   validator: (rule, value, callback) => {
+                    
                     if (this.$data.listSearch.serviceCategory.indexOf(300007) != -1 && !value) {
                       callback(new Error('请填写其他服务种类'));
                     }else{
@@ -814,6 +827,10 @@ export default {
                     }
                   }
                 }],
+                businessAddress: [rulesObj],
+                businessRegion: [rulesObj],
+                longitude: [rulesObj],
+                latitude: [rulesObj],
                 registerAddress: [rulesObj],
                 registerRegion: [rulesObj],
                 registerDate: [rulesObj],
@@ -975,6 +992,7 @@ export default {
           this.tabName="name1";
 
           this.$refs['requireList'].resetFields();
+
           this.requireList=deepClone(initList1);
 
           if(datas.id){
@@ -998,6 +1016,7 @@ export default {
 
       mergeOtherData(datas){
           this.$refs['listSearch'].resetFields();
+
           this.listSearch=deepClone(initList);
           if(datas.id){
             this.uploadOtherData=deepClone(datas);
@@ -1014,7 +1033,7 @@ export default {
               }
             }
             this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
-
+            console.log('this.listSearch',this.listSearch);
           }else{
             this.uploadOtherData= this.listSearch
           }
@@ -1133,6 +1152,7 @@ export default {
         this.$refs.listSearch.validateField('sincerityYears')
       },
       changeSincerityYears(val, index, field){
+        console.log(val)
         this.listSearch.sincerityYears[index][field]= val
         this.$refs.listSearch.validateField('sincerityYears')
       },
@@ -1244,16 +1264,7 @@ export default {
         })
       },
 
-      //营业执照上传-----------
-        getBusineImg( name, e){
-            imgToBase64(e.target.files[0], (base64, fileName)=> {
-                let newBase=base64.split(',');
-                // this.infoDriver[name]= base64;
-                this.infoBusine['imageData']= newBase[1];
-                this.infoBusine['imageUrl']= 'data:image/png;base64,'+this.infoBusine['imageData'];
-                // this.uploadBusine();
-            })
-        },
+      
 
       //tab页点击------
       tabClick(name){

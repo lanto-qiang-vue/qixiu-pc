@@ -20,6 +20,17 @@
 
     </div>
     <div class="dblock">
+      <h1 class="dtitle">企业营业时间调整</h1>
+      <div class="center">
+        <div class="inline-box">
+          <Table :columns="businessHoursColumns" :data="infoData"  width="800"
+                 stripe border></Table>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="dblock">
       <h1 class="dtitle">未读通知</h1>
       <div class="center">
         <div class="inline-box">
@@ -66,6 +77,26 @@
       </div>
 
     </div>
+
+<!--调整营业时间或状态-->
+    <Modal v-model="modal2" title="调整营业时间或状态" :transfer="false"
+    :footer-hide="false"
+    :mask-closable="false" :z-index="1000" :transition-names="['', '']" width="525" @on-visible-change="visibleChange">
+      <Form :label-width="120" style="width: 300px;" ref="businessHours" :rules="ruleValidate1" :model="businessHours"> 
+        <FormItem label="营业状态:" prop="yyState">
+            <Select v-model="businessHours.yyState" :transfer="true">
+                <Option v-for="item in yyStateArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="营业时间:" prop="businessHours">
+
+            <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择" style="width: 100%;" v-model="businessHours.businessHours"></TimePicker>
+        </FormItem>
+    </Form>
+      <div slot="footer">
+        <Button size="large" type="primary" @click="updateBusiness">提交</Button>
+      </div>
+    </Modal>
 <butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt" stage="2"></butt-joint>
   </div>
 </template>
@@ -88,6 +119,7 @@
         commentModal:true,
         showType:false,
         dataInit:null,
+        modal2:false,
         buttColumns:[
           {title: '联系人', key: 'contactName',  minWidth: 100,},
           {title: '联系人手机', key: 'contactMobile',  minWidth: 100,},
@@ -131,12 +163,72 @@
             // render: (h, params) => h('span', formatDate(params.row.sendtime, 'yyyy-MM-dd hh:mm:ss'))
           },
         ],
+        businessHoursColumns:[
+          {title: '营业状态', key: 'yyState',  minWidth: 100,
+            render: (h, params) => {
+              let content= '';
+              if(params.row.yyState==0){
+                content="营业中"
+              }else if(params.row.yyState==1){
+                content="休息中"
+              }
+              return h('div', [
+                h('span',  content),
+              ]);
+            }
+          },
+          {title: '营业时间', key: 'businessHours',  minWidth: 100,},
+          {title: '操作', key: 'cz',  minWidth: 100,
+            render: (h, params) => {
+              let buttonContent= '更改';
+              let buttonStatus = 'primary';
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                  },
+                  style: {
+                    width:"60px",
+                    textAlign: "center",
+                    marginRight: '10px',
+                  },
+                  on: {
+                    click: (index) => {
+                      this.modal2=true;
+                    }
+                  }
+                }, buttonContent),
+              ]);
+            }
+          },
+        ],
+        ruleValidate1: {
+            businessHours: [{ required: true , message: '必填项不可为空' },{
+                  validator: (rule, value, callback) => {
+                    
+                    if (value.length >0 && !value[0]&&!value[1]) {
+                      callback(new Error('必填项不可为空'));
+                    }else{
+                      callback();
+                    }
+                  }
+                },],
+            yyState: [{ required: true, message: '必填项不可为空' }],
+        },//规则验证
         infoData: [],
         notifyData: [],
         visitDate:[],//上门日期服务--------
         buttData:[],
         visitData:[],
         orderData:[],
+        businessHours:{
+          businessHours:[],
+          yyState:'',
+        },
+        yyStateArr:[
+          {code:0,name:"营业中"},
+          {code:1,name:'休息中'}
+        ]
       }
 		},
     mounted(){
@@ -331,6 +423,34 @@
             this.$router.push({path:'/center/company-note-manage',query:query});
 
         },
+        updateBusiness(){
+          this.$refs['businessHours'].validate((valid) => {
+          if (valid) {
+                this.$axios.post('/corp/manage/update/state',{
+                  "businessHours": (this.businessHours.businessHours[0]+"-"+this.businessHours.businessHours[1]),
+                  "id": this.infoData.companyId,
+                  "yyState": this.businessHours.yyState,
+                } ).then( (res) => {
+                    if(res.data.code=='0'){
+                        this.infoData[0].yyState=this.businessHours.yyState;
+                        this.infoData[0].businessHours=(this.businessHours.businessHours[0]+"-"+this.businessHours.businessHours[1]);
+                        console.log(this.infoData);
+                        this.modal2=false;
+                    }
+                })
+          }
+        })
+          
+        },
+        visibleChange(status) {
+          if (status === false) {
+            // for(let i in this.businessHours){
+            //   this.businessHours[i]='';
+            // }
+            this.$refs['businessHours'].resetFields();
+          }
+        },
+
     }
 	}
 </script>
