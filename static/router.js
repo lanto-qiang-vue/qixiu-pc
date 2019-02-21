@@ -379,7 +379,15 @@ export default [
     },
     component: Main,
     children: [
-
+      {
+        path: 'com-edit-info',
+        meta: {
+          icon: '',
+          title: '企业信息维护',
+          accessId: '/center/com-edit-info',
+        },
+        component: resolve('center/company/com-edit-info.vue'),
+      },
       {
         path: 'staff-query',
         meta: {
