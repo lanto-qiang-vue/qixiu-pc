@@ -83,11 +83,11 @@
             <FormItem label="管理机构与部门:" style="width: 45%;" prop="manageArr">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
-            
+
             <FormItem label="法人手机:" style="width: 45%;">
               <Input type="text" v-model="listSearch.legalMobile" placeholder="请输入代表人手机"></Input>
             </FormItem>
-            
+
 
             <FormItem label="经营地址邮编:" style="width: 45%;">
               <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
@@ -463,8 +463,8 @@
             <FormItem label="成为全国诚信维修企业的年份:" style="width: 92%;" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
               <ul class="ivu-input" style="height: auto">
                 <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
-                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" v-model="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
-                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" v-model="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
+                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
+                  <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
                   <Button type="error" @click="deleteYear(index)">删除</Button>
                 </li>
@@ -490,7 +490,7 @@
               </CheckboxGroup>
             </FormItem>
             <FormItem label="其他服务种类:" style="width: 45%;"
-                      v-show="(listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair" prop="serviceCategoryOther">
+                      v-show="(listSearch.serviceCategory&&listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair" prop="serviceCategoryOther">
               <Input type="text" v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
             <!--<FormItem label="企业特色服务:" style="width: 92%;">
@@ -567,10 +567,10 @@ let initList={
     "beianStatus": 1,
     "brandId": 0,
     "brandOther": "",
-    
+
     "businessHours": '',
     "businessHours1":[],
-    
+
     "businessSphere": [],
     "businessSphereOther": '',
     "businessStatus": 0,
@@ -600,9 +600,9 @@ let initList={
     "industryCategoryOther": "",
     "iso": false,
     "isoPic": "",
-    
+
     "legalMobile": "",//----------
-    
+
     "machinists": [0,0,0,0],
     "manager": "",
     "managerOther": "",
@@ -671,7 +671,7 @@ let initList1={
 }
 export default {
     name: "common-company-info",
-    props: ['data','data1'],
+    // props: ['data','data1'],
     components: {commonInfoUpload,unitSearchInput},
     data(){
       let rulesObj={ required: true, message: '必填项不可为空' };
@@ -689,8 +689,8 @@ export default {
                 manageArr: [rulesObj],
                 businessSphereOther:[{
                   validator: (rule, value, callback) => {
-                    
-                    if (this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
+
+                    if (this.$data.listSearch.businessSphere&&this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
                       callback(new Error('请填写其他主要业务范围'));
                     }else{
                       callback();
@@ -698,7 +698,7 @@ export default {
                   }
                 }],
                 majorBrandId:[{
-                  
+
                   validator: (rule, value, callback) => {
                     if (this.$data.listSearch.special && !value) {
                       callback(new Error('请填写主修品牌'));
@@ -708,7 +708,7 @@ export default {
                   }
                 }],
                 industryCategoryOther:[{
-                  
+
                   validator: (rule, value, callback) => {
                     if (this.$data.listSearch.industryCategory == 9 && !value) {
                       callback(new Error('请填写其他业户类别'));
@@ -728,8 +728,8 @@ export default {
                 }],
                 modelOther:[{
                   validator: (rule, value, callback) => {
-                    
-                    if (this.$data.listSearch.model.indexOf(6) != -1 && !value) {
+
+                    if (this.$data.listSearch.model &&this.$data.listSearch.model.indexOf(6) != -1 && !value) {
                       callback(new Error('请填写其他维修车型'));
                     }else{
                       callback();
@@ -738,8 +738,8 @@ export default {
                 }],
                 serviceCategoryOther:[{
                   validator: (rule, value, callback) => {
-                    
-                    if (this.$data.listSearch.serviceCategory.indexOf(300007) != -1 && !value) {
+
+                    if (this.$data.listSearch.serviceCategory &&this.$data.listSearch.serviceCategory.indexOf(300007) != -1 && !value) {
                       callback(new Error('请填写其他服务种类'));
                     }else{
                       callback();
@@ -777,7 +777,7 @@ export default {
                 validator: (rule, value, callback) => {
                   // console.log('sincerityYears', value)
                   let pass= false
-                  if (this.$data.listSearch.sincerityYears){
+                  if (this.$data.listSearch.sincerity){
                     if(value.length){
                       pass= true
                       for(let i in value){
@@ -1015,7 +1015,7 @@ export default {
       },
 
       mergeOtherData(datas){
-          this.$refs['listSearch'].resetFields();
+          // this.$refs['listSearch'].resetFields();
 
           this.listSearch=deepClone(initList);
           if(datas.id){
@@ -1264,7 +1264,7 @@ export default {
         })
       },
 
-      
+
 
       //tab页点击------
       tabClick(name){
