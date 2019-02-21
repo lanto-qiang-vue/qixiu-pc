@@ -1360,9 +1360,10 @@ export default {
             this.requireList.licenceEndDate = res[1]
         },
         onChangeM(status){
-          console.log(this.listSearch.manageArr);
-              this.listSearch['org'] = this.listSearch.manageArr[0]||'';
-              this.listSearch['dept'] = this.listSearch.manageArr[1]||'';
+          
+              this.listSearch['org'] = status[0]||'';
+              this.listSearch['dept'] = status[1]||'';
+              
         },
         onChangeTime(res){
           // console.log('onChangeTime', res1, res2, res3)
