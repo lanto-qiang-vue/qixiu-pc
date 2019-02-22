@@ -77,11 +77,11 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="primary" v-if="accessBtn('insert')" @click="showDetail=Math.random();detailData=null;">新增</Button>
       <Button type="primary" v-if="accessBtn('import')" @click="type=Math.random();">导入</Button>
       <Button type="primary" v-if="accessBtn('export')" @click="exportBut">导出</Button>
-      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
-      <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|审核</Button>
+      <Button type="info" v-if="accessBtn('viewcrux')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
+      <Button type="info" v-if="accessBtn('crux-detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看|审核</Button>
 
     </div>
     <repair-company-info :showDetail='showDetail' :detailData="detailData" :roleType="roleType" @closeDetail="closeDetail"></repair-company-info>

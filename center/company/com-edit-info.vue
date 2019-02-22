@@ -2,18 +2,22 @@
 <div class="com-edit-info">
   <common-company-info ref="comInfo" roleType="weixiuqiye" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
   <div style="padding: 20px">
-    <Button  type="primary" @click="submit" v-if="" v-show="isRequire">提交关键信息</Button>
-    <Button  type="primary" @click="submit" v-if="" v-show="!isRequire">提交一般信息</Button>
+    <Button  type="primary" @click="submit" v-if="accessBtn('masterEdit')"
+             :disabled="importInfo.status==1" v-show="isRequire">提交关键信息</Button>
+    <Button  type="primary" @click="submit" v-if="accessBtn('generalEdit')"
+             :disabled="generalInfo.generalStatus==1" v-show="!isRequire">提交一般信息</Button>
   </div>
 </div>
 </template>
 
 <script>
 import CommonCompanyInfo from '~/components/common-company-info.vue'
+import funMixin from '~/components/fun-auth-mixim.js'
 // import { deepClone } from '~/static/util.js'
 export default {
   name: "com-edit-info",
   components: { CommonCompanyInfo },
+  mixins: [funMixin],
   data() {
     return {
       isRequire:true,
@@ -39,7 +43,7 @@ export default {
       this.$axios.get('/corp/manage/corpDetail/general').then((res) => {
         if (res.data.code == '0') {
           let data= res.data.item
-          this.importInfo= data
+          this.generalInfo= data
           this.$refs.comInfo.mergeOtherData(data);
         }
       })

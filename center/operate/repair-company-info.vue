@@ -27,15 +27,15 @@
 
       <Button  size="large" type="primary" @click="addCompany"
                v-if="accessBtn('insert')" v-show="!detailData">保存</Button>
-      <Button  size="large" type="primary" @click="addCompany"
+      <Button  size="large" type="primary" @click="addCompany" :disabled="listSearch.status==1"
                v-if="accessBtn('editcrux')" v-show="(isRequire&&detailData)">提交关键</Button>
-      <Button  size="large" type="primary" @click="addCompany"
+      <Button  size="large" type="primary" @click="addCompany" :disabled="generalList.generalStatus==1"
                v-if="accessBtn('editgeneral')" v-show="(!isRequire&&detailData)">提交一般</Button>
 
       <Button  size="large" type="primary" @click="auditBut('yunying-crux')"
-               v-if="accessBtn('auditcrux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核关键</Button>
+               v-if="accessBtn('auditcrux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status!=1">审核关键</Button>
       <Button  size="large" type="primary" @click="auditBut('yunying-general')"
-               v-if="accessBtn('auditgeneral')" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus==2">审核一般</Button>
+               v-if="accessBtn('auditgeneral')" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus!=1">审核一般</Button>
 
       <Button  size="large" type="primary" v-show="detailData"
                v-if="accessBtn('changelist')"

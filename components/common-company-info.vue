@@ -106,7 +106,7 @@
             </FormItem>
 
             <FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">
-              <Select v-model="listSearch.yyState" :transfer="true" clearable @on-change="onChangeS">
+              <Select v-model="listSearch.yyState" :transfer="true" clearable>
                 <Option value="true">营业中</Option>
                 <Option value="false" >休息中</Option>
               </Select>
@@ -1400,13 +1400,6 @@ export default {
               }else{
                 this.listSearch.businessHours= ''
               }
-        },
-        onChangeS(val){
-          if(val=='true'){
-              this.listSearch.yyState=true;
-          }else if(val=='false'){
-              this.listSearch.yyState=false;
-          }
         },
       changeBusinessAddress(event){
         clearTimeout(this.timer)
