@@ -51,11 +51,20 @@ export default {
         }else{
           url= '/corp/manage/update/general'
         }
-      this.$axios.post(url, temData).then((res) => {
-        if (res.data.code == '0') {
-          this.showModal = false
+      this.$Modal.confirm({
+        title: '确认保存吗？',
+        content: '修改的信息需要审核通过才会展示',
+        onOk: () => {
+          this.$axios.post(url, temData).then((res) => {
+            if (res.data.code == '0') {
+              this.getImportInfo()
+              this.getGeneralInfo()
+              this.$Message.success('保存成功')
+            }
+          })
         }
       })
+
     },
     tabStatusFun(name){
       if(name=='name1'){

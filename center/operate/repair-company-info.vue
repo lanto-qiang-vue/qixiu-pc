@@ -19,37 +19,34 @@
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
     <div slot="footer">
-      <!--<Button  size="large" type="primary" @click="addCompany">保存</Button>
-      <Button  size="large" type="primary" @click="addCompany" v-if="isRequire">提交关键</Button>
-      <Button  size="large" type="primary" @click="addCompany" v-if="!isRequire">提交一般</Button>
-      <Button  size="large" type="primary" @click="modal1=true" v-if="isRequire">审核关键</Button>
-      <Button  size="large" type="primary" @click="modal2=true" v-if="!isRequire">审核一般</Button>
-      <Button  size="large" type="primary"
-              @click="showChange=Math.random(),detailId=listSearch.id">查看变更
-      </Button>
 
-      <Button  size="large" type="primary"
-              @click="resetKey">重置密钥
-      </Button>
-      <Button  size="large" type="primary"
-              @click="addKey">创建密钥
-      </Button>-->
-      <Button  size="large" type="primary" @click="addCompany" v-show="!detailData">保存</Button>
-      <Button  size="large" type="primary" @click="addCompany" v-if="" v-show="(isRequire&&detailData)">提交关键</Button>
-      <Button  size="large" type="primary" @click="addCompany" v-if="" v-show="(!isRequire&&detailData)">提交一般</Button>
 
-      <Button  size="large" type="primary" @click="modal1=true" v-if="" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核关键</Button>
-      <Button  size="large" type="primary" @click="modal2=true" v-if="" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus==2">审核一般</Button>
+      <Button  size="large" type="primary" @click="auditBut('guanlibumen-crux')"
+               v-if="accessBtn('audit-crux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核</Button>
+
+
+      <Button  size="large" type="primary" @click="addCompany"
+               v-if="accessBtn('insert')" v-show="!detailData">保存</Button>
+      <Button  size="large" type="primary" @click="addCompany"
+               v-if="accessBtn('editcrux')" v-show="(isRequire&&detailData)">提交关键</Button>
+      <Button  size="large" type="primary" @click="addCompany"
+               v-if="accessBtn('editgeneral')" v-show="(!isRequire&&detailData)">提交一般</Button>
+
+      <Button  size="large" type="primary" @click="auditBut('yunying-crux')"
+               v-if="accessBtn('auditcrux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核关键</Button>
+      <Button  size="large" type="primary" @click="auditBut('yunying-general')"
+               v-if="accessBtn('auditgeneral')" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus==2">审核一般</Button>
 
       <Button  size="large" type="primary" v-show="detailData"
+               v-if="accessBtn('changelist')"
               @click="showChange=Math.random(),detailId=listSearch.id">查看变更
       </Button>
 
       <Button  size="large" type="primary" v-show="(generalList.createKey&&generalList.code)"
-              @click="resetKey">重置密钥
+               v-if="accessBtn('create')" @click="resetKey">重置密钥
       </Button>
       <Button  size="large" type="primary" v-show="(!generalList.createKey&&generalList.code)"
-              @click="addKey">创建密钥
+               v-if="accessBtn('create')" @click="addKey">创建密钥
       </Button>
       <Button size="large" type="default" @click="showModal=false;">返回</Button>
     </div>
@@ -57,40 +54,21 @@
 
 
     <!--页面审核-->
-    <Modal v-model="modal1" title="审核">
-      <Form :label-width="120">
-        <FormItem label="关键信息审核结果:">
+    <Modal v-model="auditModal" title="审核">
+      <Form :label-width="120" ref="auditInfo" :rules="auditValidate" :model="auditInfo">
+        <FormItem :label="(isRequire?'关键':'一般')+'信息审核:'" >
             <RadioGroup v-model="auditInfo.status">
                 <Radio label="2">通过</Radio>
                 <Radio label="3">不通过</Radio>
-
             </RadioGroup>
         </FormItem>
-        <FormItem label="不通过说明:" v-show="auditInfo.status==3" :autosize="{minRows: 5}">
-            <Input type="textarea" :rows="1" v-model="auditInfo.auditInfo" placeholder="请输入不通过说明"></Input>
+        <FormItem label="不通过说明:" v-show="auditInfo.status==3" prop="auditInfo">
+            <Input type="textarea" :rows="1" v-model="auditInfo.auditInfo" :autosize="{minRows: 5}"
+                   placeholder="请输入不通过说明"></Input>
         </FormItem>
     </Form>
       <div slot="footer">
         <Button size="large" type="primary" @click="auditFun" :disabled="auditInfo.status===''">提交</Button>
-      </div>
-    </Modal>
-
-    <!--页面审核-->
-    <Modal v-model="modal2" title="审核">
-      <Form :label-width="120">
-        <FormItem label="一般信息审核结果:">
-            <RadioGroup v-model="generalInfo.status">
-                <Radio label="2">通过</Radio>
-                <Radio label="3">不通过</Radio>
-
-            </RadioGroup>
-        </FormItem>
-        <FormItem label="不通过说明:" v-show="generalInfo.status==3" :autosize="{minRows: 5}">
-            <Input type="textarea" :rows="1" v-model="generalInfo.auditInfo" placeholder="请输入不通过说明"></Input>
-        </FormItem>
-    </Form>
-      <div slot="footer">
-        <Button size="large" type="primary" @click="auditFun" :disabled="generalInfo.status===''">提交</Button>
       </div>
     </Modal>
 
@@ -147,6 +125,7 @@
     mixins: [funMixin],
     components: { changeCompanyInfo,commonCompanyInfo },
     data() {
+      let rules={ required: true, message: '必填项不能为空' };
       return {
         infoId:null,//查看详情id
         showSaveInfo:null,//提交保存---
@@ -157,8 +136,6 @@
         showModal: false,
 
         showKey: false,//对接密钥显隐
-        modal1: false,//关键信息审核弹出框
-        modal2:false,//一般信息弹出框
 
         keyList: {
           name: '',
@@ -177,15 +154,26 @@
             { code: 2, name: '审核成功' },
             { code: 3, name: '审核不成功' }
         ],
+
+        auditModal: false,
         auditInfo:{
           status:'',
           auditInfo:'',
-        },//关键信息审核----
-        generalInfo:{
-          status:'',
-          auditInfo:'',
-        },//一般信息审核----
+        },
+        auditValidate:{
+          status: [rules],
+          auditInfo: [{
+            validator: (rule, value, callback) => {
+              if (this.$data.auditInfo.status==3 && !value) {
+                callback(new Error('请填写不通过说明'));
+              }else{
+                callback();
+              }
+            }
+          }]
+        },
         isRequire:true,//关键 一般flg
+        auditType: ''
 
 
       }
@@ -272,43 +260,55 @@
         }
         this.$axios.post(url, temData).then((res) => {
           if (res.data.code == '0') {
+            this.$Message.success('保存成功')
             this.showModal = false
             this.$emit('closeDetail');
           }
         })
       },
+
+      auditBut(type){
+        this.auditType= type
+        this.auditModal= true
+      },
       //审核是否通过-------------
       auditFun() {
-        if(this.isRequire){
-                this.$axios.post('/corp/manage/crux/audit/yy', {
-                  'corpId': this.detailData.id,
-                  'status': this.auditInfo.status,
-                  'auditInfo': this.auditInfo.auditInfo,
-                }).then((res) => {
-                  if (res.data.code == '0') {
-                    this.listSearch.status=this.auditInfo.status;
-                    this.listSearch.auditInfo=this.auditInfo.auditInfo;
-
-                    this.modal1 = false;
-                    this.$emit('closeDetail');
-                  }
-                })
-
-        }else{
-                this.$axios.post('/corp/manage/general/audit/yy', {
-                  'corpId': this.detailData.id,
-                  'status': this.generalInfo.status,
-                  'auditInfo': this.generalInfo.auditInfo,
-                }).then((res) => {
-                  if (res.data.code == '0') {
-                    this.generalList.generalStatus= this.generalInfo.status
-                    this.generalList.generalAuditInfo= this.generalInfo.auditInfo
-
-                    this.modal2 = false;
-                    this.$emit('closeDetail');
-                  }
-                })
+        let url= ''
+        this.auditInfo.corpId=this.detailData.id
+        switch (this.auditType){
+          case 'guanlibumen-crux':{
+            url= '/corp/manage/audit/crux'
+            break
+          }
+          case 'yunying-crux':{
+            url= '/corp/manage/crux/audit/yy'
+            break
+          }
+          case 'yunying-general':{
+            url= '/corp/manage/general/audit/yy'
+            break
+          }
         }
+        this.$axios.post(url, this.auditInfo).then((res) => {
+          if (res.data.code == '0') {
+            switch (this.auditType){
+              case 'guanlibumen-crux':
+              case 'yunying-crux':{
+                this.listSearch.status=this.auditInfo.status;
+                this.listSearch.auditInfo=this.auditInfo.auditInfo;
+                break
+              }
+              case 'yunying-general':{
+                this.generalList.status=this.auditInfo.status;
+                this.generalList.auditInfo=this.auditInfo.auditInfo;
+                break
+              }
+            }
+            this.auditModal = false;
+            this.$emit('closeDetail');
+            this.$Message.success('审核成功')
+          }
+        })
 
       },
 

@@ -40,10 +40,10 @@
               </Select>
             </FormItem>
             <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('longitude')}, 'width45']" prop="longitude">
-              <Input type="text" v-model="requireList.longitude" placeholder="请输入经营地址经度"></Input>
+              <Input type="text" v-model="requireList.longitude" :readonly="isCompany" placeholder="请输入经营地址经度" ></Input>
             </FormItem>
             <FormItem label="经营地址维度:" :class="[{'mark-change': markChange('latitude')}, 'width45']" prop="latitude">
-              <Input type="text" v-model="requireList.latitude" placeholder="请输入经营地址维度"></Input>
+              <Input type="text" v-model="requireList.latitude" :readonly="isCompany" placeholder="请输入经营地址维度"></Input>
             </FormItem>
 
             <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
@@ -133,7 +133,7 @@
             </FormItem>
 
 
-            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']" v-show="isCompany">
+            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']" v-show="!isCompany">
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
@@ -203,21 +203,21 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="isCompany">
+            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.show">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']" v-show="isCompany">
+            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.zdz">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']" v-show="isCompany">
+            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.buttJoint">
                 <span slot="open">是</span>
@@ -226,7 +226,7 @@
             </FormItem>
 
 
-            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']" v-show="isCompany">
+            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.useHss">
                 <span slot="open">是</span>
@@ -242,10 +242,10 @@
 
 
             <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
-              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true" :disabled="!isCompany">
+              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true" :disabled="isCompany">
                 <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
-              <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="isCompany">新增</Button>
+              <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="!isCompany">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
               <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
@@ -827,7 +827,19 @@ export default {
                     }
                   }
                 }],
-                businessAddress: [rulesObj],
+                businessAddress: [rulesObj, {
+                    validator: (rule, value, callback) => {
+                      let wrongAddress= this.$data.wrongAddress, flag=false
+                      for(let i in wrongAddress){
+                        if (value == wrongAddress[i]) flag= true
+                      }
+                      if (flag) {
+                        callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
+                      } else {
+                        callback();
+                      }
+                    }
+                }],
                 businessRegion: [rulesObj],
                 longitude: [rulesObj],
                 latitude: [rulesObj],
@@ -928,14 +940,15 @@ export default {
           timer: null,
 
           geocoder:null,//地标
+          wrongAddress: [],
         }
     },
     computed:{
       isCompany(){
           if(this.roleType=="weixiuqiye"){
-            return false;
-          }else{
             return true;
+          }else{
+            return false;
           }
       },
       label(){
@@ -971,7 +984,7 @@ export default {
         let str2=this.uploadOtherData.fields?this.uploadOtherData.fields.join(','):''
         return str1+ str2
       },
-      
+
     },
     watch:{
 
@@ -996,7 +1009,7 @@ export default {
         });
       });
 
-      
+
     },
     methods:{
       //数据合并-------------
@@ -1022,6 +1035,7 @@ export default {
                 // console.log("this.requireList['businessScope']",this.requireList['businessScope']);
                 this.repairTypeFun(this.requireList['businessScope'])
             }
+            this.geoCode(this.requireList.businessAddress)
           }else{
             this.uploadData= this.requireList
           }
@@ -1036,6 +1050,7 @@ export default {
 
             for (let i in this.uploadOtherData) {
               if (i == 'businessHours') {
+                this.listSearch[i] = this.uploadOtherData[i]
                 this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
               }else if(i=='yyState'){
                   this.listSearch[i] = this.uploadOtherData[i].toString();
@@ -1411,30 +1426,25 @@ export default {
         return flag
       },
 
-    geoCode(value){
-        if(!this.geocoder){
-            this.geocoder = new AMap.Geocoder({
-                city: "021",
-            });
-        }
-        this.geocoder.getLocation(value, (status, result)=> {
-            if (status === 'complete'&&result.geocodes.length) {
-                let lnglat = result.geocodes[0].location;
-                this.requireList.longitude=lnglat.lng;
-                this.requireList.latitude=lnglat.lat;
-            }else{
-            this.ruleValidate1.businessAddress.push({
-              validator: (rule, rval, callback) => {
-                if (value === rval) {
-                  callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
-                } else {
-                  callback();
-                }
+      geoCode(value){
+          if(!this.geocoder){
+              this.geocoder = new AMap.Geocoder({
+                  city: "021",
+              });
+          }
+          this.geocoder.getLocation(value, (status, result)=> {
+              if (status === 'complete'&&result.geocodes.length) {
+                  let lnglat = result.geocodes[0].location;
+                  this.requireList.longitude=lnglat.lng;
+                  this.requireList.latitude=lnglat.lat;
+              }else{
+                this.requireList.longitude= '';
+                this.requireList.latitude= '';
+                this.wrongAddress.push(value)
+                this.$refs.requireList.validateField('businessAddress')
               }
-            })
-            }
-        });
-    }
+          });
+      }
 
     },
 }
