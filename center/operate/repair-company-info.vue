@@ -246,7 +246,7 @@
       //保存数据------
       saveInfoFun(temData){
         let url=''
-        if (this.detailData) {
+        if (this.listSearch.id) {
           if(this.isRequire){
             url= '/corp/manage/crux/update/yy'
           }else{
@@ -271,7 +271,7 @@
       //审核是否通过-------------
       auditFun() {
         let url= ''
-        this.auditInfo.corpId=this.detailData.id
+        this.auditInfo.corpId= this.listSearch.id
         switch (this.auditType){
           case 'guanlibumen-crux':{
             url= '/corp/manage/audit/crux'
@@ -299,7 +299,7 @@
               case 'yunying-general':{
                 // this.generalList.status=this.auditInfo.status;
                 // this.generalList.auditInfo=this.auditInfo.auditInfo;
-                this.getDetail1(this.listSearch.id);
+                this.getDetail1(this.generalList.id);
                 break
               }
             }
