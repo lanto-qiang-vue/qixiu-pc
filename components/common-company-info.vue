@@ -5,71 +5,72 @@
     <Tabs :animated="false" v-model="tabName" @on-click="tabClick">
         <TabPane  :label="label" name="name1">
           <div style="padding-bottom: 100px;">
+            <Alert type="error" v-show="requireList.status==3">审核不通过说明<span slot="desc">{{requireList.cruxAuditInfo}}</span></Alert>
               <Form ref="requireList" :rules="ruleValidate1" :model="requireList" :label-width="140" class="common-form">
-            <FormItem label="企业名称:" :class="[{'mark-change': markChange('')}, 'width45']" prop="name">
+            <FormItem label="企业名称:" :class="[{'mark-change': markChange('name')}, 'width45']" prop="name">
               <Input type="text" v-model="requireList.name" placeholder="请输入企业名称"></Input>
             </FormItem>
-            <FormItem label="许可证号:" :class="[{'mark-change': markChange('')}, 'width45']" prop="license">
+            <FormItem label="许可证号:" :class="[{'mark-change': markChange('license')}, 'width45']" prop="license">
               <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"></Input>
             </FormItem>
-            <FormItem label="许可证有效期:" :class="[{'mark-change': markChange('')}, 'width45']" prop="licenceDate">
+            <FormItem label="许可证有效期:" :class="[{'mark-change': markChange('licenceBeginDate,licenceEndDate')}, 'width45']" prop="licenceDate">
               <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;" @on-change="onOpenChangeDate"></DatePicker>
             </FormItem>
-            <FormItem label="工商注册地址:" :class="[{'mark-change': markChange('')}, 'width45']" prop="registerAddress">
+            <FormItem label="工商注册地址:" :class="[{'mark-change': markChange('registerAddress')}, 'width45']" prop="registerAddress">
               <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"></Input>
             </FormItem>
-            <FormItem label="工商注册区域:" :class="[{'mark-change': markChange('')}, 'width45']" prop="registerRegion">
+            <FormItem label="工商注册区域:" :class="[{'mark-change': markChange('registerRegion')}, 'width45']" prop="registerRegion">
               <Select v-model="requireList.registerRegion" :transfer="true">
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
-            <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('')}, 'width45']" prop="registerDate">
+            <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('registerDate')}, 'width45']" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
                           v-model="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
 
-            <FormItem label="经营地地址:" :class="[{'mark-change': markChange('')}, 'width45']" prop="businessAddress">
+            <FormItem label="经营地地址:" :class="[{'mark-change': markChange('businessAddress')}, 'width45']" prop="businessAddress">
               <Input type="text" v-model="requireList.businessAddress" placeholder="请输入经营地地址" @on-change="changeBusinessAddress"></Input>
             </FormItem>
-            <FormItem label="经营地址区域:" :class="[{'mark-change': markChange('')}, 'width45']" prop="businessRegion">
+            <FormItem label="经营地址区域:" :class="[{'mark-change': markChange('businessRegion')}, 'width45']" prop="businessRegion">
               <Select v-model="requireList.businessRegion" :transfer="true">
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
-            <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('')}, 'width45']" prop="longitude">
+            <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('longitude')}, 'width45']" prop="longitude">
               <Input type="text" v-model="requireList.longitude" placeholder="请输入经营地址经度"></Input>
             </FormItem>
-            <FormItem label="经营地址维度:" :class="[{'mark-change': markChange('')}, 'width45']" prop="latitude">
+            <FormItem label="经营地址维度:" :class="[{'mark-change': markChange('latitude')}, 'width45']" prop="latitude">
               <Input type="text" v-model="requireList.latitude" placeholder="请输入经营地址维度"></Input>
             </FormItem>
 
-            <FormItem label="经营范围:" :class="[{'mark-change': markChange('')}, 'width45']" prop="businessScope">
+            <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
               <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, true)"
                       :transfer="true">
                 <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="经营范围子类:" :class="[{'mark-change': markChange('')}, 'width45']" prop="businessScope2">
+            <FormItem label="经营范围子类:" :class="[{'mark-change': markChange('businessScope2')}, 'width45']" prop="businessScope2">
               <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
                 <Option v-for="item in businessScope2" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="法定代表人:" :class="[{'mark-change': markChange('')}, 'width45']" prop="legalName">
+            <FormItem label="法定代表人:" :class="[{'mark-change': markChange('legalName')}, 'width45']" prop="legalName">
               <Input type="text" v-model="requireList.legalName" placeholder="请输入法定代表人"></Input>
             </FormItem>
             <div></div>
-            <FormItem label="营业执照:" :class="[{'mark-change': markChange('')}, 'width45']" prop="yyzz">
+            <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
                     <common-info-upload :description="'上传图片'" :data="requireList.yyzz" :callback="'yyzzFun'" @yyzzFun="yyzzFun"></common-info-upload>
 
             </FormItem>
-            <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('')}, 'width45']" prop="dlysxkz">
+            <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('dlysxkz')}, 'width45']" prop="dlysxkz">
 
 
               <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun"></common-info-upload>
             </FormItem>
-            <FormItem label="门店门头照:" :class="[{'mark-change': markChange('')}, 'width45']" prop="mdmtz">
+            <FormItem label="门店门头照:" :class="[{'mark-change': markChange('mdmtz')}, 'width45']" prop="mdmtz">
               <common-info-upload :description="'上传图片'" :data="requireList.mdmtz" :callback="'mdmtzFun'" @mdmtzFun="mdmtzFun"></common-info-upload>
             </FormItem>
           </Form>
@@ -77,108 +78,109 @@
 
         </TabPane>
 <!--这边是第二步骤        -->
-        <TabPane :label="label1" name="name2">
+        <TabPane :label="label1" name="name2" v-show="roleType!='guanlibumen'">
+          <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
-            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('')}, 'width45']" prop="manageArr">
+            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('manageArr')}, 'width45']" prop="manageArr">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
-            <FormItem label="法人手机:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="法人手机:" :class="[{'mark-change': markChange('legalMobile')}, 'width45']">
               <Input type="text" v-model="listSearch.legalMobile" placeholder="请输入代表人手机"></Input>
             </FormItem>
 
 
-            <FormItem label="经营地址邮编:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经营地址邮编:" :class="[{'mark-change': markChange('postalCode')}, 'width45']">
               <Input type="text" v-model="listSearch.postalCode" placeholder="请输入经营地址邮政编码"></Input>
             </FormItem>
-            <FormItem label="经营负责人:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经营负责人:" :class="[{'mark-change': markChange('operatorName')}, 'width45']">
               <Input type="text" v-model="listSearch.operatorName" placeholder="请输入日常经营管理负责人"></Input>
             </FormItem>
-            <FormItem label="经营负责人手机:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经营负责人手机:" :class="[{'mark-change': markChange('operatorMobile')}, 'width45']">
               <Input type="text" v-model="listSearch.operatorMobile" placeholder="请输入负责人手机"></Input>
             </FormItem>
 
-            <FormItem label="业务联系电话:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="业务联系电话:" :class="[{'mark-change': markChange('complaintTel')}, 'width45']">
               <Input type="text" v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
 
-            <FormItem label="营业状态:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">
               <Select v-model="listSearch.yyState" :transfer="true" clearable @on-change="onChangeS">
                 <Option value="true">营业中</Option>
                 <Option value="false" >休息中</Option>
               </Select>
             </FormItem>
-            <FormItem label="营业时间:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">
               <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"
                           style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>
             </FormItem>
-            <FormItem label="经营状态:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']">
               <Select v-model="listSearch.businessStatus" :transfer="true">
                 <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
             </FormItem>
 
-            <FormItem label="企业主要业务范围:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="企业主要业务范围:" :class="[{'mark-change': markChange('businessSphere')}, 'width45']">
 
               <Select v-model="listSearch.businessSphere" multiple clearable :transfer="true">
                 <Option v-for="item in companySphere" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="其他主要业务范围:" :class="[{'mark-change': markChange('')}, 'width45']"
+            <FormItem label="其他主要业务范围:" :class="[{'mark-change': markChange('businessSphereOther')}, 'width45']"
                       v-show="(listSearch.businessSphere&&listSearch.businessSphere.indexOf(88)==-1)?false:true" prop="businessSphereOther">
               <Input type="text" v-model="listSearch.businessSphereOther" placeholder="请输入其他主要业务范围"></Input>
             </FormItem>
 
 
-            <FormItem label="备案状态:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']">
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
             </FormItem>
 
-            <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('erpName')}, 'width45']">
               <!--<Input type="text" v-model="listSearch.erpId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.erpName" :showChange="showChange" :tableData="tableData" :flagData=2 @closeSelect="closeSelect" @onRowSelect="onRowSelect"></unit-search-input>
             </FormItem>
-            <FormItem label="其他erp软件:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="其他erp软件:" :class="[{'mark-change': markChange('erpOther')}, 'width45']">
               <Input type="text" v-model="listSearch.erpOther" placeholder=""></Input>
             </FormItem>
 
-            <FormItem label="特约维修:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="特约维修:" :class="[{'mark-change': markChange('special')}, 'width45']">
               <i-switch size="large" v-model="listSearch.special">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="4s店:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="4s店:" :class="[{'mark-change': markChange('fours')}, 'width45']">
               <i-switch size="large" v-model="listSearch.fours" @on-change="onChangeFours">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('')}, 'width45']" v-show="listSearch.special?true:false">
+            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandName')}, 'width45']" v-show="listSearch.special?true:false">
 
               <!--<Input type="text" v-model="listSearch.majorBrandId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.majorBrandName" :showChange="showChange" :tableData="tableData1" :flagData=3 @closeSelect="closeSelect" @onRowSelect="onRowSelect1"></unit-search-input>
             </FormItem>
 
-            <FormItem label="连锁经营企业:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="连锁经营企业:" :class="[{'mark-change': markChange('chainBusiness')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.chainBusiness">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="品牌:" :class="[{'mark-change': markChange('')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
+            <FormItem label="品牌:" :class="[{'mark-change': markChange('brandName')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
               <!--<Input type="text" v-model="listSearch.brandId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.brandName" :showChange="showChange" :tableData="tableData2" :flagData=4 @closeSelect="closeSelect" @onRowSelect="onRowSelect2"></unit-search-input>
             </FormItem>
-            <FormItem label="其他品牌:" :class="[{'mark-change': markChange('')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
+            <FormItem label="其他品牌:" :class="[{'mark-change': markChange('brandOther')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
               <Input type="text" v-model="listSearch.brandOther" placeholder=""></Input>
             </FormItem>
 
-            <FormItem label="集团经营企业:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="集团经营企业:" :class="[{'mark-change': markChange('groupBusiness')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.groupBusiness">
                 <span slot="open">是</span>
@@ -187,35 +189,35 @@
             </FormItem>
 
 
-            <FormItem label="综合维修企业:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="综合维修企业:" :class="[{'mark-change': markChange('comprehensive')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.comprehensive">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="24小时汽车维修:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="24小时汽车维修:" :class="[{'mark-change': markChange('rescue')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.rescue">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="前台显示:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.show">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="总对总:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.zdz">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否对接:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.buttJoint">
                 <span slot="open">是</span>
@@ -224,7 +226,7 @@
             </FormItem>
 
 
-            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.useHss">
                 <span slot="open">是</span>
@@ -232,191 +234,191 @@
               </i-switch>
             </FormItem>
 
-            <FormItem label="门店特色:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="门店特色:" :class="[{'mark-change': markChange('storeSpecials')}, 'width45']">
               <Select v-model="listSearch.storeSpecials" multiple clearable :transfer="true">
                 <Option v-for="item in storeSpecialsArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
 
 
-            <FormItem label="对接渠道:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
               <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true">
                 <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
               <Button size="large" type="primary" @click="showAdd=true,sourceName=''">新增</Button>
             </FormItem>
-            <FormItem label="对接时间:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
               <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
             </FormItem>
-            <FormItem label="企业服务优势自我描述:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="企业服务优势自我描述:" :class="[{'mark-change': markChange('desc')}, 'width90']">
               <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
             </FormItem>
 
 
-            <FormItem label="工时定额执行标准:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="工时定额执行标准:" :class="[{'mark-change': markChange('workingHoursQuotaExecutionStandard')}, 'width45']">
               <Select v-model="listSearch.workingHoursQuotaExecutionStandard" :transfer="true">
                 <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="工时单价:" :class="[{'mark-change': markChange('')}, 'width45']" >
+            <FormItem label="工时单价:" :class="[{'mark-change': markChange('workingHoursPrice')}, 'width45']" >
               <Input type="text" v-model="listSearch.workingHoursPrice" placeholder="请输入工时单价"></Input>
             </FormItem>
-            <FormItem label="业户类别:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="业户类别:" :class="[{'mark-change': markChange('industryCategory')}, 'width45']">
               <Select v-model="listSearch.industryCategory" :transfer="true">
                 <Option v-for="item in households" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="其他业户类别:" :class="[{'mark-change': markChange('')}, 'width45']" v-show="listSearch.industryCategory==9?true:false" prop="industryCategoryOther">
+            <FormItem label="其他业户类别:" :class="[{'mark-change': markChange('industryCategoryOther')}, 'width45']" v-show="listSearch.industryCategory==9?true:false" prop="industryCategoryOther">
               <Input type="text" v-model="listSearch.industryCategoryOther" placeholder="" style="width: 100%;"></Input>
             </FormItem>
-            <FormItem label="经济类型:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经济类型:" :class="[{'mark-change': markChange('economicType')}, 'width45']">
 
               <Select v-model="listSearch.economicType" :transfer="true">
                 <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('')}, 'width45']" v-show="listSearch.economicType==900?true:false" prop="economicTypeOther">
+            <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="listSearch.economicType==900?true:false" prop="economicTypeOther">
               <Input type="text" v-model="listSearch.economicTypeOther" placeholder=""></Input>
             </FormItem>
 
 
-            <FormItem label="企业员工总数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="企业员工总数:" :class="[{'mark-change': markChange('employeeNumber')}, 'width45']">
               <Select v-model="listSearch.employeeNumber" :transfer="true">
                 <Option v-for="item in companyStaff" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
-            <FormItem label="企业目前占地面积:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="企业目前占地面积:" :class="[{'mark-change': markChange('floorSpace')}, 'width45']">
               <Select v-model="listSearch.floorSpace" :transfer="true">
                 <Option v-for="item in companyArea" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
 
-            <FormItem label="经理人:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="经理人:" :class="[{'mark-change': markChange('manager')}, 'width45']">
               <Input type="text" v-model="listSearch.manager" placeholder="请输入经理人"></Input>
             </FormItem>
-            <FormItem label="服务负责人:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="服务负责人:" :class="[{'mark-change': markChange('serviceLeader')}, 'width45']">
               <Input type="text" v-model="listSearch.serviceLeader" placeholder="请输入服务负责人"></Input>
             </FormItem>
-            <FormItem label="技术负责人:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="技术负责人:" :class="[{'mark-change': markChange('technologyLeader')}, 'width45']">
               <Input type="text" v-model="listSearch.technologyLeader" placeholder="请输入技术负责人"></Input>
             </FormItem>
-            <FormItem label="质量检验员:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="质量检验员:" :class="[{'mark-change': markChange('qualityInspector')}, 'width45']">
               <Input type="text" v-model="listSearch.qualityInspector" placeholder="请输入质量检验员"></Input>
             </FormItem>
-            <FormItem label="其他:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="其他:" :class="[{'mark-change': markChange('managerOther')}, 'width45']">
               <Input type="text" v-model="listSearch.managerOther" placeholder="请输入其他"></Input>
             </FormItem>
 
-            <FormItem label="机工高级技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="机工高级技师人数:" :class="[{'mark-change': markChange('machinists')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.machinists[0]"
                            placeholder="高级技师人数"></InputNumber>
             </FormItem>
-            <FormItem label="机工技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="机工技师人数:" :class="[{'mark-change': markChange('machinists')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.machinists[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="机工高级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="机工高级人数:" :class="[{'mark-change': markChange('machinists')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.machinists[2]"
                            placeholder="高级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="机工中级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="机工中级人数:" :class="[{'mark-change': markChange('machinists')}, 'width45']">
               <InputNumber :min="0" v-model="listSearch.machinists[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="电工高级技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="电工高级技师人数:" :class="[{'mark-change': markChange('electricians')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.electricians[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="电工技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="电工技师人数:" :class="[{'mark-change': markChange('electricians')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.electricians[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="电工高级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="电工高级人数:" :class="[{'mark-change': markChange('electricians')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.electricians[2]"
                            placeholder="高级人数"></InputNumber>
 
 
             </FormItem>
-            <FormItem label="电工中级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="电工中级人数:" :class="[{'mark-change': markChange('electricians')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.electricians[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="钣金工高级技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="钣金工高级技师人数:" :class="[{'mark-change': markChange('tinbenders')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.tinbenders[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="钣金工技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="钣金工技师人数:" :class="[{'mark-change': markChange('tinbenders')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.tinbenders[1]"
                            placeholder="技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="钣金工高级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="钣金工高级人数:" :class="[{'mark-change': markChange('tinbenders')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.tinbenders[2]"
                            placeholder="高级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="钣金工中级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="钣金工中级人数:" :class="[{'mark-change': markChange('tinbenders')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.tinbenders[3]"
                            placeholder="中级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="油漆工高级技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="油漆工高级技师人数:" :class="[{'mark-change': markChange('painters')}, 'width45']">
 
               <InputNumber :min="0" v-model="listSearch.painters[0]"
                            placeholder="高级技师人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="油漆工技师人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="油漆工技师人数:" :class="[{'mark-change': markChange('painters')}, 'width45']">
 
 
               <InputNumber :min="0" v-model="listSearch.painters[1]" placeholder="技师人数"></InputNumber>
 
 
             </FormItem>
-            <FormItem label="油漆工高级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="油漆工高级人数:" :class="[{'mark-change': markChange('painters')}, 'width45']">
 
 
               <InputNumber :min="0" v-model="listSearch.painters[2]" placeholder="高级人数"></InputNumber>
 
 
             </FormItem>
-            <FormItem label="油漆工中级人数:" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="油漆工中级人数:" :class="[{'mark-change': markChange('painters')}, 'width45']">
 
 
               <InputNumber :min="0" v-model="listSearch.painters[3]" placeholder="中级人数"></InputNumber>
 
             </FormItem>
-            <FormItem label="企业主要维修车型:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="企业主要维修车型:" :class="[{'mark-change': markChange('model')}, 'width90']">
               <CheckboxGroup v-model="listSearch.model">
                 <Checkbox v-for="item in vehicleModel" :label="item.name" :key="item.name">{{item.code}}</Checkbox>
               </CheckboxGroup>
             </FormItem>
-            <FormItem label="其他维修车型:" :class="[{'mark-change': markChange('')}, 'width45']"
+            <FormItem label="其他维修车型:" :class="[{'mark-change': markChange('modelOther')}, 'width45']"
                       v-show="(listSearch.model&&listSearch.model.indexOf(6)==-1)?false:true" prop="modelOther">
               <Input type="text" v-model="listSearch.modelOther" placeholder=""></Input>
             </FormItem>
 
 
             <div></div>
-            <FormItem label="通过ISO质量管理体系认证:" style="width: 230px;" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="通过ISO质量管理体系认证:" style="width: 230px;" :class="[{'mark-change': markChange('iso,isoPic')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.iso">
                 <span slot="open">通过</span>
@@ -428,7 +430,7 @@
               <common-info-upload :description="'上传图片'" :data="listSearch.isoPic" :callback="'isoPicFun'" @isoPicFun="isoPicFun"></common-info-upload>
             </FormItem>
             <div></div>
-            <FormItem label="通过安全生产标准化达标认证:"  style="width: 230px;" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="通过安全生产标准化达标认证:"  style="width: 230px;" :class="[{'mark-change': markChange('throughSafetyProductionStandardization,safePic')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.throughSafetyProductionStandardization">
                 <span slot="open">通过</span>
@@ -440,7 +442,7 @@
               <common-info-upload :description="'上传图片'" :data="listSearch.safePic" :callback="'safePicFun'" @safePicFun="safePicFun"></common-info-upload>
             </FormItem>
             <div></div>
-            <FormItem label="通过环保部门专项整治:"  style="width: 230px;" :class="[{'mark-change': markChange('')}, 'width45']">
+            <FormItem label="通过环保部门专项整治:"  style="width: 230px;" :class="[{'mark-change': markChange('throughEnvironmentalProtectionSpecialRenovation,greenPic')}, 'width45']">
 
               <i-switch size="large" v-model="listSearch.throughEnvironmentalProtectionSpecialRenovation">
                 <span slot="open">通过</span>
@@ -452,7 +454,7 @@
               <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
             </FormItem>
             <div></div>
-            <FormItem label="是否为全国诚信维修企业:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="是否为全国诚信维修企业:" :class="[{'mark-change': markChange('sincerity,sincerityYears')}, 'width90']">
               <i-switch size="large" v-model="listSearch.sincerity" @on-change="changeSincerity">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
@@ -471,20 +473,20 @@
               <Button type="primary" @click="addYear">添加</Button>
               </ul>
             </FormItem>
-            <FormItem label="上年度质量信誉考核等级:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="上年度质量信誉考核等级:" :class="[{'mark-change': markChange('qualityReputationAssessmentLevel')}, 'width90']">
               <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel">
                 <Radio v-for="item in qualityCheck" :label="item.id" :key="item.id">{{ item.name }}</Radio>
               </RadioGroup>
             </FormItem>
 
-            <FormItem label="是否提供上门维修:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="是否提供上门维修:" :class="[{'mark-change': markChange('offerOnsiteRepair,serviceCategory,serviceCategoryOther')}, 'width90']">
 
               <i-switch size="large" v-model="listSearch.offerOnsiteRepair">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="提供上门服务种类:" :class="[{'mark-change': markChange('')}, 'width90']" v-if="listSearch.offerOnsiteRepair">
+            <FormItem label="提供上门服务种类:" :class="[{'mark-change': markChange('')}, 'width90']" v-show="listSearch.offerOnsiteRepair">
               <CheckboxGroup v-model="listSearch.serviceCategory">
                 <Checkbox v-for="item in visitService" :label="item.key" :key="item.key">{{item.name}}</Checkbox>
               </CheckboxGroup>
@@ -493,28 +495,25 @@
                       v-show="(listSearch.serviceCategory&&listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair" prop="serviceCategoryOther">
               <Input type="text" v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
-            <!--<FormItem label="企业特色服务:" :class="[{'mark-change': markChange('')}, 'width90']">
-              <Input type="textarea" :rows="1" v-model="listSearch.specialService" placeholder="请输入企业特色服务"></Input>
-            </FormItem>-->
 
-            <FormItem label="是否愿意开通车大夫服务等在线维修服务:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="是否愿意开通车大夫服务等在线维修服务:" :class="[{'mark-change': markChange('openOnlineRepairService')}, 'width90']">
 
               <i-switch size="large" v-model="listSearch.openOnlineRepairService">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否愿意开通在线商务服务:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="是否愿意开通在线商务服务:" :class="[{'mark-change': markChange('openOnlineBusinessService')}, 'width90']">
               <i-switch size="large" v-model="listSearch.openOnlineBusinessService">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
 
             </FormItem>
-            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('')}, 'width90']">
+            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('selfIntroduction')}, 'width90']">
               <Input type="textarea" :rows="1" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
             </FormItem>
-            <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('')}, 'width90']" prop="honerModels">
+            <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('honerModels')}, 'width90']" prop="honerModels">
               <ul class="ivu-input" style="height: auto">
                 <li v-for="(item,index) in listSearch.honerModels" :key="index">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
@@ -666,13 +665,13 @@ let initList1={
   "yyzz": "",
   "businessAddress": "",//----------
   "businessRegion": "",//----------
-  "longitude": 0,
-  "latitude": 0,
+  "longitude": '',
+  "latitude": '',
   fields:[]
 }
 export default {
     name: "common-company-info",
-    // props: ['data','data1'],
+    props: ['roleType'],
     components: {commonInfoUpload,unitSearchInput},
     data(){
       let rulesObj={ required: true, message: '必填项不可为空' };
@@ -1407,208 +1406,11 @@ export default {
 }
 </script>
 <style lang="less">
-  #biao1 {
-    border: none;
-    color: #515a6e;
+.common-company-info{
+  .mark-change .ivu-form-item-label{
+    color: orange;
   }
-
-  .content-list {
-    width: 100%;
-    height: 45px;
-    line-height: 45px;
-    overflow: hidden;
-    img {
-      width: 40px;
-      height: 40px;
-      border: 1px solid #ccc;
-      float: left;
-    }
-    h3 {
-      float: left;
-      height: 45px;
-      line-height: 45px;
-      margin-left: 10px;
-    }
-    span {
-      float: right;
-    }
-
-  }
-
-  .content-p {
-    padding-left: 55px;
-  }
-
-  .menu-manage {
-
-  }
-
-  .search-block {
-    display: inline-block;
-    width: 200px;
-    margin-right: 10px;
-  }
-
-  .r-list-search {
-    width: 100%;
-    padding: 10px 0;
-
-  }
-
-  .pic-card{
-      display: inline-block;
-      margin: 0 10px 10px 0;
-      width: 350px;
-      min-width: 250px;
-
-      .red{
-        color: red;
-      }
-      .pic-body:hover .demo-upload-list-cover{
-            display: block;
-        }
-      .pic-body{
-        width: 100%;
-        height: 200px;
-        /*border: 1px solid #dcdee2;*/
-        position: relative;
-        .demo-upload-list-cover{
-            display: none;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,.6);
-        }
-
-        .no-pic{
-          width: 250px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-        }
-        .pic{
-          max-width: 100%;
-          max-height: 100%;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-          cursor: pointer;
-        }
-        .button{
-          width: 100%;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          text-align: center;
-          > *{
-            margin: 0 5px;
-            vertical-align: top;
-          }
-          .up-img{
-            display: inline-block;
-            overflow: hidden;
-            position: relative;
-            .input{
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-              opacity: 0;
-              font-size: 0;
-              cursor: pointer;
-            }
-          }
-        }
-      }
-    }
-
-  .yearClass {
-    width: 110px;
-    height: 35px;
-    border: 1px solid #dcdee2;
-    line-height: 35px;
-    display: inline-block;
-    margin-right: 10px;
-    text-align: center;
-    margin-top: 10px;
-  }
-
-  .header-inner {
-    display: inline-block;
-    width: 100%;
-    height: 20px;
-    line-height: 20px;
-    font-size: 14px;
-    color: #17233d;
-    font-weight: 700;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    span {
-      color: red;
-    }
-  }
-
-  .modelClass {
-    text-align: center;
-    height: 150px;
-    line-height: 150px;
-    font-size: 18px;
-    font-weight: bold;
-  }
-
-
-
-
-
-  .demo-upload-list{
-        display: inline-block;
-        width: 150px;
-        height: 150px;
-        text-align: center;
-        line-height: 150px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        overflow: hidden;
-        background: #fff;
-        position: relative;
-        /*box-shadow: 0 1px 1px rgba(0,0,0,.2);*/
-        margin-right: 4px;
-    }
-    .demo-upload-list img{
-        width: 100%;
-        height: 100%;
-    }
-    .demo-upload-list-cover{
-        display: none;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0,0,0,.6);
-    }
-    .demo-upload-list:hover .demo-upload-list-cover{
-        display: block;
-    }
-    .demo-upload-list-cover i{
-        color: #fff;
-        font-size: 30px;
-        cursor: pointer;
-        margin: 0 2px;
-    }
-  .common-company-info{
-    .mark-change .ivu-form-item-label{
-      color: orange;
-    }
-  }
-
+}
 </style>
 <style lang="less" scoped>
 .common-company-info{

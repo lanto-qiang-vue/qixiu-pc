@@ -1,6 +1,6 @@
 <template>
 <div class="com-edit-info">
-  <common-company-info ref="comInfo" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
+  <common-company-info ref="comInfo" roleType="weixiuqiye" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
   <div style="padding: 20px">
     <Button  type="primary" @click="submit" v-if="" v-show="isRequire">提交关键信息</Button>
     <Button  type="primary" @click="submit" v-if="" v-show="!isRequire">提交一般信息</Button>
@@ -47,9 +47,9 @@ export default {
     saveInfoFun(temData){
       let url= ''
         if(this.isRequire){
-          url= '/corp/manage/crux/update/yy'
+          url= '/corp/manage/update/crux'
         }else{
-          url= '/corp/manage/general/update/yy'
+          url= '/corp/manage/update/general'
         }
       this.$axios.post(url, temData).then((res) => {
         if (res.data.code == '0') {

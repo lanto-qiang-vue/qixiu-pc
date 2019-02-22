@@ -14,7 +14,7 @@
     <div slot="header" class="header-inner">维修企业信息</div>
     <div style="padding-bottom: 10px;">
 
-      <common-company-info :data="listSearch" :data1="generalList"  ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
+      <common-company-info :roleType="roleType" ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
 
       <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
     </div>
@@ -66,12 +66,12 @@
 
             </RadioGroup>
         </FormItem>
-        <FormItem label="不通过说明:" v-show="auditInfo.status==3">
+        <FormItem label="不通过说明:" v-show="auditInfo.status==3" :autosize="{minRows: 5}">
             <Input type="textarea" :rows="1" v-model="auditInfo.auditInfo" placeholder="请输入不通过说明"></Input>
         </FormItem>
     </Form>
       <div slot="footer">
-        <Button size="large" type="primary" @click="auditFun">提交</Button>
+        <Button size="large" type="primary" @click="auditFun" :disabled="auditInfo.status===''">提交</Button>
       </div>
     </Modal>
 
@@ -85,12 +85,12 @@
 
             </RadioGroup>
         </FormItem>
-        <FormItem label="不通过说明:" v-show="generalInfo.status==3">
+        <FormItem label="不通过说明:" v-show="generalInfo.status==3" :autosize="{minRows: 5}">
             <Input type="textarea" :rows="1" v-model="generalInfo.auditInfo" placeholder="请输入不通过说明"></Input>
         </FormItem>
     </Form>
       <div slot="footer">
-        <Button size="large" type="primary" @click="auditFun">提交</Button>
+        <Button size="large" type="primary" @click="auditFun" :disabled="generalInfo.status===''">提交</Button>
       </div>
     </Modal>
 
@@ -143,7 +143,7 @@
 
   export default {
     name: 'repair-company-info',
-    props: ['showDetail', 'detailData'],
+    props: ['showDetail', 'detailData', 'roleType'],
     mixins: [funMixin],
     components: { changeCompanyInfo,commonCompanyInfo },
     data() {
@@ -195,8 +195,17 @@
           this.showModal = true;
           this.isRequire=true;
           if (this.detailData) {
-            this.getDetail(this.detailData.id);
-            this.getDetail1(this.detailData.id);
+            switch (this.roleType){
+              case 'guanlibumen':{
+                this.getDetail(this.detailData.id);
+                break
+              }
+              case 'yunying':{
+                this.getDetail(this.detailData.id);
+                this.getDetail1(this.detailData.id);
+                break
+              }
+            }
           }else{
             this.listSearch = {};
             this.generalList = {};
@@ -209,9 +218,10 @@
 
     methods: {
       //获取详情--------
-      getDetail(id) {
+      getDetail(id, str) {
+        let url= str|| '/corp/manage/crux/detail/yy/'
           this.$Spin.show()
-          this.$axios.get('/corp/manage/crux/detail/yy/' + id, {}).then((res) => {
+          this.$axios.get(url + id, {}).then((res) => {
             if (res.data.code == '0') {
                 let resData = res.data.item;
                 this.listSearch=resData;
@@ -298,7 +308,6 @@
                     this.$emit('closeDetail');
                   }
                 })
-
         }
 
       },
