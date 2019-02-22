@@ -14,7 +14,7 @@
               </FormItem>
               <FormItem label="经营范围:">
                   <Select v-model="search.businessScope" clearable>
-                    
+
                     <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
                   </Select>
               </FormItem>
@@ -53,24 +53,24 @@
               </FormItem>
               <FormItem label="关键信息审核状态:">
                   <Select v-model="search.status" clearable>
-                    
+
                     <Option v-for="item in statusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
               </FormItem>
-              <FormItem label="一般信息审核状态:">
+              <FormItem label="一般信息审核状态:" v-show="roleType=='yunying'">
                   <Select v-model="search.generalStatus" clearable>
-                    
+
                     <Option v-for="item in statusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
               </FormItem>
               <FormItem label="备案状态:">
                   <Select v-model="search.beianStatus" clearable>
-                    
+
                     <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
                   </Select>
               </FormItem>
 
-              
+
               <FormItem :label-width="0" style="width: 60px;">
                   <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
@@ -83,7 +83,7 @@
       <Button type="info" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
 
     </div>
-    <repair-company-info :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></repair-company-info>
+    <repair-company-info :showDetail='showDetail' :detailData="detailData" :roleType="roleType" @closeDetail="closeDetail"></repair-company-info>
     <upload-excel :type="type" :actionUrl="'/proxy/corp/manage/import'" :title="'导入文件'"></upload-excel>
   </common-table>
 
@@ -106,42 +106,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
 		  return{
         type:null,
         loading:true,
-        columns: [
-          
-          {title: '区域', key: 'areaName', sortable: true, minWidth: 120,
-          },
-          {title: '关键信息审核状态', key: 'status', sortable: true, minWidth: 120},
-          {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120},
-          {title: '备案状态', key: 'beianStatus', sortable: true, minWidth: 135},
-          {title: '企业名称', key: 'name', sortable: true, minWidth: 120},
-          {title: '许可证号', key: 'licence', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '是否对接', key: 'buttJoint', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '上传数量', key: 'uploadNum', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '总对总', key: 'totalToTotal', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '特约维修', key: 'special', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '前台显示', key: 'show', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 120,
-            // render: (h, params) => h('span',  params.row.status.name)
-          },
-        ],
+
         tableData: [],
 
         search:{
@@ -181,7 +146,46 @@ import funMixin from '~/components/fun-auth-mixim.js'
         businessType:[],//经营状态类型集合------
       }
     },
+    computed:{
+		  roleType(){
+		    let role=''
+		    switch (this.$route.path){
+          case '/center/company-info-manage':{
+            role= 'guanlibumen'
+            break
+          }
+          default:{
+            role= 'yunying'
+          }
+        }
+        return role
+      },
+      columns(){
+        let columns= [
+          {title: '区域', key: 'areaName', sortable: true, minWidth: 120,},
+          {title: '关键信息审核状态', key: 'status', sortable: true, minWidth: 120},
+          {title: '备案状态', key: 'beianStatus', sortable: true, minWidth: 135},
+          {title: '企业名称', key: 'name', sortable: true, minWidth: 120},
+          {title: '许可证号', key: 'licence', sortable: true, minWidth: 120,},
+          {title: '经营范围', key: 'businessScope', sortable: true, minWidth: 120,},
+          {title: '是否对接', key: 'buttJoint', sortable: true, minWidth: 120,},
+          {title: '上传数量', key: 'uploadNum', sortable: true, minWidth: 120,},
+          {title: '总对总', key: 'totalToTotal', sortable: true, minWidth: 120,},
+          {title: '特约维修', key: 'special', sortable: true, minWidth: 120,},
+          {title: '前台显示', key: 'show', sortable: true, minWidth: 120,},
+          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 120,},
+          {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 120,},
+        ]
+        let item= {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120}
+
+        if(this.roleType=='yunying'){
+          columns.splice(1, 0, item)
+        }
+        return columns
+      }
+    },
     mounted () {
+		  // console.log(this.$route.path)
       this.getBusinessType();
       this.getValuesByTypeFun(1);
       this.getList();
@@ -213,7 +217,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
               this.$Message.info(res.data.status);
               this.loading=false;
             }
-            
+
           })
           this.detailData= null;
         },
@@ -232,10 +236,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         closeDetail(){
           this.detailData= null;
           this.clearTableSelect= Math.random();
-          
+
           this.getList();
         },
-        
+
         exportBut(){
           this.$Modal.confirm({
               title:"系统提示!",
@@ -243,7 +247,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
               onOk:this.exportFun,
 
           })
-          
+
         },
         exportFun(){
           this.$axios({
@@ -281,7 +285,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 $("body").append(a);
                 a.click();
                 $(a).remove();
-            
+
           })
         },
         getBusinessType(){
@@ -290,7 +294,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 if(res.data.code=='0'){
 
                     this.businessType=res.data.items;
-                    
+
                 }
            })
         },
@@ -301,7 +305,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                     if(id==1){
                         this.repairType=res.data.items;
                     }
-                    
+
                 }else{
                     // this.$Message.error(res.data.status);
                 }
