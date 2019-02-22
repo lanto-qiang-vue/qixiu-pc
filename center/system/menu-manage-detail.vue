@@ -14,7 +14,7 @@
         <Input type="text" v-model="detail.name" ></Input>
       </FormItem>
       <FormItem label="父菜单" prop="parentId">
-        <Select v-model="detail.parentId">
+        <Select v-model="detail.parentId" filterable >
           <Option v-for="(item, index) in parentList" :key="index" :value="item.id">{{item.name}}</Option>
         </Select>
       </FormItem>

@@ -7,7 +7,7 @@
     <div  slot="search"  >
       <Form :label-width="110" class="common-form">
         <FormItem label="菜单名" prop="parentId">
-          <Select v-model="search.menuId" clearable>
+          <Select v-model="search.menuId" clearable filterable>
             <Option v-for="(item, index) in menuList" :key="index" :value="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
