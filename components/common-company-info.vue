@@ -910,15 +910,6 @@ export default {
             //经营状态数据------
             businessStatusArr: [],
 
-            infoBusine:{
-                id:'',
-                corpName:'',
-                legalPerson:'',
-                imageUrl:'',
-                imageData:'',
-            },
-
-
             tabName:'name1',
 
             showChange:null,
@@ -934,7 +925,10 @@ export default {
             ],
             //门店特色数据--
             storeSpecialsArr:[],
-          timer: null
+          timer: null,
+
+          map:null,//地图---
+          geocoder:null,//地标
         }
     },
     computed:{
@@ -989,6 +983,9 @@ export default {
       this.getValuesByTypeFun(1)
       this.getValuesByTypeFun(34)
       this.getType()
+      $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2&plugin=AMap.Geocoder',()=>{
+        this.init()
+      });
     },
     methods:{
       //数据合并-------------
@@ -1385,10 +1382,10 @@ export default {
               this.listSearch.yyState=false;
           }
         },
-      changeBusinessAddress(){
+      changeBusinessAddress(event){
         clearTimeout(this.timer)
         this.timer= setTimeout(()=>{
-
+          this.geoCode(event.target.value);
         },500)
       },
       markChange(field){
@@ -1401,7 +1398,37 @@ export default {
         }
 
         return flag
-      }
+      },
+      init(){
+            this.map = new AMap.Map("container", {
+                resizeEnable: true
+            });
+      },
+
+    
+    geoCode(value){
+      var self=this;
+        if(!this.geocoder){
+            this.geocoder = new AMap.Geocoder({
+                city: "021", //城市设为北京，默认：“全国”
+            });
+        }
+        this.geocoder.getLocation(value, function(status, result) {
+            if (status === 'complete'&&result.geocodes.length) {
+              
+                var lnglat = result.geocodes[0].location;
+                console.log(self,lnglat);
+                self.requireList.longitude=lnglat.lng;
+                self.requireList.latitude=lnglat.lat;
+                
+            }else{
+              self.requireList.longitude='';
+                self.requireList.latitude='';
+              // alert('请输入有效地址')
+            }
+        });
+    }
+    
     },
 }
 </script>
