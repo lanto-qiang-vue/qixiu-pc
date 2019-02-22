@@ -16,36 +16,37 @@
 
       <common-company-info :roleType="roleType" ref="comA" @saveInfoFun="saveInfoFun" @tabStatusFun="tabStatusFun"></common-company-info>
 
-      <change-company-info :showChange="showChange" :detailId="detailId"></change-company-info>
+      <change-company-info :showChange="showChange" :detailId="listSearch.id"></change-company-info>
     </div>
     <div slot="footer">
 
 
       <Button  size="large" type="primary" @click="auditBut('guanlibumen-crux')"
-               v-if="accessBtn('audit-crux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status==2">审核</Button>
+               v-if="accessBtn('audit-crux')" v-show="(isRequire&&listSearch.id)" :disabled="listSearch.status==2">审核</Button>
 
 
       <Button  size="large" type="primary" @click="addCompany"
-               v-if="accessBtn('insert')" v-show="!detailData">保存</Button>
+               v-if="accessBtn('insert')" v-show="!listSearch.id">保存</Button>
       <Button  size="large" type="primary" @click="addCompany" :disabled="listSearch.status==1"
-               v-if="accessBtn('editcrux')" v-show="(isRequire&&detailData)">提交关键</Button>
+               v-if="accessBtn('editcrux')" v-show="(isRequire&&listSearch.id)">提交关键</Button>
       <Button  size="large" type="primary" @click="addCompany" :disabled="generalList.generalStatus==1"
-               v-if="accessBtn('editgeneral')" v-show="(!isRequire&&detailData)">提交一般</Button>
+               v-if="accessBtn('editgeneral')" v-show="(!isRequire&&generalList.id)">提交一般</Button>
 
       <Button  size="large" type="primary" @click="auditBut('yunying-crux')"
-               v-if="accessBtn('auditcrux')" v-show="(isRequire&&detailData)" :disabled="listSearch.status!=1">审核关键</Button>
+               v-if="accessBtn('auditcrux')" v-show="(isRequire&&listSearch.id)" :disabled="listSearch.status!=1">审核关键</Button>
       <Button  size="large" type="primary" @click="auditBut('yunying-general')"
-               v-if="accessBtn('auditgeneral')" v-show="(!isRequire&&detailData)" :disabled="generalList.generalStatus!=1">审核一般</Button>
+               v-if="accessBtn('auditgeneral')" v-show="(!isRequire&&generalList.id)" :disabled="generalList.generalStatus!=1">审核一般</Button>
 
-      <Button  size="large" type="primary" v-show="detailData"
+
+      <Button  size="large" type="primary" v-show="generalList.id"
                v-if="accessBtn('changelist')"
-              @click="showChange=Math.random(),detailId=listSearch.id">查看变更
+              @click="showChange=Math.random()">查看变更
       </Button>
 
-      <Button  size="large" type="primary" v-show="(generalList.createKey&&generalList.code)"
+      <Button  size="large" type="primary" v-show="(listSearch.createKey&&listSearch.code)"
                v-if="accessBtn('create')" @click="resetKey">重置密钥
       </Button>
-      <Button  size="large" type="primary" v-show="(!generalList.createKey&&generalList.code)"
+      <Button  size="large" type="primary" v-show="(!listSearch.createKey&&listSearch.code)"
                v-if="accessBtn('create')" @click="addKey">创建密钥
       </Button>
       <Button size="large" type="default" @click="showModal=false;">返回</Button>
@@ -127,12 +128,8 @@
     data() {
       let rules={ required: true, message: '必填项不能为空' };
       return {
-        infoId:null,//查看详情id
-        showSaveInfo:null,//提交保存---
-        clearRules:null,//清除规则
-        detailId: null,
         showChange: null,
-        // spinShow:false,
+
         showModal: false,
 
         showKey: false,//对接密钥显隐
@@ -294,13 +291,15 @@
             switch (this.auditType){
               case 'guanlibumen-crux':
               case 'yunying-crux':{
-                this.listSearch.status=this.auditInfo.status;
-                this.listSearch.auditInfo=this.auditInfo.auditInfo;
+                // this.listSearch.status=this.auditInfo.status;
+                // this.listSearch.auditInfo=this.auditInfo.auditInfo;
+                this.getDetail(this.listSearch.id);
                 break
               }
               case 'yunying-general':{
-                this.generalList.status=this.auditInfo.status;
-                this.generalList.auditInfo=this.auditInfo.auditInfo;
+                // this.generalList.status=this.auditInfo.status;
+                // this.generalList.auditInfo=this.auditInfo.auditInfo;
+                this.getDetail1(this.listSearch.id);
                 break
               }
             }

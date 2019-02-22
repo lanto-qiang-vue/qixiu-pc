@@ -27,7 +27,7 @@
             </FormItem>
             <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('registerDate')}, 'width45']" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
-                          v-model="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
+                          :value="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
 
             <FormItem label="经营地地址:" :class="[{'mark-change': markChange('businessAddress')}, 'width45']" prop="businessAddress">
@@ -47,7 +47,7 @@
             </FormItem>
 
             <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
-              <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, true)"
+              <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, [])"
                       :transfer="true">
                 <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
@@ -78,7 +78,7 @@
 
         </TabPane>
 <!--这边是第二步骤        -->
-        <TabPane :label="label1" name="name2" v-show="roleType!='guanlibumen'">
+        <TabPane :label="label1" name="name2" v-if="roleType!='guanlibumen'">
           <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
@@ -1033,9 +1033,11 @@ export default {
 
             if (this.requireList['businessScope']) {
                 // console.log("this.requireList['businessScope']",this.requireList['businessScope']);
-                this.repairTypeFun(this.requireList['businessScope'])
+                this.repairTypeFun(this.requireList['businessScope'], deepClone(this.requireList.businessScope2))
             }
-            this.geoCode(this.requireList.businessAddress)
+            if(!this.requireList.longitude || !this.requireList.latitude){
+              this.geoCode(this.requireList.businessAddress)
+            }
           }else{
             this.uploadData= this.requireList
           }
@@ -1052,6 +1054,8 @@ export default {
               if (i == 'businessHours') {
                 this.listSearch[i] = this.uploadOtherData[i]
                 this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
+              }else if(i=='registerDate'){
+                  this.listSearch[i] = formatDate(this.uploadOtherData[i]);
               }else if(i=='yyState'){
                   this.listSearch[i] = this.uploadOtherData[i].toString();
               }else if(i=='sincerityYears'){
@@ -1148,14 +1152,16 @@ export default {
         return obj
       },
       //选择维修类别时带的参数--------
-      repairTypeFun(val, clear) {
+      repairTypeFun(val, arr) {
+        // console.log('repairTypeFun.clear', clear)
         if (!val) {
           return
         }
-        if(clear) this.requireList['businessScope2'] = ''
+        this.requireList['businessScope2'] = []
         this.$axios.get('/dict/value/' + val, {}).then((res) => {
           if (res.data.code == '0') {
               this.businessScope2 = res.data.items
+            this.requireList.businessScope2=arr
           }
         })
       },

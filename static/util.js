@@ -158,6 +158,7 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
             item.meta[key]= route.meta[key]
           }
           item.meta.title= menuItem.name
+          route.meta.perTitle= menuItem.name
           item.children= matchList(route.children, menuItem.children, route.alias)
           res.push(item)
         }
@@ -180,6 +181,7 @@ export const matchItem = ( routers, menuItem, path) => {
         item.meta[key]= route.meta[key]
       }
       item.meta.title= menuItem.name
+      route.meta.perTitle= menuItem.name
       item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
       arr.push(item)
     }
@@ -217,6 +219,7 @@ export const matchList = ( routers, accessMenu, path) => {
           item.meta[key]= route.meta[key]
         }
         item.meta.title= menuItem.name
+        route.meta.perTitle= menuItem.name
         item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
         arr.push(item)
       }
