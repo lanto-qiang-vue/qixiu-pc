@@ -17,7 +17,7 @@
         <Input type="text" v-model="detail.btnId" ></Input>
       </FormItem>
       <FormItem label="菜单名" prop="menuId">
-        <Select v-model="detail.menuId">
+        <Select v-model="detail.menuId" filterable>
           <Option v-for="(item, index) in menuList" :key="index" :value="item.id">{{item.name}}</Option>
         </Select>
       </FormItem>
