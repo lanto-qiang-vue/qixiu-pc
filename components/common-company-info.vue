@@ -139,7 +139,7 @@
               </Select>
             </FormItem>
 
-            <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('erpName')}, 'width45']">
+            <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('erpId')}, 'width45']">
               <!--<Input type="text" v-model="listSearch.erpId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.erpName" :showChange="showChange" :tableData="tableData" :flagData=2 @closeSelect="closeSelect" @onRowSelect="onRowSelect"></unit-search-input>
             </FormItem>
@@ -159,7 +159,7 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandName')}, 'width45']" v-show="listSearch.special?true:false">
+            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandId')}, 'width45']" v-show="listSearch.special?true:false">
 
               <!--<Input type="text" v-model="listSearch.majorBrandId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.majorBrandName" :showChange="showChange" :tableData="tableData1" :flagData=3 @closeSelect="closeSelect" @onRowSelect="onRowSelect1"></unit-search-input>
@@ -172,7 +172,7 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="品牌:" :class="[{'mark-change': markChange('brandName')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
+            <FormItem label="品牌:" :class="[{'mark-change': markChange('brandId')}, 'width45']" v-show="listSearch.chainBusiness?true:false">
               <!--<Input type="text" v-model="listSearch.brandId" placeholder=""></Input>-->
               <unit-search-input  :searchTableData="listSearch.brandName" :showChange="showChange" :tableData="tableData2" :flagData=4 @closeSelect="closeSelect" @onRowSelect="onRowSelect2"></unit-search-input>
             </FormItem>
