@@ -928,10 +928,16 @@ export default {
           timer: null,
 
           geocoder:null,//地标
-          isCompany:true,
         }
     },
     computed:{
+      isCompany(){
+          if(this.roleType=="weixiuqiye"){
+            return false;
+          }else{
+            return true;
+          }
+      },
       label(){
         let obj= this.calcStatus(this.requireList.status)
         return (h) => {
@@ -990,11 +996,7 @@ export default {
         });
       });
 
-      if(this.roleType=="weixiuqiye"){
-        this.isCompany=false;
-      }else{
-        this.isCompany=true;
-      }
+      
     },
     methods:{
       //数据合并-------------
