@@ -454,7 +454,7 @@
               <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
             </FormItem>
             <div></div>
-            <FormItem label="是否为全国诚信维修企业:" :class="[{'mark-change': markChange('sincerity,sincerityYears')}, 'width90']">
+            <FormItem label="是否为全国诚信维修企业:" :class="[{'mark-change': markChange('sincerity')}, 'width90']">
               <i-switch size="large" v-model="listSearch.sincerity" @on-change="changeSincerity">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
@@ -462,7 +462,7 @@
 
             </FormItem>
 
-            <FormItem label="成为全国诚信维修企业的年份:" :class="[{'mark-change': markChange('')}, 'width90']" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
+            <FormItem label="成为全国诚信维修企业的年份:" :class="[{'mark-change': markChange('sincerityYears')}, 'width90']" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
               <ul class="ivu-input" style="height: auto">
                 <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
@@ -479,19 +479,19 @@
               </RadioGroup>
             </FormItem>
 
-            <FormItem label="是否提供上门维修:" :class="[{'mark-change': markChange('offerOnsiteRepair,serviceCategory,serviceCategoryOther')}, 'width90']">
+            <FormItem label="是否提供上门维修:" :class="[{'mark-change': markChange('offerOnsiteRepair')}, 'width90']">
 
               <i-switch size="large" v-model="listSearch.offerOnsiteRepair">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="提供上门服务种类:" :class="[{'mark-change': markChange('')}, 'width90']" v-show="listSearch.offerOnsiteRepair">
+            <FormItem label="提供上门服务种类:" :class="[{'mark-change': markChange('serviceCategory')}, 'width90']" v-show="listSearch.offerOnsiteRepair">
               <CheckboxGroup v-model="listSearch.serviceCategory">
                 <Checkbox v-for="item in visitService" :label="item.key" :key="item.key">{{item.name}}</Checkbox>
               </CheckboxGroup>
             </FormItem>
-            <FormItem label="其他服务种类:" :class="[{'mark-change': markChange('')}, 'width45']"
+            <FormItem label="其他服务种类:" :class="[{'mark-change': markChange('serviceCategoryOther')}, 'width45']"
                       v-show="(listSearch.serviceCategory&&listSearch.serviceCategory.indexOf(300007)==-1?false:true)&&listSearch.offerOnsiteRepair" prop="serviceCategoryOther">
               <Input type="text" v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
@@ -927,7 +927,6 @@ export default {
             storeSpecialsArr:[],
           timer: null,
 
-          map:null,//地图---
           geocoder:null,//地标
         }
     },
@@ -984,7 +983,9 @@ export default {
       this.getValuesByTypeFun(34)
       this.getType()
       $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2&plugin=AMap.Geocoder',()=>{
-        this.init()
+        this.geocoder = new AMap.Geocoder({
+          city: "021",
+        });
       });
     },
     methods:{
@@ -1405,30 +1406,24 @@ export default {
             });
       },
 
-    
+
     geoCode(value){
-      var self=this;
         if(!this.geocoder){
             this.geocoder = new AMap.Geocoder({
-                city: "021", //城市设为北京，默认：“全国”
+                city: "021",
             });
         }
-        this.geocoder.getLocation(value, function(status, result) {
+        this.geocoder.getLocation(value, (status, result)=> {
             if (status === 'complete'&&result.geocodes.length) {
-              
-                var lnglat = result.geocodes[0].location;
-                console.log(self,lnglat);
-                self.requireList.longitude=lnglat.lng;
-                self.requireList.latitude=lnglat.lat;
-                
+                let lnglat = result.geocodes[0].location;
+                this.requireList.longitude=lnglat.lng;
+                this.requireList.latitude=lnglat.lat;
             }else{
-              self.requireList.longitude='';
-                self.requireList.latitude='';
-              // alert('请输入有效地址')
+                
             }
         });
     }
-    
+
     },
 }
 </script>
