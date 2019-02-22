@@ -1400,12 +1400,6 @@ export default {
 
         return flag
       },
-      init(){
-            this.map = new AMap.Map("container", {
-                resizeEnable: true
-            });
-      },
-
 
     geoCode(value){
         if(!this.geocoder){
@@ -1419,7 +1413,15 @@ export default {
                 this.requireList.longitude=lnglat.lng;
                 this.requireList.latitude=lnglat.lat;
             }else{
-                
+            this.ruleValidate1.businessAddress.push({
+              validator: (rule, rval, callback) => {
+                if (value === rval) {
+                  callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
+                } else {
+                  callback();
+                }
+              }
+            })
             }
         });
     }
