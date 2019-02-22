@@ -133,7 +133,7 @@
             </FormItem>
 
 
-            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']" v-show="isCompany">
+            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']" v-show="!isCompany">
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
@@ -203,21 +203,21 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="isCompany">
+            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.show">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']" v-show="isCompany">
+            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.zdz">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']" v-show="isCompany">
+            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.buttJoint">
                 <span slot="open">是</span>
@@ -226,7 +226,7 @@
             </FormItem>
 
 
-            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']" v-show="isCompany">
+            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']" v-show="!isCompany">
 
               <i-switch size="large" v-model="listSearch.useHss">
                 <span slot="open">是</span>
@@ -242,10 +242,10 @@
 
 
             <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
-              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true" :disabled="!isCompany">
+              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true" :disabled="isCompany">
                 <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
-              <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="isCompany">新增</Button>
+              <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="!isCompany">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
               <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
@@ -941,11 +941,16 @@ export default {
 
           geocoder:null,//地标
           wrongAddress: [],
-          isCompany:true,
-
         }
     },
     computed:{
+      isCompany(){
+          if(this.roleType=="weixiuqiye"){
+            return true;
+          }else{
+            return false;
+          }
+      },
       label(){
         let obj= this.calcStatus(this.requireList.status)
         return (h) => {
@@ -1004,11 +1009,7 @@ export default {
         });
       });
 
-      if(this.roleType=="weixiuqiye"){
-        this.isCompany=false;
-      }else{
-        this.isCompany=true;
-      }
+
     },
     methods:{
       //数据合并-------------
@@ -1049,6 +1050,7 @@ export default {
 
             for (let i in this.uploadOtherData) {
               if (i == 'businessHours') {
+                this.listSearch[i] = this.uploadOtherData[i]
                 this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
               }else if(i=='yyState'){
                   this.listSearch[i] = this.uploadOtherData[i].toString();
