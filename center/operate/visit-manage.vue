@@ -155,7 +155,7 @@ export default {
           this.detailData= null
           this.clearTableSelect= Math.random()
           this.showFlag=true;
-
+          this.updateFlag=true;
           this.getList();
         },
         //删除按钮----------
