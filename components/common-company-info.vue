@@ -40,10 +40,10 @@
               </Select>
             </FormItem>
             <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('longitude')}, 'width45']" prop="longitude">
-              <Input type="text" v-model="requireList.longitude" placeholder="请输入经营地址经度"></Input>
+              <Input type="text" v-model="requireList.longitude" :readonly="isCompany" placeholder="请输入经营地址经度" ></Input>
             </FormItem>
             <FormItem label="经营地址维度:" :class="[{'mark-change': markChange('latitude')}, 'width45']" prop="latitude">
-              <Input type="text" v-model="requireList.latitude" placeholder="请输入经营地址维度"></Input>
+              <Input type="text" v-model="requireList.latitude" :readonly="isCompany" placeholder="请输入经营地址维度"></Input>
             </FormItem>
 
             <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
@@ -133,7 +133,7 @@
             </FormItem>
 
 
-            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']">
+            <FormItem label="备案状态:" :class="[{'mark-change': markChange('beianStatus')}, 'width45']" v-show="isCompany">
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
@@ -203,21 +203,21 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']">
+            <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="isCompany">
 
               <i-switch size="large" v-model="listSearch.show">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']">
+            <FormItem label="总对总:" :class="[{'mark-change': markChange('zdz')}, 'width45']" v-show="isCompany">
 
               <i-switch size="large" v-model="listSearch.zdz">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']">
+            <FormItem label="是否对接:" :class="[{'mark-change': markChange('buttJoint')}, 'width45']" v-show="isCompany">
 
               <i-switch size="large" v-model="listSearch.buttJoint">
                 <span slot="open">是</span>
@@ -226,7 +226,7 @@
             </FormItem>
 
 
-            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']">
+            <FormItem label="使用好修修门店系统:" :class="[{'mark-change': markChange('useHss')}, 'width45']" v-show="isCompany">
 
               <i-switch size="large" v-model="listSearch.useHss">
                 <span slot="open">是</span>
@@ -242,10 +242,10 @@
 
 
             <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
-              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true">
+              <Select v-model="listSearch.source" clearable style="width: 70%" :transfer="true" :disabled="!isCompany">
                 <Option v-for="item in channels" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
-              <Button size="large" type="primary" @click="showAdd=true,sourceName=''">新增</Button>
+              <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="isCompany">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
               <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
@@ -940,7 +940,9 @@ export default {
           timer: null,
 
           geocoder:null,//地标
-          wrongAddress: []
+          wrongAddress: [],
+          isCompany:true,
+
         }
     },
     computed:{
@@ -976,7 +978,8 @@ export default {
         let str1=this.uploadData.fields?this.uploadData.fields.join(','):''
         let str2=this.uploadOtherData.fields?this.uploadOtherData.fields.join(','):''
         return str1+ str2
-      }
+      },
+
     },
     watch:{
 
@@ -1000,6 +1003,12 @@ export default {
           city: "021",
         });
       });
+
+      if(this.roleType=="weixiuqiye"){
+        this.isCompany=false;
+      }else{
+        this.isCompany=true;
+      }
     },
     methods:{
       //数据合并-------------
