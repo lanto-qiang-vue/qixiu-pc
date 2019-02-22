@@ -82,7 +82,7 @@
     <Modal v-model="modal2" title="调整营业时间或状态" :transfer="false"
     :footer-hide="false"
     :mask-closable="false" :z-index="1000" :transition-names="['', '']" width="525" @on-visible-change="visibleChange">
-      <Form :label-width="120" style="width: 300px;" ref="businessHours" :rules="ruleValidate1" :model="businessHours"> 
+      <Form :label-width="120" style="width: 300px;" ref="businessHours" :rules="ruleValidate1" :model="businessHours">
         <FormItem label="营业状态:" prop="yyState">
             <Select v-model="businessHours.yyState" :transfer="true">
                 <Option v-for="item in yyStateArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
@@ -205,7 +205,7 @@
         ruleValidate1: {
             businessHours: [{ required: true , message: '必填项不可为空' },{
                   validator: (rule, value, callback) => {
-                    
+
                     if (value.length >0 && !value[0]&&!value[1]) {
                       callback(new Error('必填项不可为空'));
                     }else{
@@ -260,8 +260,10 @@
           if(res.status == 200){
             this.buttData = res.data.content;
           }
-          if(res.data.content.length == 0){
+          if(res.data.content &&res.data.content.length == 0){
             this.showType = true;
+          }else if(res.data.code=='1000'){
+            this.$router.push('/')
           }
         })
       },
@@ -440,7 +442,7 @@
                 })
           }
         })
-          
+
         },
         visibleChange(status) {
           if (status === false) {

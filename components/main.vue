@@ -95,6 +95,8 @@ export default {
        this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
          if(res.data.content &&res.data.content.length == 0){
            this.showType = true;
+         }else if(res.data.code=='1000'){
+           this.$router.push('/')
          }
        })
      },
