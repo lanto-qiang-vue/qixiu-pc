@@ -827,7 +827,19 @@ export default {
                     }
                   }
                 }],
-                businessAddress: [rulesObj],
+                businessAddress: [rulesObj, {
+                    validator: (rule, value, callback) => {
+                      let wrongAddress= this.$data.wrongAddress, flag=false
+                      for(let i in wrongAddress){
+                        if (value == wrongAddress[i]) flag= true
+                      }
+                      if (flag) {
+                        callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
+                      } else {
+                        callback();
+                      }
+                    }
+                }],
                 businessRegion: [rulesObj],
                 longitude: [rulesObj],
                 latitude: [rulesObj],
@@ -928,6 +940,7 @@ export default {
           timer: null,
 
           geocoder:null,//地标
+          wrongAddress: []
         }
     },
     computed:{
@@ -1012,6 +1025,7 @@ export default {
                 // console.log("this.requireList['businessScope']",this.requireList['businessScope']);
                 this.repairTypeFun(this.requireList['businessScope'])
             }
+            this.geoCode(this.requireList.businessAddress)
           }else{
             this.uploadData= this.requireList
           }
@@ -1401,30 +1415,25 @@ export default {
         return flag
       },
 
-    geoCode(value){
-        if(!this.geocoder){
-            this.geocoder = new AMap.Geocoder({
-                city: "021",
-            });
-        }
-        this.geocoder.getLocation(value, (status, result)=> {
-            if (status === 'complete'&&result.geocodes.length) {
-                let lnglat = result.geocodes[0].location;
-                this.requireList.longitude=lnglat.lng;
-                this.requireList.latitude=lnglat.lat;
-            }else{
-            this.ruleValidate1.businessAddress.push({
-              validator: (rule, rval, callback) => {
-                if (value === rval) {
-                  callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
-                } else {
-                  callback();
-                }
+      geoCode(value){
+          if(!this.geocoder){
+              this.geocoder = new AMap.Geocoder({
+                  city: "021",
+              });
+          }
+          this.geocoder.getLocation(value, (status, result)=> {
+              if (status === 'complete'&&result.geocodes.length) {
+                  let lnglat = result.geocodes[0].location;
+                  this.requireList.longitude=lnglat.lng;
+                  this.requireList.latitude=lnglat.lat;
+              }else{
+                this.requireList.longitude= '';
+                this.requireList.latitude= '';
+                this.wrongAddress.push(value)
+                this.$refs.requireList.validateField('businessAddress')
               }
-            })
-            }
-        });
-    }
+          });
+      }
 
     },
 }
