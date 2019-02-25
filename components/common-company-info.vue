@@ -107,8 +107,8 @@
 
             <FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">
               <Select v-model="listSearch.yyState" :transfer="true" clearable>
-                <Option value="true">营业中</Option>
-                <Option value="false" >休息中</Option>
+                <Option value="false">营业中</Option>
+                <Option value="true" >休息中</Option>
               </Select>
             </FormItem>
             <FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">
