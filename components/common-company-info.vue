@@ -251,11 +251,17 @@
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
               <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
             </FormItem>
-            <FormItem label="企业服务优势自我描述:" :class="[{'mark-change': markChange('desc')}, 'width90']">
-              <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
+
+            <FormItem label="备注:" :class="[{'mark-change': markChange('backup')}, 'width90']" v-show="!isCompany">
+              <Input type="textarea" :rows="3" v-model="listSearch.backup" placeholder="请输入备注"></Input>
             </FormItem>
 
-
+            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('selfIntroduction')}, 'width90']">
+              <Input type="textarea" :rows="3" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
+            </FormItem>
+            <FormItem label="企业服务优势自我描述:" :class="[{'mark-change': markChange('desc')}, 'width90']">
+              <Input type="textarea" :rows="3" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
+            </FormItem>
             <FormItem label="工时定额执行标准:" :class="[{'mark-change': markChange('workingHoursQuotaExecutionStandard')}, 'width45']">
               <Select v-model="listSearch.workingHoursQuotaExecutionStandard" :transfer="true">
                 <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
@@ -511,9 +517,7 @@
               </i-switch>
 
             </FormItem>
-            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('selfIntroduction')}, 'width90']">
-              <Input type="textarea" :rows="1" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
-            </FormItem>
+
             <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('honerModels')}, 'width90']" prop="honerModels">
               <ul class="ivu-input" style="height: auto">
                 <li v-for="(item,index) in listSearch.honerModels" :key="index">
@@ -643,6 +647,7 @@ let initList={
     "erpName":'',
     "brandName":'',
     "majorBrandName":'',
+    "backup":'',
     fields:[]
 };
 let initList1={

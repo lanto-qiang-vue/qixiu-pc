@@ -150,7 +150,7 @@
         buttColumns:[
           {title: '联系人', key: 'contactName',  minWidth: 100,},
           {title: '联系人手机', key: 'contactMobile',  minWidth: 100,},
-          {title: '操作', key: 'cz',  width: 150,
+          {title: '操作', key: 'cz',  width: 100,
             render: (h, params) => {
               let buttonContent= '更改';
               let buttonStatus = 'primary';
@@ -205,7 +205,7 @@
             }
           },
           {title: '营业时间', key: 'businessHours',  minWidth: 100,},
-          {title: '操作', key: 'cz',  width: 150,
+          {title: '操作', key: 'cz',  width: 100,
             render: (h, params) => {
               let buttonContent= '更改';
               let buttonStatus = 'primary';
@@ -224,7 +224,7 @@
                       this.modal2=true;
                       this.businessHours.yyState=this.infoData[0].yyState;
                       this.businessHours.businessHours=this.infoData[0].businessHours.split('-');
-                      
+
                     }
                   }
                 }, buttonContent),
@@ -251,9 +251,9 @@
                 ]);
               }
           },
-          {title: '操作', key: 'cz',  width: 150,
+          {title: '操作', key: 'cz',  width: 120,
             render: (h, params) => {
-              let buttonContent= '选特色';
+              let buttonContent= '选择特色';
               let buttonStatus = 'primary';
               return h('div', [
                 h('Button', {
@@ -261,7 +261,7 @@
                     type: buttonStatus,
                   },
                   style: {
-                    width:"60px",
+                    // width:"60px",
                     textAlign: "center",
                     marginRight: '10px',
                   },
