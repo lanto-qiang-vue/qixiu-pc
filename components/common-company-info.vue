@@ -82,7 +82,7 @@
           <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
-            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('manageArr')}, 'width45']" prop="manageArr">
+            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
@@ -105,16 +105,16 @@
               <Input type="text" v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
 
-            <FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">
-              <Select v-model="listSearch.yyState" :transfer="true" clearable>
-                <Option value="true">营业中</Option>
-                <Option value="false" >休息中</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">
-              <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"
-                          style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>
-            </FormItem>
+            <!--<FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">-->
+              <!--<Select v-model="listSearch.yyState" :transfer="true" clearable>-->
+                <!--<Option value="false">营业中</Option>-->
+                <!--<Option value="true" >休息中</Option>-->
+              <!--</Select>-->
+            <!--</FormItem>-->
+            <!--<FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">-->
+              <!--<TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"-->
+                          <!--style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>-->
+            <!--</FormItem>-->
             <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']">
               <Select v-model="listSearch.businessStatus" :transfer="true">
                 <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
@@ -234,11 +234,11 @@
               </i-switch>
             </FormItem>
 
-            <FormItem label="门店特色:" :class="[{'mark-change': markChange('storeSpecials')}, 'width45']">
-              <Select v-model="listSearch.storeSpecials" multiple clearable :transfer="true">
-                <Option v-for="item in storeSpecialsArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
+            <!--<FormItem label="门店特色:" :class="[{'mark-change': markChange('storeSpecials')}, 'width45']">-->
+              <!--<Select v-model="listSearch.storeSpecials" multiple clearable :transfer="true">-->
+                <!--<Option v-for="item in storeSpecialsArr" :value="item.id" :key="item.id">{{ item.name }}</Option>-->
+              <!--</Select>-->
+            <!--</FormItem>-->
 
 
             <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
@@ -1087,9 +1087,7 @@ export default {
                 for(let i in this.uploadData){
                   this.uploadData[i]= this.requireList[i]
                 }
-                for(let i in this.uploadOtherData){
-                  this.uploadOtherData[i]=this.listSearch[i];
-                }
+                this.dealGeneralInfo()
                 temData={...this.uploadData, ...this.uploadOtherData}
                 this.$emit('saveInfoFun',temData);
               }else{
@@ -1117,14 +1115,42 @@ export default {
 
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
-              for(let i in this.uploadOtherData){
-                this.uploadOtherData[i]=this.listSearch[i];
-              }
+              this.dealGeneralInfo()
               this.$emit('saveInfoFun',this.uploadOtherData);
 
           }
         })
       },
+
+      dealGeneralInfo(){
+        for(let key in this.uploadOtherData){
+          switch (key){
+            case 'isoPic':{
+              if(!this.listSearch.iso){
+                this.uploadOtherData[key]= ''
+              }
+              break
+            }
+            case 'safePic':{
+              if(!this.listSearch.throughSafetyProductionStandardization){
+                this.uploadOtherData[key]= ''
+              }
+              break
+            }
+            case 'greenPic':{
+              if(!this.listSearch.throughEnvironmentalProtectionSpecialRenovation){
+                this.uploadOtherData[key]= ''
+              }
+              break
+            }
+            default:{
+              this.uploadOtherData[key]=this.listSearch[key];
+            }
+          }
+
+        }
+      },
+
       calcStatus(status){
         let obj={}
         switch (status){

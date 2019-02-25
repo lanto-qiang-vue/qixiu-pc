@@ -2,10 +2,10 @@
   <div style="width: 90%;">
 
 
-      <div class="demo-upload-list" v-for="item in uploadList">
-        <img :src="item">
+      <div class="demo-upload-list" v-for="(item, index ) in uploadList" :key="index">
+        <img :src="item" v-img :ref="'img'+index">
         <div class="demo-upload-list-cover">
-          <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+          <Icon type="ios-eye-outline" @click.native="handleView('img'+index)"></Icon>
           <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
         </div>
       </div>
@@ -31,10 +31,6 @@
         <Button icon="ios-cloud-upload-outline">{{this.description}}</Button>
         </Upload>
 
-
-    <Modal title="查看图片" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
-    </Modal>
   </div>
 </template>
 <script>
@@ -42,11 +38,6 @@
     name: 'common-info-upload',
     data() {
       return {
-        defaultList: [
-
-        ],
-        imgName: '',
-        visible: false,
         uploadList: [
 
         ]
@@ -65,8 +56,7 @@
     },
     methods: {
       handleView(name) {
-        this.imgName = name
-        this.visible = true
+        this.$refs[name][0].click()
       },
       handleRemove(file) {
         this.uploadList.splice(this.uploadList.indexOf(file),1);

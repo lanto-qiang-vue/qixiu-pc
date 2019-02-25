@@ -1,8 +1,8 @@
 <template>
-  <div style="width:100%;position:relative;">
+  <div class="unit-search-input">
     <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType">
     </Input>
-    <span style="position:absolute;right:32px;top:2px;cursor: pointer;z-index: 100;font-size: 16px;" v-show="selectType" @click="closeSelect"><Icon type="ios-close-circle" /></span>
+    <Icon type="ios-close-circle" class="close" v-show="selectType" @click="closeSelect"/>
     <div v-show="inputShow" v-clickoutside="handleClose" style="position:absolute;top:31px;z-index:99;">
       <Table
         :data="data"
@@ -10,7 +10,7 @@
         stripe
         border
         height="400"
-        
+
         :highlight-row="true"
         :loading="loading"
         :row-class-name="rowClassName"
@@ -67,7 +67,7 @@
           this.selectType=false;
           this.disType=false;
         }
-        
+
       }
     },
     mounted(){
@@ -83,7 +83,7 @@
           //   this.$emit('onRowSelect',row);
         }
         this.inputShow = false;
-       
+
       },
 
       //清空搜索数据
@@ -92,7 +92,7 @@
         this.inputData="";
         this.selectType=false;
         this.disType=false;
-
+        this.$emit('onRowSelect',{});
       },
       onRowClick( row, index){
           console.log('row：',row);
@@ -122,7 +122,7 @@
                 this.loading=true;
                 let strUrl='';
                 strUrl+='&name='+this.inputData;
-                    
+
                 this.$axios.get('/training/driving/base/query?size=25&page=0'+strUrl, {
                 }).then( (res) => {
                     console.log(res);
@@ -138,7 +138,7 @@
 
             }else if(this.flagData==2){
                 this.loading=true;
-                
+
                 this.$axios.post('/corp/erp/name', {
                   "name":this.inputData
                 }).then( (res) => {
@@ -154,7 +154,7 @@
                 })
             }else if(this.flagData==3){
                 this.loading=true;
-                
+
                 this.$axios.post('/corp/major/brand/name', {
                   "name":this.inputData
                 }).then( (res) => {
@@ -170,11 +170,11 @@
                 })
             }else if(this.flagData==4){
                 this.loading=true;
-                
+
                 this.$axios.post('/corp/brand/name', {
                   "name":this.inputData
                 }).then( (res) => {
-                    
+
                     if(res.data.code==='0'){
                         this.data=res.data.items;
                         // this.total=res.data.totalElements;
@@ -185,13 +185,23 @@
                     }
                 })
             }
-            
+
 
       },
     },
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.unit-search-input{
+  position: relative;
+  .close{
+    font-size: 16px;
+    position:absolute;
+    cursor: pointer;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 </style>
