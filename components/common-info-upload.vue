@@ -34,8 +34,14 @@
   </div>
 </template>
 <script>
+  import { getType} from '~/static/util.js'
   export default {
     name: 'common-info-upload',
+    props:{'description':{},'callback':{},'data':{},'index':{},
+      num: {
+        default: 1
+      }
+    },
     data() {
       return {
         uploadList: [
@@ -43,17 +49,27 @@
         ]
       }
     },
-    props:{'description':{},'callback':{},'data':{},'index':{},
-      num: {
-          default: 1
-      }
-    },
     watch:{
       data(val){
-        this.uploadList=val? [val]: []
+        if(val) this.pushList(val)
       }
     },
+    mounted() {
+      if(this.data) this.pushList(this.data)
+    },
     methods: {
+      pushList(data){
+        switch (getType(data)){
+          case 'string':{
+            this.uploadList=data? [data]: []
+            break
+          }
+          case 'array':{
+            this.uploadList= data
+            break
+          }
+        }
+      },
       handleView(name) {
         this.$refs[name][0].click()
       },
@@ -73,16 +89,18 @@
         this.$Message.error('图片不能超过3M');
       },
       handleBeforeUpload() {
-        const check = this.uploadList.length < this.num
-        if (this.uploadList.length >= this.num) {
-          this.$Message.error('最多只能上传'+ this.num +'张图片');
-        }
-        return check
+        // if(this.num ==1){
+        //
+        // }else{
+        //   if (this.uploadList.length >= this.num) {
+        //     this.$Message.error('最多只能上传'+ this.num +'张图片');
+        //   }
+        // }
+
+        return true
       }
     },
-    mounted() {
-      if(this.data) this.uploadList=[this.data];
-    }
+
   }
 </script>
 <style lang="less" scoped>

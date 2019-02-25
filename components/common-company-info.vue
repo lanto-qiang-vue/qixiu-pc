@@ -249,7 +249,7 @@
               <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="!isCompany">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
-              <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
+              <DatePicker type="datetime" :value="listSearch.buttJointTime? new Date(listSearch.buttJointTime): ''" readonly></DatePicker>
             </FormItem>
 
             <FormItem label="备注:" :class="[{'mark-change': markChange('backup')}, 'width90']" v-show="!isCompany">

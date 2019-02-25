@@ -29,6 +29,9 @@ export default {
         console.log('datass', this.datass)
         let val =this.before? this.datass.beforeChange: this.datass.afterChange
         switch (this.datass.changeItem){
+          case '是否通过环保部门专项整治图片地址':
+          case '通过安全生产标准化达标认证图片地址':
+          case '通过ISO质量管理体系认证图片地址':
           case '营业执照':
           case '道路运输经营许可证':
           case '门店门头照':
@@ -46,7 +49,7 @@ export default {
                 },
               }))
             }
-            console.log('arr', arr)
+            // console.log('arr', arr)
             return h('span',arr)
             break
           }
