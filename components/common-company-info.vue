@@ -1130,31 +1130,15 @@ export default {
 
       dealGeneralInfo(){
         for(let key in this.uploadOtherData){
-          switch (key){
-            case 'isoPic':{
-              if(!this.listSearch.iso){
-                this.uploadOtherData[key]= ''
-              }else this.uploadOtherData[key]=this.listSearch[key];
-              break
-            }
-            case 'safePic':{
-              if(!this.listSearch.throughSafetyProductionStandardization){
-                this.uploadOtherData[key]= ''
-              }else this.uploadOtherData[key]=this.listSearch[key];
-              break
-            }
-            case 'greenPic':{
-              if(!this.listSearch.throughEnvironmentalProtectionSpecialRenovation){
-                this.uploadOtherData[key]= ''
-              }else this.uploadOtherData[key]=this.listSearch[key];
-              break
-            }
-            default:{
+          // switch (key){
+          //   default:{
               this.uploadOtherData[key]=this.listSearch[key];
-            }
-          }
-
+            // }
+          // }
         }
+        if(!this.uploadOtherData.iso) this.uploadOtherData.isoPic=''
+        if(!this.uploadOtherData.throughSafetyProductionStandardization) this.uploadOtherData.safePic=''
+        if(!this.uploadOtherData.throughEnvironmentalProtectionSpecialRenovation) this.uploadOtherData.greenPic=''
       },
 
       calcStatus(status){
