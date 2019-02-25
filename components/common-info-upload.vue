@@ -43,15 +43,14 @@
         ]
       }
     },
-    props:['description','callback','data','index'],
+    props:{'description':{},'callback':{},'data':{},'index':{},
+      num: {
+          default: 1
+      }
+    },
     watch:{
-      data(data){
-          console.log("进来前图片的数据：",data);
-          this.uploadList=[];
-          if(data){
-              console.log('进来图片的数据：',data);
-              this.uploadList.push(data);
-          }
+      data(val){
+        this.uploadList=val? [val]: []
       }
     },
     methods: {
@@ -64,30 +63,19 @@
       },
       handleSuccess(res, file) {
         if(res.code == 0){
-          this.uploadList.push(
-            res.item.path
-          );
-          this.$emit(this.callback,this.uploadList,this.index);
+          this.$emit(this.callback,[res.item.path],this.index);
         }
       },
       handleFormatError(file) {
-        this.$Notice.warning({
-          title: '错误提示',
-          desc: '只允许上传PNG,JPG,JPEG,BMP图片'
-        })
+        this.$Message.error('只允许上传PNG,JPG,JPEG,BMP图片');
       },
       handleMaxSize(file) {
-        this.$Notice.warning({
-          title: '错误提示',
-          desc: '图片超过3M'
-        })
+        this.$Message.error('图片不能超过3M');
       },
       handleBeforeUpload() {
-        const check = this.uploadList.length < 1
-        if (!check) {
-          this.$Notice.warning({
-            title:'最多只能上传'+ this.uploadList.length+'张图片',
-          })
+        const check = this.uploadList.length < this.num
+        if (this.uploadList.length >= this.num) {
+          this.$Message.error('最多只能上传'+ this.num +'张图片');
         }
         return check
       }

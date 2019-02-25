@@ -432,8 +432,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.iso" prop="isoPic">
-
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.iso" prop="isoPic">
               <common-info-upload :description="'上传图片'" :data="listSearch.isoPic" :callback="'isoPicFun'" @isoPicFun="isoPicFun"></common-info-upload>
             </FormItem>
             <div></div>
@@ -444,7 +443,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughSafetyProductionStandardization" prop="safePic">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughSafetyProductionStandardization" prop="safePic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.safePic" :callback="'safePicFun'" @safePicFun="safePicFun"></common-info-upload>
             </FormItem>
@@ -456,7 +455,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
             </FormItem>
@@ -763,6 +762,7 @@ export default {
                 }],
                 isoPic:[{
                   validator: (rule, value, callback) => {
+                    console.log('isoPic.validator', value)
                     if (this.$data.listSearch.iso&& !value) {
                       callback(new Error('请完善通过ISO质量管理体系认证资料'));
                     }else{
@@ -1134,19 +1134,19 @@ export default {
             case 'isoPic':{
               if(!this.listSearch.iso){
                 this.uploadOtherData[key]= ''
-              }
+              }else this.uploadOtherData[key]=this.listSearch[key];
               break
             }
             case 'safePic':{
               if(!this.listSearch.throughSafetyProductionStandardization){
                 this.uploadOtherData[key]= ''
-              }
+              }else this.uploadOtherData[key]=this.listSearch[key];
               break
             }
             case 'greenPic':{
               if(!this.listSearch.throughEnvironmentalProtectionSpecialRenovation){
                 this.uploadOtherData[key]= ''
-              }
+              }else this.uploadOtherData[key]=this.listSearch[key];
               break
             }
             default:{
@@ -1374,6 +1374,7 @@ export default {
               }else{
                 this.listSearch.isoPic='';
               }
+              this.$refs.listSearch.validateField('isoPic')
 
             },
             //iso图片上传
