@@ -244,16 +244,21 @@
 
       },
       //保存数据------
-      saveInfoFun(temData){
+      saveInfoFun(temData, type){
         let url=''
-        if (this.listSearch.id) {
-          if(this.isRequire){
-            url= '/corp/manage/crux/update/yy'
-          }else{
-            url= '/corp/manage/general/update/yy'
+        switch (type){
+          case 'insert':{
+            url = '/corp/manage/insert'
+            break
           }
-        } else {
-          url = '/corp/manage/insert'
+          case 'crux':{
+            url = '/corp/manage/crux/update/yy'
+            break
+          }
+          case 'general':{
+            url = '/corp/manage/general/update/yy'
+            break
+          }
         }
         this.$axios.post(url, temData).then((res) => {
           if (res.data.code == '0') {

@@ -1095,7 +1095,7 @@ export default {
                 }
                 this.dealGeneralInfo()
                 temData={...this.uploadData, ...this.uploadOtherData}
-                this.$emit('saveInfoFun',temData);
+                this.$emit('saveInfoFun',temData, 'insert');
               }else{
                 this.tabName="name2";
               }
@@ -1112,7 +1112,7 @@ export default {
             for(let i in this.uploadData){
               this.uploadData[i]= this.requireList[i]
             }
-              this.$emit('saveInfoFun',this.uploadData);
+              this.$emit('saveInfoFun',this.uploadData, 'crux');
           }
         })
       },
@@ -1122,7 +1122,7 @@ export default {
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
               this.dealGeneralInfo()
-              this.$emit('saveInfoFun',this.uploadOtherData);
+              this.$emit('saveInfoFun',this.uploadOtherData, 'general');
 
           }
         })
