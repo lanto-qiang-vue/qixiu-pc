@@ -115,6 +115,7 @@
               <!--<TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"-->
                           <!--style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>-->
             <!--</FormItem>-->
+
             <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']">
               <Select v-model="listSearch.businessStatus" :transfer="true">
                 <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
