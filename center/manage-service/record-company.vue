@@ -23,8 +23,8 @@
         </FormItem>
         <FormItem label="企业品牌:">
           <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>-->
-          <Select :value="searchList.chainBrand" filterable remote clearable @on-query-change="setChainBrand"
-            :remote-method="getChainBrand" placeholder="请输入企业品牌">
+          <Select v-model="searchList.chainBrand" filterable remote clearable placeholder="请输入企业品牌"
+                  @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
             <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
           </Select>
         </FormItem>
@@ -377,21 +377,7 @@ activated(){
             this.$axios({
               method: 'post',
               url: '/vehicle/repair/export',
-              data:{
-                "area": upData["area"],
-                "businessStatus": upData["businessStatus"],
-                "buttJoin": upData["buttJoin"],
-                "companyCategory": upData["companyCategory"],
-                "companyName": upData["companyName"],
-                "dept": upData["dept"],
-                "inDays": upData["inDays"],
-                "license": upData["license"],
-                "minister": upData["minister"],
-                "org": upData["org"],
-                "show": upData["show"],
-                "special": upData["special"],
-                "uploadMonth": upData["uploadMonth"],
-                },
+              data: upData,
               responseType: 'arraybuffer'
             }).then( (res) => {
                 console.log('res',res)
@@ -537,9 +523,10 @@ activated(){
           }
         })
       },
-      setChainBrand(val){
-          console.log(val)
-        // this.searchList.chainBrand= val
+      resetsetChainBrand(isShow){
+          if(!isShow && !this.searchList.chainBrand){
+            this.$refs.chainBrand.clearSingleSelect()
+          }
       }
 
     },
