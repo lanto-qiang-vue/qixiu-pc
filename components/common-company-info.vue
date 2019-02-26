@@ -470,7 +470,7 @@
 
             <FormItem label="成为全国诚信维修企业的年份:" :class="[{'mark-change': markChange('sincerityYears')}, 'width90']" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
+                <li v-for="(item, index) in listSearch.sincerityYears" :key="index" style="margin-bottom: 10px">
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
@@ -519,7 +519,7 @@
 
             <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('honerModels')}, 'width90']" prop="honerModels">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item,index) in listSearch.honerModels" :key="index">
+                <li v-for="(item,index) in listSearch.honerModels" :key="index" style="margin-bottom: 10px">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
                   <Button type="error" style="margin-left: 10px" @click="deleteHonerModels(index)">删除</Button>
