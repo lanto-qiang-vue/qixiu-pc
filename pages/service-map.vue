@@ -71,8 +71,13 @@
                 <a @click.stop="goBase(item2)">{{item2 }}</a>{{index<(item.tag.split(' ').length-1)? ',': ''}}
               </label>
             </span>
-            <span>培训驾照类型：{{item.bizScope}}</span>
-            <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            <span>
+            <Poptip trigger="hover" content="大型客车(A1)、牵引车(A2)、城市公交车(A3)、中型客车(B1)、大型货车(B2)、小型汽车(C1)、小型自动挡汽车(C2)、残疾人专用小型自动挡载客汽车(C5)、普通三轮摩托车(D)、普通二轮、摩托车(E)、轻便摩托车(F)" placement="right" transfer word-wrap width="275">培训驾照类型：{{item.bizScope}}</Poptip></span>
+            <!--<Icon type="md-help-circle" size="12"/>-->
+
+            <Poptip trigger="hover" class="grade-tag" content="质量信誉优良企业" placement="right" transfer>
+              <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            </Poptip>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
@@ -957,7 +962,7 @@ export default {
             font-size: 12px;
             line-height: 18px;
             position: relative;
-            span{
+            .span, span{
               /*color: #020202;*/
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -975,7 +980,7 @@ export default {
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .ivu-tag{
+            .grade-tag{
               position: absolute;
               top: -4px;
               right: 0;
@@ -983,7 +988,7 @@ export default {
               line-height: 16px;
               padding: 0 4px;
               cursor: default;
-              z-index: -1;
+              /*z-index: -1;*/
             }
           }
           .appraise{
