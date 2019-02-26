@@ -23,7 +23,7 @@
         </FormItem>
         <FormItem label="企业品牌:">
           <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>-->
-          <Select v-model="searchList.chainBrand" filterable remote clearable @on-query-change="setChainBrand"
+          <Select :value="searchList.chainBrand" filterable remote clearable @on-query-change="setChainBrand"
             :remote-method="getChainBrand" placeholder="请输入企业品牌">
             <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
           </Select>
@@ -539,6 +539,7 @@ activated(){
       },
       setChainBrand(val){
           console.log(val)
+        // this.searchList.chainBrand= val
       }
 
     },
