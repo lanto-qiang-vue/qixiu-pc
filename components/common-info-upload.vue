@@ -51,11 +51,11 @@
     },
     watch:{
       data(val){
-        if(val) this.pushList(val)
+        this.pushList(val)
       }
     },
     mounted() {
-      if(this.data) this.pushList(this.data)
+      this.pushList(this.data)
     },
     methods: {
       pushList(data){
@@ -67,6 +67,9 @@
           case 'array':{
             this.uploadList= data
             break
+          }
+          default:{
+            this.uploadList= []
           }
         }
       },

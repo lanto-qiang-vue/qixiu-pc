@@ -231,7 +231,7 @@
 
       //新增一个企业数据---------
       addCompany() {
-        if (this.detailData) {
+        if (this.listSearch.id) {
             if(this.isRequire){
               this.$refs.comA.rulesData2();
             }else{
@@ -308,6 +308,8 @@
                 break
               }
             }
+            // this.getDetail(this.listSearch.id);
+            // this.getDetail1(this.generalList.id);
             this.auditModal = false;
             this.$emit('closeDetail');
             this.$Message.success('审核成功')

@@ -576,7 +576,7 @@ let initList={
 
     "businessSphere": [],
     "businessSphereOther": '',
-    "businessStatus": 0,
+    "businessStatus": 1,
     "buttJoint": false,
     "buttJointTime": "",
     "chainBusiness": false,
@@ -1060,7 +1060,10 @@ export default {
               if (i == 'businessHours') {
                 this.listSearch[i] = this.uploadOtherData[i]
                 this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
-              }else if(i=='registerDate'){
+              }else if(i=='businessStatus'){
+                if(!this.uploadOtherData[i] && this.uploadOtherData[i]!=0)
+                  this.listSearch[i] = 1;
+               }else if(i=='registerDate'){
                   this.listSearch[i] = formatDate(this.uploadOtherData[i]);
               }else if(i=='yyState'){
                   this.listSearch[i] = this.uploadOtherData[i].toString();
@@ -1098,10 +1101,12 @@ export default {
                 this.$emit('saveInfoFun',temData, 'insert');
               }else{
                 this.tabName="name2";
+                this.$Message.success('请完善信息')
               }
             })
           }else{
             this.tabName="name1";
+            this.$Message.success('请完善信息')
           }
         })
       },
@@ -1113,6 +1118,8 @@ export default {
               this.uploadData[i]= this.requireList[i]
             }
               this.$emit('saveInfoFun',this.uploadData, 'crux');
+          }else{
+            this.$Message.success('请完善信息')
           }
         })
       },
@@ -1124,6 +1131,8 @@ export default {
               this.dealGeneralInfo()
               this.$emit('saveInfoFun',this.uploadOtherData, 'general');
 
+          }else{
+            this.$Message.success('请完善信息')
           }
         })
       },

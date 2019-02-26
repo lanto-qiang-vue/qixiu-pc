@@ -77,7 +77,7 @@ export default {
             render: (h, params) => h('span', getName( self.statusArr,params.row.status|| ''))},
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,},
           {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150,},
-          {title: '联系电话', key: 'linkmanTel', sortable: true, minWidth: 120,},
+          // {title: '联系电话', key: 'linkmanTel', sortable: true, minWidth: 120,},
           {title: '许可证号', key: 'license', sortable: true, minWidth: 130},
           {title: '许可证有效期',  sortable: true, minWidth: 200,
             render: (h, params) => h('span', params.row.licenceBeginDate+' ~ '+params.row.licenceEndDate)},
