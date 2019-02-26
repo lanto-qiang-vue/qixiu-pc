@@ -82,7 +82,7 @@
           <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
-            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr">
+            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr" v-show="!isCompany">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
@@ -470,11 +470,11 @@
 
             <FormItem label="成为全国诚信维修企业的年份:" :class="[{'mark-change': markChange('sincerityYears')}, 'width90']" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
+                <li v-for="(item, index) in listSearch.sincerityYears" :key="index" style="margin-bottom: 10px">
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
-                  <Button type="error" @click="deleteYear(index)">删除</Button>
+                  <Button type="error" @click="deleteYear(index)" style="margin-left: 10px">删除</Button>
                 </li>
               <Button type="primary" @click="addYear">添加</Button>
               </ul>
@@ -519,10 +519,10 @@
 
             <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('honerModels')}, 'width90']" prop="honerModels">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item,index) in listSearch.honerModels" :key="index">
+                <li v-for="(item,index) in listSearch.honerModels" :key="index" style="margin-bottom: 10px">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
-                  <Button type="error" @click="deleteHonerModels(index)">删除</Button>
+                  <Button type="error" style="margin-left: 10px" @click="deleteHonerModels(index)">删除</Button>
                 </li>
                 <Button type="primary" @click="addHoner">添加</Button>
               </ul>
@@ -1056,22 +1056,28 @@ export default {
           if(datas.id){
             this.uploadOtherData=deepClone(datas);
 
-            for (let i in this.uploadOtherData) {
-              if (i == 'businessHours') {
-                this.listSearch[i] = this.uploadOtherData[i]
-                this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
-              }else if(i=='businessStatus'){
-                if(!this.uploadOtherData[i] && this.uploadOtherData[i]!=0)
-                  this.listSearch[i] = 1;
-               }else if(i=='registerDate'){
-                  this.listSearch[i] = formatDate(this.uploadOtherData[i]);
-              }else if(i=='yyState'){
-                  this.listSearch[i] = this.uploadOtherData[i].toString();
-              }else if(i=='sincerityYears'){
-                  this.listSearch[i]= this.uploadOtherData[i]?deepTurn(this.uploadOtherData[i]):[]
-              }else if(this.uploadOtherData[i]){
-                  this.listSearch[i] = this.uploadOtherData[i]
+            for (let key in this.uploadOtherData) {
+
+              if (key == 'businessHours') {
+                this.listSearch[key] = this.uploadOtherData[key]
+                if(this.uploadOtherData[key]){
+                  this.listSearch["businessHours1"] = this.uploadOtherData[key].split('-')
+                }
+              }else if(key=='businessStatus'){
+                if(!this.uploadOtherData[key] && this.uploadOtherData[key]!=0)
+                  this.listSearch[key] = 1;
+               }else if(key=='registerDate'){
+                if(this.uploadOtherData[key])
+                  this.listSearch[key] = formatDate(this.uploadOtherData[key]);
+              }else if(key=='yyState'){
+                if(this.listSearch[key])
+                  this.listSearch[key] = this.uploadOtherData[key].toString();
+              }else if(key=='sincerityYears'){
+                  this.listSearch[key]= this.uploadOtherData[key]?deepTurn(this.uploadOtherData[key]):[]
+              }else if(this.uploadOtherData[key]){
+                  this.listSearch[key] = this.uploadOtherData[key]
               }
+
             }
             this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
             console.log('this.listSearch',this.listSearch);
@@ -1151,19 +1157,19 @@ export default {
       },
 
       calcStatus(status){
-        let obj={}
-        switch (status){
-          case 1:{
+        let obj={}, statu= status? status.toString(): ''
+        switch (statu){
+          case '1':{
             obj.text='待审核'
             obj.color= 'orange'
             break
           }
-          case 2:{
+          case '2':{
             obj.text='审核通过'
             obj.color= 'green'
             break
           }
-          case 3:{
+          case '3':{
             obj.text='审核不通过'
             obj.color= 'red'
             break

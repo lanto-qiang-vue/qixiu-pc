@@ -1,4 +1,4 @@
-import { Message } from 'iview';
+import { Message, Spin } from 'iview';
 
 let getContent=(response)=>{
   let content= ''
@@ -17,6 +17,7 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('store.state.user.token:', token)
   })
   $axios.onResponse(response => {
+    if (process.client) Spin.hide()
     if(response.status== 200){
       let code= response.data.code
       switch (code){
@@ -60,6 +61,7 @@ export default function ({ $axios, redirect, store, route, app }) {
     // for(let key in error){
     //   console.log(key)
     // }
+    if (process.client) Spin.hide()
     if(error&& error.response && error.response.status==400){
       let content= getContent(error.response)
       if (process.client &&content) {
