@@ -21,8 +21,12 @@
         <FormItem label="维修品牌:">
             <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
         </FormItem>
-        <FormItem label="连锁品牌:">
-          <Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>
+        <FormItem label="企业品牌:">
+          <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>-->
+          <Select v-model="searchList.chainBrand" filterable remote clearable @on-query-change="setChainBrand"
+            :remote-method="getChainBrand" placeholder="请输入企业品牌">
+            <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
+          </Select>
         </FormItem>
          <FormItem label="企业类型:">
             <Select v-model="searchList.companyCategory" clearable>
@@ -213,6 +217,7 @@ if(!thisData) {
         return date && (date.valueOf()< oDate.getTime() || date.valueOf() > nDate.getTime() );
       }
     },
+    chainBrand: []
   }
 }
 export default {
@@ -522,7 +527,19 @@ activated(){
         backCompany(){
             var query={flag:true,name:this.detailData.companyName};
             this.$router.push({path:'/center/record-repair',query:query});
-        }
+        },
+      getChainBrand(name){
+        this.$axios.post('/corp/brand/name', {
+          "name":name
+        }).then( (res) => {
+          if(res.data.code==='0'){
+            this.chainBrand=res.data.items;
+          }
+        })
+      },
+      setChainBrand(val){
+          console.log(val)
+      }
 
     },
   beforeRouteLeave (to, from, next) {
