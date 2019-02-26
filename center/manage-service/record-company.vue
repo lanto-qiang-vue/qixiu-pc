@@ -21,6 +21,9 @@
         <FormItem label="维修品牌:">
             <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
         </FormItem>
+        <FormItem label="连锁品牌:">
+          <Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>
+        </FormItem>
          <FormItem label="企业类型:">
             <Select v-model="searchList.companyCategory" clearable>
                 <Option v-for="item in companyType" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -105,7 +108,8 @@ var searchList={
   order:0,//排序查询
   index:13,
   repairBrand: '',
-  year: ''
+  year: '',
+  chainBrand: '',
 }
 if(!thisData) {
   var thisData= {
@@ -134,6 +138,8 @@ if(!thisData) {
       {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
       {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
+      {title: '连锁品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
+      {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
     ],
     tableData: [],
     searchList: deepClone( searchList),
