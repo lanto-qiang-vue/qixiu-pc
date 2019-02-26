@@ -474,7 +474,7 @@
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
-                  <Button type="error" @click="deleteYear(index)">删除</Button>
+                  <Button type="error" @click="deleteYear(index)" style="margin-left: 10px">删除</Button>
                 </li>
               <Button type="primary" @click="addYear">添加</Button>
               </ul>
@@ -522,7 +522,7 @@
                 <li v-for="(item,index) in listSearch.honerModels" :key="index">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
-                  <Button type="error" @click="deleteHonerModels(index)">删除</Button>
+                  <Button type="error" style="margin-left: 10px" @click="deleteHonerModels(index)">删除</Button>
                 </li>
                 <Button type="primary" @click="addHoner">添加</Button>
               </ul>
