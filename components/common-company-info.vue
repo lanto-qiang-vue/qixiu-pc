@@ -82,7 +82,7 @@
           <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
-            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr">
+            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr" v-show="!isCompany">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
