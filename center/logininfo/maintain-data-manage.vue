@@ -77,7 +77,7 @@
               <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
             </Select></div>
         </div>
-        试点企业维修点评情况
+        <!--试点企业维修点评情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar" style="width: 100%;height: 650px;"></div>
         </div>
@@ -395,7 +395,7 @@
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>记录数:' + obj[company].success + '条<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#C23431"></div>评论数:' + obj[company].error + '条<br/>'
               str += "占比:"+obj[company].gl * 100 + "%";
-              return str
+              return str;
             },
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
               type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
