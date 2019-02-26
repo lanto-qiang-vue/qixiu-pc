@@ -139,7 +139,7 @@ if(!thisData) {
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
       {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
       {title: '连锁品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
-      {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
+      // {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
     ],
     tableData: [],
     searchList: deepClone( searchList),
