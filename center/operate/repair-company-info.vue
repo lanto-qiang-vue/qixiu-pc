@@ -231,7 +231,7 @@
 
       //新增一个企业数据---------
       addCompany() {
-        if (this.detailData) {
+        if (this.listSearch.id) {
             if(this.isRequire){
               this.$refs.comA.rulesData2();
             }else{
@@ -244,16 +244,21 @@
 
       },
       //保存数据------
-      saveInfoFun(temData){
+      saveInfoFun(temData, type){
         let url=''
-        if (this.detailData) {
-          if(this.isRequire){
-            url= '/corp/manage/crux/update/yy'
-          }else{
-            url= '/corp/manage/general/update/yy'
+        switch (type){
+          case 'insert':{
+            url = '/corp/manage/insert'
+            break
           }
-        } else {
-          url = '/corp/manage/insert'
+          case 'crux':{
+            url = '/corp/manage/crux/update/yy'
+            break
+          }
+          case 'general':{
+            url = '/corp/manage/general/update/yy'
+            break
+          }
         }
         this.$axios.post(url, temData).then((res) => {
           if (res.data.code == '0') {
@@ -271,7 +276,7 @@
       //审核是否通过-------------
       auditFun() {
         let url= ''
-        this.auditInfo.corpId=this.detailData.id
+        this.auditInfo.corpId= this.listSearch.id
         switch (this.auditType){
           case 'guanlibumen-crux':{
             url= '/corp/manage/audit/crux'
@@ -299,10 +304,12 @@
               case 'yunying-general':{
                 // this.generalList.status=this.auditInfo.status;
                 // this.generalList.auditInfo=this.auditInfo.auditInfo;
-                this.getDetail1(this.listSearch.id);
+                this.getDetail1(this.generalList.id);
                 break
               }
             }
+            // this.getDetail(this.listSearch.id);
+            // this.getDetail1(this.generalList.id);
             this.auditModal = false;
             this.$emit('closeDetail');
             this.$Message.success('审核成功')

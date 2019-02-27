@@ -82,7 +82,7 @@
           <Alert type="error" v-show="listSearch.generalStatus==3">审核不通过说明<span slot="desc">{{listSearch.generalAuditInfo}}</span></Alert>
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
-            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('manageArr')}, 'width45']" prop="manageArr">
+            <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr" v-show="!isCompany">
               <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
@@ -105,16 +105,17 @@
               <Input type="text" v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
 
-            <FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">
-              <Select v-model="listSearch.yyState" :transfer="true" clearable>
-                <Option value="true">营业中</Option>
-                <Option value="false" >休息中</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">
-              <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"
-                          style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>
-            </FormItem>
+            <!--<FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">-->
+              <!--<Select v-model="listSearch.yyState" :transfer="true" clearable>-->
+                <!--<Option value="false">营业中</Option>-->
+                <!--<Option value="true" >休息中</Option>-->
+              <!--</Select>-->
+            <!--</FormItem>-->
+            <!--<FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">-->
+              <!--<TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"-->
+                          <!--style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>-->
+            <!--</FormItem>-->
+
             <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']">
               <Select v-model="listSearch.businessStatus" :transfer="true">
                 <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
@@ -234,11 +235,11 @@
               </i-switch>
             </FormItem>
 
-            <FormItem label="门店特色:" :class="[{'mark-change': markChange('storeSpecials')}, 'width45']">
-              <Select v-model="listSearch.storeSpecials" multiple clearable :transfer="true">
-                <Option v-for="item in storeSpecialsArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
+            <!--<FormItem label="门店特色:" :class="[{'mark-change': markChange('storeSpecials')}, 'width45']">-->
+              <!--<Select v-model="listSearch.storeSpecials" multiple clearable :transfer="true">-->
+                <!--<Option v-for="item in storeSpecialsArr" :value="item.id" :key="item.id">{{ item.name }}</Option>-->
+              <!--</Select>-->
+            <!--</FormItem>-->
 
 
             <FormItem label="对接渠道:" :class="[{'mark-change': markChange('source')}, 'width45']">
@@ -248,13 +249,19 @@
               <Button size="large" type="primary" @click="showAdd=true,sourceName=''" v-show="!isCompany">新增</Button>
             </FormItem>
             <FormItem label="对接时间:" :class="[{'mark-change': markChange('buttJointTime')}, 'width45']">
-              <Input type="text" v-model="listSearch.buttJointTime" placeholder="" readonly></Input>
+              <DatePicker type="datetime" :value="listSearch.buttJointTime? new Date(listSearch.buttJointTime): ''" readonly></DatePicker>
+            </FormItem>
+
+            <FormItem label="备注:" :class="[{'mark-change': markChange('backup')}, 'width90']" v-show="!isCompany">
+              <Input type="textarea" :rows="3" v-model="listSearch.backup" placeholder="请输入备注"></Input>
+            </FormItem>
+
+            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('selfIntroduction')}, 'width90']">
+              <Input type="textarea" :rows="3" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
             </FormItem>
             <FormItem label="企业服务优势自我描述:" :class="[{'mark-change': markChange('desc')}, 'width90']">
-              <Input type="textarea" :rows="1" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
+              <Input type="textarea" :rows="3" v-model="listSearch.desc" placeholder="请输入企业服务优势自我描述"></Input>
             </FormItem>
-
-
             <FormItem label="工时定额执行标准:" :class="[{'mark-change': markChange('workingHoursQuotaExecutionStandard')}, 'width45']">
               <Select v-model="listSearch.workingHoursQuotaExecutionStandard" :transfer="true">
                 <Option v-for="item in workCompanyType" :value="item.name" :key="item.name">{{ item.code }}</Option>
@@ -425,8 +432,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.iso" prop="isoPic">
-
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.iso" prop="isoPic">
               <common-info-upload :description="'上传图片'" :data="listSearch.isoPic" :callback="'isoPicFun'" @isoPicFun="isoPicFun"></common-info-upload>
             </FormItem>
             <div></div>
@@ -437,7 +443,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughSafetyProductionStandardization" prop="safePic">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughSafetyProductionStandardization" prop="safePic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.safePic" :callback="'safePicFun'" @safePicFun="safePicFun"></common-info-upload>
             </FormItem>
@@ -449,7 +455,7 @@
                 <span slot="close">未通过</span>
               </i-switch>
             </FormItem>
-            <FormItem label="" style="width: 60%;" :label-width="0" v-if="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
+            <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
 
               <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
             </FormItem>
@@ -464,11 +470,11 @@
 
             <FormItem label="成为全国诚信维修企业的年份:" :class="[{'mark-change': markChange('sincerityYears')}, 'width90']" prop="sincerityYears" v-show="listSearch.sincerity?true:false">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item, index) in listSearch.sincerityYears" :key="index">
+                <li v-for="(item, index) in listSearch.sincerityYears" :key="index" style="margin-bottom: 10px">
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
-                  <Button type="error" @click="deleteYear(index)">删除</Button>
+                  <Button type="error" @click="deleteYear(index)" style="margin-left: 10px">删除</Button>
                 </li>
               <Button type="primary" @click="addYear">添加</Button>
               </ul>
@@ -510,15 +516,13 @@
               </i-switch>
 
             </FormItem>
-            <FormItem label="企业自我简介:" :class="[{'mark-change': markChange('selfIntroduction')}, 'width90']">
-              <Input type="textarea" :rows="1" v-model="listSearch.selfIntroduction" placeholder="请输入企业自我简介"></Input>
-            </FormItem>
+
             <FormItem label="区级以上荣誉获得情况:" :class="[{'mark-change': markChange('honerModels')}, 'width90']" prop="honerModels">
               <ul class="ivu-input" style="height: auto">
-                <li v-for="(item,index) in listSearch.honerModels" :key="index">
+                <li v-for="(item,index) in listSearch.honerModels" :key="index" style="margin-bottom: 10px">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
                   <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
-                  <Button type="error" @click="deleteHonerModels(index)">删除</Button>
+                  <Button type="error" style="margin-left: 10px" @click="deleteHonerModels(index)">删除</Button>
                 </li>
                 <Button type="primary" @click="addHoner">添加</Button>
               </ul>
@@ -572,7 +576,7 @@ let initList={
 
     "businessSphere": [],
     "businessSphereOther": '',
-    "businessStatus": 0,
+    "businessStatus": 1,
     "buttJoint": false,
     "buttJointTime": "",
     "chainBusiness": false,
@@ -642,6 +646,7 @@ let initList={
     "erpName":'',
     "brandName":'',
     "majorBrandName":'',
+    "backup":'',
     fields:[]
 };
 let initList1={
@@ -757,6 +762,7 @@ export default {
                 }],
                 isoPic:[{
                   validator: (rule, value, callback) => {
+                    console.log('isoPic.validator', value)
                     if (this.$data.listSearch.iso&& !value) {
                       callback(new Error('请完善通过ISO质量管理体系认证资料'));
                     }else{
@@ -1050,19 +1056,28 @@ export default {
           if(datas.id){
             this.uploadOtherData=deepClone(datas);
 
-            for (let i in this.uploadOtherData) {
-              if (i == 'businessHours') {
-                this.listSearch[i] = this.uploadOtherData[i]
-                this.listSearch["businessHours1"] = this.uploadOtherData[i].split('-')
-              }else if(i=='registerDate'){
-                  this.listSearch[i] = formatDate(this.uploadOtherData[i]);
-              }else if(i=='yyState'){
-                  this.listSearch[i] = this.uploadOtherData[i].toString();
-              }else if(i=='sincerityYears'){
-                  this.listSearch[i]= this.uploadOtherData[i]?deepTurn(this.uploadOtherData[i]):[]
-              }else if(this.uploadOtherData[i]){
-                  this.listSearch[i] = this.uploadOtherData[i]
+            for (let key in this.uploadOtherData) {
+
+              if (key == 'businessHours') {
+                this.listSearch[key] = this.uploadOtherData[key]
+                if(this.uploadOtherData[key]){
+                  this.listSearch["businessHours1"] = this.uploadOtherData[key].split('-')
+                }
+              }else if(key=='businessStatus'){
+                if(!this.uploadOtherData[key] && this.uploadOtherData[key]!=0)
+                  this.listSearch[key] = 1;
+               }else if(key=='registerDate'){
+                if(this.uploadOtherData[key])
+                  this.listSearch[key] = formatDate(this.uploadOtherData[key]);
+              }else if(key=='yyState'){
+                if(this.listSearch[key])
+                  this.listSearch[key] = this.uploadOtherData[key].toString();
+              }else if(key=='sincerityYears'){
+                  this.listSearch[key]= this.uploadOtherData[key]?deepTurn(this.uploadOtherData[key]):[]
+              }else if(this.uploadOtherData[key]){
+                  this.listSearch[key] = this.uploadOtherData[key]
               }
+
             }
             this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
             console.log('this.listSearch',this.listSearch);
@@ -1087,17 +1102,17 @@ export default {
                 for(let i in this.uploadData){
                   this.uploadData[i]= this.requireList[i]
                 }
-                for(let i in this.uploadOtherData){
-                  this.uploadOtherData[i]=this.listSearch[i];
-                }
+                this.dealGeneralInfo()
                 temData={...this.uploadData, ...this.uploadOtherData}
-                this.$emit('saveInfoFun',temData);
+                this.$emit('saveInfoFun',temData, 'insert');
               }else{
                 this.tabName="name2";
+                this.$Message.success('请完善信息')
               }
             })
           }else{
             this.tabName="name1";
+            this.$Message.success('请完善信息')
           }
         })
       },
@@ -1108,7 +1123,9 @@ export default {
             for(let i in this.uploadData){
               this.uploadData[i]= this.requireList[i]
             }
-              this.$emit('saveInfoFun',this.uploadData);
+              this.$emit('saveInfoFun',this.uploadData, 'crux');
+          }else{
+            this.$Message.success('请完善信息')
           }
         })
       },
@@ -1117,28 +1134,42 @@ export default {
 
         this.$refs['listSearch'].validate((valid) => {
           if (valid) {
-              for(let i in this.uploadOtherData){
-                this.uploadOtherData[i]=this.listSearch[i];
-              }
-              this.$emit('saveInfoFun',this.uploadOtherData);
+              this.dealGeneralInfo()
+              this.$emit('saveInfoFun',this.uploadOtherData, 'general');
 
+          }else{
+            this.$Message.success('请完善信息')
           }
         })
       },
+
+      dealGeneralInfo(){
+        for(let key in this.uploadOtherData){
+          // switch (key){
+          //   default:{
+              this.uploadOtherData[key]=this.listSearch[key];
+            // }
+          // }
+        }
+        if(!this.uploadOtherData.iso) this.uploadOtherData.isoPic=''
+        if(!this.uploadOtherData.throughSafetyProductionStandardization) this.uploadOtherData.safePic=''
+        if(!this.uploadOtherData.throughEnvironmentalProtectionSpecialRenovation) this.uploadOtherData.greenPic=''
+      },
+
       calcStatus(status){
-        let obj={}
-        switch (status){
-          case 1:{
+        let obj={}, statu= status? status.toString(): ''
+        switch (statu){
+          case '1':{
             obj.text='待审核'
             obj.color= 'orange'
             break
           }
-          case 2:{
+          case '2':{
             obj.text='审核通过'
             obj.color= 'green'
             break
           }
-          case 3:{
+          case '3':{
             obj.text='审核不通过'
             obj.color= 'red'
             break
@@ -1342,6 +1373,7 @@ export default {
               }else{
                 this.listSearch.isoPic='';
               }
+              this.$refs.listSearch.validateField('isoPic')
 
             },
             //iso图片上传

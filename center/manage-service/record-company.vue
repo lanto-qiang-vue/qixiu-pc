@@ -25,6 +25,13 @@
         <FormItem label="维修品牌:">
             <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
         </FormItem>
+        <FormItem label="企业品牌:">
+          <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>-->
+          <Select v-model="searchList.chainBrand" filterable remote clearable placeholder="请输入企业品牌"
+                  @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
+            <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
+          </Select>
+        </FormItem>
          <FormItem label="企业类型:">
             <Select v-model="searchList.companyCategory" clearable>
                 <Option v-for="item in companyType" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -109,8 +116,9 @@ var searchList={
   order:0,//排序查询
   index:13,
   repairBrand: '',
-  chainBrand:'',
-  year: ''
+  year: '',
+  chainBrand: '',
+
 }
 if(!thisData) {
   var thisData= {
@@ -140,6 +148,8 @@ if(!thisData) {
       {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
       {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
+      {title: '连锁品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
+      // {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
     ],
     tableData: [],
     searchList: deepClone( searchList),
@@ -219,6 +229,7 @@ if(!thisData) {
         return date && (date.valueOf()< oDate.getTime() || date.valueOf() > nDate.getTime() );
       }
     },
+    chainBrand: []
   }
 }
 export default {
@@ -379,22 +390,7 @@ activated(){
             this.$axios({
               method: 'post',
               url: '/vehicle/repair/export',
-              data:{
-                "area": upData["area"],
-                "businessStatus": upData["businessStatus"],
-                "buttJoin": upData["buttJoin"],
-                "companyCategory": upData["companyCategory"],
-                "companyName": upData["companyName"],
-                "dept": upData["dept"],
-                "inDays": upData["inDays"],
-                "license": upData["license"],
-                "minister": upData["minister"],
-                "org": upData["org"],
-                "show": upData["show"],
-                "special": upData["special"],
-                "chainBrand":upData['chainBrand'],
-                "uploadMonth": upData["uploadMonth"],
-                },
+              data: upData,
               responseType: 'arraybuffer'
             }).then( (res) => {
                 console.log('res',res)
@@ -536,7 +532,21 @@ activated(){
         backCompany(){
             var query={flag:true,name:this.detailData.companyName};
             this.$router.push({path:'/center/record-repair',query:query});
-        }
+        },
+      getChainBrand(name){
+        this.$axios.post('/corp/brand/name', {
+          "name":name
+        }).then( (res) => {
+          if(res.data.code==='0'){
+            this.chainBrand=res.data.items;
+          }
+        })
+      },
+      resetsetChainBrand(isShow){
+          if(!isShow && !this.searchList.chainBrand){
+            this.$refs.chainBrand.clearSingleSelect()
+          }
+      }
 
     },
   beforeRouteLeave (to, from, next) {

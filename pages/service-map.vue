@@ -11,6 +11,7 @@
     <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
     <div class="map-frame high">
     <div class="left">
+      <Spin fix v-show="spinShow"></Spin>
       <Select v-model="search.type" placeholder="企业类别" @on-change="changeType" class="type">
         <Option value="164">维修企业</Option>
         <Option value="166">综合检测站</Option>
@@ -67,12 +68,17 @@
             <span>报名地址：{{item.addr}}</span>
             <!--<span>训练基地：{{item.serveSupports.join(',')}}</span>-->
             <span>训练基地：
-              <label v-if="item.tag" v-for="(item2, index) in item.tag.split(' ')" :key="index">
+              <label v-if="item.tag" v-for="(item2, index) in item.tag.trim().split(' ')" :key="index">
                 <a @click.stop="goBase(item2)">{{item2 }}</a>{{index<(item.tag.split(' ').length-1)? ',': ''}}
               </label>
             </span>
-            <span>培训驾照类型：{{item.bizScope}}</span>
-            <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            <span>
+            <Poptip trigger="hover" content="大型客车(A1)、牵引车(A2)、城市公交车(A3)、中型客车(B1)、大型货车(B2)、小型汽车(C1)、小型自动挡汽车(C2)、残疾人专用小型自动挡载客汽车(C5)、普通三轮摩托车(D)、普通二轮、摩托车(E)、轻便摩托车(F)" placement="right" transfer word-wrap width="275">培训驾照类型：{{item.bizScope}}</Poptip></span>
+            <!--<Icon type="md-help-circle" size="12"/>-->
+
+            <Poptip v-show="item.grade" trigger="hover" class="grade-tag" :content="gradeText(item.grade)" placement="right" transfer>
+              <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            </Poptip>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
@@ -119,6 +125,7 @@ export default {
   // },
   data(){
     return{
+      spinShow: false,
       search:{
         type: '164',
         q: '',
@@ -221,7 +228,7 @@ export default {
   },
   watch:{
     nowType(){
-      this.$Spin.show();
+      this.spinShow= true;
       this.map.clearMap()
     }
   },
@@ -249,7 +256,7 @@ export default {
   // },
   methods:{
     init(){
-      this.$Spin.show();
+      this.spinShow= true;
       // console.log('this.map', this.map)
       // console.log('map1', window.map1)
       this.map= new AMap.Map('comp-map',{
@@ -358,7 +365,7 @@ export default {
 
     },
     getCompList(){
-      this.$Spin.show();
+      this.spinShow= true;
       let query= this.calcQuery()
       this.$axios({
         baseURL: '/repair',
@@ -368,7 +375,7 @@ export default {
         this.list= res.data.content
         this.calcPointList(res.data.content)
         this.total= res.data.totalElements
-        this.$Spin.hide();
+        this.spinShow= false;
       })
     },
     calcQuery(limit){
@@ -399,7 +406,7 @@ export default {
         url: '/micro/search/company'+ query,
         method: 'get',
       }).then( (res) => {
-        this.$Spin.hide();
+        this.spinShow= false;
         this.calcPointList(res.data.content)
       })
     },
@@ -464,7 +471,7 @@ export default {
                 '<img class="head-img" v-img :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
-                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}</li>' +
+                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}（{{gradeText(datas.creditLevel)}}）</li>' +
                 '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
                 '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
@@ -557,6 +564,7 @@ export default {
                 methods:{
                   formatArticle: formatArticle,
                   toBase: self.goBase,
+                  gradeText: self.gradeText,
                   toLogin(){
                     self.$router.push({
                       path: '/login',
@@ -690,6 +698,7 @@ export default {
           methods:{
             look(){
               self.search.base= this.simpleName
+              self.page= 1
               self.getCompList()
             }
           }
@@ -815,6 +824,7 @@ export default {
     },
     changeSelectAll(){
       this.page= 1
+      this.getCompList()
     },
     selectHot(val){
       if(val) this.search.q= val
@@ -874,6 +884,32 @@ export default {
         window.data= data
         window.el.open(this.map, marker.getPosition())
       }
+    },
+    gradeText(grade){
+      let text= ''
+      switch (grade){
+        case 'AAA':{
+          text= "质量信誉优良企业"
+          break
+        }
+        case 'AA':{
+          text= "质量信誉合格企业"
+          break
+        }
+        case 'A':{
+          text= "质量信誉基本合格企业"
+          break
+        }
+        case 'B':{
+          text= "质量信誉不合格企业"
+          break
+        }
+        default :{
+          text= "质量信誉未评级企业"
+          break
+        }
+      }
+      return text
     }
   }
 }
@@ -957,7 +993,7 @@ export default {
             font-size: 12px;
             line-height: 18px;
             position: relative;
-            span{
+            .span, span{
               /*color: #020202;*/
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -975,7 +1011,7 @@ export default {
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .ivu-tag{
+            .grade-tag{
               position: absolute;
               top: -4px;
               right: 0;
@@ -983,7 +1019,7 @@ export default {
               line-height: 16px;
               padding: 0 4px;
               cursor: default;
-              z-index: -1;
+              /*z-index: -1;*/
             }
           }
           .appraise{

@@ -2,10 +2,10 @@
   <div style="width: 90%;">
 
 
-      <div class="demo-upload-list" v-for="item in uploadList">
-        <img :src="item">
+      <div class="demo-upload-list" v-for="(item, index ) in uploadList" :key="index">
+        <img :src="item" v-img :ref="'img'+index">
         <div class="demo-upload-list-cover">
-          <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
+          <Icon type="ios-eye-outline" @click.native="handleView('img'+index)"></Icon>
           <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
         </div>
       </div>
@@ -31,42 +31,50 @@
         <Button icon="ios-cloud-upload-outline">{{this.description}}</Button>
         </Upload>
 
-
-    <Modal title="查看图片" v-model="visible">
-      <img :src="imgName" v-if="visible" style="width: 100%">
-    </Modal>
   </div>
 </template>
 <script>
+  import { getType} from '~/static/util.js'
   export default {
     name: 'common-info-upload',
+    props:{'description':{},'callback':{},'data':{},'index':{},
+      num: {
+        default: 1
+      }
+    },
     data() {
       return {
-        defaultList: [
-
-        ],
-        imgName: '',
-        visible: false,
         uploadList: [
 
         ]
       }
     },
-    props:['description','callback','data','index'],
     watch:{
-      data(data){
-          console.log("进来前图片的数据：",data);
-          this.uploadList=[];
-          if(data){
-              console.log('进来图片的数据：',data);
-              this.uploadList.push(data);
-          }
+      data(val){
+        this.pushList(val)
       }
     },
+    mounted() {
+      this.pushList(this.data)
+    },
     methods: {
+      pushList(data){
+        switch (getType(data)){
+          case 'string':{
+            this.uploadList=data? [data]: []
+            break
+          }
+          case 'array':{
+            this.uploadList= data
+            break
+          }
+          default:{
+            this.uploadList= []
+          }
+        }
+      },
       handleView(name) {
-        this.imgName = name
-        this.visible = true
+        this.$refs[name][0].click()
       },
       handleRemove(file) {
         this.uploadList.splice(this.uploadList.indexOf(file),1);
@@ -74,37 +82,28 @@
       },
       handleSuccess(res, file) {
         if(res.code == 0){
-          this.uploadList.push(
-            res.item.path
-          );
-          this.$emit(this.callback,this.uploadList,this.index);
+          this.$emit(this.callback,[res.item.path],this.index);
         }
       },
       handleFormatError(file) {
-        this.$Notice.warning({
-          title: '错误提示',
-          desc: '只允许上传PNG,JPG,JPEG,BMP图片'
-        })
+        this.$Message.error('只允许上传PNG,JPG,JPEG,BMP图片');
       },
       handleMaxSize(file) {
-        this.$Notice.warning({
-          title: '错误提示',
-          desc: '图片超过3M'
-        })
+        this.$Message.error('图片不能超过3M');
       },
       handleBeforeUpload() {
-        const check = this.uploadList.length < 1
-        if (!check) {
-          this.$Notice.warning({
-            title:'最多只能上传'+ this.uploadList.length+'张图片',
-          })
-        }
-        return check
+        // if(this.num ==1){
+        //
+        // }else{
+        //   if (this.uploadList.length >= this.num) {
+        //     this.$Message.error('最多只能上传'+ this.num +'张图片');
+        //   }
+        // }
+
+        return true
       }
     },
-    mounted() {
-      if(this.data) this.uploadList=[this.data];
-    }
+
   }
 </script>
 <style lang="less" scoped>

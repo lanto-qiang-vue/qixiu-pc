@@ -65,11 +65,18 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import { formatArticle } from '~/static/util.js'
 export default {
   name: "cdf-question-detail",
   layout: "layout-root",
   components: {
     BasicContainer
+  },
+  head () {
+    return {
+      title: formatArticle(this.detail.content),
+      meta: [{ hid: 'description', name: 'description', content: formatArticle(this.detail.content) }]
+    }
   },
   asyncData ({ app, params, error }) {
     // console.log('asyncData')
