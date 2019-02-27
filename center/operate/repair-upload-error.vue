@@ -12,6 +12,16 @@
                   <FormItem label="许可证号:">
                       <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
                   </FormItem>
+                  <FormItem label="经营范围:" v-show="isNoUpload">
+                      <!--<Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>-->
+                      <Select v-model="search.category" :transfer="true" clearable>
+                        <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                      </Select>
+                  </FormItem>
+                  <FormItem label="企业品牌:" v-show="isNoUpload">
+                      <!--<Input type="text" v-model="search.chainBrand" placeholder="请输入许可证号"></Input>-->
+                      <unit-search-input  :searchTableData="search.chainBrand" :showChange="showChange" :tableData="tableData2" :name="'请输入企业品牌'" :flagData=4 @closeSelect='closeSelect' @onRowSelect="onRowSelect2"></unit-search-input>
+                  </FormItem>
                   <FormItem :label-width="0" style="width: 80px;">
                       <Button type="primary" v-if="accessBtn('query')" @click="page=1,getList()">搜索</Button>
                   </FormItem>
@@ -53,10 +63,12 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import unitSearchInput from '~/components/unit-search-input.vue'
 export default {
     name: "repair-upload-error",
     components: {
-    CommonTable
+    CommonTable,
+    unitSearchInput
     },
     mixins: [funMixin],
     data(){
@@ -64,13 +76,18 @@ export default {
         loading:false,
         columns: [],
         tableData: [],
-
+        showChange:null,
+        tableData2:[
+            {title: '品牌', key: 'name', minWidth: 140},
+        ],
         search:{
           companyName:'',
           license: '',
           // deptCode:"",
           startDate:'',
           endDate:'',
+          category:'',
+          chainBrand:''
         },
         page: 1,
         limit: 10,
@@ -94,6 +111,9 @@ export default {
         description:'',
         contentTop:'',
         exportUrl:"",
+        isNoUpload:false,
+        repairType:[],
+
 
       }
     },
@@ -106,15 +126,74 @@ export default {
       
       this.search.endDate=queryData.endDate;
       this.areaName=queryData.deptName;
+      this.isNoUpload=false;
 
       // console.log("queryData",queryData);
       if(routerData.path=="/center/repair-upload-error"){
+        this.isNoUpload=true;
+        this.getValuesByTypeFun();
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
+            render: (h, params) => {
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                    // marginLeft:"100px"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
           },
           {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+                      
+                    }
+                  }
+                }, params.row.recordTotalCount)
+              ]);
+            }
           },
           {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+              render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordTotalCount)
+                ]);
+              }
           },
           {title: '错误率', key: 'probability',  minWidth: 120,
           },
@@ -151,12 +230,54 @@ export default {
         this.exportUrl="/monitoring/display/company/upload-fault/download";
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
+        this.isNoUpload=true;
+        this.getValuesByTypeFun();
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
+              render: (h, params) => {
+
+              
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+                      
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
           },
           {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                     
+
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+                    }
+                  }
+                }, params.row.lastTime)
+              ]);
+            }
           },
-          {title: '联系方式', key: 'telephone',  minWidth: 135,
+          {title: '联系方式', key: 'contactMobile',  minWidth: 135,
           },
           
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
@@ -197,8 +318,49 @@ export default {
           this.typeName=queryData.type;
           this.columns=[
             {title: '企业名称', key: 'companyName', minWidth: 120,
+
+              render: (h, params) => {
+
+              
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+
+                      
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
+
               },
               {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+                render: (h, params) => {
+                  return h('div', [
+                    h('a', {
+                      style:{
+                        // color:'#515a6e'
+                        textDecoration:"underline"
+                      },
+                      on: {
+                        click: () => {
+                          
+                          let routeData = this.$router.resolve({
+                            path: "/center/record-repair",
+                            query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                          });
+                          window.open(routeData.href, '_blank');
+                        }
+                      }
+                    }, params.row.lastTime)
+                  ]);
+                }
               },
               {title: '联系方式', key: 'telephone',  minWidth: 135,
               },
@@ -239,10 +401,71 @@ export default {
           this.typeName=queryData.type;
           this.columns=[
             {title: '企业名称', key: 'companyName', minWidth: 120,
+
+                render: (h, params) => {
+
+                  
+
+                  return h('div', [
+                    h('a', {
+                      style:{
+                        // color:'#515a6e'
+                        textDecoration:"underline"
+                      },
+                      on: {
+                        click: () => {
+                          this.getCompanyId(params.row.companyCode);
+                          
+                        }
+                      }
+                    }, params.row.companyName)
+                  ]);
+                }
             },
             {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+              render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        // this.$router.push({path: '/center/record-repair',})
+                        
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordTotalCount)
+                ]);
+              }
             },
             {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+                render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordFaultCount)
+                ]);
+              }
             },
             {title: '错误率', key: 'probability',  minWidth: 120,
             },
@@ -286,7 +509,7 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
+            urlStr+='&'+i+'='+(this.search[i]||'');
           }
           if(this.typeName != ''){
             urlStr += '&type='+this.typeName;
@@ -541,8 +764,34 @@ export default {
               a.click();
               $(a).remove();
             })
+        },
+        getValuesByTypeFun() {
+          this.$axios.get('/dict/getValuesByTypeId/1', {}).then((res) => {
+            if (res.data.code == '0') {
+                this.repairType = res.data.items;
+            }
+          })
+        },
+        onRowSelect2(val){
+              
+              this.search.chainBrand=val.id;
+        },
+        closeSelect(){
+            this.search.chainBrand='';
+        },
+        //根据code查找id--------
+        getCompanyId(code){
+          let self =this;
+          this.$axios.get('/company/get/corpId/'+code, {}).then((res) => {
+            if (res.data.code == '0') {
+                let routeData = self.$router.resolve({
+                        path: "/center/company-info-manage",
+                        query: {conpanyId:res.data.item}
+                });
+                window.open(routeData.href, '_blank');
+            }
+          })
         }
-
     },
 	}
 </script>
@@ -550,6 +799,9 @@ export default {
   .myTotilp .ivu-tooltip-light .ivu-tooltip-inner{
     max-width:500px;
   }
+
+
+  
 </style>
 <style scoped lang="less">
 .menu-manage{

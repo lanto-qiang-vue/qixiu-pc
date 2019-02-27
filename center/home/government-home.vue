@@ -14,6 +14,13 @@
     </div>
   </div>
   <div class="dblock">
+    <h1 class="dtitle">维修记录上传监控</h1>
+    <div class="center">
+      <maintain-data-manage></maintain-data-manage>
+    </div>
+
+  </div>
+  <div class="dblock">
     <h1 class="dtitle">区域对接状况</h1>
     <div class="center">
       <div class="inline-box">
@@ -47,9 +54,13 @@
 
 <script>
   import funMixin from '~/components/fun-auth-mixim.js'
+  import maintainDataManage from '../logininfo/maintain-data-manage.vue'
 export default {
   name: "government-center",
   mixins: [funMixin],
+  components: {
+      maintainDataManage
+  },
   data(){
     return{
       res:{},

@@ -186,7 +186,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
       }
     },
     mounted () {
-		  // console.log(this.$route.path)
+		  
       this.getBusinessType();
       this.getValuesByTypeFun(1);
       this.getList();
@@ -207,8 +207,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 "status": this.search.status,
                 "generalStatus":this.search.generalStatus,
                 "totalToTotal": this.search.totalToTotal,
-              "pageNo": this.page,
-              "pageSize": this.limit,
+                "pageNo": this.page,
+                "pageSize": this.limit,
           }).then( (res) => {
             if(res.data.code=='0'){
               this.tableData=res.data.items;

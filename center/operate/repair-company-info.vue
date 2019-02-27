@@ -43,10 +43,10 @@
               @click="showChange=Math.random()">查看变更
       </Button>
 
-      <Button  size="large" type="primary" v-show="(listSearch.createKey&&listSearch.code)"
+      <Button  size="large" type="primary" v-show="(generalList.createKey&&generalList.code)"
                v-if="accessBtn('create')" @click="resetKey">重置密钥
       </Button>
-      <Button  size="large" type="primary" v-show="(!listSearch.createKey&&listSearch.code)"
+      <Button  size="large" type="primary" v-show="(!generalList.createKey&&generalList.code)"
                v-if="accessBtn('create')" @click="addKey">创建密钥
       </Button>
       <Button size="large" type="default" @click="showModal=false;">返回</Button>

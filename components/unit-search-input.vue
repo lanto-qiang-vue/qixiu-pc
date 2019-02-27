@@ -1,6 +1,6 @@
 <template>
   <div style="width:100%;position:relative;">
-    <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType">
+    <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType" :placeholder="name">
     </Input>
     <span style="position:absolute;right:32px;top:2px;cursor: pointer;z-index: 100;font-size: 16px;" v-show="selectType" @click="closeSelect"><Icon type="ios-close-circle" /></span>
     <div v-show="inputShow" v-clickoutside="handleClose" style="position:absolute;top:31px;z-index:99;">
@@ -42,7 +42,7 @@
   };
   export default {
     name: "unit-search-input",
-    props:['searchTableData',"showChange","tableData","flagData"],
+    props:['searchTableData',"showChange","tableData","flagData","name"],
     data(){
       return {
         inputData:'',
