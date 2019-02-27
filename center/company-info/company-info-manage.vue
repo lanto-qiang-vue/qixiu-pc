@@ -113,8 +113,15 @@ export default {
     },
     mounted () {
         this.getAreaInfo();
-      this.getList();
+        this.getList();
+        let queryData=this.$route.query;
+      
+        if(queryData.conpanyId){
+            
+            this.showDetail=Math.random();
+            this.detailData={id:queryData.conpanyId}
 
+        }
     },
     methods:{
         //获取区域数据-------

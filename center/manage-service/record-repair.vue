@@ -20,14 +20,24 @@
         </FormItem>
 
         <FormItem label="车牌正确:">
-            <Select v-model="searchList.byVehicleNumberStandard" clearable>
+            <Select v-model="searchList.byVehicleNumberStandard" clearable @on-change="onChangeVehicle">
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
         <FormItem label="VIN正确:">
-            <Select v-model="searchList.byVinStandard" clearable>
+            <Select v-model="searchList.byVinStandard" clearable @on-change="onChangeVIN">
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
+        </FormItem>
+        <FormItem label="车牌和VIN错误:">
+            <Select v-model="searchList.fault" clearable @on-change="onChangeFault">
+                <Option v-for="item in typeList1" :value="item.code" :key="item.code">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="上传时间:">
+
+            <DatePicker type="daterange" v-model="searchList.receiveTime" placeholder="请选择" style="width: 100%;"></DatePicker>
+
         </FormItem>
 
             <FormItem :label-width="0" style="width: 90px;">
@@ -50,6 +60,7 @@ import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { deepClone } from '@/static/util.js'
+import { formatDate } from '@/static/tools'
 
 var searchList= {
     byVehicleNumberStandard:"all",
@@ -57,6 +68,10 @@ var searchList= {
     companyName:"",
     vehicleplatenumber:"",
     vin:'',
+    fault:'',
+    receiveTimeBegin:'',
+    receiveTimeEnd:'',
+    receiveTime:[],
   }
 if(!thisData) {
   var thisData= {
@@ -65,9 +80,13 @@ if(!thisData) {
       {code:'yes',name:'正确'},
       {code:'no',name:'错误'},
     ],//问题分类--------
+    typeList1: [
+      {code:'true',name:'是'},
+      {code:'false',name:'否'},
+    ],//问题分类--------
     columns: [
 
-      {title: '序号', width:60, type: 'index'},
+      {title: '序号', width:80, type: 'index'},
       {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
       {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
       {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
@@ -83,6 +102,10 @@ if(!thisData) {
       companyName:"",
       vehicleplatenumber:"",
       vin:'',
+      fault:'',
+      receiveTimeBegin:'',
+      receiveTimeEnd:'',
+      receiveTime:[],
     },
     page: 1,
     limit: 10,
@@ -123,39 +146,49 @@ export default {
     methods:{
       getRouterData(){
         let queryData=this.$route.query;
+        console.log('this.$route.query',this.$route);
         let search= thisData.searchList
+        search= deepClone(searchList)
         if(Object.keys(queryData).length){
-          search= deepClone(searchList)
-
-          if(queryData.name){
-            search.companyName= queryData.name
-          }
+                if(queryData.name){
+                  search.companyName= queryData.name
+                }
+                if(queryData.start){
+                  search.receiveTime.push(queryData.start)
+                }
+                if(queryData.end){
+                  search.receiveTime.push(queryData.end)
+                }
+                if(queryData.fault){
+                  search.fault=queryData.fault;
+                }
         }
         return search
       },
-        getList(){
-            this.loading=true;
-            this.$axios.post('/vehicle/carfile/query4manager', {
-                    "byVehicleNumberStandard":this.searchList.byVehicleNumberStandard,
-                    "byVinStandard":this.searchList.byVinStandard,
+      getList(){
+          this.loading=true;
+          this.$axios.post('/vehicle/carfile/query4manager', {
+                  "byVehicleNumberStandard":this.searchList.byVehicleNumberStandard,
+                  "byVinStandard":this.searchList.byVinStandard,
 
-                    "companyName":this.searchList.companyName,
-
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-
-                    "vehicleplatenumber":this.searchList.vehicleplatenumber,
-                    "vin":this.searchList.vin,
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.tableData=res.data.items;
-                    this.total=res.data.total;
-                    this.loading=false;
-                  this.queryed= true
-                }
-           })
-           this.detailData= null;
-        },
+                  "companyName":this.searchList.companyName,
+                  "receiveTimeBegin":formatDate(this.searchList.receiveTime[0]),
+                  "receiveTimeEnd":formatDate(this.searchList.receiveTime[1]),
+                  "pageNo": this.page,
+                  "pageSize": this.limit,
+                  "fault":this.searchList.fault,
+                  "vehicleplatenumber":this.searchList.vehicleplatenumber,
+                  "vin":this.searchList.vin,
+          }).then( (res) => {
+              if(res.data.code=='0'){
+                  this.tableData=res.data.items;
+                  this.total=res.data.total;
+                  this.loading=false;
+                this.queryed= true
+              }
+          })
+          this.detailData= null;
+      },
         getType(){
             this.$axios.get('/dict/getValuesByTypeId/1', {
             }).then( (res) => {
@@ -204,7 +237,28 @@ export default {
                 }
             })
         },
-        //监听传过来的数据值-----------，
+        onChangeVehicle(val){
+          // console.log('数据1：',val);
+          if(val){
+            this.searchList.fault='';
+          }
+          
+        },
+        onChangeVIN(val){
+          // console.log('数据2：',val);
+          
+          if(val){
+            this.searchList.fault='';
+          }
+        },
+        onChangeFault(val){
+          // console.log('数据3：',val);
+          if(val){
+            this.searchList.byVehicleNumberStandard='';
+            this.searchList.byVinStandard='';
+          }
+          
+        }
 
     },
   beforeRouteLeave (to, from, next) {
