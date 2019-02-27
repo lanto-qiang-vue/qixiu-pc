@@ -14,6 +14,11 @@
       CdfQuestionList,
       BasicContainer
     },
+    head () {
+      return {
+        title: '车大夫门诊',
+      }
+    }
 	}
 </script>
 
