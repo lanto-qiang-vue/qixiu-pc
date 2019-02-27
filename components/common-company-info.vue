@@ -1064,8 +1064,11 @@ export default {
                   this.listSearch["businessHours1"] = this.uploadOtherData[key].split('-')
                 }
               }else if(key=='businessStatus'){
-                if(!this.uploadOtherData[key] && this.uploadOtherData[key]!=0)
+                if(!this.uploadOtherData[key] && this.uploadOtherData[key]!=0){
                   this.listSearch[key] = 1;
+                }else{
+                  this.listSearch[key] = this.uploadOtherData[key]
+                }
                }else if(key=='registerDate'){
                 if(this.uploadOtherData[key])
                   this.listSearch[key] = formatDate(this.uploadOtherData[key]);
