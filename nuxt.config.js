@@ -3,7 +3,7 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
-config.area= process.env.area
+config.area= process.env.area|| config.area
 console.log('config.process.env.area', process.env.area)
 console.log('areakey', config[config.area].areaKey)
 
