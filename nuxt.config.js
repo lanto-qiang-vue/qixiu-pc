@@ -3,6 +3,10 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
+config.area= process.env.area
+console.log('config.process.env.area', process.env.area)
+console.log('areakey', config[config.area].areaKey)
+
 let conf= {
   mode: 'universal',
 
@@ -98,7 +102,6 @@ let conf= {
     */
     extend(config, ctx) {
       config.resolve['alias']['vue$']= 'vue/dist/vue.esm.js'
-      console.log(config)
     },
     // plugins: [
     //   new webpack.ProvidePlugin({

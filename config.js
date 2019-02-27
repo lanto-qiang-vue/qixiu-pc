@@ -35,9 +35,22 @@ const devConfig={
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
   articlePath: 'http://download.image.lanto.com/',
-  workOn: 'pDev'
+  workOn: 'pDev',
+
 }
 
-export default process.env.NODE_ENV==='development'? devConfig: prodConfig
+let baseConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
+let allConf={
+  ...baseConf,
+  area: 'shanghai',
+  shanghai:{
+    areaKey: '310'
+  },
+  shandong:{
+    areaKey: '350'
+  }
+}
+
+export default allConf
 
 

@@ -227,7 +227,7 @@ export default {
 			}
 		},
     mounted(){
-		  // console.log('this',this)
+		  console.log('process.env.NODE_ENV2', process.env.area)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
     },
