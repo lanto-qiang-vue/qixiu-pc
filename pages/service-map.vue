@@ -263,6 +263,7 @@ export default {
         keyboardEnable: false,
         scrollWheel: false,
         zoom: 14,
+        zooms:[10,18]
       });
       // console.log('this.map2', this.map)
       // window.map1= this.map
@@ -474,7 +475,7 @@ export default {
                 '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}（{{gradeText(datas.creditLevel)}}）</li>' +
                 '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
-                '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
+                '<li><span>培训驾照类型：</span><Poptip trigger="hover" content="大型客车(A1)、牵引车(A2)、城市公交车(A3)、中型客车(B1)、大型货车(B2)、小型汽车(C1)、小型自动挡汽车(C2)、残疾人专用小型自动挡载客汽车(C5)、普通三轮摩托车(D)、普通二轮、摩托车(E)、轻便摩托车(F)" placement="right" transfer word-wrap width="275">{{datas.trainingScope}}</Poptip></li>' +
                 '<li><span>训练基地：</span><span class="base-tag">' +
                 '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
                 '</span></li>' +

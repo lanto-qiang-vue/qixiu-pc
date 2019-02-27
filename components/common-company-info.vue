@@ -205,8 +205,13 @@
               </i-switch>
             </FormItem>
             <FormItem label="前台显示:" :class="[{'mark-change': markChange('show')}, 'width45']" v-show="!isCompany">
-
               <i-switch size="large" v-model="listSearch.show">
+                <span slot="open">是</span>
+                <span slot="close">否</span>
+              </i-switch>
+            </FormItem>
+            <FormItem label="是否隐藏:" :class="[{'mark-change': markChange('hidden')}, 'width45']" v-show="isYunying">
+              <i-switch size="large" v-model="listSearch.hidden">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
@@ -647,6 +652,7 @@ let initList={
     "brandName":'',
     "majorBrandName":'',
     "backup":'',
+    "hidden":false,
     fields:[]
 };
 let initList1={
@@ -950,12 +956,11 @@ export default {
         }
     },
     computed:{
+      isYunying(){
+        return this.roleType=='yunying'
+      },
       isCompany(){
-          if(this.roleType=="weixiuqiye"){
-            return true;
-          }else{
-            return false;
-          }
+          return this.roleType=="weixiuqiye"
       },
       label(){
         let obj= this.calcStatus(this.requireList.status)

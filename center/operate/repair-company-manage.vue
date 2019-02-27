@@ -165,6 +165,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
         let columns= [
           {title: '区域', key: 'areaName', sortable: true, minWidth: 120,},
           {title: '关键信息审核状态', key: 'status', sortable: true, minWidth: 120},
+          {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120},
           {title: '备案状态', key: 'beianStatus', sortable: true, minWidth: 135},
           {title: '企业名称', key: 'name', sortable: true, minWidth: 120},
           {title: '许可证号', key: 'licence', sortable: true, minWidth: 120,},
@@ -177,11 +178,11 @@ import funMixin from '~/components/fun-auth-mixim.js'
           {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 120,},
           {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 120,},
         ]
-        let item= {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120}
+        // let item= {title: '一般信息审核状态', key: 'generalStatus', sortable: true, minWidth: 120}
 
-        if(this.roleType=='yunying'){
-          columns.splice(1, 0, item)
-        }
+        // if(this.roleType=='yunying'){
+        //   columns.splice(1, 0, item)
+        // }
         return columns
       }
     },
