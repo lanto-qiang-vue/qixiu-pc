@@ -101,7 +101,7 @@
     },
     watch: {
       showDetail() {
-        this.showModal = Math.random()
+        this.showModal = true;
         this.tableData = []
         this.total = 0
         for (let i in this.search) {
