@@ -363,7 +363,7 @@ export default {
                   ]);
                 }
               },
-              {title: '联系方式', key: 'telephone',  minWidth: 135,
+              {title: '联系方式', key: 'contactMobile',  minWidth: 135,
               },
               
               {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
