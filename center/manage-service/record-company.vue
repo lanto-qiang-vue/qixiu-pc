@@ -18,15 +18,10 @@
         <FormItem label="许可证号:">
             <Input type="text" v-model="searchList.license" placeholder="请输入许可证号"></Input>
         </FormItem>
-        <FormItem label="企业品牌:">
-            <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入企业品牌"></Input>-->
-            <unit-search-input  :searchTableData="searchList.chainBrand" :showChange="showChange" :tableData="tableData2" :name="'请输入企业品牌'" :flagData=4 @onRowSelect="onRowSelect2"></unit-search-input>
-        </FormItem>
         <FormItem label="维修品牌:">
             <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
         </FormItem>
         <FormItem label="企业品牌:">
-          <!--<Input type="text" v-model="searchList.chainBrand" placeholder="请输入连锁品牌"></Input>-->
           <Select v-model="searchList.chainBrand" filterable remote clearable placeholder="请输入企业品牌"
                   @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
             <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
@@ -96,7 +91,6 @@ import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { getName, deepClone } from '@/static/util.js'
-import unitSearchInput from '~/components/unit-search-input.vue'
 var searchList={
   "area": {
     key: ''
@@ -148,7 +142,7 @@ if(!thisData) {
       {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
       {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
-      {title: '连锁品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
+      {title: '企业品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
       // {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
     ],
     tableData: [],
@@ -166,11 +160,6 @@ if(!thisData) {
     companyType:[],//企业类型集合----
     businessType:[],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
-
-    showChange:null,
-    tableData2:[
-        {title: '品牌', key: 'name', minWidth: 140},
-    ],
 
     isFlagType:[
       {code:"是",name:'是'},
@@ -236,7 +225,6 @@ export default {
 	name: "record-company",
     components: {
       CommonTable,
-      unitSearchInput
     },
     mixins: [funMixin],
     data(){
@@ -262,7 +250,7 @@ export default {
   //   next()
   // },
   mounted () {
-	    console.log('record-company: mounted', this.$route.query)
+	    // console.log('record-company: mounted', this.$route.query)
         this.getAreaInfo();
         this.getType('1');
         this.getBusinessType();
