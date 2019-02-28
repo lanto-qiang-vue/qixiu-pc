@@ -83,7 +83,7 @@
           <Form ref="listSearch" :rules="ruleValidate" :model="listSearch" :label-width="140" class="common-form">
 
             <FormItem label="管理机构与部门:" :class="[{'mark-change': markChange('org,dept')}, 'width45']" prop="manageArr" v-show="!isCompany">
-              <Cascader :data="manageType" change-on-select v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
+              <Cascader :data="manageType" change-on-select  v-model="listSearch.manageArr" @on-change="onChangeM" :clearable=false></Cascader>
             </FormItem>
 
             <FormItem label="法人手机:" :class="[{'mark-change': markChange('legalMobile')}, 'width45']">
@@ -1062,30 +1062,45 @@ export default {
             this.uploadOtherData=deepClone(datas);
 
             for (let key in this.uploadOtherData) {
-
-              if (key == 'businessHours') {
-                this.listSearch[key] = this.uploadOtherData[key]
-                if(this.uploadOtherData[key]){
-                  this.listSearch["businessHours1"] = this.uploadOtherData[key].split('-')
-                }
-              }else if(key=='businessStatus'){
-                if(!this.uploadOtherData[key] && this.uploadOtherData[key]!=0)
-                  this.listSearch[key] = 1;
-               }else if(key=='registerDate'){
-                if(this.uploadOtherData[key])
-                  this.listSearch[key] = formatDate(this.uploadOtherData[key]);
-              }else if(key=='yyState'){
-                if(this.listSearch[key])
-                  this.listSearch[key] = this.uploadOtherData[key].toString();
-              }else if(key=='sincerityYears'){
-                  this.listSearch[key]= this.uploadOtherData[key]?deepTurn(this.uploadOtherData[key]):[]
-              }else if(this.uploadOtherData[key]){
+              switch (key){
+                case 'businessHours':{
                   this.listSearch[key] = this.uploadOtherData[key]
+                  if(this.uploadOtherData[key]){
+                    this.listSearch["businessHours1"] = this.uploadOtherData[key].split('-')
+                  }
+                  break
+                }
+                case 'businessStatus':{
+                  this.listSearch[key] = this.uploadOtherData[key]|| 1
+                  break
+                }
+                case 'registerDate':{
+                  if(this.uploadOtherData[key]) this.listSearch[key] = formatDate(this.uploadOtherData[key]);
+                  break
+                }
+                case 'yyState':{
+                  if(this.listSearch[key]) this.listSearch[key] = this.uploadOtherData[key].toString();
+                  break
+                }
+                case 'sincerityYears':{
+                  this.listSearch[key]= this.uploadOtherData[key]?deepTurn(this.uploadOtherData[key]):[]
+                  break
+                }
+                default :{
+                  if(this.uploadOtherData[key]){
+                    this.listSearch[key] = this.uploadOtherData[key]
+                  }
+                }
               }
 
             }
-            this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
-            console.log('this.listSearch',this.listSearch);
+            if(this.listSearch.org || this.listSearch.dept){
+              this.listSearch.manageArr = [this.listSearch.org, this.listSearch.dept]
+            }else{
+              this.listSearch.manageArr = []
+            }
+
+            console.log('this.listSearch.manageArr', this.listSearch.manageArr);
           }else{
             this.uploadOtherData= this.listSearch
           }
