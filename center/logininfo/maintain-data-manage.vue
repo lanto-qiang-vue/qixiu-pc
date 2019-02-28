@@ -585,9 +585,15 @@
             errorData[data[i].deptName] = data[i].companyCount
             error1 += parseInt(data[i].companyCount)
           }
+          
           for (let i in data1) {
-            successUpdate[data1[i].deptName] = parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-parseInt(data[i].companyCount)
-            successUpdateNum += (parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-parseInt(data[i].companyCount))
+            let notData=0;
+            if(data[i]){
+              notData=parseInt(data[i].companyCount)
+            }
+
+            successUpdate[data1[i].deptName] = parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-notData
+            successUpdateNum += (parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-notData)
           }
           for (let i in res) {
             areaName.push(res[i].deptName)
@@ -623,6 +629,7 @@
             trigger: 'axis',
             formatter: function(params) {
               let company = params[0].axisValue
+              
               let noUpload=0;
               let noUpload1=0;
               noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
@@ -837,28 +844,33 @@
         }
       },
       key1(val) {
-        let area = [], success = [], error = [], success1 = 0, error1 = 0,successUpdateNum=0
+        // let area = [], success = [], error = [], success1 = 0, error1 = 0,successUpdateNum=0
         if (this.key1 == '全部') {
-          this.stage = 1
-          for (let i = 0; i < this.areaName.length; i++) {
-            if (this.areaName[i] == '全部') {
-              continue
-            }
-            area.push(this.areaName[i])
-            success.push(this.dataObj[this.areaName[i]].success)
-            success1 += parseInt(this.dataObj[this.areaName[i]].success)
-            error.push(this.dataObj[this.areaName[i]].error)
-            error1 += parseInt(this.dataObj[this.areaName[i]].error)
-            successUpdateNum+=parseInt(this.dataObj[this.areaName[i]].successUpdate)
-            this.optionBar1.xAxis[0].data = area
-            this.optionBar1.series[0].data = success
-            this.optionBar1.series[1].data = error
-            this.bar2.setOption(this.optionBar1)
-            this.success1 = success1
-            this.error1 = error1
-            this.successUpdateNum=successUpdateNum
-          }
-          return
+          // this.stage = 1
+          // for (let i = 0; i < this.areaName.length; i++) {
+          //   if (this.areaName[i] == '全部') {
+          //     continue
+          //   }
+          //   console.log("this.dataObj",this.dataObj);
+          //   area.push(this.areaName[i])
+          //   success.push(this.dataObj[this.areaName[i]].success)
+          //   success1 += parseInt(this.dataObj[this.areaName[i]].success)
+          //   error.push(this.dataObj[this.areaName[i]].error)
+          //   error1 += parseInt(this.dataObj[this.areaName[i]].error)
+          //   successUpdateNum+=parseInt(this.dataObj[this.areaName[i]].successUpdate)
+          //   this.optionBar1.xAxis[0].data = area
+          //   this.optionBar1.series[0].data = success
+          //   this.optionBar1.series[1].data = error
+          //   this.bar2.setOption(this.optionBar1)
+          //   this.success1 = success1
+          //   this.error1 = error1
+          //   this.successUpdateNum=successUpdateNum
+
+            
+          // }
+          // this.showChart(area, this.dataObj)
+          // return
+          this.getData('')
         } else {
           this.getData(this.dataObj[val].code)
         }
