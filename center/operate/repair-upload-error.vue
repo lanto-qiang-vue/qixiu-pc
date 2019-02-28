@@ -786,7 +786,7 @@ export default {
         },
         onRowSelect2(val){
               
-              this.search.chainBrand=val.id;
+              this.search.chainBrand=val.name;
         },
         closeSelect(){
             this.search.chainBrand='';
