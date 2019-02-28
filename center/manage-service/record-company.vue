@@ -126,7 +126,6 @@ if(!thisData) {
         // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
       },
       {title: '企业类型', key: 'category', sortable: 'custom', minWidth: 120},
-      {title: '企业品牌', key: 'chainBrand', sortable: 'custom', minWidth: 120},
       {title: '企业名称', key: 'companyName', sortable: 'custom', minWidth: 135},
       {title: '经营地址', key: 'businessAddress', sortable: 'custom', minWidth: 150},
       {title: '是否对接', key: 'buttJoin', sortable: 'custom', minWidth: 110},
