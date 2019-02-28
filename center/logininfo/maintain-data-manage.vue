@@ -37,18 +37,18 @@
         <!--各区维修记录上传情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;padding-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
-          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
-            <div style="float:left;width:80%;">
+          <div style="position:absolute;left:10%;top:15px;font-size:12px;" v-show="apiShow">
+            <div>
               <div
                 style="height:15px;width:30px;float:left;background-color:#DD0A14;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;"><b>未上传企业: {{success1}}家</b></div>
             </div>
-            <div style="float:left; width:80%;">
+            <div>
               <div
                 style="height:15px;width:30px;float:left;background-color:#F6A805;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;"><b>错误记录企业: {{error1}}家</b></div>
             </div>
-            <div style="float:left; width:80%;">
+            <div>
               <div
                 style="height:15px;width:30px;float:left;background-color:#19be6b;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;"><b>上传无误企业: {{successUpdateNum}}家</b></div>
@@ -66,13 +66,13 @@
         <!--各区推送阅读情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar3" style="width: 100%;height: 600px;"></div>
-          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
-            <div style="float:left;">
+          <div style="position:absolute;left:10%;top:15px;font-size:12px;" v-show="apiShow">
+            <div>
               <div
                 style="height:15px;width:30px;float:left;background-color:#DD0A14;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;padding-left:10px;"><b>未上传未读企业: {{count1}}家</b></div>
             </div>
-            <div style="float:left;padding-left:20px;">
+            <div>
               <div
                 style="height:15px;width:30px;float:left;background-color:#F6A805;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{count2}}家</b></div>
@@ -412,8 +412,8 @@
             formatter: function(params) {
               let company = params[0].axisValue
               let str = company + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#DD0A14"></div>记录数:' + obj[company].success + '条<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>评论数:' + obj[company].error + '条<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#557D98"></div>记录数:' + obj[company].success + '条<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>评论数:' + obj[company].error + '条<br/>'
               str += "占比:"+obj[company].gl * 100 + "%";
               return str
             },
@@ -482,7 +482,7 @@
                 //通常情况下：
                 normal: {
                   //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                  color: '#DD0A14'
+                  color: '#557D98'
                 }
               },
               name: '记录数',
@@ -504,7 +504,7 @@
               itemStyle: {
                 //通常情况下：
                 normal: {
-                  color: '#F6A805'
+                  color: '#61A0A8'
                 }
               },
               name: '评论数',
