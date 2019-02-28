@@ -570,7 +570,7 @@
           error,
           noUpdate
         ]).then(([res, data,data1]) => {
-          if (res.status == 404 && data.status == 404) {
+          if (res.status == 404 && data.status == 404 && data1.status == 404) {
             return false
           }
 
