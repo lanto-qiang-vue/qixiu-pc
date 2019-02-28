@@ -559,7 +559,7 @@
           })
         })
         let noUpdate = new Promise((resolve, reject) => {
-          this.$axios.$get('/monitoring/display/company/upload/count?startDate=' + this.toymd(this.searchTime[0]) + '&endDate=' + this.toymd(this.add1(this.searchTime[1])) + '&deptCode=' + code).then(res => {
+          this.$axios.$get('/monitoring/display/company/dept/count?deptCode=' + code).then(res => {
             resolve(res)
           }, err => {
             reject(err)
@@ -586,8 +586,8 @@
             error1 += parseInt(data[i].companyCount)
           }
           for (let i in data1) {
-            successUpdate[data1[i].deptName] = data1[i].companyCount
-            successUpdateNum += parseInt(data1[i].companyCount)
+            successUpdate[data1[i].deptName] = parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-parseInt(data[i].companyCount)
+            successUpdateNum += (parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-parseInt(data[i].companyCount))
           }
           for (let i in res) {
             areaName.push(res[i].deptName)
