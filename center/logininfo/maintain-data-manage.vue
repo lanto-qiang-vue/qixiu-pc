@@ -51,7 +51,7 @@
             <div style="float:left; width:80%;">
               <div
                 style="height:15px;width:30px;float:left;background-color:#19be6b;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;"><b>上传成功企业: {{successUpdateNum}}家</b></div>
+              <div style="float:left;"><b>上传无误企业: {{successUpdateNum}}家</b></div>
             </div>
           </div>
           <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b>
@@ -625,14 +625,14 @@
               let company = params[0].axisValue
               let noUpload=0;
               let noUpload1=0;
-              noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate);
+              noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
               if(noUpload>0){
                 noUpload1=((parseInt(dataObj[company].success)*10000/noUpload)/100).toFixed(2)+'%'
               }
 
               let errorUpload=0;
               let errorUpload1=0;
-              errorUpload+=parseInt(dataObj[company].successUpdate);
+              errorUpload+=parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
               if(errorUpload>0){
                 errorUpload1=((parseInt(dataObj[company].error)*10000/errorUpload)/100).toFixed(2)+'%'
               }
@@ -642,7 +642,7 @@
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>未上传占比:' + noUpload1 + '<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>存在错误:' + dataObj[company].error + '<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>错误占比:' + errorUpload1 + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传数:' + dataObj[company].successUpdate + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传(无误+有误):' + errorUpload + '<br/>'
               
               
                 return str;
@@ -659,7 +659,7 @@
           },
           grid: {},
           legend: {
-            data: ['未上传', '存在错误','已上传'],
+            data: ['未上传', '存在错误','上传无误'],
             top: 15,
             right: '30%'
           },
@@ -739,7 +739,7 @@
                   color: '#19be6b'
                 }
               },
-              name: '已上传',
+              name: '上传无误',
               type: 'bar',
               data: [],
               barGap: '20%',
