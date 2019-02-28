@@ -638,11 +638,13 @@
               }
 
               let str = company + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#DD0A14"></div>未上传数:' + dataObj[company].success + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>错误时数:' + dataObj[company].error + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传数:' + dataObj[company].successUpdate + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#DD0A14"></div>未上传:' + dataObj[company].success + '<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>未上传占比:' + noUpload1 + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>错误数占比:' + errorUpload1 + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>存在错误:' + dataObj[company].error + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>错误占比:' + errorUpload1 + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传数:' + dataObj[company].successUpdate + '<br/>'
+              
+              
                 return str;
             },
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效

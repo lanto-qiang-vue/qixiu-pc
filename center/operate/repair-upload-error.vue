@@ -64,6 +64,7 @@
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
 import unitSearchInput from '~/components/unit-search-input.vue'
+import { formatDate } from '@/static/tools.js'
 export default {
     name: "repair-upload-error",
     components: {
@@ -191,7 +192,7 @@ export default {
                         window.open(routeData.href, '_blank');
                       }
                     }
-                  }, params.row.recordTotalCount)
+                  }, params.row.recordFaultCount)
                 ]);
               }
           },
@@ -509,7 +510,12 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+(this.search[i]||'');
+            if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+            
           }
           if(this.typeName != ''){
             urlStr += '&type='+this.typeName;
@@ -527,7 +533,8 @@ export default {
               let data = res.data.content;
               for(let i in data){
                 if(data[i].recordFaultCount&&data[i].recordTotalCount){
-                  data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                  console.log(data[i].recordFaultCount,data[i].recordTotalCount);
+                  data[i]["probability"] = ((data[i].recordFaultCount/data[i].recordTotalCount) * 100).toFixed(2)+ "%";
                 }else{
                   data[i]["probability"] = '0';
                 }
@@ -542,7 +549,12 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
+           if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+            
           }
           urlStr+='&type='+this.typeName;
           this.loading=true;
@@ -583,7 +595,7 @@ export default {
             let urlData="";
             urlData+="companyCode="+this.temObjectData.companyCode;
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
 
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
@@ -652,7 +664,7 @@ export default {
             urlData+="companyName="+(this.search.companyName|| "");
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
             urlData+="&deptCode="+this.search.deptCode;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
@@ -742,7 +754,7 @@ export default {
             urlData+="companyName="+(this.search.companyName|| "");
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
             urlData+="&deptCode="+this.search.deptCode;
 
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
@@ -791,6 +803,11 @@ export default {
                 window.open(routeData.href, '_blank');
             }
           })
+        },
+        add1(date){
+          let now = new Date(date);
+
+          return formatDate(new Date(now.getFullYear(),now.getMonth(),now.getDate()+1));
         }
     },
 	}
