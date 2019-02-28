@@ -29,7 +29,7 @@
                 <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
-        <FormItem label="车牌和VIN错误:">
+        <FormItem label="维修记录存在错误:">
             <Select v-model="searchList.fault" clearable @on-change="onChangeFault">
                 <Option v-for="item in typeList1" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
