@@ -60,7 +60,7 @@
             <Select style="width:150px;" v-model="key1">
               <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
             </Select>
-            
+
           </div>
         </div>
         <!--各区推送阅读情况-->
@@ -84,11 +84,11 @@
             <Select style="width:150px;" v-model="key3">
               <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
             </Select>
-            
+
           </div>
         </div>
         <!--试点企业维修点评情况-->
-        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;display: none">
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar" style="width: 100%;height: 650px;"></div>
         </div>
       </div>
@@ -643,8 +643,8 @@
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>存在错误:' + dataObj[company].error + '<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>错误占比:' + errorUpload1 + '<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传(无误+有误):' + errorUpload + '<br/>'
-              
-              
+
+
                 return str;
             },
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -764,8 +764,8 @@
         let that = this
         this.bar2.on('click', (params) => {
           let name = params.name || params.value
-          
-          
+
+
           let deptCode
           let url
           if (this.dataObj.hasOwnProperty(name)) {
@@ -888,7 +888,7 @@
           this.getRead(val)
         }
       },
-      
+
     }
   }
 </script>
