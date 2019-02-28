@@ -3,13 +3,15 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
-config.area= process.env.area|| config.area
-console.log('config.process.env.area', process.env.area)
-console.log('areakey', config[config.area].areaKey)
+const areaName= process.env.area|| config.area
+config.area= {
+  name: areaName,
+  ...config[areaName]
+}
 
 let conf= {
   mode: 'universal',
-
+  env:{config: config},
   server: {
     port: config.port ,
     host: '0.0.0.0',

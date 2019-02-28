@@ -124,6 +124,12 @@ export default {
     CommonTable,
     BasicContainer
   },
+  head () {
+    return {
+      title: this.info.name,
+      meta: [{ hid: 'description', name: 'description', content: this.info.name }]
+    }
+  },
   validate ({ app, params, store }) {
     return params.id? true: false
   },

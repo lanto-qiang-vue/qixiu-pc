@@ -42,12 +42,14 @@ const devConfig={
 let baseConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
 let allConf={
   ...baseConf,
-  area: 'shanghai',
+  area: {
+    name:'shanghai'
+  },
   shanghai:{
     areaKey: '310'
   },
   shandong:{
-    areaKey: '350'
+    areaKey: '370'
   }
 }
 

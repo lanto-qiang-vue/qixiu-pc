@@ -440,7 +440,7 @@ export default {
       return {
         questionList: resQuestion,
         cdfList: resCdf,
-        articleBanner: resArticle.left10281019,
+        articleBanner: resArticle.left10281019.concat(resArticle.middle10281013),
         articleMiddle: {
           latest: latest,
           hottest: hottest,
