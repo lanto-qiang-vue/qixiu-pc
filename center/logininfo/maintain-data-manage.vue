@@ -108,7 +108,7 @@
         options: {
           disabledDate (date) {
             let now = new Date();
-            let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+            let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate());
             return date > d1;
           }
         },
@@ -585,7 +585,7 @@
             errorData[data[i].deptName] = data[i].companyCount
             error1 += parseInt(data[i].companyCount)
           }
-          
+
           for (let i in data1) {
             let notData=0;
             if(data[i]){
@@ -629,7 +629,7 @@
             trigger: 'axis',
             formatter: function(params) {
               let company = params[0].axisValue
-              
+
               let noUpload=0;
               let noUpload1=0;
               noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
@@ -866,7 +866,7 @@
           //   this.error1 = error1
           //   this.successUpdateNum=successUpdateNum
 
-            
+
           // }
           // this.showChart(area, this.dataObj)
           // return
