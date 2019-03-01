@@ -36,7 +36,7 @@
         </FormItem>
         <FormItem label="上传时间:">
 
-            <DatePicker type="daterange" v-model="searchList.receiveTime" placeholder="请选择" style="width: 100%;"></DatePicker>
+            <DatePicker type="daterange" v-model="searchList.receiveTime" placeholder="请选择" :options="options" ></DatePicker>
 
         </FormItem>
 
@@ -115,6 +115,13 @@ if(!thisData) {
     showOtherDetail:false,
     detailData: null,
     clearTableSelect: null,
+    options: {
+      disabledDate (date) {
+        let now = new Date();
+        let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+        return date > d1;
+      }
+    },
 
   }
 }
@@ -242,11 +249,11 @@ export default {
           if(val){
             this.searchList.fault='';
           }
-          
+
         },
         onChangeVIN(val){
           // console.log('数据2：',val);
-          
+
           if(val){
             this.searchList.fault='';
           }
@@ -257,7 +264,7 @@ export default {
             this.searchList.byVehicleNumberStandard='';
             this.searchList.byVinStandard='';
           }
-          
+
         }
 
     },
