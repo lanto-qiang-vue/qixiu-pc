@@ -108,7 +108,7 @@
         options: {
           disabledDate (date) {
             let now = new Date();
-            let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate());
+            let d1 = new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
             return date > d1;
           }
         },
@@ -193,7 +193,7 @@
       },
       add1(date){
         let now = date;
-        return new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+        return new Date(now.getFullYear(),now.getMonth(),now.getDate());
       },
       getRead(code = '') {
         if (this.searchTime[0] == '' || this.searchTime[1] == '') {
