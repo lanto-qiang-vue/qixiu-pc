@@ -45,8 +45,8 @@
         </div>
       </common-table>
 
-      
-    <Modal v-model="modal3" 
+
+    <Modal v-model="modal3"
       :footer-hide="true"
            width="400"
       :mask-closable="false">
@@ -64,6 +64,7 @@
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
 import unitSearchInput from '~/components/unit-search-input.vue'
+import { formatDate } from '@/static/tools.js'
 export default {
     name: "repair-upload-error",
     components: {
@@ -123,7 +124,7 @@ export default {
       let queryData=this.$route.query;
       this.search.deptCode=queryData.deptCode;
       this.search.startDate=queryData.startDate;
-      
+
       this.search.endDate=queryData.endDate;
       this.areaName=queryData.deptName;
       this.isNoUpload=false;
@@ -167,7 +168,7 @@ export default {
                         query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
                       });
                       window.open(routeData.href, '_blank');
-                      
+
                     }
                   }
                 }, params.row.recordTotalCount)
@@ -191,7 +192,7 @@ export default {
                         window.open(routeData.href, '_blank');
                       }
                     }
-                  }, params.row.recordTotalCount)
+                  }, params.row.recordFaultCount)
                 ]);
               }
           },
@@ -236,7 +237,7 @@ export default {
           {title: '企业名称', key: 'companyName', minWidth: 120,
               render: (h, params) => {
 
-              
+
 
               return h('div', [
                 h('a', {
@@ -247,7 +248,7 @@ export default {
                   on: {
                     click: () => {
                       this.getCompanyId(params.row.companyCode);
-                      
+
                     }
                   }
                 }, params.row.companyName)
@@ -264,7 +265,7 @@ export default {
                   },
                   on: {
                     click: () => {
-                     
+
 
                       let routeData = this.$router.resolve({
                         path: "/center/record-repair",
@@ -279,7 +280,7 @@ export default {
           },
           {title: '联系方式', key: 'contactMobile',  minWidth: 135,
           },
-          
+
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
@@ -321,7 +322,7 @@ export default {
 
               render: (h, params) => {
 
-              
+
               return h('div', [
                 h('a', {
                   style:{
@@ -332,7 +333,7 @@ export default {
                     click: () => {
                       this.getCompanyId(params.row.companyCode);
 
-                      
+
                     }
                   }
                 }, params.row.companyName)
@@ -350,7 +351,7 @@ export default {
                       },
                       on: {
                         click: () => {
-                          
+
                           let routeData = this.$router.resolve({
                             path: "/center/record-repair",
                             query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
@@ -362,9 +363,9 @@ export default {
                   ]);
                 }
               },
-              {title: '联系方式', key: 'telephone',  minWidth: 135,
+              {title: '联系方式', key: 'contactMobile',  minWidth: 135,
               },
-              
+
               {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
                 render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
               },
@@ -404,7 +405,7 @@ export default {
 
                 render: (h, params) => {
 
-                  
+
 
                   return h('div', [
                     h('a', {
@@ -415,7 +416,7 @@ export default {
                       on: {
                         click: () => {
                           this.getCompanyId(params.row.companyCode);
-                          
+
                         }
                       }
                     }, params.row.companyName)
@@ -433,7 +434,7 @@ export default {
                     on: {
                       click: () => {
                         // this.$router.push({path: '/center/record-repair',})
-                        
+
                         let routeData = this.$router.resolve({
                           path: "/center/record-repair",
                           query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
@@ -455,7 +456,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        
+
                         let routeData = this.$router.resolve({
                           path: "/center/record-repair",
                           query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
@@ -509,14 +510,19 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+(this.search[i]||'');
+            if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+
           }
           if(this.typeName != ''){
             urlStr += '&type='+this.typeName;
           }
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
-              
+
           }).then( (res) => {
             if(res.status == 200){
               if(this.role){
@@ -527,7 +533,8 @@ export default {
               let data = res.data.content;
               for(let i in data){
                 if(data[i].recordFaultCount&&data[i].recordTotalCount){
-                  data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                  console.log(data[i].recordFaultCount,data[i].recordTotalCount);
+                  data[i]["probability"] = ((data[i].recordFaultCount/data[i].recordTotalCount) * 100).toFixed(2)+ "%";
                 }else{
                   data[i]["probability"] = '0';
                 }
@@ -542,12 +549,17 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
+           if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+
           }
           urlStr+='&type='+this.typeName;
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
-              
+
           }).then( (res) => {
             if(res.status == 200){
               if(this.role){
@@ -561,8 +573,8 @@ export default {
                     data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
                   }else{
                     data[i]["probability"] = '0';
-                  } 
-                 
+                  }
+
               }
               this.tableData = data;
               this.loading = false;
@@ -583,7 +595,7 @@ export default {
             let urlData="";
             urlData+="companyCode="+this.temObjectData.companyCode;
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
 
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
@@ -625,7 +637,7 @@ export default {
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
               urlData+="&type="+this.typeName;
                 this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
-                      
+
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -637,7 +649,7 @@ export default {
                   }
                 })
             }
-            
+
         },
         //提醒全部通知----------------------------
         sendAllCountFun(){
@@ -652,11 +664,11 @@ export default {
             urlData+="companyName="+(this.search.companyName|| "");
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
             urlData+="&deptCode="+this.search.deptCode;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
-                      
+
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -709,19 +721,19 @@ export default {
           if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
               this.title="（未上传维修记录）";
               this.description="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
               this.title="（上传维修记录存在错误）";
               this.description="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
               this.title="（未上传维修记录）";
               this.description="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
               this.title="（上传维修记录存在错误）";
               this.description="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
-              
+
           }
           // alert(this.title);
           // this.modal3=true;
@@ -742,7 +754,7 @@ export default {
             urlData+="companyName="+(this.search.companyName|| "");
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
             urlData+="&deptCode="+this.search.deptCode;
 
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
@@ -773,8 +785,8 @@ export default {
           })
         },
         onRowSelect2(val){
-              
-              this.search.chainBrand=val.id;
+
+              this.search.chainBrand=val.name;
         },
         closeSelect(){
             this.search.chainBrand='';
@@ -791,6 +803,11 @@ export default {
                 window.open(routeData.href, '_blank');
             }
           })
+        },
+        add1(date){
+          let now = new Date(date);
+
+          return formatDate(new Date(now.getFullYear(),now.getMonth(),now.getDate()));
         }
     },
 	}
@@ -801,7 +818,7 @@ export default {
   }
 
 
-  
+
 </style>
 <style scoped lang="less">
 .menu-manage{
