@@ -466,7 +466,8 @@ export default {
           latest: [],
           hottest: [],
         },
-        articleRight: []
+        articleRight: [],
+        height: 100
       }
 
       // if(err.response && err.response.config && err.response.data){
@@ -588,6 +589,10 @@ export default {
 <style lang="less" scoped>
 @import "./index.less";
 @import "./red-index.less";
+@heiagh: ~`(process.env.area!='shandong'? 100: 200)+ 'px'`;
+.head{
+  height: @heiagh;
+}
 </style>
 <style lang="less">
 .index{

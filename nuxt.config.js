@@ -48,7 +48,6 @@ let conf= {
     'iview/dist/styles/iview.css',
     { src: '~assets/css/common.less', lang: 'less' },
   ],
-
   /*
   ** Plugins to load before mounting the App
   */
@@ -102,6 +101,11 @@ let conf= {
     /*
     ** You can extend webpack config here
     */
+    loaders: {
+      less: {
+        javascriptEnabled: true
+      },
+    },
     extend(config, ctx) {
       config.resolve['alias']['vue$']= 'vue/dist/vue.esm.js'
     },
@@ -115,7 +119,7 @@ let conf= {
   router:{
     middleware: ['set-store', 'check-auth', 'company-sign-in'],
     extendRoutes (routes,resolve) {
-      console.log(routes)
+      // console.log(routes)
       routes.push(...router)
     }
   }
