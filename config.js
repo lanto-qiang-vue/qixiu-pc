@@ -1,7 +1,20 @@
+const prod={
+  port: '3000',
+  workOn: 'pPro',
+}
+const dev={
+  port: '3333',
+  workOn: 'pDev',
+}
+
+const shanghai={
+  areaName:'shanghai',
+  znName: '上海'
+}
+
 //打包编译环境配置
 const prodConfig={
-  //端口号
-  port: '3000',
+
   //接口地址
   // apiUrl: 'http://212.64.5.54:8888/',
   apiUrl: 'http://gateway.qixiu.lanto.com/',
@@ -14,7 +27,9 @@ const prodConfig={
 
   articlePath: 'https://download.image.shanghaiqixiu.org/',
   // articlePath: 'http://download.image.lanto.com/'
-  workOn: 'pPro'
+
+  ...prod,
+  ...shanghai,
 }
 
 
@@ -37,22 +52,38 @@ const devConfig={
   articlePath: 'http://download.image.lanto.com/',
   workOn: 'pDev',
 
+  ...dev,
+  ...shanghai,
+
 }
 
-let baseConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
-let allConf={
-  ...baseConf,
-  area: {
-    name:'shanghai'
-  },
-  shanghai:{
-    areaKey: '310'
-  },
-  shandong:{
-    areaKey: '370'
+const shandong={
+  areaName:'shandong',
+  znName: '山东'
+}
+
+const shanghaiConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
+
+const conf={
+  shanghai: shanghaiConf,
+  dev_shandong: {
+
+    // apiUrl: 'http://192.168.169.231:8888/',
+    apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
+
+    repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+
+    socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
+    shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
+
+    articlePath: 'http://download.image.lanto.com/',
+
+    ...dev,
+    ...shandong,
+
   }
 }
 
-export default allConf
+export default conf
 
 

@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-    "dev-shandong": "cross-env area=shandong nuxt",
+    "dev_shandong": "cross-env area=dev_shandong nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
@@ -14,11 +14,11 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.0.0",
     "cross-env": "^5.2.0",
-    "iview": "^3.1.2",
+    "iview": "^3.2.2",
     "jquery": "^3.3.1",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "nuxt": "^2.3.0",
+    "nuxt": "^2.4.5",
     "v-img": "^0.2.0",
     "vue-awesome-swiper": "^3.1.3"
   },

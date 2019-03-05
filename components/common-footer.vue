@@ -23,7 +23,10 @@
 
 <script>
 	export default {
-		name: "common-footer"
+		name: "common-footer",
+    mounted(){
+		  console.log("common-footer.mounted")
+    }
 	}
 </script>
 

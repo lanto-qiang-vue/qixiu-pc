@@ -1,13 +1,10 @@
 const pkg = require('./package')
 const webpack = require('webpack')
 import router from './static/router'
-import config from './config.js'
+import allcConfig from './config.js'
 
-const areaName= process.env.area|| config.area
-config.area= {
-  name: areaName,
-  ...config[areaName]
-}
+const areaName= process.env.area|| 'shanghai'
+let config= allcConfig[areaName]
 
 let conf= {
   mode: 'universal',
@@ -106,8 +103,8 @@ let conf= {
         javascriptEnabled: true
       },
     },
-    extend(config, ctx) {
-      config.resolve['alias']['vue$']= 'vue/dist/vue.esm.js'
+    extend(exconfig, ctx) {
+      exconfig.resolve['alias']['vue$']= 'vue/dist/vue.esm.js'
     },
     // plugins: [
     //   new webpack.ProvidePlugin({

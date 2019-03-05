@@ -227,7 +227,6 @@ export default {
 			}
 		},
     mounted(){
-		  console.log('process.env.config', process.env.config)
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()
     },
