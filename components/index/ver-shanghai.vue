@@ -1,15 +1,40 @@
 <template>
+<div class="home">
   <index-component :banners="banners" :swiperOption="swiperOption"
                    :showSwiper="showSwiper" :area="area" :questionList="questionList" :cdfList="cdfList"
   :articleBanner="articleBanner" :articleMiddle="articleMiddle" :articleRight="articleRight">
-    <img class="new-text temp" src="~@/assets/img/temp-red/new-text.png"/>
-    <img class="lantern-left temp" src="~@/assets/img/temp-red/lantern01.png"/>
-    <img class="lantern-right  temp" src="~@/assets/img/temp-red/lantern02.png"/>
-
+    <!--<img class="new-text temp" src="~@/assets/img/temp-red/new-text.png"/>-->
+    <!--<img class="lantern-left temp" src="~@/assets/img/temp-red/lantern01.png"/>-->
+    <!--<img class="lantern-right  temp" src="~@/assets/img/temp-red/lantern02.png"/>-->
     <nuxt-link tag="div" class="float-icon" to="/center/staff-query">
       <Icon type="ios-people" size="40" style="line-height: 50px"/>
       <p>企业员工信息</p>
     </nuxt-link>
+
+    <div class="head" slot="header">
+      <div class="title">
+        <img src="~@/assets/img/login_img/logo.png">
+        <div>
+          <h1>上海市机动车维修公共服务平台</h1>
+          <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
+        </div>
+      </div>
+      <div class="right">
+        <span class="tel">400-663-8210</span>
+        <a href="http://www.lantoev.com/android/DownLoad.html" target="_blank" class="app">
+          <p>下载APP</p>
+          <img src="~@/assets/img/index/qrcode_app.png">
+        </a>
+        <div class="wx">
+          <p>关注微信</p>
+          <img src="~@/assets/img/index/qrcode_weixin.jpg">
+        </div>
+        <nuxt-link tag="a" to="/article/guide">
+          <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
+      </div>
+
+      <login-status :isIndex="true"></login-status>
+    </div>
 
     <div class="service" slot="service">
       <div class="left">
@@ -118,15 +143,17 @@
       <li><a class="us" href="/partner">承办单位：上海蓝速汽车技术有限公司</a></li>
     </ul>
   </index-component>
+</div>
 </template>
 
 <script>
+import LoginStatus from '~/components/login-status.vue'
 import IndexComponent from '~/components/index/index-component.vue'
 import IconBlock from '~/components/menu/icon-block.vue'
 import IndexMixin from '~/components/index/index-mixin.js'
 export default {
   name: "ver-shanghai",
-  components: { IndexComponent, IconBlock},
+  components: { IndexComponent, IconBlock, LoginStatus},
   mixins: [IndexMixin],
   data(){
     return{
@@ -162,6 +189,100 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .home{
+    text-align: center;
+    background: url('~@/assets/img/index/index-bg.jpg') no-repeat center center;
+    background-size: 100% 100%;
+    overflow: hidden;
+    .head{
+      padding: 20px 10px;
+      background-color: #6091b7;
+      position: relative;
+      .title{
+        display: inline-block;
+        img{
+          width: 80px;
+          float: left;
+        }
+        div {
+          float: left;
+          color: white;
+          /*margin-top: 5px;*/
+          h1{
+            font-size: 32px;
+            font-weight: 400;
+          }
+        }
+      }
+      .right{
+        display: inline-block;
+        float: right;
+        font-size: 13px;
+        *{
+          color: white;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        >*{
+          margin-left: 10px;
+          position: relative;
+          overflow: visible;
+        }
+        .tel{
+          padding-left: 18px;
+          background: url('~@/assets/img/index/tel.png') no-repeat left center;
+          background-size: 13px;
+        }
+        .app{
+          padding-left: 15px;
+          background: url('~@/assets/img/index/app.png') no-repeat left center;
+        }
+        .wx{
+          padding-left: 20px;
+          background: url('~@/assets/img/index/wechat.png') no-repeat left center;
+          cursor: pointer;
+        }
+        .app img, .wx img{
+          display: none;
+          width: 75px;
+          position: absolute;
+          z-index: 9;
+          left: 0;
+        }
+        .app:hover img, .wx:hover img{
+          display: block;
+        }
+        .czzn{
+          width: 40px;
+        }
+      }
+      .login {
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+        color: white;
+        font-size: 16px;
+        >*{
+          height: 40px;
+          line-height: 40px;
+          display: inline-block;
+        }
+        .nick-name{
+          color: #d1d1d2;
+        }
+        .center{
+          padding: 0 10px;
+          color: white;
+        }
+        .center:hover{
+          background-color: #0c6dbe;
+        }
+        .logout{
+          margin-left: 10px;
+        }
+      }
+    }
+  }
 .float-icon{
     width: 50px;
     height: 50px;
@@ -471,8 +592,9 @@ export default {
   margin-left: 10px;
   margin-right: 10px;
 }
+  /*@import "./index-red.less";*/
 </style>
 <style lang="less">
-  /*@import "./red-index.less";*/
+
 </style>
 
