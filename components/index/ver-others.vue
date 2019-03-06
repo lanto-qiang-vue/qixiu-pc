@@ -225,7 +225,7 @@ export default {
       }
     }
     .left{
-      width: 18%;
+      width: 21%;
       .system-swiper{
         margin-top: 10px;
         .swiper-button-prev, .swiper-button-next{
@@ -332,7 +332,7 @@ export default {
       }
     }
     .right{
-      width: 33%;
+      width: 30%;
       padding-left: 15px;
     }
   }

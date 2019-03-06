@@ -171,7 +171,6 @@ export default {
       padding: 15px;
       overflow: hidden;
       .block {
-        width: 33%;
         float: left;
         overflow: hidden;
         .title {
@@ -203,6 +202,7 @@ export default {
         }
       }
       .block1 {
+        width: 33%;
         padding-right: 15px;
         .news-swiper{
           .swiper-button-prev, .swiper-button-next{
@@ -242,6 +242,7 @@ export default {
 
       }
       .block2 {
+        width: 36%;
         padding: 0 15px;
         .best {
           margin-top: 25px;
@@ -281,6 +282,7 @@ export default {
         }
       }
       .block3 {
+        width: 30%;
         padding-left: 15px;
         .article {
           margin-top: 20px;
