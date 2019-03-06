@@ -351,7 +351,7 @@ export default {
         if(!this.base.length){
           this.$axios({
             baseURL: '/repair',
-            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
+            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat,brand&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
             method: 'get',
           }).then( (res) => {
             // this.base= res.data.content
@@ -675,7 +675,7 @@ export default {
           '<div class="title">训练基地</div>'+
           '<div class="body">' +
           '<ul>' +
-          '<li><span>基地名称：</span>{{datas.name}}</li>' +
+          '<li><span>基地名称：</span>{{datas.name+ (datas.brand?"（"+datas.brand+"自用基地）":"")}}</li>' +
           '<li><span>基地地址：</span>{{datas.addr}}</li>' +
           '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
           '</ul>' +
