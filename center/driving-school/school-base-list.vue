@@ -43,8 +43,8 @@
             <span slot="close">禁用</span>
           </i-switch>
         </FormItem>
-        <FormItem label="是否自用:" v-model="formData.self">
-          <i-switch size="large">
+        <FormItem label="是否自用:">
+          <i-switch size="large" v-model="formData.self">
             <span slot="open">是</span>
             <span slot="close">否</span>
           </i-switch>
