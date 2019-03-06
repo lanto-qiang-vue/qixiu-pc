@@ -880,7 +880,7 @@ export default {
             //经营范围子类
             businessScope2: [],
             //企业主要业务
-            companySphere: [],
+          companySphere: [],
             //企业员工总数
             companyStaff: [],
             //企业占地面积
