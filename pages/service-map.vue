@@ -789,7 +789,7 @@ export default {
         // console.log('renderMap() over')
       });
 
-      this.getBase()
+      // this.getBase()
 
       // let is164= this.search.type== 164
       // if(is164){
