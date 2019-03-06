@@ -3,6 +3,7 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
+
 const areaName= process.env.area|| config.area
 config.area= {
   name: areaName,
@@ -116,7 +117,9 @@ let conf= {
     middleware: ['set-store', 'check-auth', 'company-sign-in'],
     extendRoutes (routes,resolve) {
       routes.push(...router)
+      
     }
+    
   }
 }
 if( process.env.NODE_ENV==='development'){
