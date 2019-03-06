@@ -22,6 +22,11 @@
         <FormItem label="经营地址:">
             <Input type="text" v-model="searchList.businessAddress" placeholder="请输入经营地址"></Input>
         </FormItem>
+        <FormItem label="经营状态:">
+          <Select v-model="searchList.businessStatus" clearable>
+            <Option v-for="item in businessStatusArr" :value="item.key" :key="item.id">{{ item.name }}</Option>
+          </Select>
+        </FormItem>
         <FormItem label="审核状态:">
           <Select v-model="searchList.status" clearable>
             <Option v-for="item in statusArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
@@ -36,7 +41,8 @@
     <div slot="operate">
       <Button type="info" v-if="accessBtn('query-list')" @click="showDetail=Math.random();" :disabled="!detailData">查看|审核</Button>
     </div>
-  <repair-company-info :showDetail='showDetail' :detailData="detailData" roleType="guanlibumen" @closeDetail="closeDetail"></repair-company-info>
+  <repair-company-info :showDetail='showDetail' :detailData="detailData" :businessStatusArr="businessStatusArr"
+                       roleType="guanlibumen" @closeDetail="closeDetail"></repair-company-info>
 </common-table>
 
 
@@ -73,8 +79,10 @@ export default {
         ],
         columns: [
           {title: '序号', type:'index',minWidth: 70,},
-          {title: '状态', key: 'status', sortable: true, minWidth: 100,
+          {title: '审核状态', key: 'status', sortable: true, minWidth: 110,
             render: (h, params) => h('span', getName( self.statusArr,params.row.status|| ''))},
+          {title: '经营状态', key: 'businessStatus', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', self.getBusName(params.row.businessStatus))},
           {title: '企业名称', key: 'companyName', sortable: true, minWidth: 150,},
           {title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 150,},
           // {title: '联系电话', key: 'linkmanTel', sortable: true, minWidth: 120,},
@@ -92,6 +100,7 @@ export default {
             "businessAddress": "",
             "companyName": "",
             "license": "",
+            "businessStatus": "",
             "status": "",
         },
         statusArr:[
@@ -109,15 +118,16 @@ export default {
         detailData: null,
         clearTableSelect: null,
         areaOption:[],//区域数据集合----
+        businessStatusArr:[]
       }
     },
     mounted () {
         this.getAreaInfo();
-        this.getList();
+        this.getBusStatus();
         let queryData=this.$route.query;
-      
+
         if(queryData.conpanyId){
-            
+
             this.showDetail=Math.random();
             this.detailData={id:queryData.conpanyId}
 
@@ -160,6 +170,24 @@ export default {
 
                 }
            })
+        },
+        getBusStatus(){
+          this.$axios.get('/dict/getValuesByTypeId/24').then((res) => {
+            if (res.data.code == '0') {
+              this.businessStatusArr = res.data.items
+              this.getList();
+            }
+          })
+        },
+        getBusName(key){
+          let stName= ''
+          for(let i in this.businessStatusArr){
+            if(this.businessStatusArr[i].key== key){
+              stName= this.businessStatusArr[i].name
+              break
+            }
+          }
+          return stName
         },
         changePage(page){
           this.page= page

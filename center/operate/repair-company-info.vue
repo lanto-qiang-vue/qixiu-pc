@@ -23,6 +23,8 @@
 
       <Button  size="large" type="primary" @click="auditBut('guanlibumen-crux')"
                v-if="accessBtn('audit-crux')" v-show="(isRequire&&listSearch.id)" :disabled="listSearch.status==2">审核</Button>
+      <Button  size="large" type="primary" @click="busStuModal= true"
+               v-if="accessBtn('upBusSta')" v-show="(isRequire&&listSearch.id)" >变更经营状态</Button>
 
 
       <Button  size="large" type="primary" @click="addCompany"
@@ -70,6 +72,23 @@
     </Form>
       <div slot="footer">
         <Button size="large" type="primary" @click="auditFun" :disabled="auditInfo.status===''">提交</Button>
+      </div>
+    </Modal>
+
+    <!--修改经营状态-->
+    <Modal v-model="busStuModal" title="变更企业经营状态">
+      <Form :label-width="120" ref="auditInfo" :rules="auditValidate" :model="auditInfo">
+        <FormItem label="现经营状态" >
+          {{showBusSt.name}}
+        </FormItem>
+        <FormItem label="变更为:" style="width: 300px">
+          <Select v-model="chBusStat">
+            <Option v-for="item in businessStatusArr" :value="item.key" :key="item.id">{{ item.name }}</Option>
+          </Select>
+        </FormItem>
+      </Form>
+      <div slot="footer">
+        <Button size="large" type="primary" @click="changeBusFun" :disabled="!chBusStat">提交</Button>
       </div>
     </Modal>
 
@@ -122,7 +141,11 @@
 
   export default {
     name: 'repair-company-info',
-    props: ['showDetail', 'detailData', 'roleType'],
+    props: {'showDetail':{}, 'detailData':{}, 'roleType':{}, 'businessStatusArr':{
+      default: ()=> {
+        return []
+      }
+    }},
     mixins: [funMixin],
     components: { changeCompanyInfo,commonCompanyInfo },
     data() {
@@ -170,11 +193,13 @@
           }]
         },
         isRequire:true,//关键 一般flg
-        auditType: ''
+        auditType: '',
 
-
+        busStuModal: false,
+        chBusStat: ''
       }
     },
+
     watch: {
       showDetail() {
           this.showModal = true;
@@ -200,7 +225,23 @@
 
       }
     },
-
+    computed:{
+      showBusSt(){
+        let busStu= this.listSearch.businessStatus || (this.detailData && this.detailData.businessStatus) || ''
+        let stName=''
+        for(let i in this.businessStatusArr){
+          if(this.businessStatusArr[i].key== busStu){
+            stName= this.businessStatusArr[i].name
+            break
+          }
+        }
+        this.chBusStat= busStu
+        return {
+          key: busStu,
+          name: stName
+        }
+      }
+    },
     methods: {
       //获取详情--------
       getDetail(id, str) {
@@ -317,7 +358,20 @@
         })
 
       },
-
+      changeBusFun(){
+        let id= this.listSearch.id||  (this.detailData && this.detailData.id)
+        this.$axios.post('/corp/manage/update/business/status',{
+          "businessStatus": this.chBusStat,
+          "corpId": id
+        }).then((res) => {
+          if (res.data.code == '0') {
+            this.getDetail(id);
+            this.$emit('closeDetail');
+            this.busStuModal= false
+            this.$Message.success('修改成功')
+          }
+        })
+      },
 
       visibleChange(status) {
         if (status === false) {
