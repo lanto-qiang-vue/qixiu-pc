@@ -14,7 +14,7 @@
                     <Input type="text" v-model="searchList.licenseNo" placeholder="请输入许可证号"></Input>
                 </FormItem>
                 <FormItem label="训练基地:">
-                    
+
                     <Select v-model="searchList.drivingBase" clearable>
                         <Option v-for="item in drivingBaseArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
                     </Select>
@@ -33,7 +33,7 @@
                         <Option v-for="item in checkList" :value="item.name" :key="item.name">{{ item.name }}</Option>
                     </Select>
                 </FormItem>
-                
+
                 <FormItem :label-width="0" style="width: 60px;">
                     <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
                 </FormItem>
@@ -45,7 +45,7 @@
         <Button type="info" v-if="accessBtn('update')" @click="showDetail=Math.random();" :disabled="!detailData">查看|编辑</Button>
     </div>
 	<school-info-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail" ></school-info-detail>
-  
+
   </common-table>
 </template>
 
@@ -65,7 +65,7 @@
     mixins: [funMixin],
     data(){
 	return{
-    
+
         loading:false,
         checkList:[
             {'name':'A1'},
@@ -86,6 +86,8 @@
           },
           {title: '驾校名称', key: 'name', sortable: true, minWidth: 160,
           },
+          { title: '是否启用', key: 'available', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', params.row.available?'是': '否')},
           {title: '驾校简称', key: 'simpleName', sortable: true, minWidth: 120},
           {title: '许可证号', key: 'licenseNo', sortable: true, minWidth: 160,
           },
@@ -97,7 +99,7 @@
 					temPhone=params.row.phoneNo.split('/');
 				}
               return h('div', [
-                h('span', 
+                h('span',
                   temPhone[0]
                 )
               ]);
@@ -110,7 +112,7 @@
 					temPhone=params.row.phoneNo.split('/');
 				}
               return h('div', [
-                h('span', 
+                h('span',
                   temPhone[1]
                 )
               ]);
@@ -128,13 +130,13 @@
 					temPhone=params.row.creditLevel;
 				}
               return h('div', [
-                h('span', 
+                h('span',
                   temPhone
                 )
               ]);
             }
 			},
-          
+
         ],
         tableData: [],
         searchList:{
@@ -143,7 +145,7 @@
             drivingBase:'',
             creditLevel:'',
             trainingScope:[],
-            
+
         },
 		creditLevelArr:[
 			{name:'未评级',code:'N'},
@@ -173,7 +175,7 @@
         getList(){
             this.loading=true;
             let page=this.page-1;
-            
+
             let strUrl="";
 
             for(let i in this.searchList){
@@ -186,7 +188,7 @@
                 }
             }
 
-            
+
             this.$axios.get('/training/driving/school/query?size='+this.limit+'&page='+page+strUrl, {
             }).then( (res) => {
             //   console.log(res);
@@ -198,7 +200,7 @@
                 this.loading=false;
                 // this.$Message.error(res.statusText);
               }
-              
+
             })
         },
 		getNameList(){
@@ -207,11 +209,11 @@
             }).then( (res) => {
             //   console.log(res);
               if(res.status===200){
-                
+
 				        this.drivingBaseArr=res.data.content;
 
               }
-              
+
             })
 		},
         changePage(page){
@@ -228,7 +230,7 @@
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random()
-          
+
           this.getList();
         },
 
