@@ -41,8 +41,6 @@
             </FormItem>
             <FormItem label="驾校电话1:" >
                 <Input type="text" v-model="search.phoneNo1" placeholder="请输入驾校电话"></Input>
-                
-
             </FormItem>
             <FormItem label="驾校电话2:" >
                 <Input type="text" v-model="search.phoneNo2" placeholder="请输入驾校电话"></Input>
@@ -51,6 +49,12 @@
                 <Select v-model="search.creditLevel" clearable>
                     <Option v-for="item in creditLevelArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
+            </FormItem>
+            <FormItem label="是否启用:" >
+                <i-switch size="large" v-model="search.available">
+                    <span slot="open">启用</span>
+                    <span slot="close">禁用</span>
+                </i-switch>
             </FormItem>
 
             <FormItem label="培训驾照类型:" prop="trainingScope" style="width: 95%;">
@@ -97,12 +101,33 @@
 
 <script>
 import funMixin from '~/components/fun-auth-mixim.js'
-  import unitSearchInput from '~/components/unit-search-input.vue'
-  import uploadImgs from '~/components/upload-imgs.vue'
-
+import unitSearchInput from '~/components/unit-search-input.vue'
+import uploadImgs from '~/components/upload-imgs.vue'
 import TinyEditor from '~/components/tiny-editor.vue'
+import { deepClone } from '@/static/util'
 
-  import {   deepClone } from '@/static/util'
+let initSearch={
+    "address": "",
+    "areaKey": "",
+    "areaName": "",
+    "creditLevel": "",
+    "drivingBase": "",
+    "baseId": [],
+    "id": '',
+    "lat": '',
+    "licenseNo": "",
+    "lon": '',
+    "name": "",
+    "phoneNo":'',
+    "phoneNo1": "",
+    "phoneNo2": "",
+    "pic": [],
+    "simpleName": "",
+    "trainingScope": [],
+    "about":"",
+    available: false,
+}
+
 export default {
 	name: "school-info-detail",
     props:['showDetail', 'detailData'],
@@ -114,25 +139,7 @@ export default {
             showModal:false,
             showCaptcha:false,
             description:'上传图片',
-            search:{
-                "address": "",
-                "areaKey": "",
-                "areaName": "",
-                "creditLevel": "",
-                "drivingBase": "",
-                "baseId": [],
-                "id": '',
-                "lat": '',
-                "licenseNo": "",
-                "lon": '',
-                "name": "",
-                "phoneNo1": "",
-                "phoneNo2": "",
-                "pic": [],
-                "simpleName": "",
-                "trainingScope": [],
-                "about":""
-            },
+            search:deepClone(initSearch),
             checkList:[
                 {'name':'A1'},
                 {'name':'A2'},
@@ -178,9 +185,9 @@ export default {
                 {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
             ],
             tableData:[
-          {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
-          {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
-        ],
+                {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
+                {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
+            ],
             data1: [],
             areaOption:[]
         }
@@ -191,27 +198,8 @@ export default {
             this.showModal=true;
             this.getAreaInfo();
             this.showChange=Math.random();
+            this.search=deepClone(initSearch);
             if(this.detailData){
-                this.search={
-                    "address": "",
-                    "areaKey": "",
-                    "areaName": "",
-                    "creditLevel": "",
-                    "drivingBase": "",
-                    "baseId": [],
-                    "id": '',
-                    "lat": '',
-                    "licenseNo": "",
-                    "lon": '',
-                    "name": "",
-                    "phoneNo1": "",
-                    "phoneNo2": "",
-                    "pic": [],
-                    "simpleName": "",
-                    "trainingScope": [],
-                    "about":"",
-                    phoneNo:'',
-                }
                 for(let i in this.search){
                     switch(i){
                         case 'pic':
@@ -235,12 +223,13 @@ export default {
 
                         break;
                         case 'phoneNo':
-
                                 let temPhone=this.detailData['phoneNo'].split('/');
                                 this.search.phoneNo1=temPhone[0];
                                 this.search.phoneNo2=temPhone[1];
                         break;
-
+                        case 'phoneNo1':
+                        case 'phoneNo2':
+                        break;
                         default:this.search[i]=this.detailData[i]||'';
 
                     }
@@ -251,31 +240,6 @@ export default {
                     newBase[i]['_checked']=true;
                     this.search.baseId.push(newBase[i]['id']);
                     this.data1.push(newBase[i]);
-                }
-
-
-                console.log('进来的list参数',JSON.stringify(this.search));
-
-
-            }else{
-                this.search={
-                    "address": "",
-                    "areaKey": "",
-                    "areaName": "",
-                    "creditLevel": "",
-                    "drivingBase": "",
-                    "baseId": [],
-                    "id": '',
-                    "lat": '',
-                    "licenseNo": "",
-                    "lon": '',
-                    "name": "",
-                    "phoneNo1": "",
-                    "phoneNo2": "",
-                    "pic": [],
-                    "simpleName": "",
-                    "trainingScope": [],
-                    "about":""
                 }
             }
 
@@ -324,7 +288,7 @@ export default {
             console.log(JSON.stringify(this.data1),this.search.drivingBase);
         },
         onSelectionChange(selection){
-            console.log(JSON.stringify(selection));
+            
             for(let i in this.data1){
                     this.data1[i]['_checked']=false;
             }
@@ -348,7 +312,7 @@ export default {
                     this.search.baseId.push(selection[i]['id']);
                 }
             }
-            console.log(JSON.stringify(this.data1),this.search.drivingBase);
+            
         },
         //监听界面变化--------
         visibleChange(status){
@@ -369,94 +333,39 @@ export default {
             this.search.pic=val;
         },
 
-        checkAllGroupChange (data) {
-
-        },
         addDrive(name){
-
-          this.search['about']=this.$refs.editor.getContent();
+            this.search['about']=this.$refs.editor.getContent();
             this.$refs[name].validate((valid) => {
-          if (valid) {
-                let addData={
-                "address": "",
-                "areaKey": "",
-                "areaName": "",
-                "creditLevel": "",
-                "drivingBase": "",
-                "lat": "",
-                "licenseNo": "",
-                "lon": "",
-                "name": "",
-                "phoneNo": "",
-                "pic": "",
-                "simpleName": "",
-                "trainingScope": "",
-                "baseId":'',
-                "about":"",
-                "id":""
-            };
-
-            for(let i in addData){
-                if(i=="phoneNo"){
-                    if(this.search['phoneNo1']&&this.search['phoneNo2']){
-                        addData[i]=this.search['phoneNo1']+'/'+this.search['phoneNo2'];
-                    }else if(this.search['phoneNo1']){
-                        addData[i]=this.search['phoneNo1'];
-                    }else if(this.search['phoneNo2']){
-                        addData[i]=this.search['phoneNo2'];
+                if (valid) {
+                    let addData=deepClone(initSearch);
+                    for(let i in addData){
+                        if(i=="phoneNo"){
+                            if(this.search['phoneNo1']&&this.search['phoneNo2']){
+                                addData[i]=this.search['phoneNo1']+'/'+this.search['phoneNo2'];
+                            }else if(this.search['phoneNo1']){
+                                addData[i]=this.search['phoneNo1'];
+                            }else if(this.search['phoneNo2']){
+                                addData[i]=this.search['phoneNo2'];
+                            }
+                        }else{
+                            addData[i]=this.search[i];
+                        }
                     }
-                }else{
-                    addData[i]=this.search[i];
+                    if(this.search['id']){
+                        this.$axios.put('/training/driving/school/'+this.search['id'], addData).then( (res) => {
+                            if(res.data.code=='0'){
+                                this.showModal=false;
+                            }
+                        })
+                    }else{
+                        this.$axios.post('/training/driving/school', addData).then( (res) => {
+                            if(res.data.code=='0'){
+                                this.showModal=false;
+                            }
+                        })
+                    }
                 }
-            }
-
-            if(this.search['id']){
-                this.$axios.put('/training/driving/school/'+this.search['id'], {
-                    "address": addData['address'],
-                    "areaKey": addData['areaKey'],
-                    "areaName": addData['areaName'],
-                    "creditLevel": addData['creditLevel'],
-                    "baseId":addData['baseId'],
-                    "drivingBase": addData['drivingBase'],
-                    "lat": parseFloat(addData['lat']),
-                    "licenseNo": addData['licenseNo'],
-                    "lon": parseFloat(addData['lon']),
-                    "name": addData['name'],
-                    "phoneNo": addData['phoneNo'],
-                    "pic": addData['pic'],
-                    "simpleName": addData['simpleName'],
-                    "trainingScope": addData['trainingScope'],
-                    "about":addData['about'],
-                }).then( (res) => {
-                    if(res.data.code=='0'){
-                        this.showModal=false;
-                    }
-                })
-            }else{
-                this.$axios.post('/training/driving/school', {
-                    "address": addData['address'],
-                    "areaKey": addData['areaKey'],
-                    "areaName": addData['areaName'],
-                    "creditLevel": addData['creditLevel'],
-                    "baseId":addData['baseId'],
-                    "drivingBase": addData['drivingBase'],
-                    "lat": parseFloat(addData['lat']),
-                    "licenseNo": addData['licenseNo'],
-                    "lon": parseFloat(addData['lon']),
-                    "name": addData['name'],
-                    "phoneNo": addData['phoneNo'],
-                    "pic": addData['pic'],
-                    "simpleName": addData['simpleName'],
-                    "trainingScope": addData['trainingScope'],
-                    "about":addData['about'],
-                }).then( (res) => {
-                    if(res.data.code=='0'){
-                        this.showModal=false;
-                    }
-                })
-            }
-          }
-        });
+            });
 
 
 
