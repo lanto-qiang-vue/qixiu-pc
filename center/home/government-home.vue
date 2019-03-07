@@ -108,7 +108,7 @@ export default {
   },
   methods:{
     getData(){
-      this.$axios.$get('/mgmtdept/statistics/shanghai').then((res) => {
+      this.$axios.$get('/mgmtdept/statistics/'+process.env.config.areaName).then((res) => {
         this.res= res.item
         this.showChart(res.item)
 
