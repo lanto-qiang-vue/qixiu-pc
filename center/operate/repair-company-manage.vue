@@ -70,6 +70,12 @@
                   </Select>
               </FormItem>
 
+              <FormItem label="显示隐藏数据:">
+                <Select v-model="search.hidden">
+                  <Option value="false" >否</Option>
+                  <Option value="true" >是</Option>
+                </Select>
+              </FormItem>
 
               <FormItem :label-width="0" style="width: 60px;">
                   <Button type="primary" v-if="accessBtn('list')" @click="page=1,closeDetail()">搜索</Button>
@@ -122,6 +128,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
             "status": "",
             "generalStatus":"",
             "totalToTotal": "",
+            hidden: 'false'
         },
         page: 1,
         limit: 10,
@@ -187,7 +194,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
       }
     },
     mounted () {
-		  
+
       this.getBusinessType();
       this.getValuesByTypeFun(1);
       this.getList();
@@ -208,6 +215,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
                 "status": this.search.status,
                 "generalStatus":this.search.generalStatus,
                 "totalToTotal": this.search.totalToTotal,
+                "hidden": this.search.hidden,
                 "pageNo": this.page,
                 "pageSize": this.limit,
           }).then( (res) => {

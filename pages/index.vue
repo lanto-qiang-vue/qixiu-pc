@@ -1,9 +1,9 @@
 <template>
 <div class="index">
 <div class="content">
-  <img class="new-text temp" src="~@/assets/img/temp-red/new-text.png"/>
-  <img class="lantern-left temp" src="~@/assets/img/temp-red/lantern01.png"/>
-  <img class="lantern-right  temp" src="~@/assets/img/temp-red/lantern02.png"/>
+  <!--<img class="new-text temp" src="~@/assets/img/temp-red/new-text.png"/>-->
+  <!--<img class="lantern-left temp" src="~@/assets/img/temp-red/lantern01.png"/>-->
+  <!--<img class="lantern-right  temp" src="~@/assets/img/temp-red/lantern02.png"/>-->
   <div class="head">
     <div class="title">
       <img src="../assets/img/login_img/logo.png">
@@ -107,8 +107,8 @@
       <div class="msg">
         <div class="owner">
           <div class="tit">
-            <!--<img src="../assets/img/index/person.png">-->
-            <img class="temp" src="~@/assets/img/temp-red/icon-service.png">
+            <img src="../assets/img/index/person.png">
+            <!--<img class="temp" src="~@/assets/img/temp-red/icon-service.png">-->
             <p>车主</p>
             <p>服务</p>
             <p>中心</p>
@@ -587,7 +587,7 @@ export default {
 
 <style lang="less" scoped>
 @import "./index.less";
-@import "./red-index.less";
+/*@import "./red-index.less";*/
 </style>
 <style lang="less">
 .index{
@@ -616,5 +616,5 @@ export default {
     left: -2px;
   }
 }
-@import "./red-index.less";
+/*@import "./red-index.less";*/
 </style>
