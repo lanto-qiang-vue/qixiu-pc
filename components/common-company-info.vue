@@ -751,7 +751,7 @@ export default {
                 }],
                 safePic:[{
                   validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.throughSafetyProductionStandardization&& !value) {
+                    if (this.$data.listSearch.throughSafetyProductionStandardization&& !value &&!isYunying) {
                       callback(new Error('请完善通过安全生产标准化达标认证资料'));
                     }else{
                       callback();
@@ -761,7 +761,7 @@ export default {
                 isoPic:[{
                   validator: (rule, value, callback) => {
                     console.log('isoPic.validator', value)
-                    if (this.$data.listSearch.iso&& !value) {
+                    if (this.$data.listSearch.iso&& !value &&!isYunying) {
                       callback(new Error('请完善通过ISO质量管理体系认证资料'));
                     }else{
                       callback();
@@ -770,7 +770,7 @@ export default {
                 }],
                 greenPic:[{
                   validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.throughEnvironmentalProtectionSpecialRenovation&& !value) {
+                    if (this.$data.listSearch.throughEnvironmentalProtectionSpecialRenovation&& !value &&!isYunying) {
                       callback(new Error('请完善通过环保部门专项整治资料'));
                     }else{
                       callback();
@@ -793,7 +793,7 @@ export default {
                   }else{
                     pass= true
                   }
-                  if(pass) callback()
+                  if(pass || isYunying) callback()
                   else callback(new Error('请完善成为全国诚信维修企业的年份的资料, [开始日期]和[上传图片]为必填项'));
                 }
               }],
@@ -813,7 +813,7 @@ export default {
                   }else{
                     pass= true
                   }
-                  if(pass) callback()
+                  if(pass ||isYunying) callback()
                   else callback(new Error('请完善区级以上荣誉获得情况, [荣誉情况]和[上传图片]为必填项'));
                 }
               }],
