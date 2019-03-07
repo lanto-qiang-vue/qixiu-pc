@@ -2,7 +2,7 @@
 <div>
   <ver-shanghai :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper" :area="area"
   :questionList="questionList" :cdfList="cdfList" :articleBanner="articleBanner" :articleMiddle="articleMiddle"
-                :articleRight="articleRight" v-if="areaShanghai"></ver-shanghai>
+                :articleRight="articleRight" v-if="isShanghai"></ver-shanghai>
   <ver-others :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper" :area="area"
   :questionList="questionList" :cdfList="cdfList" :articleBanner="articleBanner" :articleMiddle="articleMiddle"
   :articleRight="articleRight" v-else></ver-others>
@@ -173,7 +173,7 @@ export default {
     return thisData
   },
   computed:{
-    areaShanghai(){
+    isShanghai(){
       return process.env.config.areaName=='shanghai'
     },
     conf(){

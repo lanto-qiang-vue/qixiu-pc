@@ -438,37 +438,37 @@ export default [
 
     ]
   },
-  {
-    path: '/menu18',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '运输管理',
-      accessId: '/menu18',
-    },
-    component: Main,
-    children: [
-
-       {
-        path: 'maintain-report-manage',
-        meta: {
-          icon: '',
-          title: '维修数据上报管理',
-          accessId: '',
-        },
-        component: resolve('center/operate/maintain-report-manage.vue'),
-      },
-      {
-        path: 'for-you-service',
-        meta: {
-          icon: '',
-          title: '为您服务管理',
-          accessId: 410,
-        },
-        component: resolve('center/operate/for-you-service.vue'),
-      },
-    ]
-  },
+  // {
+  //   path: '/menu18',
+  //   alias: '/center',
+  //   meta: {
+  //     icon: 'logo-buffer',
+  //     title: '运输管理',
+  //     accessId: '/menu18',
+  //   },
+  //   component: Main,
+  //   children: [
+  //
+  //      {
+  //       path: 'maintain-report-manage',
+  //       meta: {
+  //         icon: '',
+  //         title: '维修数据上报管理',
+  //         accessId: '',
+  //       },
+  //       component: resolve('center/operate/maintain-report-manage.vue'),
+  //     },
+  //     {
+  //       path: 'for-you-service',
+  //       meta: {
+  //         icon: '',
+  //         title: '为您服务管理',
+  //         accessId: 410,
+  //       },
+  //       component: resolve('center/operate/for-you-service.vue'),
+  //     },
+  //   ]
+  // },
 
 
   //管理中心

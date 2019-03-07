@@ -8,8 +8,15 @@ const dev={
 }
 
 const shanghai={
+  zhName: '上海',
   areaName:'shanghai',
-  znName: '上海'
+  areaKey:'310000'
+}
+
+const shandong={
+  zhName: '山东',
+  areaName:'shandong',
+  areaKey:'370000'
 }
 
 //打包编译环境配置
@@ -55,12 +62,6 @@ const devConfig={
   ...dev,
   ...shanghai,
 
-}
-
-const shandong={
-  areaName:'shandong',
-  znName: '山东',
-  areaKey:'370000'
 }
 
 const shanghaiConf= process.env.NODE_ENV==='development'? devConfig: prodConfig

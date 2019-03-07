@@ -116,8 +116,19 @@ let conf= {
   router:{
     middleware: ['set-store', 'check-auth', 'company-sign-in'],
     extendRoutes (routes,resolve) {
+      if(areaName!='shanghai'){
+        let arr=[]
+        for(let i in routes){
+          if(routes[i].name.indexOf('cdf')<0){
+            arr.push(routes[i])
+          }
+        }
+        routes= arr
+      }
       // console.log(routes)
       routes.push(...router)
+      // console.log(routes)
+      return routes
     }
   }
 }

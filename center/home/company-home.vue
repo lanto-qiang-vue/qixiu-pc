@@ -50,7 +50,7 @@
       </div>
 
     </div>
-    <div class="dblock">
+    <div class="dblock" v-if="isShanghai">
       <h1 class="dtitle">上门服务申请业务（仅限于法律法规允许的业务）</h1>
       <div class="center">
         <div class="inline-box">
@@ -70,7 +70,7 @@
 
     </div>
 
-    <div class="dblock">
+    <div class="dblock" v-if="isShanghai">
       <h1 class="dtitle">预约维修业务</h1>
       <div class="center">
         <div class="inline-box">
@@ -311,10 +311,17 @@
         featureArr:[]
       }
 		},
+    computed:{
+      isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
+    },
     mounted(){
       $.getScript('/libs/echarts.common.min.js',()=>{
-        this.getVisit();
-        this.getOrder();
+        if(this.isShanghai){
+          this.getVisit();
+          this.getOrder();
+        }
       })
       this.$axios.$post('/company/repaircompany/detailInfo',{}).then( (res) => {
         if(res.code== '0') this.infoData= [res.item]
