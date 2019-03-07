@@ -1047,7 +1047,7 @@ export default {
                   break
                 }
                 default :{
-                  if(this.uploadData[key]){
+                  if(this.uploadData[key] ||this.uploadData[key]==0){
                     this.requireList[key] = this.uploadData[key]
                   }
                 }
@@ -1096,7 +1096,7 @@ export default {
                   break
                 }
                 default :{
-                  if(this.uploadOtherData[key]){
+                  if(this.uploadOtherData[key] || this.uploadOtherData[key]==0){
                     this.listSearch[key] = this.uploadOtherData[key]
                   }
                 }
