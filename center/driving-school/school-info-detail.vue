@@ -128,6 +128,8 @@ let initSearch={
     available: false,
 }
 
+let publiceData={ required: true, message: '请填写数据', };
+
 export default {
 	name: "school-info-detail",
     props:['showDetail', 'detailData'],
@@ -161,20 +163,17 @@ export default {
 			{name:'AAA',code:'AAA'},
             ],
             ruleValidate: {
-                name:[{ required: true, message: '请填写数据', },],
-                simpleName: [{ required: true,  message: '请填写数据',}],
-                licenseNo: [{ required: true,  message: '请填写数据',}],
-                address: [{ required: true,  message: '请填写数据',}],
-                lon: [{ required: true,  message: '请填写数据',}],
-                lat: [{ required: true,  message: '请填写数据',}],
-                // phoneNo1: [{ required: true,  message: '请填写数据',}],
-                // phoneNo2: [{ required: true,  message: '请填写数据',}],
-                creditLevel: [{ required: true,  message: '请填写数据',}],
-                trainingScope: [{ required: true,  message: '请填写数据',}],
-                drivingBase: [{ required: true,  message: '请填写数据',}],
-                // pic: [{ required: true,  message: '请填写数据',}],
-                areaKey: [{ required: true,  message: '请填写数据',}],
-                about: [{ required: true,  message: '请填写数据',}],
+                name:[publiceData],
+                simpleName: [publiceData],
+                licenseNo: [publiceData],
+                address: [publiceData],
+                lon: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址经度必填,且小数精度六位'}],
+                lat: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址维度必填,且小数经度六位'}],
+                creditLevel: [publiceData],
+                trainingScope: [publiceData],
+                drivingBase: [publiceData],
+                areaKey: [publiceData],
+                about: [publiceData],
             },//规则验证
             searchTableData:'',
             showChange:null,
