@@ -80,7 +80,7 @@
                     <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
                   </Select>
                 </FormItem>
-                <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="requireList.economicType==900?true:false" prop="economicTypeOther">
+                <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="requireList.economicType==900" prop="economicTypeOther">
                   <Input type="text" v-model="requireList.economicTypeOther" :readonly="isCompany"></Input>
                 </FormItem>
 
