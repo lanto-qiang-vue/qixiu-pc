@@ -1746,7 +1746,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
       },
       getAreaList() {
         this.$axios.post('/area/region/list', {
-          areaName: 'shanghai'
+          areaName: process.env.config.areaName
         }).then((res) => {
           if (res.data.code == '0') {
             this.area = res.data.items

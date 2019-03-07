@@ -127,7 +127,7 @@ export default {
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai"
+                   "areaName": process.env.config.areaName
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;

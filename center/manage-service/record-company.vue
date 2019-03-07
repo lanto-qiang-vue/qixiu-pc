@@ -410,7 +410,7 @@ activated(){
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai"
+                   "areaName": process.env.config.areaName
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.areaOption=res.data.items;
@@ -445,7 +445,8 @@ activated(){
            })
         },
         getCompanyArea(){
-            this.$axios.get('/area/dept/list/all/shanghai', {
+            
+            this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.manageType=res.data.items;

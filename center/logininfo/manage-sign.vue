@@ -65,7 +65,7 @@
                 tableData: [],
                 searchSelectOption:[],
                 searchList:{
-                    areaKey:"310000",
+                    areaKey:process.env.config.areaKey,
                     companyName:"",
                     isLogin:"yes",
                     startDate:"",
@@ -115,7 +115,7 @@
         },
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
-                   "areaName": "shanghai"
+                   "areaName": process.env.config.areaName
             }).then( (res) => {
                 if(res.data.code=='0'){
                     this.searchSelectOption=res.data.items;

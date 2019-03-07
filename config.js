@@ -59,7 +59,8 @@ const devConfig={
 
 const shandong={
   areaName:'shandong',
-  znName: '山东'
+  znName: '山东',
+  areaKey:'370000'
 }
 
 const shanghaiConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
@@ -68,8 +69,8 @@ const conf={
   shanghai: shanghaiConf,
   dev_shandong: {
 
-    // apiUrl: 'http://192.168.169.231:8888/',
-    apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
+    apiUrl: 'http://192.168.169.208:8888/',
+    // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
     repairUrl: 'https://www.shanghaiqixiu.org/repair/',
 

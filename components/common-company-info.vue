@@ -1294,7 +1294,7 @@ export default {
       },
       //获取管理部门数据------
       getCompanyArea() {
-        this.$axios.get('/area/dept/list/all/shanghai', {}).then((res) => {
+        this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {}).then((res) => {
           if (res.data.code == '0') {
             this.manageType = res.data.items
           } else {
@@ -1322,7 +1322,7 @@ export default {
       //获取区域信息
       getType() {
         this.$axios.post('/area/region/list', {
-          areaName: 'shanghai'
+          areaName: process.env.config.areaName
         }).then((res) => {
           if (res.data.code == '0') {
             this.typeList = res.data.items
