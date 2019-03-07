@@ -1,6 +1,6 @@
 <template>
 <div class="home">
-  <index-component :banners="banners" :swiperOption="swiperOption"
+  <index-component  class="index-component" :banners="banners" :swiperOption="swiperOption"
                    :showSwiper="showSwiper" :area="area" :questionList="questionList" :cdfList="cdfList"
                    :articleBanner="articleBanner" :articleMiddle="articleMiddle" :articleRight="articleRight">
     <div class="head" slot="header">
@@ -34,7 +34,7 @@
           <swiper-slide v-for="(item, index) in systemArticle" :key="index">
             <div class='content'>
               <img :src="item.photo || '/img/default-car.png'">
-              <p>{{item.text}}<span>详情</span></p>
+              <p style="-webkit-box-orient: vertical;">{{item.text}}<span>详情</span></p>
             </div>
           </swiper-slide>
 
@@ -79,6 +79,10 @@
       </div>
       <div class="right">
         <div class="title"><h1>通知公告</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
+        <ul>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+Math.random()">{{item.title}}</nuxt-link>
+        </ul>
       </div>
     </div>
     <ul class="cooperator" slot="cooperator">
@@ -112,9 +116,13 @@ export default {
 <style scoped lang="less">
 .home{
   text-align: center;
-  background: url('~@/assets/img/index/index-bg.jpg') no-repeat center center;
-  background-size: 100% 100%;
+  /*background: url('~@/assets/img/index/index-bg.jpg') no-repeat center center;*/
+  /*background-size: 100% 100%;*/
+  background:linear-gradient(180deg, #D9F3FC 0%, white 100%);
   overflow: hidden;
+  .index-component{
+    background-color: white;
+  }
   .head{
     padding: 20px 10px;
     background-color: #6091b7;
@@ -207,7 +215,7 @@ export default {
     margin-top: 30px;
     margin-left: 10px;
     margin-right: 10px;
-    padding: 0 15px;
+    /*padding: 0 15px;*/
     overflow: hidden;
     >div{
       float: left;
@@ -222,6 +230,23 @@ export default {
         border-left: 3px solid #4A90E2;
         margin-bottom: 5px;
         font-weight: 400;
+        display: inline-block;
+      }
+      a {
+        font-size: 14px;
+        color: #999999;
+        float: right;
+        margin-right: 5px;
+      }
+      a:after {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-top: 2px solid #999999;
+        border-right: 2px solid #999999;
+        transform: rotate(45deg);
+        content: '';
+        margin-bottom: 2px;
       }
     }
     .left{
@@ -238,12 +263,21 @@ export default {
             height: 130px;
           }
           p{
-            margin-top: 10px;
+            margin-top: 5px;
             position: relative;
             color: #333333;
             font-size: 14px;
             text-indent: 2em;
+            height: 60px;
+            overflow: hidden;
+            line-height: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
           }
+        }
+        .swiper-pagination{
+          top: 110px;
+          bottom: auto;
         }
       }
     }
@@ -334,6 +368,33 @@ export default {
     .right{
       width: 30%;
       padding-left: 15px;
+      ul{
+        margin-top: 10px;
+        height: 210px;
+        overflow: hidden;
+        font-size: 14px;
+        color: #333333;
+        a{
+          display: block;
+          line-height: 35px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-left: 10px;
+          position: relative;
+          white-space: nowrap;
+          &:after{
+            content: '';
+            width: 4px;
+            height: 4px;
+            background-color: #8C9699;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 100%;
+          }
+        }
+      }
     }
   }
   .justify{

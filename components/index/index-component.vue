@@ -168,7 +168,7 @@ export default {
       position: relative;
       background-color: white;
       opacity: .8;
-      padding: 15px;
+      /*padding: 15px;*/
       overflow: hidden;
       .block {
         float: left;
