@@ -10,13 +10,21 @@ const dev={
 const shanghai={
   zhName: '上海',
   areaName:'shanghai',
-  areaKey:'310000'
+  areaKey:'310000',
+  lnglat:{
+    lng: 121.480236,
+    lat: 31.236301
+  }
 }
 
 const shandong={
   zhName: '山东',
   areaName:'shandong',
-  areaKey:'370000'
+  areaKey:'370000',
+  lnglat:{
+    lng: 117.120098,
+    lat: 36.6512,
+  }
 }
 
 //打包编译环境配置

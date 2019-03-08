@@ -1480,7 +1480,7 @@ export default {
       geoCode(value){
           if(!this.geocoder){
               this.geocoder = new AMap.Geocoder({
-                  city: "021",
+                  city: process.env.config.areaKey,
               });
           }
           this.geocoder.getLocation(value, (status, result)=> {

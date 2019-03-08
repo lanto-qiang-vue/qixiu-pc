@@ -136,8 +136,8 @@ export default {
         bizScope: 'C1',
         sortSchool: '',
         base: '',
-        lng: 121.480236,
-        lat: 31.236301
+        lng: process.env.config.lnglat.lng,
+        lat: process.env.config.lnglat.lat
       },
       area: [],
       sort:[
@@ -233,7 +233,7 @@ export default {
     }
   },
   mounted(){
-    console.log('this.extend', this.$extend)
+    // console.log('this.extend', this.$extend)
     // console.log('Vue.compile', Vue.compile)
     $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2',()=>{
       this.init()
