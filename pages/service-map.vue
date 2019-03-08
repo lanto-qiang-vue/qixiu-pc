@@ -231,8 +231,10 @@ export default {
       this.spinShow= true;
       this.map.clearMap()
     },
-    '$route'(){
-      // console.log('watch.$route')
+    '$route'(route){
+      for(let key in route.query){
+        this.search[key]= route.query[key]
+      }
       this.changeType()
     }
   },
