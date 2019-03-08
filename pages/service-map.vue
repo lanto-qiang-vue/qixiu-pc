@@ -17,7 +17,7 @@
         <Option value="166">综合检测站</Option>
         <Option value="214">危运车辆维修</Option>
         <Option value="215">新能源汽车维修</Option>
-        <Option value="213">施救牵引企业</Option>
+        <!--<Option value="213">施救牵引企业</Option>-->
         <Option value="300">驾校</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
