@@ -167,8 +167,8 @@ export default {
                 simpleName: [publiceData],
                 licenseNo: [publiceData],
                 address: [publiceData],
-                lon: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址经度必填,且小数精度六位'}],
-                lat: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址维度必填,且小数经度六位'}],
+                lon: [publiceData],
+                lat: [publiceData],
                 creditLevel: [publiceData],
                 trainingScope: [publiceData],
                 drivingBase: [publiceData],
@@ -229,7 +229,7 @@ export default {
                         case 'phoneNo1':
                         case 'phoneNo2':
                         break;
-                        default:this.search[i]=this.detailData[i]||'';
+                        default:this.search[i]=this.detailData[i];
 
                     }
                 }
