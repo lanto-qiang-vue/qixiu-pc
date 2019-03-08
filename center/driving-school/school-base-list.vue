@@ -101,8 +101,8 @@
         rules: {
           name: [{ required: true, message: '基地名称必填' }],
           address: [{ required: true, message: '基地地址必填' }],
-          lon: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址经度必填,且小数精度六位'}],
-          lat: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址维度必填,且小数经度六位'}]
+          lon: [{ required: true,message: '地址经度必填'}],
+          lat: [{ required: true, message: '地址维度必填'}]
         },
         total: 0,
         clearTableSelect: false,
