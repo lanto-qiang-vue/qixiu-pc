@@ -58,7 +58,7 @@
           <h4>维修项目</h4>
         </div>
         <Table
-          class="main-table"
+          :class="[{'mark-border': markChange('repairprojectlist')}, 'main-table']"
           ref="tablesMain"
           :columns="columns"
           :data="tableData"
@@ -70,7 +70,7 @@
           <h4>维修配件</h4>
         </div>
         <Table
-          class="main-table"
+          :class="[{'mark-border': markChange('vehiclepartslist')}, 'main-table']"
           ref="tablesMain"
           :columns="columns1"
           :data="tableData1"
@@ -515,7 +515,7 @@
   }
   .common-span{
     width: 30%;
-    
+
     span{
       width:100%;
       height:32px;
@@ -525,5 +525,8 @@
   }
   .mark-change{
     color: #ed4014;
+  }
+  .mark-border{
+    border: 1px solid #ed4014;
   }
 </style>
