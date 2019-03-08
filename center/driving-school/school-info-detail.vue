@@ -229,7 +229,7 @@ export default {
                         case 'phoneNo1':
                         case 'phoneNo2':
                         break;
-                        default:this.search[i]=this.detailData[i]||'';
+                        default:this.search[i]=this.detailData[i];
 
                     }
                 }
