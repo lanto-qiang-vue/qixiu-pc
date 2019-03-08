@@ -11,6 +11,10 @@
             </Option>
           </Select>
         </FormItem>
+        <FormItem label="区域:">
+          <!--<Cascader :data="levelAreaData" change-on-select  v-model="levelArea" @on-change="changeLevelArea" :clearable=true></Cascader>-->
+        </FormItem>
+
         <FormItem label="企业名称:">
           <Input type="text" v-model="search.corpName" placeholder="请输入企业名称"></Input>
         </FormItem>
@@ -80,7 +84,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
               return h('div', [
                 h('span',regRate)
               ]);
-              
+
             }
           }
 
@@ -110,11 +114,11 @@ import funMixin from '~/components/fun-auth-mixim.js'
           },
           responseType: 'arraybuffer'
         }).then( (res) => {
-            
+
 
             let headerData=res.headers["content-disposition"].split(';')[1].split('=');
             let headerName=headerData[1].substring(1,(headerData[1].length)-1)
-            
+
 
 
             let blob = new Blob([res.data], {type: 'application/octet-stream'});
