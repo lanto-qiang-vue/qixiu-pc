@@ -820,6 +820,7 @@ export default {
     changeType(){
       this.page= 1
       this.pointList=[]
+      this.getBase()
       this.getCompList()
       this.initPiontList()
     },
