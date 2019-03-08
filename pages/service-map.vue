@@ -230,6 +230,10 @@ export default {
     nowType(){
       this.spinShow= true;
       this.map.clearMap()
+    },
+    '$route'(){
+      // console.log('watch.$route')
+      this.changeType()
     }
   },
   mounted(){
