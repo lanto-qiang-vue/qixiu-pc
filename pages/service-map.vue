@@ -232,6 +232,7 @@ export default {
       this.map.clearMap()
     },
     '$route'(route){
+      this.search.type= '164'
       for(let key in route.query){
         this.search[key]= route.query[key]
       }
