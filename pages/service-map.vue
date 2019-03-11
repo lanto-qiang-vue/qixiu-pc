@@ -540,24 +540,12 @@ export default {
                     return self.infoWindow.school.data
                   },
                   tags(){
-                    let baseTag= [], tags= this.datas.drivingBase? this.datas.drivingBase.split(','): []
-                    // console.log('tags', tags)
+                    let baseTag= [], tags= this.datas.baseList|| []
                     for(let i in tags){
-                      for(let j in self.base){
-                        let baseInfo= self.base[j].getExtData()
-                        if(baseInfo.name.indexOf(tags[i])>=0){
-                          baseTag.push({
-                            label: baseInfo.name+'('+baseInfo.addr+')',
-                            value: tags[i]
-                          })
-                        }
-                      }
-                    }
-                    if(!baseTag.length){
-                      baseTag=[{
-                        label: this.datas.drivingBase,
-                        value: ''
-                      }]
+                        baseTag.push({
+                          label: tags[i].name+'('+tags[i].address+')',
+                          value: tags[i]
+                        })
                     }
                     return baseTag
                   },
