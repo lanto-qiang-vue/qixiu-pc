@@ -14,7 +14,7 @@
     <nuxt-link tag="a" to="/article/help"><img src="/img/menu-icon/道路救援.png"/><p>施救牵引企业</p></nuxt-link>
     <!--<nuxt-link tag="a" to="/guild-article/10281034" ><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>-->
      <a href="/file/tips.pdf" ><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></a>
-    <nuxt-link tag="a" to="/service-map?type=300" ><img src="/img/menu-icon/学车找我.png"/><p>学车找我</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=300" ><img src="/img/menu-icon/学车找我.png"/><p>学驾找我</p></nuxt-link>
     <nuxt-link tag="a" to="/parking" ><img src="/img/menu-icon/停车找我.png"/><p>停车找我</p></nuxt-link>
   </div>
   <div class="block" v-show="type==2">
