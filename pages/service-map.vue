@@ -544,7 +544,7 @@ export default {
                     for(let i in tags){
                         baseTag.push({
                           label: tags[i].name+'('+tags[i].address+')',
-                          value: tags[i]
+                          value: tags[i].tag
                         })
                     }
                     return baseTag
