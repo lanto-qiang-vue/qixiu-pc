@@ -8,33 +8,39 @@
             <Alert type="error" v-show="requireList.status==3">审核不通过说明<span slot="desc">{{requireList.cruxAuditInfo}}</span></Alert>
               <Form ref="requireList" :rules="ruleValidate1" :model="requireList" :label-width="140" class="common-form">
             <FormItem label="企业名称:" :class="[{'mark-change': markChange('name')}, 'width45']" prop="name">
-              <Input type="text" v-model="requireList.name" placeholder="请输入企业名称"></Input>
+              <Input type="text" v-model="requireList.name" placeholder="请输入企业名称"
+                     :readonly="isCompany" ></Input>
             </FormItem>
             <FormItem label="许可证号:" :class="[{'mark-change': markChange('license')}, 'width45']" prop="license">
-              <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"></Input>
+              <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"
+                     :readonly="isCompany" ></Input>
             </FormItem>
             <FormItem label="许可证有效期:" :class="[{'mark-change': markChange('licenceBeginDate,licenceEndDate')}, 'width45']" prop="licenceDate">
-              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;" @on-change="onOpenChangeDate"></DatePicker>
+              <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;"
+                          :readonly="isCompany"  @on-change="onOpenChangeDate"></DatePicker>
             </FormItem>
             <FormItem label="工商注册地址:" :class="[{'mark-change': markChange('registerAddress')}, 'width45']" prop="registerAddress">
-              <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"></Input>
+              <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"
+                     :readonly="isCompany" ></Input>
             </FormItem>
             <FormItem label="工商注册区域:" :class="[{'mark-change': markChange('registerRegion')}, 'width45']" prop="registerRegion">
-              <Select v-model="requireList.registerRegion" :transfer="true">
+              <Select v-model="requireList.registerRegion" :transfer="true" :disabled="isCompany" >
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('registerDate')}, 'width45']" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
-                          :value="requireList.registerDate"  @on-change="changeRegisterDate"></DatePicker>
+                          :value="requireList.registerDate"
+                          :readonly="isCompany" @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
 
             <FormItem label="经营地地址:" :class="[{'mark-change': markChange('businessAddress')}, 'width45']" prop="businessAddress">
-              <Input type="text" v-model="requireList.businessAddress" placeholder="请输入经营地地址" @on-change="changeBusinessAddress"></Input>
+              <Input type="text" v-model="requireList.businessAddress" placeholder="请输入经营地地址"
+                     :readonly="isCompany"  @on-change="changeBusinessAddress"></Input>
             </FormItem>
             <FormItem label="经营地址区域:" :class="[{'mark-change': markChange('businessRegion')}, 'width45']" prop="businessRegion">
-              <Select v-model="requireList.businessRegion" :transfer="true">
+              <Select v-model="requireList.businessRegion" :transfer="true" :disabled="isCompany" >
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
@@ -48,19 +54,36 @@
 
             <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
               <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, [])"
-                      :transfer="true">
+                      :disabled="isCompany" :transfer="true">
                 <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
             <FormItem label="经营范围子类:" :class="[{'mark-change': markChange('businessScope2')}, 'width45']" prop="businessScope2">
-              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true">
+              <Select v-model="requireList.businessScope2" multiple clearable :transfer="true"
+                      :disabled="isCompany" >
                 <Option v-for="item in businessScope2" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
             <FormItem label="法定代表人:" :class="[{'mark-change': markChange('legalName')}, 'width45']" prop="legalName">
-              <Input type="text" v-model="requireList.legalName" placeholder="请输入法定代表人"></Input>
+              <Input type="text" v-model="requireList.legalName" placeholder="请输入法定代表人"
+                     :readonly="isCompany" ></Input>
             </FormItem>
-            <div></div>
+            <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']" prop="businessStatus">
+              <Select v-model="requireList.businessStatus" :transfer="true" :disabled="isCompany" >
+                <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
+              </Select>
+            </FormItem>
+
+                <FormItem label="经济类型:" :class="[{'mark-change': markChange('economicType')}, 'width45']">
+
+                  <Select v-model="requireList.economicType" :transfer="true" :disabled="isCompany">
+                    <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="requireList.economicType==900" prop="economicTypeOther">
+                  <Input type="text" v-model="requireList.economicTypeOther" :readonly="isCompany"></Input>
+                </FormItem>
+
             <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
                     <common-info-upload :description="'上传图片'" :data="requireList.yyzz" :callback="'yyzzFun'" @yyzzFun="yyzzFun"></common-info-upload>
 
@@ -70,9 +93,7 @@
 
               <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun"></common-info-upload>
             </FormItem>
-            <FormItem label="门店门头照:" :class="[{'mark-change': markChange('mdmtz')}, 'width45']" prop="mdmtz">
-              <common-info-upload :description="'上传图片'" :data="requireList.mdmtz" :callback="'mdmtzFun'" @mdmtzFun="mdmtzFun"></common-info-upload>
-            </FormItem>
+
           </Form>
           </div>
 
@@ -105,23 +126,6 @@
               <Input type="text" v-model="listSearch.complaintTel" placeholder="请输入企业反馈电话"></Input>
             </FormItem>
 
-            <!--<FormItem label="营业状态:" :class="[{'mark-change': markChange('yyState')}, 'width45']">-->
-              <!--<Select v-model="listSearch.yyState" :transfer="true" clearable>-->
-                <!--<Option value="false">营业中</Option>-->
-                <!--<Option value="true" >休息中</Option>-->
-              <!--</Select>-->
-            <!--</FormItem>-->
-            <!--<FormItem label="营业时间:" :class="[{'mark-change': markChange('businessHours')}, 'width45']">-->
-              <!--<TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择"-->
-                          <!--style="width: 100%;" v-model="listSearch.businessHours1" @on-change="onChangeTime"></TimePicker>-->
-            <!--</FormItem>-->
-
-            <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']">
-              <Select v-model="listSearch.businessStatus" :transfer="true">
-                <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-
             <FormItem label="企业主要业务范围:" :class="[{'mark-change': markChange('businessSphere')}, 'width45']">
 
               <Select v-model="listSearch.businessSphere" multiple clearable :transfer="true">
@@ -138,6 +142,9 @@
               <Select v-model="listSearch.beianStatus" :transfer="true">
                 <Option v-for="item in beianStatusArr" :value="item.name" :key="item.name">{{ item.code }}</Option>
               </Select>
+            </FormItem>
+            <FormItem label="门店门头照:" :class="[{'mark-change': markChange('mdmtz')}, 'width45']" prop="mdmtz">
+              <common-info-upload :description="'上传图片'" :data="listSearch.mdmtz" :callback="'mdmtzFun'" @mdmtzFun="mdmtzFun"></common-info-upload>
             </FormItem>
 
             <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('erpId')}, 'width45']">
@@ -283,15 +290,7 @@
             <FormItem label="其他业户类别:" :class="[{'mark-change': markChange('industryCategoryOther')}, 'width45']" v-show="listSearch.industryCategory==9?true:false" prop="industryCategoryOther">
               <Input type="text" v-model="listSearch.industryCategoryOther" placeholder="" style="width: 100%;"></Input>
             </FormItem>
-            <FormItem label="经济类型:" :class="[{'mark-change': markChange('economicType')}, 'width45']">
 
-              <Select v-model="listSearch.economicType" :transfer="true">
-                <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
-              </Select>
-            </FormItem>
-            <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="listSearch.economicType==900?true:false" prop="economicTypeOther">
-              <Input type="text" v-model="listSearch.economicTypeOther" placeholder=""></Input>
-            </FormItem>
 
 
             <FormItem label="企业员工总数:" :class="[{'mark-change': markChange('employeeNumber')}, 'width45']">
@@ -486,7 +485,7 @@
             </FormItem>
             <FormItem label="上年度质量信誉考核等级:" :class="[{'mark-change': markChange('qualityReputationAssessmentLevel')}, 'width90']">
               <RadioGroup v-model="listSearch.qualityReputationAssessmentLevel">
-                <Radio v-for="item in qualityCheck" :label="item.id" :key="item.id">{{ item.name }}</Radio>
+                <Radio v-for="item in qualityCheck" :label="item.id" :key="item.id" :disabled="isCompany">{{ item.name }}</Radio>
               </RadioGroup>
             </FormItem>
 
@@ -581,7 +580,6 @@ let initList={
 
     "businessSphere": [],
     "businessSphereOther": '',
-    "businessStatus": 1,
     "buttJoint": false,
     "buttJointTime": "",
     "chainBusiness": false,
@@ -591,8 +589,7 @@ let initList={
     "createKey": false,
     "dept": "",
     "desc": "",
-    "economicType": 0,
-    "economicTypeOther": "",
+
     "electricians": [0,0,0,0],
     "employeeNumber": 0,
     "erpId": 0,
@@ -604,7 +601,7 @@ let initList={
     "greenPic":'',
     "honerModels": [],
     "id": 0,
-    "industryCategory": 0,
+    "industryCategory": null,
     "industryCategoryOther": "",
     "iso": false,
     "isoPic": "",
@@ -635,7 +632,7 @@ let initList={
     "show": false,
     "sincerity": false,
     "sincerityYears": [],
-    "source": 0,
+    "source": null,
     "special": false,
     "majorBrandId": 0,
     "storeSpecials": [],
@@ -645,7 +642,7 @@ let initList={
     "tinbenders": [0,0,0,0],
     "useHss": false,
     "workingHoursPrice": "",
-    "workingHoursQuotaExecutionStandard": 0,
+    "workingHoursQuotaExecutionStandard": null,
     "yyState": 'true',
     "zdz": false,
     "erpName":'',
@@ -653,9 +650,11 @@ let initList={
     "majorBrandName":'',
     "backup":'',
     "hidden":false,
+    "mdmtz": "",
     fields:[]
 };
 let initList1={
+  "businessStatus": 1,
   "businessScope": '',
   "businessScope2": [],
   "corpInfoId": "",
@@ -667,7 +666,6 @@ let initList1={
   "licenceBeginDate": "",
   "licenceEndDate": "",
   "license": "",
-  "mdmtz": "",
   "name": "",
   "registerAddress": "",
   "registerDate": "",
@@ -678,6 +676,8 @@ let initList1={
   "businessRegion": "",//----------
   "longitude": '',
   "latitude": '',
+  "economicType": 0,
+  "economicTypeOther": "",
   fields:[]
 }
 export default {
@@ -686,6 +686,7 @@ export default {
     components: {commonInfoUpload,unitSearchInput},
     data(){
       let rulesObj={ required: true, message: '必填项不可为空' };
+      let isYunying= this.roleType=='yunying'
         return{
             token: {token: ''},//token数据-----
             collapse: '1',
@@ -728,15 +729,6 @@ export default {
                     }
                   }
                 }],
-                economicTypeOther:[{
-                  validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.economicType == 900 && !value) {
-                      callback(new Error('请填写其他经济类型'));
-                    }else{
-                      callback();
-                    }
-                  }
-                }],
                 modelOther:[{
                   validator: (rule, value, callback) => {
 
@@ -759,7 +751,7 @@ export default {
                 }],
                 safePic:[{
                   validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.throughSafetyProductionStandardization&& !value) {
+                    if (this.$data.listSearch.throughSafetyProductionStandardization&& !value &&!isYunying) {
                       callback(new Error('请完善通过安全生产标准化达标认证资料'));
                     }else{
                       callback();
@@ -769,7 +761,7 @@ export default {
                 isoPic:[{
                   validator: (rule, value, callback) => {
                     console.log('isoPic.validator', value)
-                    if (this.$data.listSearch.iso&& !value) {
+                    if (this.$data.listSearch.iso&& !value &&!isYunying) {
                       callback(new Error('请完善通过ISO质量管理体系认证资料'));
                     }else{
                       callback();
@@ -778,7 +770,7 @@ export default {
                 }],
                 greenPic:[{
                   validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.throughEnvironmentalProtectionSpecialRenovation&& !value) {
+                    if (this.$data.listSearch.throughEnvironmentalProtectionSpecialRenovation&& !value &&!isYunying) {
                       callback(new Error('请完善通过环保部门专项整治资料'));
                     }else{
                       callback();
@@ -801,7 +793,7 @@ export default {
                   }else{
                     pass= true
                   }
-                  if(pass) callback()
+                  if(pass || isYunying) callback()
                   else callback(new Error('请完善成为全国诚信维修企业的年份的资料, [开始日期]和[上传图片]为必填项'));
                 }
               }],
@@ -821,10 +813,11 @@ export default {
                   }else{
                     pass= true
                   }
-                  if(pass) callback()
+                  if(pass ||isYunying) callback()
                   else callback(new Error('请完善区级以上荣誉获得情况, [荣誉情况]和[上传图片]为必填项'));
                 }
-              }]
+              }],
+              mdmtz: [],
             },//规则验证
             ruleValidate1: {
                 name: [rulesObj],
@@ -852,6 +845,15 @@ export default {
                       }
                     }
                 }],
+              economicTypeOther:[{
+                validator: (rule, value, callback) => {
+                  if (this.$data.requireList.economicType == 900 && !value) {
+                    callback(new Error('请填写其他经济类型'));
+                  }else{
+                    callback();
+                  }
+                }
+              }],
                 businessRegion: [rulesObj],
                 longitude: [rulesObj],
                 latitude: [rulesObj],
@@ -861,9 +863,9 @@ export default {
                 businessScope: [rulesObj],
                 businessScope2: [rulesObj],
                 legalName: [rulesObj],
-                yyzz: [rulesObj],
-                mdmtz: [rulesObj],
-                dlysxkz: [rulesObj],
+                businessStatus: [rulesObj],
+                yyzz: isYunying?[]:[rulesObj],
+                dlysxkz: isYunying?[]:[rulesObj],
             },//规则验证
             sourceName: '',//对接渠道名称----
             //审核状态问题------
@@ -883,7 +885,7 @@ export default {
             //经营范围子类
             businessScope2: [],
             //企业主要业务
-            companySphere: [],
+          companySphere: [],
             //企业员工总数
             companyStaff: [],
             //企业占地面积
@@ -1020,6 +1022,9 @@ export default {
         });
       });
 
+      // if(this.isYunying){
+      //   this.ruleValidate1.yyzz= this.ruleValidate1.mdmtz= this.ruleValidate1.dlysxkz= []
+      // }
 
     },
     methods:{
@@ -1035,10 +1040,18 @@ export default {
           if(datas.id){
             this.uploadData=deepClone(datas);
 
-            for (let i in this.uploadData) {
-                if (this.uploadData[i]) {
-                    this.requireList[i] = this.uploadData[i]
+            for (let key in this.uploadData) {
+              switch (key){
+                case 'businessStatus':{
+                  this.requireList[key] = this.uploadData[key]|| 1
+                  break
                 }
+                default :{
+                  if(this.uploadData[key] ||this.uploadData[key]==0){
+                    this.requireList[key] = this.uploadData[key]
+                  }
+                }
+              }
             }
             this.requireList.licenceDate=[this.requireList.licenceBeginDate, this.requireList.licenceEndDate];
 
@@ -1070,10 +1083,6 @@ export default {
                   }
                   break
                 }
-                case 'businessStatus':{
-                  this.listSearch[key] = this.uploadOtherData[key]|| 1
-                  break
-                }
                 case 'registerDate':{
                   if(this.uploadOtherData[key]) this.listSearch[key] = formatDate(this.uploadOtherData[key]);
                   break
@@ -1087,7 +1096,7 @@ export default {
                   break
                 }
                 default :{
-                  if(this.uploadOtherData[key]){
+                  if(this.uploadOtherData[key] || this.uploadOtherData[key]==0){
                     this.listSearch[key] = this.uploadOtherData[key]
                   }
                 }
@@ -1379,9 +1388,9 @@ export default {
             mdmtzFun(val){
               console.log(val);
               if(val[0]){
-                this.requireList.mdmtz=val[0];
+                this.listSearch.mdmtz=val[0];
               }else{
-                this.requireList.mdmtz='';
+                this.listSearch.mdmtz='';
               }
 
             },

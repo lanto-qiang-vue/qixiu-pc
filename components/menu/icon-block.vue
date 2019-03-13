@@ -6,7 +6,7 @@
     <nuxt-link tag="a" to="/cdf"><img src="/img/menu-icon/车大夫门诊.png"/><p>车大夫门诊</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/上门服务.png"/><p>上门服务</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map"><img src="/img/menu-icon/预约服务.png"/><p>预约服务</p></nuxt-link>
-    <nuxt-link tag="a" to="/service-map?type=213"><img src="/img/menu-icon/道路救援.png"/><p>道路救援</p></nuxt-link>
+    <!--<nuxt-link tag="a" to="/service-map?type=213"><img src="/img/menu-icon/道路救援.png"/><p>道路救援</p></nuxt-link>-->
     <nuxt-link tag="a" to="/article/insure"><img src="/img/menu-icon/车辆保险.png"/><p>车辆保险</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map?type=166"><img src="/img/menu-icon/检测站.png"/><p>综合检测站</p></nuxt-link>
     <nuxt-link tag="a" to="/service-map?type=214"><img src="/img/menu-icon/危运车辆维修.png"/><p>危运车辆维修</p></nuxt-link>
@@ -14,7 +14,7 @@
     <nuxt-link tag="a" to="/article/help"><img src="/img/menu-icon/道路救援.png"/><p>施救牵引企业</p></nuxt-link>
     <!--<nuxt-link tag="a" to="/guild-article/10281034" ><img src="/img/menu-icon/推介服务.png"/><p>推介服务</p></nuxt-link>-->
      <a href="/file/tips.pdf" ><img src="/img/menu-icon/行业概况.png"/><p>爱车小贴士</p></a>
-    <nuxt-link tag="a" to="/service-map?type=300" ><img src="/img/menu-icon/学车找我.png"/><p>学车找我</p></nuxt-link>
+    <nuxt-link tag="a" to="/service-map?type=300" ><img src="/img/menu-icon/学车找我.png"/><p>学驾找我</p></nuxt-link>
     <nuxt-link tag="a" to="/parking" ><img src="/img/menu-icon/停车找我.png"/><p>停车找我</p></nuxt-link>
   </div>
   <div class="block" v-show="type==2">

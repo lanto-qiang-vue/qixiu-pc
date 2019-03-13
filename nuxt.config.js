@@ -3,8 +3,10 @@ const webpack = require('webpack')
 import router from './static/router'
 import allcConfig from './config.js'
 
+
 const areaName= process.env.area|| 'shanghai'
 let config= allcConfig[areaName]
+
 
 let conf= {
   mode: 'universal',
@@ -127,9 +129,11 @@ let conf= {
       }
       // console.log(routes)
       routes.push(...router)
-      // console.log(routes)
+
       return routes
+
     }
+
   }
 }
 if( process.env.NODE_ENV==='development'){

@@ -17,7 +17,7 @@
         <Option value="166">综合检测站</Option>
         <Option value="214">危运车辆维修</Option>
         <Option value="215">新能源汽车维修</Option>
-        <Option value="213">施救牵引企业</Option>
+        <!--<Option value="213">施救牵引企业</Option>-->
         <Option value="300">驾校</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
@@ -230,6 +230,13 @@ export default {
     nowType(){
       this.spinShow= true;
       this.map.clearMap()
+    },
+    '$route'(route){
+      this.search.type= '164'
+      for(let key in route.query){
+        this.search[key]= route.query[key]
+      }
+      this.changeType()
     }
   },
   mounted(){
@@ -351,7 +358,7 @@ export default {
         if(!this.base.length){
           this.$axios({
             baseURL: '/repair',
-            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
+            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat,brand&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
             method: 'get',
           }).then( (res) => {
             // this.base= res.data.content
@@ -533,24 +540,12 @@ export default {
                     return self.infoWindow.school.data
                   },
                   tags(){
-                    let baseTag= [], tags= this.datas.drivingBase? this.datas.drivingBase.split(','): []
-                    // console.log('tags', tags)
+                    let baseTag= [], tags= this.datas.baseList|| []
                     for(let i in tags){
-                      for(let j in self.base){
-                        let baseInfo= self.base[j].getExtData()
-                        if(baseInfo.name.indexOf(tags[i])>=0){
-                          baseTag.push({
-                            label: baseInfo.name+'('+baseInfo.addr+')',
-                            value: tags[i]
-                          })
-                        }
-                      }
-                    }
-                    if(!baseTag.length){
-                      baseTag=[{
-                        label: this.datas.drivingBase,
-                        value: ''
-                      }]
+                        baseTag.push({
+                          label: tags[i].name+'('+tags[i].address+')',
+                          value: tags[i].tag
+                        })
                     }
                     return baseTag
                   },
@@ -675,7 +670,7 @@ export default {
           '<div class="title">训练基地</div>'+
           '<div class="body">' +
           '<ul>' +
-          '<li><span>基地名称：</span>{{datas.name}}</li>' +
+          '<li><span>基地名称：</span>{{datas.name+ (datas.brand?"（"+datas.brand+"自用基地）":"")}}</li>' +
           '<li><span>基地地址：</span>{{datas.addr}}</li>' +
           '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
           '</ul>' +
@@ -789,7 +784,7 @@ export default {
         // console.log('renderMap() over')
       });
 
-      this.getBase()
+      // this.getBase()
 
       // let is164= this.search.type== 164
       // if(is164){
@@ -820,6 +815,7 @@ export default {
     changeType(){
       this.page= 1
       this.pointList=[]
+      this.getBase()
       this.getCompList()
       this.initPiontList()
     },

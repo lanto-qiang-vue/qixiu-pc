@@ -63,19 +63,35 @@ import { deepClone } from '@/static/util.js'
 import { formatDate } from '@/static/tools'
 
 var searchList= {
-    byVehicleNumberStandard:"all",
-    byVinStandard:"all",
-    companyName:"",
-    vehicleplatenumber:"",
-    vin:'',
-    fault:'',
-    receiveTimeBegin:'',
-    receiveTimeEnd:'',
-    receiveTime:[],
+  byVehicleNumberStandard:"all",
+  byVinStandard:"all",
+  companyName:"",
+  vehicleplatenumber:"",
+  vin:'',
+  fault:'',
+  receiveTimeBegin:'',
+  receiveTimeEnd:'',
+  receiveTime:[],
+}
+
+function markChange(newArr,field){
+  let arr= field.split(','),flag=false
+  for(let i in arr){
+    if(newArr.indexOf(arr[i])>=0){
+      flag= true
+      break
+    }
   }
+
+  return flag
+}
+
 if(!thisData) {
+  
+
   var thisData= {
     loading:false,
+    allFields:[],
     typeList: [
       {code:'yes',name:'正确'},
       {code:'no',name:'错误'},
@@ -87,13 +103,91 @@ if(!thisData) {
     columns: [
 
       {title: '序号', width:80, type: 'index'},
-      {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110},
-      {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120},
-      {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150},
-      {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,},
-      {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110},
-      {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150},
-      {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150},
+      {title: '车牌号码', key: 'plateNumber', sortable: true, minWidth: 110,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"plateNumber")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.plateNumber)
+              ]);
+        }
+
+      },
+      {title: '车牌正确', key: 'checkVn', sortable: true, minWidth: 120,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"checkVn")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.checkVn)
+              ]);
+        }
+      },
+      {title: '车辆识别号VIN', key: 'vin', sortable: true, minWidth: 150,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"vin")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.vin)
+              ]);
+        }
+      },
+      {title: 'VIN正确', key: 'checkVin', sortable: true, minWidth: 120,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"checkVin")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.checkVin)
+              ]);
+        }
+      },
+      {title: '结算日期', key: 'settleDate', sortable: true, minWidth: 110 ,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"settleDate")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.settleDate)
+              ]);
+        }
+      },
+      {title: '结算编号', key: 'costlistcode', sortable: true, minWidth: 150,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"costlistcode")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.costlistcode)
+              ]);
+        }
+      },
+      {title: '维修企业', key: 'companyName', sortable: true, minWidth: 150,
+        render: (h, params) => {
+            let colorStr=markChange(params.row.fields,"companyName")?"#ed4014":"#515a6e";
+              return h('div', [
+                  h('span',{
+                      style:{
+                        color:colorStr
+                      },
+                  }, params.row.companyName)
+              ]);
+        }
+      },
     ],
     tableData: [],
     searchList:{
@@ -134,6 +228,7 @@ export default {
     mixins: [funMixin],
     data(){
       thisData.searchList= this.getRouterData()
+
 		  return thisData
     },
 
@@ -195,6 +290,18 @@ export default {
               }
           })
           this.detailData= null;
+      },
+      //判断是否错误
+      markChange(field){
+        let arr= field.split(','),flag=false
+        for(let i in arr){
+          if(this.allFields.indexOf(arr[i])!=0){
+            flag= true
+            break
+          }
+        }
+
+        return flag
       },
         getType(){
             this.$axios.get('/dict/getValuesByTypeId/1', {
@@ -279,12 +386,9 @@ export default {
 </script>
 
 <style scoped lang="less">
-.menu-manage{
 
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
+
+  .mark-change{
+    color: #ed4014;
+  }
 </style>
