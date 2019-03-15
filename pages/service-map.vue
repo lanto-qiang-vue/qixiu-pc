@@ -56,7 +56,8 @@
       <div class="res">查询结果：共<span>{{total}}</span>条记录，请在企业列表或地图中选择查看</div>
       <ul>
         <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
-          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'" v-if="item.type!='300'">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/school-head.jpg'" v-else>
           <div class="list-right" v-if="item.type!='300'">
             <span class="name">{{item.name}}</span>
             <span>地址：{{item.addr}}</span>
