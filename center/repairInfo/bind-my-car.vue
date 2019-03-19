@@ -308,10 +308,12 @@
                     </FormItem>
                     
                     <FormItem label="注册日期:" style="width: 400px;" prop="registerDate">
-                        <Input type="text" v-model="infoDriverDataTem.registerDate" placeholder="" :maxlength="20"></Input>
+                        <!--<Input type="text" v-model="infoDriverDataTem.registerDate" placeholder="" :maxlength="20"></Input>-->
+                        <DatePicker v-model="infoDriverDataTem.registerDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
                     </FormItem>
                     <FormItem label="发证日期:" style="width: 400px;" prop="issueDate">
-                        <Input type="text" v-model="infoDriverDataTem.issueDate" placeholder="" :maxlength="20"></Input>
+                        <!--<Input type="text" v-model="infoDriverDataTem.issueDate" placeholder="" :maxlength="20"></Input>-->
+                        <DatePicker v-model="infoDriverDataTem.issueDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
                     </FormItem>
                 </Form>
                 <div slot="footer">
@@ -590,14 +592,17 @@ export default {
         },
         updateDriverFun(name){
            let upLoadData=deepClone(this.infoDriverDataTem);
+           upLoadData['registerDate']=formatDate(upLoadData['registerDate']);
+           upLoadData['issueDate']=formatDate(upLoadData['issueDate']);
+
            this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$axios.post('/travellicense/update', upLoadData).then( (res) => {
                         if(res.data.code=='0'){
                             this.showDriver=false;
                             this.displayDriverResive=true;
-                            for(let i in this.infoDriverDataTem){
-                                this.reviseDriverData[i]=this.infoDriverDataTem[i];
+                            for(let i in upLoadData){
+                                this.reviseDriverData[i]=upLoadData[i];
                             }
                             this.$Message.info('修改成功');
                         }
