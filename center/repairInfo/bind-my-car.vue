@@ -430,6 +430,7 @@ export default {
         typeId:'',
         commonFlag:false,
 
+
       }
     },
     watch:{
@@ -609,6 +610,46 @@ export default {
         },
         //提交绑定按钮-----------
         bindFun(){
+
+            if(!this.displayDriverResive){
+                for(let i in this.infoDriverData){
+                    if(i=="binding"){
+
+                    }else if(!this.infoDriverData[i]){
+                        return this.$Message.error('行驶证信息不可为空');
+                    }
+                }
+            }
+
+            if(this.ownerType==1){
+                if(this.infoData.id){
+                    if(!this.displayCardResive){
+                    
+                            if(!this.infoData['idCardNo']&&!this.infoData['ownerName']){
+                                return this.$Message.error('身份证信息不可为空');
+                            }
+                        
+                    }
+                }
+                
+            }else if(this.ownerType==2){
+                if(this.infoBusine.id){
+                    if(!this.displayBusine){
+                    
+                            if(!this.infoBusine['legalPerson']&&!this.infoBusine['corpName']){
+                                return this.$Message.error('营业执照信息不可为空');
+                            }
+                    }
+                }
+                
+                
+            }
+
+            
+
+            
+
+
             this.$axios.post('/scan/newBind', {
                 "businessId": this.infoBusine.id,
                 "idCardId": this.infoData.id,
