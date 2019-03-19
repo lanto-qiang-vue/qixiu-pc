@@ -298,6 +298,13 @@ export default {
       this.getBase()
       this.initInfoWindow()
     },
+    defauldPoint(){
+      return new AMap.Icon({
+        size: new AMap.Size(25, 45),
+        imageSize: new AMap.Size(25, 45),
+        image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_bs.png'
+      })
+    },
     getLocation(){
       if(this.map){
         AMap.plugin('AMap.Geolocation', () => {
@@ -309,11 +316,12 @@ export default {
           this.geolocation.getCurrentPosition();
           AMap.event.addListener(this.geolocation, 'complete', (result)=>{
             this.map.setCenter(result.position)
-            this.map.add(new AMap.Marker(result.position))
+            this.map.add(new AMap.Marker({position: new AMap.LngLat(result.position) , icon: this.defauldPoint()}))
             this.search.lng= result.position.lng
             this.search.lat= result.position.lat
-            this.getCompList()
-            this.initPiontList()
+            // this.getCompList()
+            this.changeType()
+            // this.initPiontList()
           });//返回定位信息
           AMap.event.addListener(this.geolocation, 'error', (err)=>{
             this.getCity()
@@ -330,21 +338,23 @@ export default {
             this.map.setCity(result.city, ()=>{
               let center= this.map.getCenter()
               // console.log('this.map.getCenter()', center)
-              this.map.add(new AMap.Marker( center))
+              // this.map.add(new AMap.Marker( center))
+              this.map.add(new AMap.Marker({position: center , icon: this.defauldPoint()}))
               // console.log('this.map.add(new AMap.Marker( center))')
               this.search.lng= center.lng
               this.search.lat= center.lat
-              this.getCompList()
-              this.initPiontList()
+              // this.getCompList()
+              this.changeType()
+              // this.initPiontList()
             })
           }else{
             let center= new AMap.LngLat(this.search.lng, this.search.lat)
             this.map.panTo(center)
-            this.map.add(new AMap.Marker( {
-              position: center
-            }))
-            this.getCompList()
-            this.initPiontList()
+            this.map.add(new AMap.Marker({position: center , icon: this.defauldPoint()}))
+            // this.map.add(new AMap.Marker( {position: center}))
+            // this.getCompList()
+            // this.initPiontList()
+            this.changeType()
           }
         })
       });
@@ -814,6 +824,11 @@ export default {
       }
     },
     changeType(){
+      if(this.search.type== 300){
+        this.search.sort= 'rating desc,distance asc'
+      }else{
+        this.search.sort= ''
+      }
       this.page= 1
       this.pointList=[]
       this.getBase()

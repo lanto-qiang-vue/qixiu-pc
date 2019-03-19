@@ -18,14 +18,16 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="info"  @click="searchFun" :disabled="!detailData">查看</Button>
+      <Button type="info"  @click="searchFun" :disabled="showRepair">查看维修记录</Button>
+      <Button type="info"  @click="showDetail=Math.random()" :disabled="!detailData">查看证件信息</Button>
+
       <Button type="error" v-if="accessBtn('removeBind')"  @click="removeBindFun" :disabled="!detailData">解绑</Button>
-      <Button type="primary" v-if="accessBtn('bind')"  @click="showDetail=Math.random()" >绑定本人车辆</Button>
+      <Button type="primary" v-if="accessBtn('bind')"  @click="showDetail=Math.random(),detailData=null" >绑定本人车辆</Button>
       <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
     </div>
 
 </common-table>
-<bind-my-car :showDetail='showDetail' @closeDetail="closeDetail"></bind-my-car>
+<bind-my-car :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></bind-my-car>
 <bind-other-car :showDetail='showOtherDetail' @closeDetail="closeDetail"></bind-other-car>
 </div>
 </template>
@@ -71,7 +73,8 @@
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-
+        showLook:true,
+        showRepair:true,
 
       }
     },
@@ -108,12 +111,19 @@
         onRowClick( row, index){
             console.log('row：',row);
           this.detailData=row
+          if(this.detailData.status==3){
+            this.showLook=false;
+          }else{
+            this.showRepair=false;
+          }
         },
         closeDetail(){
           this.detailData= null
           this.clearTableSelect= Math.random();
 
           this.getList();
+          this.showLook=true;
+          this.showRepair=true;
         },
         //解绑按钮-------
         removeBindFun(){
