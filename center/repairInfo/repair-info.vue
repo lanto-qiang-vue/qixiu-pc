@@ -18,7 +18,7 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="info"  @click="searchFun" :disabled="showRepair">查看维修记录</Button>
+      <Button type="info"  @click="searchFun" :disabled="!showRepair">查看维修记录</Button>
       <Button type="info"  @click="showDetail=Math.random()" :disabled="!detailData">查看证件信息</Button>
 
       <Button type="error" v-if="accessBtn('removeBind')"  @click="removeBindFun" :disabled="!detailData">解绑</Button>
@@ -53,6 +53,9 @@
           },
           {title: '车牌号码', key: 'vehicleplatenumber', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
+          },
+          {title: '审核状态', key: 'status', sortable: true, minWidth: 120,
+            render: (h, params) => h('span', this.statusText( params.row.status))
           },
           {title: '车牌品牌', key: 'brand', sortable: true, minWidth: 120},
           {title: '车架号', key: 'vin', sortable: true, minWidth: 135},
@@ -111,8 +114,8 @@
         onRowClick( row, index){
             console.log('row：',row);
           this.detailData=row
-          if(this.detailData.status==3){
-            this.showLook=false;
+          if(this.detailData.status==2){
+            this.showRepair=true;
           }else{
             this.showRepair=false;
           }
@@ -153,7 +156,25 @@
             })
           }
 
+        },
+      statusText(status){
+        let text= '', sta= status? status.toString(): ''
+        switch (sta){
+          case '1':{
+            text= '待审核';break
+          }
+          case '2':{
+            text= '审核成功';break
+          }
+          case '3':{
+            text= '审核不通过';break
+          }
+          default :{
+            text= '新增';break
+          }
         }
+        return text
+      },
 
 
     },
