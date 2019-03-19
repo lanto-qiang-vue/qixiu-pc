@@ -9,9 +9,9 @@
     :transfer= "false"
     :footer-hide="false"
     :mask-closable="false"
-    class="table-modal-detail"
+    class="table-modal-detail "
     :transition-names="['', '']">
-        <div style="height: 100%;overflow: auto;">
+        <div style="height: 100%;overflow: auto;" class="bind-my-car">
         
         <Form :label-width="140">
             <FormItem label="审核不通过原因:" style="width: 90%;" v-show="auditFailInfo">
@@ -607,7 +607,7 @@ export default {
         },
         //提交绑定按钮-----------
         bindFun(){
-
+            
             if(!this.displayDriverResive){
                 for(let i in this.infoDriverData){
                     if(i=="binding"){
@@ -661,9 +661,14 @@ export default {
                 }else if(res.data.code=='10002'){
                     if(this.ownerType==1){
                         this.upIdButton=true;
+                        
                     }else if(this.ownerType==2){
                         this.upIdBusine=true;
                     }
+                    setTimeout(()=>{
+                        document.querySelector('.bind-my-car').scrollTop= 1000;
+                    },30)
+                    
                     
                 }
            })
