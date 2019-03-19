@@ -25,7 +25,7 @@
             <FormItem label="上传行驶证:" style="margin-bottom: 12px;">
                 <div class="pic-card" v-if="accessBtn('uploadDriverLicense')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loadImg" :disabled="commonFlag">上传图片</Button>
                             <input id="fileupload" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -123,11 +123,11 @@
                 
         </Form>
         <!--上传身份证信息-->
-        <Form :label-width="140" v-show="imgFlag">
+        <Form :label-width="140" v-show="ownerType===1">
             <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton">
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loading" :disabled="commonFlag">上传图片</Button>
                             <input id="getImg" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -176,11 +176,11 @@
 
         </Form>
         <!--上传营业执照信息-->
-        <Form :label-width="140" v-show="busineFlag">
+        <Form :label-width="140" v-show="ownerType===2">
             <FormItem label="上传营业执照:" style="margin-bottom: 12px;" v-show="upIdBusine">
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loadBusine" :disabled="commonFlag">上传图片</Button>
                             <input  class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -369,14 +369,15 @@ export default {
         
 
 	return{
-        loading:false,//身份证上传----
-        loadImg:false,//图片上传------
-        loadBusine:false,//营业执照上传----------
-        showBusine:false,//营业执照显示
-        busineFlag:false,//是否显示上传图片按钮
-        editBusineFlag:false,//是否显示修改信息按钮-------
-        imgFlag:false,
         showModal:false,
+        loading:false,//按钮上传进度状态
+        loadImg:false,//按钮上传进度状态
+        loadBusine:false,//按钮上传进度状态
+        showBusine:false,//修改营业执照界面
+        showDriver:false,//修改驾驶证界面
+        showCard:false,//修改身份证界面
+
+
         ownerType:1,
         infoData:deepClone(initCard),
         reviseInfoData:deepClone(initCard),
@@ -385,19 +386,19 @@ export default {
             {code:1,name:'个人车辆'},
             {code:2,name:'企业车辆'},
         ],
-        editAble: true,
+
         infoDriverData:deepClone(initDriver),
         reviseDriverData:deepClone(initDriver),
         infoDriverDataTem:deepClone(initDriver),
         editIDCard:false,//是否修改身份按钮
         upIdButton:false,//是否显示上传按钮
         upIdBusine:false,//是否显示上传按钮
-        showCard:false,//是否显示修改身份信息框
+        
         ruleCard:{
             ownerName:[commonRule],
             idCardNo: [commonRule],
         },
-        showDriver:false,//修改驾驶证界面-----
+        
         ruleDriver:{
             ownerName:[commonRule],
             vehiclePlateNumber: [
@@ -420,16 +421,12 @@ export default {
             corpName:[commonRule],
             legalPerson: [commonRule],
         },
-        
         auditFailInfo:'',
-
-            
         displayDriverResive:false,
         displayCardResive:false,
         displayBusine:false,
-        typeId:'',
         commonFlag:false,
-
+        typeId:'',
 
       }
     },
@@ -441,8 +438,7 @@ export default {
             this.commonFlag=false;
             this.auditFailInfo='';
 
-            this.imgFlag=true;
-            this.busineFlag=false;
+
             this.editIDCard=false;
             this.upIdButton=false;
             this.upIdBusine=false;
@@ -732,15 +728,7 @@ export default {
         },
         //选择绑定类型--------
         selectBindType(val){
-            if(val==1){
-                this.imgFlag=true;
-                this.busineFlag=false;
-
-            }else if(val==2){
-                this.imgFlag=false;
-                this.busineFlag=true;
-                
-            }
+            
 
         },
         visibleChange(status){
