@@ -177,7 +177,7 @@
         </Form>
         <!--上传营业执照信息-->
         <Form :label-width="140" v-show="busineFlag">
-            <FormItem label="上传营业执照:" style="margin-bottom: 12px;">
+            <FormItem label="上传营业执照:" style="margin-bottom: 12px;" v-show="upIdBusine">
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button" v-show="editAble" style="text-align: left;">
@@ -331,7 +331,7 @@ let initDriver={
     "address": "",
     "brandModel": "",
     "engineNo": "",
-    "id": 0,
+    "id": '',
     "issueDate": "",
     "ownerName": "",
     "registerDate": "",
@@ -356,7 +356,7 @@ let initBusiness={
       "expiryDate": "",
       "expiryDateStr": "",
       "frontImageUrl": "",
-      "id": 0,
+      "id": '',
       "legalPerson": "",
       "licenseNo": "",
       "socialCreditCode": ""
@@ -391,6 +391,7 @@ export default {
         infoDriverDataTem:deepClone(initDriver),
         editIDCard:false,//是否修改身份按钮
         upIdButton:false,//是否显示上传按钮
+        upIdBusine:false,//是否显示上传按钮
         showCard:false,//是否显示修改身份信息框
         ruleCard:{
             ownerName:[commonRule],
@@ -443,6 +444,7 @@ export default {
             this.busineFlag=false;
             this.editIDCard=false;
             this.upIdButton=false;
+            this.upIdBusine=false;
 
             //行驶证信息-----
             this.displayDriverResive=false;
@@ -458,7 +460,7 @@ export default {
             if(this.detailData){
                 this.getDetail();
                 this.typeId=this.detailData.id;
-                if(this.detailData.status==1){
+                if(this.detailData.status!=3){
                     this.commonFlag=true;
                 }
             }else{
@@ -541,11 +543,16 @@ export default {
                         this.upIdButton=false;
                         this.editIDCard=false;
 
-                        this.displayCard=true;
-                        this.infoData['idCardNo']=res.data.item.reviseIdCardNo;
-                        this.infoData['ownerName']=res.data.item.reviseOwnerName;
+                        this.infoData['idCardNo']=res.data.item.idCardNo;
+                        this.infoData['ownerName']=res.data.item.ownerName;
                         this.infoData['frontImageUrl']=res.data.item.frontImageUrl;
                         this.infoData['id']=res.data.item.creditId;
+
+                        if(res.data.item.reviseIdCardNo&&res.data.item.reviseOwnerName){
+                            this.reviseInfoData['idCardNo']=res.data.item.reviseIdCardNo;
+                            this.reviseInfoData['ownerName']=res.data.item.reviseOwnerName;
+                            this.displayCardResive=true;
+                        }
                     }
                 }
            })
@@ -614,7 +621,12 @@ export default {
                    this.$Message.info('绑定成功');
                    this.showModal=false;
                 }else if(res.data.code=='10002'){
-                    this.upIdButton=true;
+                    if(this.ownerType==1){
+                        this.upIdButton=true;
+                    }else if(this.ownerType==2){
+                        this.upIdBusine=true;
+                    }
+                    
                 }
            })
         },
