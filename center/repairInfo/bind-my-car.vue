@@ -500,6 +500,7 @@ export default {
                     }
                     this.displayCardResive=false;
                     this.infoData['frontImageUrl']= 'data:image/png;base64,'+this.infoData['frontImage'];
+                    this.infoData['id']=res.data.item.creditId;
                 }
            })
         },
@@ -560,12 +561,12 @@ export default {
             let uploadInfo=deepClone(this.infoDataTem);
            this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.$axios.post('/scan/update', uploadInfo).then( (res) => {
+                    this.$axios.post('/idcard/update', uploadInfo).then( (res) => {
                         if(res.data.code=='0'){
                             this.showCard=false;
                             this.displayCardResive=true;
                             for(let i in this.infoDataTem){
-                                this.infoData[i]=this.infoDataTem[i];
+                                this.reviseInfoData[i]=this.infoDataTem[i];
                             }
                             this.$Message.info('修改成功')
                         }else{
