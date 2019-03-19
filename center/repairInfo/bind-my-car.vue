@@ -9,9 +9,9 @@
     :transfer= "false"
     :footer-hide="false"
     :mask-closable="false"
-    class="table-modal-detail"
+    class="table-modal-detail "
     :transition-names="['', '']">
-        <div style="height: 100%;overflow: auto;">
+        <div style="height: 100%;overflow: auto;" class="bind-my-car">
         
         <Form :label-width="140">
             <FormItem label="审核不通过原因:" style="width: 90%;" v-show="auditFailInfo">
@@ -25,7 +25,7 @@
             <FormItem label="上传行驶证:" style="margin-bottom: 12px;">
                 <div class="pic-card" v-if="accessBtn('uploadDriverLicense')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loadImg" :disabled="commonFlag">上传图片</Button>
                             <input id="fileupload" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -123,11 +123,11 @@
                 
         </Form>
         <!--上传身份证信息-->
-        <Form :label-width="140" v-show="imgFlag">
+        <Form :label-width="140" v-show="ownerType===1">
             <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton">
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loading" :disabled="commonFlag">上传图片</Button>
                             <input id="getImg" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -176,11 +176,11 @@
 
         </Form>
         <!--上传营业执照信息-->
-        <Form :label-width="140" v-show="busineFlag">
+        <Form :label-width="140" v-show="ownerType===2">
             <FormItem label="上传营业执照:" style="margin-bottom: 12px;" v-show="upIdBusine">
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
-                        <div class="button" v-show="editAble" style="text-align: left;">
+                        <div class="button"  style="text-align: left;">
                             <div class="up-img">
                             <Button type="primary" :loading="loadBusine" :disabled="commonFlag">上传图片</Button>
                             <input  class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
@@ -369,14 +369,15 @@ export default {
         
 
 	return{
-        loading:false,//身份证上传----
-        loadImg:false,//图片上传------
-        loadBusine:false,//营业执照上传----------
-        showBusine:false,//营业执照显示
-        busineFlag:false,//是否显示上传图片按钮
-        editBusineFlag:false,//是否显示修改信息按钮-------
-        imgFlag:false,
         showModal:false,
+        loading:false,//按钮上传进度状态
+        loadImg:false,//按钮上传进度状态
+        loadBusine:false,//按钮上传进度状态
+        showBusine:false,//修改营业执照界面
+        showDriver:false,//修改驾驶证界面
+        showCard:false,//修改身份证界面
+
+
         ownerType:1,
         infoData:deepClone(initCard),
         reviseInfoData:deepClone(initCard),
@@ -385,19 +386,19 @@ export default {
             {code:1,name:'个人车辆'},
             {code:2,name:'企业车辆'},
         ],
-        editAble: true,
+
         infoDriverData:deepClone(initDriver),
         reviseDriverData:deepClone(initDriver),
         infoDriverDataTem:deepClone(initDriver),
         editIDCard:false,//是否修改身份按钮
         upIdButton:false,//是否显示上传按钮
         upIdBusine:false,//是否显示上传按钮
-        showCard:false,//是否显示修改身份信息框
+        
         ruleCard:{
             ownerName:[commonRule],
             idCardNo: [commonRule],
         },
-        showDriver:false,//修改驾驶证界面-----
+        
         ruleDriver:{
             ownerName:[commonRule],
             vehiclePlateNumber: [
@@ -420,15 +421,12 @@ export default {
             corpName:[commonRule],
             legalPerson: [commonRule],
         },
-        
         auditFailInfo:'',
-
-            
         displayDriverResive:false,
         displayCardResive:false,
         displayBusine:false,
-        typeId:'',
         commonFlag:false,
+        typeId:'',
 
       }
     },
@@ -440,8 +438,7 @@ export default {
             this.commonFlag=false;
             this.auditFailInfo='';
 
-            this.imgFlag=true;
-            this.busineFlag=false;
+
             this.editIDCard=false;
             this.upIdButton=false;
             this.upIdBusine=false;
@@ -494,9 +491,10 @@ export default {
                 "image": this.infoData['frontImage'],
                 "property": 1,
             }).then( (res) => {
+                this.loading=false;
                 if(res.data.code=='0'){
                     this.editIDCard=true;
-                    this.loading=false;
+                    
                     for(let i in res.data.item){
                         this.infoData[i]=res.data.item[i];
                     }
@@ -609,6 +607,46 @@ export default {
         },
         //提交绑定按钮-----------
         bindFun(){
+            
+            if(!this.displayDriverResive){
+                for(let i in this.infoDriverData){
+                    if(i=="binding"){
+
+                    }else if(!this.infoDriverData[i]){
+                        return this.$Message.error('行驶证信息不可为空');
+                    }
+                }
+            }
+
+            if(this.ownerType==1){
+                if(this.infoData.id){
+                    if(!this.displayCardResive){
+                    
+                            if(!this.infoData['idCardNo']&&!this.infoData['ownerName']){
+                                return this.$Message.error('身份证信息不可为空');
+                            }
+                        
+                    }
+                }
+                
+            }else if(this.ownerType==2){
+                if(this.infoBusine.id){
+                    if(!this.displayBusine){
+                    
+                            if(!this.infoBusine['legalPerson']&&!this.infoBusine['corpName']){
+                                return this.$Message.error('营业执照信息不可为空');
+                            }
+                    }
+                }
+                
+                
+            }
+
+            
+
+            
+
+
             this.$axios.post('/scan/newBind', {
                 "businessId": this.infoBusine.id,
                 "idCardId": this.infoData.id,
@@ -623,9 +661,14 @@ export default {
                 }else if(res.data.code=='10002'){
                     if(this.ownerType==1){
                         this.upIdButton=true;
+                        
                     }else if(this.ownerType==2){
                         this.upIdBusine=true;
                     }
+                    setTimeout(()=>{
+                        document.querySelector('.bind-my-car').scrollTop= 1000;
+                    },30)
+                    
                     
                 }
            })
@@ -691,15 +734,7 @@ export default {
         },
         //选择绑定类型--------
         selectBindType(val){
-            if(val==1){
-                this.imgFlag=true;
-                this.busineFlag=false;
-
-            }else if(val==2){
-                this.imgFlag=false;
-                this.busineFlag=true;
-                
-            }
+            
 
         },
         visibleChange(status){

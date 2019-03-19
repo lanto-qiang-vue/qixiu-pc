@@ -76,7 +76,6 @@
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-        showLook:true,
         showRepair:true,
 
       }
@@ -102,6 +101,7 @@
                 }
            })
            this.detailData= null;
+           this.showRepair=true;
         },
         changePage(page){
           this.page= page
@@ -114,9 +114,11 @@
         onRowClick( row, index){
             console.log('row：',row);
           this.detailData=row
+
           if(this.detailData.status==2){
             this.showRepair=true;
           }else{
+
             this.showRepair=false;
           }
         },
@@ -125,8 +127,7 @@
           this.clearTableSelect= Math.random();
 
           this.getList();
-          this.showLook=true;
-          this.showRepair=true;
+
         },
         //解绑按钮-------
         removeBindFun(){
