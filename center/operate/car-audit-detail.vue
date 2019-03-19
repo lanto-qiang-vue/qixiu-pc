@@ -197,7 +197,7 @@
 <script>
 import {deepClone, getName, getDictGroup, imgToBase64 } from '@/static/util.js'
 import funMixin from '~/components/fun-auth-mixim.js'
-
+import { formatDate } from '@/static/tools.js'
 let initCheckData={
     "auditFailInfo": [],
     "customFailInfo": '',
