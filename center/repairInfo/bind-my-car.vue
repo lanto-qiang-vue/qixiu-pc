@@ -491,9 +491,10 @@ export default {
                 "image": this.infoData['frontImage'],
                 "property": 1,
             }).then( (res) => {
+                this.loading=false;
                 if(res.data.code=='0'){
                     this.editIDCard=true;
-                    this.loading=false;
+                    
                     for(let i in res.data.item){
                         this.infoData[i]=res.data.item[i];
                     }
