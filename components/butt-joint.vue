@@ -26,7 +26,7 @@
           <img src="/img/garage-info/hint.png" style="float:right;padding-top:7px;height:30px;padding-right:15px;"/>
         </div>
         <div style="float:left;width:429px;">
-          <div style="font-size:16px;padding-top:7px;"><b>提示!</b></div>
+          <div style="font-size:16px;padding-top:7px;"><b>提示!!</b></div>
           <div style="width:373px;line-height:20px;">
            你输入的平台对接人或手机号码没有在平台注册,请用手机扫一扫关注并注册上海汽修平台后在进行填写对接人信息。
           </div>
