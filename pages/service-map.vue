@@ -447,10 +447,10 @@ export default {
     },
     renderBase(baseList){
       let iconBase = new AMap.Icon({
-        image: "/img/map/icon-base.png",
-        size: new AMap.Size(30, 30),
+        image: "/img/map/point-base.png",
+        size: new AMap.Size(30, 37),
         // imageOffset: new AMap.Size(11, 11),
-        imageSize: new AMap.Size(30, 30),
+        imageSize: new AMap.Size(30, 37),
       });
       let markers= []
 
@@ -742,10 +742,10 @@ export default {
         imageSize: new AMap.Size(30, 30),
       });
       let iconSchool = new AMap.Icon({
-        image: "/img/map/icon-school.png",
-        size: new AMap.Size(30, 30),
+        image: "/img/map/point-school.png",
+        size: new AMap.Size(30, 37),
         // imageOffset: new AMap.Size(11, 11),
-        imageSize: new AMap.Size(30, 30),
+        imageSize: new AMap.Size(30, 37),
       });
 
       this.markers= []
