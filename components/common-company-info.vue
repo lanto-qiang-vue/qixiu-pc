@@ -168,9 +168,12 @@
               </i-switch>
             </FormItem>
             <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandId')}, 'width45']" v-show="listSearch.special?true:false">
-
+              <Select v-model="listSearch.majorBrandId" filterable remote multiple clearable placeholder="请输入主修品牌"
+                      @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
+                <Option v-for="(option, index) in chainBrand" :value="option.id" :key="index">{{option.name}}</Option>
+              </Select>
               <!--<Input type="text" v-model="listSearch.majorBrandId" placeholder=""></Input>-->
-              <unit-search-input  :searchTableData="listSearch.majorBrandName" :showChange="showChange" :tableData="tableData1" :flagData=3 @closeSelect="closeSelect" @onRowSelect="onRowSelect1"></unit-search-input>
+              <!--<unit-search-input  :searchTableData="listSearch.majorBrandName" :showChange="showChange" :tableData="tableData1" :flagData=3 @closeSelect="closeSelect" @onRowSelect="onRowSelect1"></unit-search-input>-->
             </FormItem>
 
             <FormItem label="连锁经营企业:" :class="[{'mark-change': markChange('chainBusiness')}, 'width45']">
@@ -693,6 +696,7 @@ export default {
             showAdd: false,
             uploadData:{},
             uploadOtherData:{},
+            chainBrand:[],
 
             requireList:deepClone(initList1),
             listSearch:deepClone(initList),
@@ -1504,6 +1508,20 @@ export default {
                 this.$refs.requireList.validateField('businessAddress')
               }
           });
+      },
+      getChainBrand(name){
+        this.$axios.post('/corp/major/brand/name', {
+          "name":name
+        }).then( (res) => {
+          if(res.data.code==='0'){
+            this.chainBrand=res.data.items;
+          }
+        })
+      },
+      resetsetChainBrand(isShow){
+          if(!isShow && !this.listSearch.majorBrandId){
+            this.$refs.chainBrand.clearSingleSelect()
+          }
       }
 
     },
