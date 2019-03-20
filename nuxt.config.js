@@ -3,9 +3,16 @@ const webpack = require('webpack')
 import router from './static/router'
 import config from './config.js'
 
+
+const areaName= process.env.area|| config.area
+config.area= {
+  name: areaName,
+  ...config[areaName]
+}
+
 let conf= {
   mode: 'universal',
-
+  env:{config: config},
   server: {
     port: config.port ,
     host: '0.0.0.0',
@@ -98,7 +105,6 @@ let conf= {
     */
     extend(config, ctx) {
       config.resolve['alias']['vue$']= 'vue/dist/vue.esm.js'
-      console.log(config)
     },
     // plugins: [
     //   new webpack.ProvidePlugin({
@@ -111,7 +117,9 @@ let conf= {
     middleware: ['set-store', 'check-auth', 'company-sign-in'],
     extendRoutes (routes,resolve) {
       routes.push(...router)
+      
     }
+    
   }
 }
 if( process.env.NODE_ENV==='development'){

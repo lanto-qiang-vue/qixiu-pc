@@ -37,6 +37,18 @@
         <FormItem label="地址纬度:" prop="lat">
           <Input v-model="formData.lat" type="text" :min="0"> </Input>
         </FormItem>
+        <FormItem label="是否启用:" >
+          <i-switch size="large" v-model="formData.available">
+            <span slot="open">启用</span>
+            <span slot="close">禁用</span>
+          </i-switch>
+        </FormItem>
+        <FormItem label="是否自用:">
+          <i-switch size="large" v-model="formData.self">
+            <span slot="open">是</span>
+            <span slot="close">否</span>
+          </i-switch>
+        </FormItem>
       </Form>
       <div slot="footer">
         <Button type="primary" @click="submit('formData')">提交</Button>
@@ -67,6 +79,10 @@
             render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
           },
           { title: '基地名称', key: 'name', sortable: true, minWidth: 150 },
+          { title: '是否启用', key: 'available', sortable: true, minWidth: 110,
+            render: (h, params) => h('span', params.row.available?'是': '否')},
+          { title: '是否自用', key: 'self', sortable: true, minWidth: 110,
+            render: (h, params) => h('span',params.row.self?'是': '否')},
           { title: '基地地址', key: 'address', sortable: true, minWidth: 150 },
           { title: '经度', key: 'lon', sortable: true, minWidth: 160 },
           { title: '纬度', key: 'lat', sortable: true, minWidth: 130 },
@@ -77,14 +93,16 @@
           name: '',
           address: '',
           lon: '',
-          lat: ''
+          lat: '',
+          available: false,
+          self: false,
         },
         formData: {},
         rules: {
           name: [{ required: true, message: '基地名称必填' }],
           address: [{ required: true, message: '基地地址必填' }],
-          lon: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址经度必填,且小数精度六位'}],
-          lat: [{ required: true,pattern:/^\d*\.\d{6}$/, message: '地址维度必填,且小数经度六位'}]
+          lon: [{ required: true,message: '地址经度必填'}],
+          lat: [{ required: true, message: '地址维度必填'}]
         },
         total: 0,
         clearTableSelect: false,

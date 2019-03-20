@@ -2,71 +2,79 @@
   <div style="padding: 0 10px">
 
     <div class="dblock">
-      <h1 class="dtitle">维修数据上报管理</h1>
+      <h1 class="dtitle" v-show="!isManage">维修数据上报管理</h1>
       <div style="padding: 15px 0;">
         <Form :label-width="110" class="common-form">
           <FormItem label="统计维度:">
             <Button style="width: 60px;" type="primary" shape="circle" v-if="buttonType == 1"
-                    @click="buttonType=1,minus(7)">7天
+                    @click="buttonType=1,minus(7)" :disabled="isManage">7天
             </Button>
-            <Button style="width: 60px;" shape="circle" @click="buttonType=2,minus(30)" v-if="buttonType == 1">1个月
+            <Button style="width: 60px;" shape="circle" @click="buttonType=2,minus(30)" v-if="buttonType == 1" v-show="!isManage">1个月
             </Button>
-            <Button style="width: 60px;" shape="circle" v-if="buttonType == 2" @click="buttonType=1,minus(7)">7天
+            <Button style="width: 60px;" shape="circle" v-if="buttonType == 2" @click="buttonType=1,minus(7)" :disabled="isManage">7天
             </Button>
             <Button style="width: 60px;" shape="circle" type="primary" @click="buttonType=2,minus(30)"
-                    v-if="buttonType == 2">1个月
+                    v-if="buttonType == 2" v-show="!isManage">1个月
             </Button>
             <Button style="width: 60px;"  shape="circle" v-if="buttonType == 3"
-                    @click="buttonType=1,minus(7)">7天
+                    @click="buttonType=1,minus(7)" :disabled="isManage">7天
               </Button>
               <Button style="width: 60px;" shape="circle"  @click="buttonType=2,minus(30)"
-                      v-if="buttonType == 3">1个月
+                      v-if="buttonType == 3" v-show="!isManage">1个月
               </Button>
           </FormItem>
           <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
             <DatePicker type="daterange" v-model="searchTime" :options="options" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
-                        style="width: 300px"></DatePicker>
+                        style="width: 300px" :disabled="isManage"></DatePicker>
           </FormItem>
           <FormItem :label-width="0">
-            <Button type="primary" @click="getAll">查询</Button>
+            <Button type="primary" @click="getAll" v-show="!isManage">查询</Button>
+            <Button type="primary" v-show="isManage" @click="goToManage">统计更多日期</Button>
           </FormItem>
         </Form>
       </div>
       <div class="center">
         <!--各区维修记录上传情况-->
-        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;padding-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
-          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
-            <div style="float:left;">
+          <div style="position:absolute;left:10%;top:15px;font-size:12px;" v-show="apiShow">
+            <div>
               <div
-                style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>未上传企业: {{success1}}家</b></div>
+                style="height:15px;width:30px;float:left;background-color:#DD0A14;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;"><b>未上传企业: {{success1}}家</b></div>
             </div>
-            <div style="float:left;padding-left:20px;">
+            <div>
               <div
-                style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
-              <div style="float:left;padding-left:10px;"><b>错误记录企业: {{error1}}家</b></div>
+                style="height:15px;width:30px;float:left;background-color:#F6A805;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;"><b>错误记录企业: {{error1}}家</b></div>
+            </div>
+            <div>
+              <div
+                style="height:15px;width:30px;float:left;background-color:#19be6b;border-radius:5px;margin-top:2px;"></div>
+              <div style="float:left;"><b>上传无误企业: {{successUpdateNum}}家</b></div>
             </div>
           </div>
           <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b>
           </div>
-          <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
+          <div style="position:absolute;top:30px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key1">
               <Option v-for="item in areaName" :value="item" :key="item">{{item}}</Option>
-            </Select></div>
+            </Select>
+
+          </div>
         </div>
         <!--各区推送阅读情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
           <div id="bar3" style="width: 100%;height: 600px;"></div>
-          <div style="position:absolute;left:10%;top:15px;font-size:14px;" v-show="apiShow">
-            <div style="float:left;">
+          <div style="position:absolute;left:10%;top:15px;font-size:12px;" v-show="apiShow">
+            <div>
               <div
-                style="height:15px;width:30px;float:left;background-color:#61A0A8;border-radius:5px;margin-top:2px;"></div>
+                style="height:15px;width:30px;float:left;background-color:#DD0A14;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;padding-left:10px;"><b>未上传未读企业: {{count1}}家</b></div>
             </div>
-            <div style="float:left;padding-left:20px;">
+            <div>
               <div
-                style="height:15px;width:30px;float:left;background-color:#C23431;border-radius:5px;margin-top:2px;"></div>
+                style="height:15px;width:30px;float:left;background-color:#F6A805;border-radius:5px;margin-top:2px;"></div>
               <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{count2}}家</b></div>
             </div>
           </div>
@@ -75,7 +83,9 @@
           <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key3">
               <Option v-for="item in readArea" :value="item.deptCode" :key="item.deptCode">{{item.deptName}}</Option>
-            </Select></div>
+            </Select>
+
+          </div>
         </div>
         <!--试点企业维修点评情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
@@ -112,6 +122,7 @@
         key3: '',//read筛选key
         success1: 0,//
         error1: 0,
+        successUpdateNum:0,
         count1: 0,//未上传阅读数
         count2: 0,//上传错误阅读数
         bar2: null,
@@ -123,10 +134,19 @@
         searchTime: null,
         readList: [],//未读区域数据
         optionBar: null,
-        bar: null
+        bar: null,
+        isManage:false,
       }
     },
     mounted() {
+
+      let queryData= this.$route;
+      console.log("queryData",queryData);
+      if(queryData.path=='/center/gov-home'){
+        this.isManage=true;
+      }
+
+
       let self = this
       window.onresize = function() {
         if (window.innerWidth != self.windowInnerWidth) {
@@ -173,7 +193,7 @@
       },
       add1(date){
         let now = date;
-        return new Date(now.getFullYear(),now.getMonth(),now.getDate()+1);
+        return new Date(now.getFullYear(),now.getMonth(),now.getDate());
       },
       getRead(code = '') {
         if (this.searchTime[0] == '' || this.searchTime[1] == '') {
@@ -258,7 +278,7 @@
                 //通常情况下：
                 normal: {
                   //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                  color: '#61A0A8'
+                  color: '#DD0A14'
                 }
               },
               name: '未上传未读',
@@ -277,7 +297,7 @@
               itemStyle: {
                 //通常情况下：
                 normal: {
-                  color: '#C23431'
+                  color: '#F6A805'
                 }
               },
               name: '存在错误未读',
@@ -392,8 +412,8 @@
             formatter: function(params) {
               let company = params[0].axisValue
               let str = company + '<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>记录数:' + obj[company].success + '条<br/>'
-              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#C23431"></div>评论数:' + obj[company].error + '条<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#557D98"></div>记录数:' + obj[company].success + '条<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>评论数:' + obj[company].error + '条<br/>'
               str += "占比:"+obj[company].gl * 100 + "%";
               return str;
             },
@@ -462,7 +482,7 @@
                 //通常情况下：
                 normal: {
                   //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                  color: '#61A0A8'
+                  color: '#557D98'
                 }
               },
               name: '记录数',
@@ -484,7 +504,7 @@
               itemStyle: {
                 //通常情况下：
                 normal: {
-                  color: '#C23431'
+                  color: '#61A0A8'
                 }
               },
               name: '评论数',
@@ -538,28 +558,50 @@
             reject(err)
           })
         })
+        let noUpdate = new Promise((resolve, reject) => {
+          this.$axios.$get('/monitoring/display/company/dept/count?deptCode=' + code).then(res => {
+            resolve(res)
+          }, err => {
+            reject(err)
+          })
+        })
         return Promise.all([
           success,
-          error
-        ]).then(([res, data]) => {
-          if (res.status == 404 && data.status == 404) {
+          error,
+          noUpdate
+        ]).then(([res, data,data1]) => {
+          if (res.status == 404 && data.status == 404 && data1.status == 404) {
             return false
           }
+
           let areaName = []
           let dataObj = {}
           let errorData = {}
           let success1 = 0
           let error1 = 0
+          let successUpdate={};
+          let successUpdateNum=0;
           for (let i in data) {
             errorData[data[i].deptName] = data[i].companyCount
             error1 += parseInt(data[i].companyCount)
+          }
+
+          for (let i in data1) {
+            let notData=0;
+            if(data[i]){
+              notData=parseInt(data[i].companyCount)
+            }
+
+            successUpdate[data1[i].deptName] = parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-notData
+            successUpdateNum += (parseInt(data1[i].companyCount)-parseInt(res[i].companyCount)-notData)
           }
           for (let i in res) {
             areaName.push(res[i].deptName)
             dataObj[res[i].deptName] = {
               success: res[i].companyCount,
               error: errorData[res[i].deptName] || 0,
-              code: res[i].deptCode
+              code: res[i].deptCode,
+              successUpdate:successUpdate[res[i].deptName]||0
             }
             success1 += parseInt(res[i].companyCount)
           }
@@ -571,6 +613,7 @@
           }
           this.success1 = success1
           this.error1 = error1
+          this.successUpdateNum=successUpdateNum
           this.apiShow = true
           this.showChart(areaName, dataObj)
           areaName.unshift('全部')
@@ -584,6 +627,33 @@
           color: ['#C14DE8', '#0f0f0f'],
           tooltip: {
             trigger: 'axis',
+            formatter: function(params) {
+              let company = params[0].axisValue
+
+              let noUpload=0;
+              let noUpload1=0;
+              noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
+              if(noUpload>0){
+                noUpload1=((parseInt(dataObj[company].success)*10000/noUpload)/100).toFixed(2)+'%'
+              }
+
+              let errorUpload=0;
+              let errorUpload1=0;
+              errorUpload+=parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
+              if(errorUpload>0){
+                errorUpload1=((parseInt(dataObj[company].error)*10000/errorUpload)/100).toFixed(2)+'%'
+              }
+
+              let str = company + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#DD0A14"></div>未上传:' + dataObj[company].success + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>未上传占比:' + noUpload1 + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#F6A805"></div>存在错误:' + dataObj[company].error + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#2b85e4"></div>错误占比:' + errorUpload1 + '<br/>'
+              str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#19be6b"></div>已上传(无误+有误):' + errorUpload + '<br/>'
+
+
+                return str;
+            },
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
               type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
               label: { show: true }
@@ -596,7 +666,7 @@
           },
           grid: {},
           legend: {
-            data: ['未上传', '存在错误'],
+            data: ['未上传', '存在错误','上传无误'],
             top: 15,
             right: '30%'
           },
@@ -635,7 +705,7 @@
                 //通常情况下：
                 normal: {
                   //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                  color: '#61A0A8'
+                  color: '#DD0A14'
                 }
               },
               name: '未上传',
@@ -654,7 +724,7 @@
               itemStyle: {
                 //通常情况下：
                 normal: {
-                  color: '#C23431'
+                  color: '#F6A805'
                 }
               },
               name: '存在错误',
@@ -663,23 +733,46 @@
               barGap: '20%',
               stack: '数量',
               barMaxWidth: 100
+            },
+            {
+              label: {
+                show: true,
+                position: 'inside'
+              },
+              //配置样式
+              itemStyle: {
+                //通常情况下：
+                normal: {
+                  color: '#19be6b'
+                }
+              },
+              name: '上传无误',
+              type: 'bar',
+              data: [],
+              barGap: '20%',
+              stack: '数量',
+              barMaxWidth: 100
             }
           ]
         }
-        let area = [], success = [], error = []
+        let area = [], success = [], error = [],uploadData=[]
         for (let i = 0; i < areaName.length; i++) {
           area.push(areaName[i])
           success.push(dataObj[areaName[i]].success)
           error.push(dataObj[areaName[i]].error)
+          uploadData.push(dataObj[areaName[i]].successUpdate)
         }
         this.optionBar1.xAxis[0].data = area
         this.optionBar1.series[0].data = success
         this.optionBar1.series[1].data = error
+        this.optionBar1.series[2].data = uploadData
         this.bar2.clear()
         this.bar2.setOption(this.optionBar1)
         let that = this
         this.bar2.on('click', (params) => {
           let name = params.name || params.value
+
+
           let deptCode
           let url
           if (this.dataObj.hasOwnProperty(name)) {
@@ -696,8 +789,10 @@
           }
           if (params.seriesName == '未上传') {
             url = '/center/repair-upload'
-          } else {
+          } else if (params.seriesName == '存在错误'){
             url = '/center/repair-upload-error'
+          }else{
+            return;
           }
           this.$router.push({
             path: url,
@@ -726,6 +821,9 @@
       },
       onChange(value) {
         this.getList()
+      },
+      goToManage(){
+        this.$router.push({path: '/center/maintain-data-manage',})
       }
     },
     watch: {
@@ -746,26 +844,33 @@
         }
       },
       key1(val) {
-        let area = [], success = [], error = [], success1 = 0, error1 = 0
+        // let area = [], success = [], error = [], success1 = 0, error1 = 0,successUpdateNum=0
         if (this.key1 == '全部') {
-          this.stage = 1
-          for (let i = 0; i < this.areaName.length; i++) {
-            if (this.areaName[i] == '全部') {
-              continue
-            }
-            area.push(this.areaName[i])
-            success.push(this.dataObj[this.areaName[i]].success)
-            success1 += parseInt(this.dataObj[this.areaName[i]].success)
-            error.push(this.dataObj[this.areaName[i]].error)
-            error1 += parseInt(this.dataObj[this.areaName[i]].error)
-            this.optionBar1.xAxis[0].data = area
-            this.optionBar1.series[0].data = success
-            this.optionBar1.series[1].data = error
-            this.bar2.setOption(this.optionBar1)
-            this.success1 = success1
-            this.error1 = error1
-          }
-          return
+          // this.stage = 1
+          // for (let i = 0; i < this.areaName.length; i++) {
+          //   if (this.areaName[i] == '全部') {
+          //     continue
+          //   }
+          //   console.log("this.dataObj",this.dataObj);
+          //   area.push(this.areaName[i])
+          //   success.push(this.dataObj[this.areaName[i]].success)
+          //   success1 += parseInt(this.dataObj[this.areaName[i]].success)
+          //   error.push(this.dataObj[this.areaName[i]].error)
+          //   error1 += parseInt(this.dataObj[this.areaName[i]].error)
+          //   successUpdateNum+=parseInt(this.dataObj[this.areaName[i]].successUpdate)
+          //   this.optionBar1.xAxis[0].data = area
+          //   this.optionBar1.series[0].data = success
+          //   this.optionBar1.series[1].data = error
+          //   this.bar2.setOption(this.optionBar1)
+          //   this.success1 = success1
+          //   this.error1 = error1
+          //   this.successUpdateNum=successUpdateNum
+
+
+          // }
+          // this.showChart(area, this.dataObj)
+          // return
+          this.getData('')
         } else {
           this.getData(this.dataObj[val].code)
         }
@@ -794,7 +899,8 @@
         } else {
           this.getRead(val)
         }
-      }
+      },
+
     }
   }
 </script>

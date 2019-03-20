@@ -11,12 +11,13 @@
     <!--<div class="map-frame" :class="{high:  search.type=='1'}">-->
     <div class="map-frame high">
     <div class="left">
+      <Spin fix v-show="spinShow"></Spin>
       <Select v-model="search.type" placeholder="企业类别" @on-change="changeType" class="type">
         <Option value="164">维修企业</Option>
         <Option value="166">综合检测站</Option>
         <Option value="214">危运车辆维修</Option>
         <Option value="215">新能源汽车维修</Option>
-        <Option value="213">施救牵引企业</Option>
+        <!--<Option value="213">施救牵引企业</Option>-->
         <Option value="300">驾校</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
@@ -67,12 +68,17 @@
             <span>报名地址：{{item.addr}}</span>
             <!--<span>训练基地：{{item.serveSupports.join(',')}}</span>-->
             <span>训练基地：
-              <label v-if="item.tag" v-for="(item2, index) in item.tag.split(' ')" :key="index">
+              <label v-if="item.tag" v-for="(item2, index) in item.tag.trim().split(' ')" :key="index">
                 <a @click.stop="goBase(item2)">{{item2 }}</a>{{index<(item.tag.split(' ').length-1)? ',': ''}}
               </label>
             </span>
-            <span>培训驾照类型：{{item.bizScope}}</span>
-            <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            <span>
+            <Poptip trigger="hover" content="大型客车(A1)、牵引车(A2)、城市公交车(A3)、中型客车(B1)、大型货车(B2)、小型汽车(C1)、小型自动挡汽车(C2)、残疾人专用小型自动挡载客汽车(C5)、普通三轮摩托车(D)、普通二轮、摩托车(E)、轻便摩托车(F)" placement="right" transfer word-wrap width="280">培训驾照类型：{{item.bizScope}}</Poptip></span>
+            <!--<Icon type="md-help-circle" size="12"/>-->
+
+            <Poptip v-show="item.grade" trigger="hover" class="grade-tag" :content="gradeText(item.grade)" placement="right" transfer>
+              <Tag color="orange">{{item.grade=='N' ?'未评级' :item.grade}}</Tag>
+            </Poptip>
           </div>
           <!--<div class="appraise" @click.stop="appraise(item.corpId, item.corpName)">我要评价</div>-->
         </li>
@@ -119,6 +125,7 @@ export default {
   // },
   data(){
     return{
+      spinShow: false,
       search:{
         type: '164',
         q: '',
@@ -221,8 +228,15 @@ export default {
   },
   watch:{
     nowType(){
-      this.$Spin.show();
+      this.spinShow= true;
       this.map.clearMap()
+    },
+    '$route'(route){
+      this.search.type= '164'
+      for(let key in route.query){
+        this.search[key]= route.query[key]
+      }
+      this.changeType()
     }
   },
   mounted(){
@@ -249,13 +263,14 @@ export default {
   // },
   methods:{
     init(){
-      this.$Spin.show();
+      this.spinShow= true;
       // console.log('this.map', this.map)
       // console.log('map1', window.map1)
       this.map= new AMap.Map('comp-map',{
         keyboardEnable: false,
         scrollWheel: false,
         zoom: 14,
+        zooms:[10,18]
       });
       // console.log('this.map2', this.map)
       // window.map1= this.map
@@ -282,6 +297,13 @@ export default {
       this.getBase()
       this.initInfoWindow()
     },
+    defauldPoint(){
+      return new AMap.Icon({
+        size: new AMap.Size(25, 45),
+        imageSize: new AMap.Size(25, 45),
+        image: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_bs.png'
+      })
+    },
     getLocation(){
       if(this.map){
         AMap.plugin('AMap.Geolocation', () => {
@@ -293,11 +315,12 @@ export default {
           this.geolocation.getCurrentPosition();
           AMap.event.addListener(this.geolocation, 'complete', (result)=>{
             this.map.setCenter(result.position)
-            this.map.add(new AMap.Marker(result.position))
+            this.map.add(new AMap.Marker({position: new AMap.LngLat(result.position) , icon: this.defauldPoint()}))
             this.search.lng= result.position.lng
             this.search.lat= result.position.lat
-            this.getCompList()
-            this.initPiontList()
+            // this.getCompList()
+            this.changeType()
+            // this.initPiontList()
           });//返回定位信息
           AMap.event.addListener(this.geolocation, 'error', (err)=>{
             this.getCity()
@@ -314,21 +337,23 @@ export default {
             this.map.setCity(result.city, ()=>{
               let center= this.map.getCenter()
               // console.log('this.map.getCenter()', center)
-              this.map.add(new AMap.Marker( center))
+              // this.map.add(new AMap.Marker( center))
+              this.map.add(new AMap.Marker({position: center , icon: this.defauldPoint()}))
               // console.log('this.map.add(new AMap.Marker( center))')
               this.search.lng= center.lng
               this.search.lat= center.lat
-              this.getCompList()
-              this.initPiontList()
+              // this.getCompList()
+              this.changeType()
+              // this.initPiontList()
             })
           }else{
             let center= new AMap.LngLat(this.search.lng, this.search.lat)
             this.map.panTo(center)
-            this.map.add(new AMap.Marker( {
-              position: center
-            }))
-            this.getCompList()
-            this.initPiontList()
+            this.map.add(new AMap.Marker({position: center , icon: this.defauldPoint()}))
+            // this.map.add(new AMap.Marker( {position: center}))
+            // this.getCompList()
+            // this.initPiontList()
+            this.changeType()
           }
         })
       });
@@ -343,7 +368,7 @@ export default {
         if(!this.base.length){
           this.$axios({
             baseURL: '/repair',
-            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
+            url: '/micro/search/company?fl=sid,type,name,addr,lon,lat,brand&q=&page=0,100&point=31.236301,121.480236&fq=status:1+AND+type:301',
             method: 'get',
           }).then( (res) => {
             // this.base= res.data.content
@@ -358,7 +383,7 @@ export default {
 
     },
     getCompList(){
-      this.$Spin.show();
+      this.spinShow= true;
       let query= this.calcQuery()
       this.$axios({
         baseURL: '/repair',
@@ -368,7 +393,7 @@ export default {
         this.list= res.data.content
         this.calcPointList(res.data.content)
         this.total= res.data.totalElements
-        this.$Spin.hide();
+        this.spinShow= false;
       })
     },
     calcQuery(limit){
@@ -399,7 +424,7 @@ export default {
         url: '/micro/search/company'+ query,
         method: 'get',
       }).then( (res) => {
-        this.$Spin.hide();
+        this.spinShow= false;
         this.calcPointList(res.data.content)
       })
     },
@@ -464,10 +489,10 @@ export default {
                 '<img class="head-img" v-img :src="datas.pic? datas.pic.split(\',\')[0]:\'/img/map/com-head.jpg\'"/>'+
                 '<ul>' +
                 '<li><span>驾校名称：</span>{{datas.name}}</li>' +
-                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}</li>' +
+                '<li><span>驾校评级：</span>{{datas.creditLevel=="N" ? "未评级" :datas.creditLevel}}（{{gradeText(datas.creditLevel)}}）</li>' +
                 '<li><span>报名地址：</span>{{datas.address}}</li>' +
                 '<li><span>报名电话：</span>{{tel}}<a v-show="!tel" @click="toLogin">登录后查看</a></li>' +
-                '<li><span>培训驾照类型：</span>{{datas.trainingScope}}</li>' +
+                '<li><span>培训驾照类型：</span><Poptip trigger="hover" content="大型客车(A1)、牵引车(A2)、城市公交车(A3)、中型客车(B1)、大型货车(B2)、小型汽车(C1)、小型自动挡汽车(C2)、残疾人专用小型自动挡载客汽车(C5)、普通三轮摩托车(D)、普通二轮、摩托车(E)、轻便摩托车(F)" placement="right" transfer word-wrap width="280">{{datas.trainingScope}}</Poptip></li>' +
                 '<li><span>训练基地：</span><span class="base-tag">' +
                 '<a v-for="(item, index) in tags" :key="index" @click="toBase(item.value)">{{item.label}}</a>' +
                 '</span></li>' +
@@ -525,24 +550,12 @@ export default {
                     return self.infoWindow.school.data
                   },
                   tags(){
-                    let baseTag= [], tags= this.datas.drivingBase? this.datas.drivingBase.split(','): []
-                    // console.log('tags', tags)
+                    let baseTag= [], tags= this.datas.baseList|| []
                     for(let i in tags){
-                      for(let j in self.base){
-                        let baseInfo= self.base[j].getExtData()
-                        if(baseInfo.name.indexOf(tags[i])>=0){
-                          baseTag.push({
-                            label: baseInfo.name+'('+baseInfo.addr+')',
-                            value: tags[i]
-                          })
-                        }
-                      }
-                    }
-                    if(!baseTag.length){
-                      baseTag=[{
-                        label: this.datas.drivingBase,
-                        value: ''
-                      }]
+                        baseTag.push({
+                          label: tags[i].name+'('+tags[i].address+')',
+                          value: tags[i].tag
+                        })
                     }
                     return baseTag
                   },
@@ -557,6 +570,7 @@ export default {
                 methods:{
                   formatArticle: formatArticle,
                   toBase: self.goBase,
+                  gradeText: self.gradeText,
                   toLogin(){
                     self.$router.push({
                       path: '/login',
@@ -666,7 +680,7 @@ export default {
           '<div class="title">训练基地</div>'+
           '<div class="body">' +
           '<ul>' +
-          '<li><span>基地名称：</span>{{datas.name}}</li>' +
+          '<li><span>基地名称：</span>{{datas.name+ (datas.brand?"（"+datas.brand+"自用基地）":"")}}</li>' +
           '<li><span>基地地址：</span>{{datas.addr}}</li>' +
           '<li><span>入驻驾校：</span><Button type="primary" @click="look">点击查看</Button></li>' +
           '</ul>' +
@@ -690,6 +704,7 @@ export default {
           methods:{
             look(){
               self.search.base= this.simpleName
+              self.page= 1
               self.getCompList()
             }
           }
@@ -779,7 +794,7 @@ export default {
         // console.log('renderMap() over')
       });
 
-      this.getBase()
+      // this.getBase()
 
       // let is164= this.search.type== 164
       // if(is164){
@@ -808,13 +823,20 @@ export default {
       }
     },
     changeType(){
+      if(this.search.type== 300){
+        this.search.sort= 'rating desc,distance asc'
+      }else{
+        this.search.sort= ''
+      }
       this.page= 1
       this.pointList=[]
+      this.getBase()
       this.getCompList()
       this.initPiontList()
     },
     changeSelectAll(){
       this.page= 1
+      this.getCompList()
     },
     selectHot(val){
       if(val) this.search.q= val
@@ -874,6 +896,32 @@ export default {
         window.data= data
         window.el.open(this.map, marker.getPosition())
       }
+    },
+    gradeText(grade){
+      let text= ''
+      switch (grade){
+        case 'AAA':{
+          text= "质量信誉优良企业"
+          break
+        }
+        case 'AA':{
+          text= "质量信誉合格企业"
+          break
+        }
+        case 'A':{
+          text= "质量信誉基本合格企业"
+          break
+        }
+        case 'B':{
+          text= "质量信誉不合格企业"
+          break
+        }
+        default :{
+          text= "质量信誉未评级企业"
+          break
+        }
+      }
+      return text
     }
   }
 }
@@ -957,7 +1005,7 @@ export default {
             font-size: 12px;
             line-height: 18px;
             position: relative;
-            span{
+            .span, span{
               /*color: #020202;*/
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -975,7 +1023,7 @@ export default {
               overflow: hidden;
               text-overflow: ellipsis;
             }
-            .ivu-tag{
+            .grade-tag{
               position: absolute;
               top: -4px;
               right: 0;
@@ -983,7 +1031,7 @@ export default {
               line-height: 16px;
               padding: 0 4px;
               cursor: default;
-              z-index: -1;
+              /*z-index: -1;*/
             }
           }
           .appraise{

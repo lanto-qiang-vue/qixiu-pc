@@ -18,6 +18,15 @@
         <FormItem label="许可证号:">
             <Input type="text" v-model="searchList.license" placeholder="请输入许可证号"></Input>
         </FormItem>
+        <FormItem label="维修品牌:">
+            <Input type="text" v-model="searchList.repairBrand" placeholder="请输入维修品牌"></Input>
+        </FormItem>
+        <FormItem label="企业品牌:">
+          <Select v-model="searchList.chainBrand" filterable remote clearable placeholder="请输入企业品牌"
+                  @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
+            <Option v-for="(option, index) in chainBrand" :value="option.name" :key="index">{{option.name}}</Option>
+          </Select>
+        </FormItem>
          <FormItem label="企业类型:">
             <Select v-model="searchList.companyCategory" clearable>
                 <Option v-for="item in companyType" :value="item.id" :key="item.id">{{ item.name }}</Option>
@@ -57,7 +66,10 @@
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
         <FormItem label="按月查询:">
-            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions"></DatePicker>
+            <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions" @on-change="clear('year')"></DatePicker>
+        </FormItem>
+        <FormItem label="按年查询:">
+          <DatePicker v-model="searchList.year" type="year" placeholder="请选择" :options="yearOptions" @on-change="clear('uploadMonth')"></DatePicker>
         </FormItem>
         <FormItem :label-width="0" style="width: 120px;">
             <Button type="primary" v-if="accessBtn('query')" @click="searchFun">搜索</Button>
@@ -79,7 +91,6 @@ import CommonTable from '~/components/common-table.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { getName, deepClone } from '@/static/util.js'
-
 var searchList={
   "area": {
     key: ''
@@ -96,8 +107,12 @@ var searchList={
   "show": "",//是否前台显示
   "special": "",//是否特约
   "uploadMonth": "",//按月查询
-  order:'',//排序查询
-  index:''
+  order:0,//排序查询
+  index:13,
+  repairBrand: '',
+  year: '',
+  chainBrand: '',
+
 }
 if(!thisData) {
   var thisData= {
@@ -125,27 +140,12 @@ if(!thisData) {
       },
       {title: '前台显示', key: 'show', sortable: 'custom', minWidth: 110},
       {title: '对接时间', key: 'firstUploadTime', sortable: 'custom', minWidth: 110},
+      {title: '维修品牌', key: 'repairBrand', sortable: 'custom', minWidth: 110},
+      {title: '企业品牌', key: 'chainBrand', sortable: 'custom', minWidth: 110},
+      // {title: '备注', key: 'remark，', sortable: 'custom', minWidth: 200},
     ],
     tableData: [],
-    searchList:{
-      "area": {
-        key: ''
-      },//区域
-      "businessStatus": "",//企业状态
-      "buttJoin": "",//是否对接
-      "companyCategory": '',//维修企业类型
-      "companyName": "",//企业名称
-      "dept": '',//管理部门
-      "inDays": "",//未上传天数
-      "license": "",//许可证号
-      "minister": "",//是否总对总
-      "org": '',//管理部门
-      "show": "",//是否前台显示
-      "special": "",//是否特约
-      "uploadMonth": "",//按月查询
-      order:0,//排序查询
-      index:13
-    },
+    searchList: deepClone( searchList),
     manageArr:[],
     page: 1,
     limit: 10,
@@ -157,15 +157,9 @@ if(!thisData) {
     clearTableSelect: null,
     areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
-    businessType:[
-    //   {key:1,name:'营业'},
-    //   {key:2,name:'歇业'},
-    //   {key:3,name:'注销'},
-    //   {key:4,name:'空壳'},
-    //   {key:11,name:'内修'},
-    //   {key:20,name:'停业'},
-    ],//经营状态类型集合------
+    businessType:[],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
+
     isFlagType:[
       {code:"是",name:'是'},
       {code:"否",name:'否'},
@@ -195,7 +189,6 @@ if(!thisData) {
     ],
     dateOptions: {
         disabledDate (date) {
-            
             let oDate=new Date();
             oDate.setMonth(oDate.getMonth());
             oDate.setDate(0);
@@ -206,6 +199,25 @@ if(!thisData) {
             return date && date.valueOf() >= oDate.getTime();
         }
     },
+    yearOptions: {
+      disabledDate (date) {
+        let oDate=new Date(),nDate=new Date();
+        oDate.setFullYear(2018)
+        nDate.setFullYear(oDate.getFullYear()+1)
+        oDate.setMonth(0);
+        oDate.setDate(0);
+        oDate.setHours(0);
+        oDate.setMinutes(0);
+        oDate.setMilliseconds(0);
+        nDate.setMonth(0);
+        nDate.setDate(0);
+        nDate.setHours(0);
+        nDate.setMinutes(0);
+        nDate.setMilliseconds(0);
+        return date && (date.valueOf()< oDate.getTime() || date.valueOf() > nDate.getTime() );
+      }
+    },
+    chainBrand: []
   }
 }
 export default {
@@ -237,7 +249,7 @@ export default {
   //   next()
   // },
   mounted () {
-	    console.log('record-company: mounted', this.$route.query)
+	    // console.log('record-company: mounted', this.$route.query)
         this.getAreaInfo();
         this.getType('1');
         this.getBusinessType();
@@ -312,7 +324,7 @@ activated(){
                 }else if(i=='area'){
                   if(i=='area' &&!this.searchList[i].key) upData[i]= null
                   else upData[i]=this.searchList[i];
-                }else if(this.searchList[i]){
+                }else if(this.searchList[i]!=null){
                     upData[i]=this.searchList[i];
                 }else{
                     upData[i]=null;
@@ -324,26 +336,10 @@ activated(){
                 upData["dept"]=this.manageArr[1]||'';
             }
             upData["uploadMonth"]=formatDate(upData["uploadMonth"],'yyyy-MM');
-            this.$axios.post('/vehicle/repair/query', {
-                    "area": upData["area"],
-                    "businessStatus": upData["businessStatus"],
-                    "buttJoin": upData["buttJoin"],
-                    "companyCategory": upData["companyCategory"],
-                    "companyName": upData["companyName"],
-                    "dept": upData["dept"],
-                    "inDays": upData["inDays"],
-                    "license": upData["license"],
-                    "minister": upData["minister"],
-                    "org": upData["org"],
-                    "pageNo": this.page,
-                    "pageSize": this.limit,
-                    "show": upData["show"],
-                    "special": upData["special"],
-                    "uploadMonth": upData["uploadMonth"],
-                    order:upData["order"],
-                    index:upData["index"],
-
-            }).then( (res) => {
+            upData["year"]=formatDate(upData["year"],'yyyy');
+            upData.pageNo= this.page
+            upData.pageSize= this.limit
+            this.$axios.post('/vehicle/repair/query',upData).then( (res) => {
                 if(res.data.code=='0'){
                     this.tableData=res.data.items;
                     this.total=res.data.total;
@@ -381,21 +377,7 @@ activated(){
             this.$axios({
               method: 'post',
               url: '/vehicle/repair/export',
-              data:{
-                "area": upData["area"],
-                "businessStatus": upData["businessStatus"],
-                "buttJoin": upData["buttJoin"],
-                "companyCategory": upData["companyCategory"],
-                "companyName": upData["companyName"],
-                "dept": upData["dept"],
-                "inDays": upData["inDays"],
-                "license": upData["license"],
-                "minister": upData["minister"],
-                "org": upData["org"],
-                "show": upData["show"],
-                "special": upData["special"],
-                "uploadMonth": upData["uploadMonth"],
-                },
+              data: upData,
               responseType: 'arraybuffer'
             }).then( (res) => {
                 console.log('res',res)
@@ -419,6 +401,12 @@ activated(){
            })
            this.detailData= null;
         },
+
+        onRowSelect2(val){
+            // this.listSearch.brandId=val.id;
+            // this.listSearch.brandName=val.name;
+            this.searchList.chainBrand=val.id;
+        },
         //获取区域数据-------
         getAreaInfo(){
             this.$axios.post('/area/region/list', {
@@ -438,7 +426,7 @@ activated(){
                 if(res.data.code=='0'){
 
                     this.businessType=res.data.items;
-                    
+
                 }
            })
         },
@@ -466,6 +454,9 @@ activated(){
                 }
            })
         },
+      clear(item){
+          this.searchList[item]= null
+      },
         changePage(page){
           this.page= page
           this.getList()
@@ -528,7 +519,21 @@ activated(){
         backCompany(){
             var query={flag:true,name:this.detailData.companyName};
             this.$router.push({path:'/center/record-repair',query:query});
-        }
+        },
+      getChainBrand(name){
+        this.$axios.post('/corp/brand/name', {
+          "name":name
+        }).then( (res) => {
+          if(res.data.code==='0'){
+            this.chainBrand=res.data.items;
+          }
+        })
+      },
+      resetsetChainBrand(isShow){
+          if(!isShow && !this.searchList.chainBrand){
+            this.$refs.chainBrand.clearSingleSelect()
+          }
+      }
 
     },
   beforeRouteLeave (to, from, next) {

@@ -1,8 +1,9 @@
 <template>
-  <div style="width:450px;position:relative;">
-    <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType">
+  <div class="unit-search-input">
+    <Input v-model="inputData" type="text" @on-keyup="goToSelect" :readonly="disType" :placeholder="name">
+
     </Input>
-    <span style="position:absolute;right:32px;top:2px;cursor: pointer;z-index: 100;font-size: 16px;" v-show="selectType" @click="closeSelect"><Icon type="ios-close-circle" /></span>
+    <Icon type="ios-close-circle" class="close" v-show="selectType" @click="closeSelect"/>
     <div v-show="inputShow" v-clickoutside="handleClose" style="position:absolute;top:31px;z-index:99;">
       <Table
         :data="data"
@@ -10,7 +11,7 @@
         stripe
         border
         height="400"
-        width="450"
+
         :highlight-row="true"
         :loading="loading"
         :row-class-name="rowClassName"
@@ -42,7 +43,7 @@
   };
   export default {
     name: "unit-search-input",
-    props:['searchTableData',"showChange"],
+    props:['searchTableData',"showChange","tableData","flagData","name"],
     data(){
       return {
         inputData:'',
@@ -52,10 +53,7 @@
         timer:null,
         data:[],
         loading:false,
-        tableColumns:[
-          {title: '基地名称', key: 'name', sortable: true, minWidth: 140},
-          {title: '基地地址', key: 'address', sortable: true, minWidth: 140},
-        ],
+        tableColumns:[],
       }
     },
     watch:{
@@ -70,23 +68,23 @@
           this.selectType=false;
           this.disType=false;
         }
-        
+
       }
+    },
+    mounted(){
+      this.tableColumns=this.tableData;
     },
     directives: {clickoutside},
     methods: {
       handleClose(e) {
-        
-        
         if(this.inputShow){
-          
           //  let row={};
           //   row['MODEL_NAME']=this.inputData;
           //   row['TID']='';
           //   this.$emit('onRowSelect',row);
         }
         this.inputShow = false;
-       
+
       },
 
       //清空搜索数据
@@ -95,7 +93,7 @@
         this.inputData="";
         this.selectType=false;
         this.disType=false;
-
+        this.$emit('onRowSelect',{});
       },
       onRowClick( row, index){
           console.log('row：',row);
@@ -121,28 +119,90 @@
         },500);
       },
       getList(value){
-            this.loading=true;
-            let strUrl='';
-            strUrl+='&name='+this.inputData;
-                
-            this.$axios.get('/training/driving/base/query?size=25&page=0'+strUrl, {
-            }).then( (res) => {
-                console.log(res);
-                if(res.status===200){
-                    this.data=res.data.content;
-                    // this.total=res.data.totalElements;
-                    this.loading=false;
-                }else{
-                    this.loading=false;
-                    // this.$Message.error(res.statusText);
-                }
-            })
+            if(this.flagData==1){
+                this.loading=true;
+                let strUrl='';
+                strUrl+='&name='+this.inputData;
+
+                this.$axios.get('/training/driving/base/query?size=25&page=0'+strUrl, {
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.status===200){
+                        this.data=res.data.content;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+
+            }else if(this.flagData==2){
+                this.loading=true;
+
+                this.$axios.post('/corp/erp/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }else if(this.flagData==3){
+                this.loading=true;
+
+                this.$axios.post('/corp/major/brand/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+                    console.log(res);
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }else if(this.flagData==4){
+                this.loading=true;
+
+                this.$axios.post('/corp/brand/name', {
+                  "name":this.inputData
+                }).then( (res) => {
+
+                    if(res.data.code==='0'){
+                        this.data=res.data.items;
+                        // this.total=res.data.totalElements;
+                        this.loading=false;
+                    }else{
+                        this.loading=false;
+                        // this.$Message.error(res.statusText);
+                    }
+                })
+            }
+
 
       },
     },
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.unit-search-input{
+  position: relative;
+  .close{
+    font-size: 16px;
+    position:absolute;
+    cursor: pointer;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 </style>

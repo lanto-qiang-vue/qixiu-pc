@@ -2,7 +2,7 @@
 <div class="bread-crumb">
   <Breadcrumb v-if="show">
     <BreadcrumbItem :to="name? '/':centerHref">{{name? '主页': '首页'}}</BreadcrumbItem>
-    <BreadcrumbItem>{{name|| $route.meta.title}}</BreadcrumbItem>
+    <BreadcrumbItem>{{name|| title}}</BreadcrumbItem>
   </Breadcrumb>
 </div>
 </template>
@@ -18,9 +18,42 @@ export default {
       show: false
     }
   },
+  computed:{
+    accessMenu(){
+      return this.$store.state.user.accessMenu
+    },
+    accessId(){
+      return  this.$route.meta.accessId
+    },
+    title(){
+      return this.getName(this.accessId, this.accessMenu)
+    }
+  },
   mounted(){
     this.show= true
     // console.log(this.$route)
+  },
+  methods:{
+    getTitle(accessId, accessMenu){
+      let title=''
+      if(accessMenu && accessMenu.length){
+        title= this.getName(accessId, accessMenu)
+      }
+      return title|| this.$route.meta.title
+    },
+    getName(access, accessMenu){
+      let name= ''
+      for(let i in accessMenu){
+        if(accessMenu[i].uri== access){
+          name= accessMenu[i].name
+          break
+        } else if(accessMenu[i].children && accessMenu[i].children.length){
+          name= this.getName(access, accessMenu[i].children)
+          if(name) break
+        }
+      }
+      return name
+    }
   }
 }
 </script>

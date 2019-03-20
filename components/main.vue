@@ -78,9 +78,9 @@ export default {
     }
   },
   mounted(){
-    console.log('main-mounted', this.$route)
+    // console.log('main-mounted', this.$route)
     let roles= this.$store.state.user.userInfo.roles;
-    if(!this.$route.path === '/center/company-home'){
+    if(this.$route.path != '/center/company-home'){
       for(let i in roles){
         if(roles[i].code == 'weixiuqiye'){
           this.checkButt();
@@ -93,8 +93,10 @@ export default {
   methods: {
      checkButt(){
        this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
-         if(res.data.content.length == 0){
+         if(res.data.content &&res.data.content.length == 0){
            this.showType = true;
+         }else if(res.data.code=='1000'){
+           this.$router.push('/')
          }
        })
      },

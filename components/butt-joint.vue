@@ -1,10 +1,10 @@
 <template>
   <!--组件先放这里先-->
   <div class="butt-joint">
-  <Modal
+<Modal
     v-model="commentModal"
-    title="请先填写平台对接人"
-    width="525"
+    title="请填写企业联系人"
+    width="540"
     :scrollable="true"
     :closable="closableType"
     :transfer="false"
@@ -12,35 +12,31 @@
     :mask-closable="false"
     :z-index="1000"
     :transition-names="['', '']">
-    <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:400px;">
-      <FormItem label="平台对接人:" prop="contactName">
-        <Input type="text" v-model="formData.contactName"  placeholder="请输入平台对接人名称"></Input>
+
+    <p class="remark">注：企业联系人为维修企业日常经营负责人，用于接收汽修平台公众号通知。</p>
+    <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:420px;">
+      <FormItem label="企业联系人:" prop="contactName">
+        <Input type="text" v-model="formData.contactName"  placeholder="请输入企业联系人"></Input>
       </FormItem>
-      <FormItem label="手机号码:" prop="contactMobile">
-        <Input type="text" v-model="formData.contactMobile" placeholder="请输入手机号码"></Input>
+      <FormItem label="手机号:" prop="contactMobile">
+        <Input type="text" v-model="formData.contactMobile" :maxlength="11" placeholder="请输入手机号码"></Input>
       </FormItem>
     </Form>
-    <div v-show="showErcode">
-      <div style="width:485px;height:90px;background:#FFFBE6;border:1px solid #FFE58F;margin-left:5px;">
-        <div style="float:left;width:54px;height:100%;">
-          <img src="/img/garage-info/hint.png" style="float:right;padding-top:7px;height:30px;padding-right:15px;"/>
-        </div>
-        <div style="float:left;width:429px;">
-          <div style="font-size:16px;padding-top:7px;"><b>提示!!</b></div>
-          <div style="width:373px;line-height:20px;">
-           你输入的平台对接人或手机号码没有在平台注册,请用手机扫一扫关注并注册上海汽修平台后在进行填写对接人信息。
-          </div>
-        </div>
-      </div>
-    <div style="height:20px;width:100%;"></div>
-    <div style="margin:0 auto;width:126px;"><img src="/img/garage-info/shqx_wx.png" style="height:126px;"></div>
-    <div style="margin:0 auto;width:126px;text-align:center;font-size:14px;"><b>上海汽修平台公众号</b></div>
+    <div v-show="showErcode" class="step">
+      <h2>如果您填写的手机号还未注册并登录过汽修平台微信，请按以下步骤操作：</h2>
+      <li><span>1. 打开微信扫一扫，关注“上海汽修平台”微信公众号。</span>
+        <img src="/img/garage-info/shqx_wx.png" style="height:126px;">
+        <div>上海汽修平台公众号</div>
+      </li>
+      <li>2. 关注微信公众号后，点击“我的”-“个人中心”。</li>
+      <li>3. “点击登录”- 在“验证码登录”下输入企业联系人手机号，“验证并登录”后即完成登录。</li>
+      <p class="red">完成登录后在本页面填写企业联系人及手机号后保存即可。</p>
     </div>
-      <!--<div v-show="showErcode">二维码</div>-->
     <div slot="footer">
-      <Button  type="primary" @click="submit('formData')">保存 </Button>
+      <Button  type="primary" @click="submit('formData')">保存</Button>
     </div>
-  </Modal>
+
+</Modal>
   </div>
   <!--组建结束-->
 </template>
@@ -56,12 +52,11 @@
         commentModal2:false,
         closableType:false,
         commentModal:false,
-        showErcode: false,
+        showErcode: true,
         formData:{contactMobile:'',contactName:''},
-        formData2:{contactMobile:'',contactName:''},
         rules:{
           contactName:{required:true,message:'对接人必填'},
-          contactMobile:{required:true,message:'填写正确的手机号', pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,},
+          contactMobile:[{required:true,message:'填写正确的手机号', pattern: /^1[3456789]\d{9}$/,}],
         },
       }
     },
@@ -71,10 +66,7 @@
         if(this.stage == 1) this.$router.push({ path: '/center/company-home',query:{refresh:Math.random()}});
         this.$refs[name].validate((valid) => {
            if(valid){
-          this.$Modal.confirm({
-            title:'系统提示',
-            content:'确认保存吗?',
-            onOk:()=>{
+
               if(!this.closableType){
                 this.$axios.post(url,this.formData).then((res) => {
 
@@ -85,6 +77,17 @@
                   }
                   if(res.data.code=='1000'){
                     this.showErcode= true
+                    let oldTel= this.formData.contactMobile
+                    this.rules.contactMobile.push({
+                      validator: (rule, value, callback) => {
+                        if (value === oldTel) {
+                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
+                        } else {
+                          callback();
+                        }
+                      }
+                    })
+                    this.$refs.formData.validate()
                   }
                 })
               }else{
@@ -96,13 +99,22 @@
                   }
                   if(res.data.code=='1000'){
                     this.showErcode= true
+                    let oldTel= this.formData.contactMobile
+                    this.rules.contactMobile.push({
+                      validator: (rule, value, callback) => {
+                        if (value === oldTel) {
+                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
+                        } else {
+                          callback();
+                        }
+                      }
+                    })
+                    this.$refs.formData.validate()
                   }
                 })
               }
-            }
-          });
            }else{
-           this.$Message.errro("请检查红框信息");
+            // this.$Message.errro("请检查红框信息");
            }
         });
       }
@@ -111,7 +123,6 @@
       type(){
         this.$refs.formData.resetFields();
         if(this.dataInit == null){
-          this.formData = deepClone(this.formData2);
           this.closableType = false;
         }else{
           this.closableType = true;
@@ -124,6 +135,47 @@
   }
 </script>
 
+<style scoped lang="less">
+.butt-joint{
+  .remark{
+    padding: 0 20px;
+    color: #FF9738;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  .step{
+    margin-top: 20px;
+    padding: 0 20px;
+    h2{
+      font-size: 14px;
+      font-weight: 600;
+    }
+    li{
+      font-size: 12px;
+      color: #666666;
+      margin: 5px 0;
+      img, div{
+        display: block;
+        margin: 0 auto;
+        width:130px;
+        text-align:center;
+        font-size:13px;
+        font-weight: 600;
+      }
+      img{
+        margin-top: 15px;
+      }
+      div{
+        margin-bottom: 15px;
+      }
+    }
+    .red{
+      color: #F4333C;
+      font-size: 14px;
+    }
+  }
+}
+</style>
 <style lang="less">
 .butt-joint{
   .ivu-modal-mask,.ivu-modal-wrap{

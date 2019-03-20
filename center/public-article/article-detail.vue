@@ -14,6 +14,12 @@
     components: {
       PublicArticleDetail,
     },
+    head () {
+      return {
+        title: this.title,
+        meta: [{ hid: 'description', name: 'description', content: this.title }]
+      }
+    },
     asyncData ({ app, params, query, error }) {
       console.log('asyncData', params)
       if(query &&query.type=='school'){

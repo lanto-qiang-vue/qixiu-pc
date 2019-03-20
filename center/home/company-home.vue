@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="dblock">
-      <h1 class="dtitle">平台对接人</h1>
+      <h1 class="dtitle">企业联系人（用于接收汽修平台公众号通知）</h1>
       <div class="center">
         <div class="inline-box">
           <Table :columns="buttColumns" :data="buttData"  width="800"
@@ -19,6 +19,27 @@
       </div>
 
     </div>
+    <div class="dblock">
+      <h1 class="dtitle">企业营业时间调整</h1>
+      <div class="center">
+        <div class="inline-box">
+          <Table :columns="businessHoursColumns" :data="infoData"  width="800"
+                 stripe border></Table>
+        </div>
+      </div>
+
+    </div>
+    <div class="dblock">
+      <h1 class="dtitle">门店特色</h1>
+      <div class="center">
+        <div class="inline-box">
+          <Table :columns="businessTags" :data="infoData"  width="800"
+                 stripe border></Table>
+        </div>
+      </div>
+
+    </div>
+
     <div class="dblock">
       <h1 class="dtitle">未读通知</h1>
       <div class="center">
@@ -66,6 +87,42 @@
       </div>
 
     </div>
+
+<!--调整营业时间或状态-->
+    <Modal v-model="modal2" title="调整营业时间或状态" :transfer="false"
+    :footer-hide="false"
+    :mask-closable="false" :z-index="1000" :transition-names="['', '']" width="525" @on-visible-change="visibleChange">
+      <Form :label-width="120" style="width: 300px;" ref="businessHours" :rules="ruleValidate1" :model="businessHours">
+        <FormItem label="营业状态:" prop="yyState">
+            <Select v-model="businessHours.yyState" :transfer="true">
+                <Option v-for="item in yyStateArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+        <FormItem label="营业时间:" prop="businessHours">
+
+            <TimePicker format="HH:mm" type="timerange" placement="bottom-start" placeholder="请选择" style="width: 100%;" v-model="businessHours.businessHours"></TimePicker>
+        </FormItem>
+    </Form>
+      <div slot="footer">
+        <Button size="large" type="primary" @click="updateBusiness">提交</Button>
+      </div>
+    </Modal>
+
+    <!--调整门店特色-->
+    <Modal v-model="modal3" title="选择门店特色" :transfer="false"
+    :footer-hide="false"
+    :mask-closable="false" :z-index="1000" :transition-names="['', '']" width="525" @on-visible-change="visibleChange1">
+      <Form :label-width="120" style="width: 300px;" >
+        <FormItem label="门店特色:" >
+            <Select v-model="storeSpecials" :transfer="true" multiple>
+                <Option v-for="item in featureArr" :value="item.id" :key="item.id">{{ item.name }}</Option>
+            </Select>
+        </FormItem>
+    </Form>
+      <div slot="footer">
+        <Button size="large" type="primary" @click="updateTags">提交</Button>
+      </div>
+    </Modal>
 <butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt" stage="2"></butt-joint>
   </div>
 </template>
@@ -88,10 +145,12 @@
         commentModal:true,
         showType:false,
         dataInit:null,
+        modal2:false,
+        modal3:false,
         buttColumns:[
-          {title: '对接人姓名', key: 'contactName',  minWidth: 100,},
-          {title: '对接人手机号', key: 'contactMobile',  minWidth: 100,},
-          {title: '操作', key: 'cz',  minWidth: 100,
+          {title: '联系人', key: 'contactName',  minWidth: 100,},
+          {title: '联系人手机', key: 'contactMobile',  minWidth: 100,},
+          {title: '操作', key: 'cz',  width: 100,
             render: (h, params) => {
               let buttonContent= '更改';
               let buttonStatus = 'primary';
@@ -131,12 +190,125 @@
             // render: (h, params) => h('span', formatDate(params.row.sendtime, 'yyyy-MM-dd hh:mm:ss'))
           },
         ],
+        businessHoursColumns:[
+          {title: '营业状态', key: 'yyState',  minWidth: 100,
+            render: (h, params) => {
+              let content= '';
+              if(params.row.yyState==0){
+                content="营业中"
+              }else if(params.row.yyState==1){
+                content="休息中"
+              }
+              return h('div', [
+                h('span',  content),
+              ]);
+            }
+          },
+          {title: '营业时间', key: 'businessHours',  minWidth: 100,},
+          {title: '操作', key: 'cz',  width: 100,
+            render: (h, params) => {
+              let buttonContent= '更改';
+              let buttonStatus = 'primary';
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                  },
+                  style: {
+                    width:"60px",
+                    textAlign: "center",
+                    marginRight: '10px',
+                  },
+                  on: {
+                    click: (index) => {
+                      this.modal2=true;
+                      this.businessHours.yyState=this.infoData[0].yyState;
+                      this.businessHours.businessHours=this.infoData[0].businessHours.split('-');
+
+                    }
+                  }
+                }, buttonContent),
+              ]);
+            }
+          },
+        ],
+        businessTags:[
+          {title: '已选标签', key: 'storeSpecials',  minWidth: 100,
+              render: (h, params) => {
+                let buttonContent= '';
+                for(let i in this.featureArr){
+                  for(let j in this.tagDatas.storeSpecials){
+                      if(this.tagDatas.storeSpecials[j]==this.featureArr[i]['id']){
+                          buttonContent+=this.featureArr[i]['name']+','
+                      }
+
+                  }
+                }
+
+
+                return h('div', [
+                  h('span',buttonContent),
+                ]);
+              }
+          },
+          {title: '操作', key: 'cz',  width: 120,
+            render: (h, params) => {
+              let buttonContent= '选择特色';
+              let buttonStatus = 'primary';
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                  },
+                  style: {
+                    // width:"60px",
+                    textAlign: "center",
+                    marginRight: '10px',
+                  },
+                  on: {
+                    click: (index) => {
+                      this.modal3=true;
+                      this.storeSpecials=this.tagDatas.storeSpecials;
+                    }
+                  }
+                }, buttonContent),
+              ]);
+            }
+          },
+        ],
+        ruleValidate1: {
+            businessHours: [{ required: true , message: '必填项不可为空' },{
+                  validator: (rule, value, callback) => {
+
+                    if (value.length >0 && !value[0]&&!value[1]) {
+                      callback(new Error('必填项不可为空'));
+                    }else{
+                      callback();
+                    }
+                  }
+                },],
+            yyState: [{ required: true, message: '必填项不可为空' }],
+        },//规则验证
         infoData: [],
         notifyData: [],
         visitDate:[],//上门日期服务--------
         buttData:[],
         visitData:[],
         orderData:[],
+        businessHours:{
+          businessHours:[],
+          yyState:'',
+        },
+        yyStateArr:[
+          {code:0,name:"营业中"},
+          {code:1,name:'休息中'}
+        ],
+        tagDatas:{
+          storeSpecials:[],
+          corpInfoId:'',
+        },
+        storeSpecials:[],
+        featureArr:[]
       }
 		},
     mounted(){
@@ -161,6 +333,8 @@
       // this.getServerDate();
 
       this.getNotify();
+      this.getFeature();
+      this.getTagDatas();
     },
     methods:{
       checkButt(){
@@ -168,8 +342,10 @@
           if(res.status == 200){
             this.buttData = res.data.content;
           }
-          if(res.data.content.length == 0){
+          if(res.data.content &&res.data.content.length == 0){
             this.showType = true;
+          }else if(res.data.code=='1000'){
+            this.$router.push('/')
           }
         })
       },
@@ -331,6 +507,71 @@
             this.$router.push({path:'/center/company-note-manage',query:query});
 
         },
+        updateBusiness(){
+          this.$refs['businessHours'].validate((valid) => {
+          if (valid) {
+                this.$axios.post('/corp/manage/update/state',{
+                  "businessHours": (this.businessHours.businessHours[0]+"-"+this.businessHours.businessHours[1]),
+                  "id": this.infoData.companyId,
+                  "yyState": this.businessHours.yyState,
+                } ).then( (res) => {
+                    if(res.data.code=='0'){
+                        this.infoData[0].yyState=this.businessHours.yyState;
+                        this.infoData[0].businessHours=(this.businessHours.businessHours[0]+"-"+this.businessHours.businessHours[1]);
+                        console.log(this.infoData);
+                        this.modal2=false;
+                    }
+                })
+          }
+        })
+
+        },
+        visibleChange(status) {
+          if (status === false) {
+            // for(let i in this.businessHours){
+            //   this.businessHours[i]='';
+            // }
+            this.$refs['businessHours'].resetFields();
+          }
+        },
+        visibleChange1(status) {
+          if (status === false) {
+            // for(let i in this.businessHours){
+            //   this.businessHours[i]='';
+            // }
+            // this.$refs['businessHours'].resetFields();
+          }
+        },
+        //更新特色标签-
+        updateTags(){
+            this.$axios.post('/corp/manage/tags/update',{
+              corpInfoId:this.tagDatas.corpInfoId,
+              storeSpecials:this.storeSpecials
+            }).then( (res) => {
+                  if(res.data.code=='0'){
+                      this.modal3=false;
+                      this.tagDatas.storeSpecials=this.storeSpecials;
+                  }
+            })
+        },
+        //获取特色标签列表--
+        getFeature(){
+            this.$axios.get('/corp/manage/tags/list/all',).then( (res) => {
+                  if(res.data.code=='0'){
+                      this.featureArr=res.data.items;
+                  }
+            })
+        },
+        //获取特色标签数据--
+        getTagDatas(){
+            this.$axios.get('/corp/manage/tags/list',).then( (res) => {
+                  if(res.data.code=='0'){
+                      this.tagDatas=res.data.item;
+                      this.storeSpecials=res.data.item.storeSpecials;
+                  }
+            })
+        },
+
     }
 	}
 </script>

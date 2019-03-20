@@ -158,6 +158,7 @@ export const getMenuByRouter2 = (  routers, accessMenu) => {
             item.meta[key]= route.meta[key]
           }
           item.meta.title= menuItem.name
+          route.meta.perTitle= menuItem.name
           item.children= matchList(route.children, menuItem.children, route.alias)
           res.push(item)
         }
@@ -180,6 +181,7 @@ export const matchItem = ( routers, menuItem, path) => {
         item.meta[key]= route.meta[key]
       }
       item.meta.title= menuItem.name
+      route.meta.perTitle= menuItem.name
       item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
       arr.push(item)
     }
@@ -217,6 +219,7 @@ export const matchList = ( routers, accessMenu, path) => {
           item.meta[key]= route.meta[key]
         }
         item.meta.title= menuItem.name
+        route.meta.perTitle= menuItem.name
         item.path= (route.path.indexOf('/')!=0 && path)? (path+'/'+ route.path) : route.path
         arr.push(item)
       }
@@ -542,6 +545,34 @@ export const deepClone = (data) => {
   } else if(type === 'object'){
     for(let key in data){
       obj[key] = deepClone(data[key]);
+    }
+  }
+  return obj;
+}
+
+/**
+ * @param {data} 任意参数
+ * @returns {Object}
+ * @description 任意数据深拷贝
+ */
+export const deepTurn = (data, totype) => {
+  let type = getType(data);
+  let obj;
+  if(type === 'array'){
+    obj = [];
+  } else if(type === 'object'){
+    obj = {};
+  } else {
+    //不再具有下一层次
+    return data!=null?data.toString():null;
+  }
+  if(type === 'array'){
+    for(let i = 0, len = data.length; i < len; i++){
+      obj.push(deepTurn(data[i]));
+    }
+  } else if(type === 'object'){
+    for(let key in data){
+      obj[key] = deepTurn(data[key]);
     }
   }
   return obj;

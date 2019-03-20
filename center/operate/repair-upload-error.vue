@@ -12,18 +12,28 @@
                   <FormItem label="许可证号:">
                       <Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>
                   </FormItem>
+                  <FormItem label="经营范围:" v-show="isNoUpload">
+                      <!--<Input type="text" v-model="search.license" placeholder="请输入许可证号"></Input>-->
+                      <Select v-model="search.category" :transfer="true" clearable>
+                        <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
+                      </Select>
+                  </FormItem>
+                  <FormItem label="企业品牌:" v-show="isNoUpload">
+                      <!--<Input type="text" v-model="search.chainBrand" placeholder="请输入许可证号"></Input>-->
+                      <unit-search-input  :searchTableData="search.chainBrand" :showChange="showChange" :tableData="tableData2" :name="'请输入企业品牌'" :flagData=4 @closeSelect='closeSelect' @onRowSelect="onRowSelect2"></unit-search-input>
+                  </FormItem>
                   <FormItem :label-width="0" style="width: 80px;">
                       <Button type="primary" v-if="accessBtn('query')" @click="page=1,getList()">搜索</Button>
                   </FormItem>
             </Form>
         </div>
         <div slot="operate" style="position:relative;">
-          <!--<Button type="primary" v-if="">导出全部</Button>-->
+          <Button type="primary" v-if="accessBtn('export')" @click="exportAllData">导出全部</Button>
           <Button type="primary" v-if="accessBtn('message')" @click="sendAllCountFun">提醒全部</Button>
           <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
           <!--<div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>-->
           <Tooltip placement="right" class="myTotilp" theme="light">
-            <div class="publice-button" style=";top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
+            <div class="publice-button" style="top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
             <div slot="content">
               <p class="publice-info">提醒模板说明{{title}}</p>
               <div style="width:400px;height:100px;white-space:normal;word-break:break-all;word-wrap:break-word">
@@ -35,8 +45,8 @@
         </div>
       </common-table>
 
-      
-    <Modal v-model="modal3" 
+
+    <Modal v-model="modal3"
       :footer-hide="true"
            width="400"
       :mask-closable="false">
@@ -53,10 +63,13 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import unitSearchInput from '~/components/unit-search-input.vue'
+import { formatDate } from '@/static/tools.js'
 export default {
     name: "repair-upload-error",
     components: {
-    CommonTable
+    CommonTable,
+    unitSearchInput
     },
     mixins: [funMixin],
     data(){
@@ -64,13 +77,18 @@ export default {
         loading:false,
         columns: [],
         tableData: [],
-
+        showChange:null,
+        tableData2:[
+            {title: '品牌', key: 'name', minWidth: 140},
+        ],
         search:{
           companyName:'',
           license: '',
           // deptCode:"",
           startDate:'',
           endDate:'',
+          category:'',
+          chainBrand:''
         },
         page: 1,
         limit: 10,
@@ -93,6 +111,10 @@ export default {
         title:'',
         description:'',
         contentTop:'',
+        exportUrl:"",
+        isNoUpload:false,
+        repairType:[],
+
 
       }
     },
@@ -102,18 +124,77 @@ export default {
       let queryData=this.$route.query;
       this.search.deptCode=queryData.deptCode;
       this.search.startDate=queryData.startDate;
-      
+
       this.search.endDate=queryData.endDate;
       this.areaName=queryData.deptName;
+      this.isNoUpload=false;
 
       // console.log("queryData",queryData);
       if(routerData.path=="/center/repair-upload-error"){
+        this.isNoUpload=true;
+        this.getValuesByTypeFun();
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
+            render: (h, params) => {
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                    // marginLeft:"100px"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
           },
           {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+
+                    }
+                  }
+                }, params.row.recordTotalCount)
+              ]);
+            }
           },
           {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+              render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordFaultCount)
+                ]);
+              }
           },
           {title: '错误率', key: 'probability',  minWidth: 120,
           },
@@ -147,17 +228,59 @@ export default {
         ];
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
         this.topContent="维修记录上传存在错误"
-
+        this.exportUrl="/monitoring/display/company/upload-fault/download";
         this.getList();
       }else if(routerData.path=="/center/repair-upload"){
+        this.isNoUpload=true;
+        this.getValuesByTypeFun();
         this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
+              render: (h, params) => {
+
+
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
           },
           {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+
+
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+                    }
+                  }
+                }, params.row.lastTime)
+              ]);
+            }
           },
-          {title: '联系方式', key: 'telephone',  minWidth: 135,
+          {title: '联系方式', key: 'contactMobile',  minWidth: 135,
           },
-          
+
           {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
@@ -188,6 +311,7 @@ export default {
         ];
         this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
+        this.exportUrl="/monitoring/display/company/upload-not/download";
         this.getList();
         this.enter();
 
@@ -195,12 +319,53 @@ export default {
           this.typeName=queryData.type;
           this.columns=[
             {title: '企业名称', key: 'companyName', minWidth: 120,
+
+              render: (h, params) => {
+
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+
+
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
+
               },
               {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+                render: (h, params) => {
+                  return h('div', [
+                    h('a', {
+                      style:{
+                        // color:'#515a6e'
+                        textDecoration:"underline"
+                      },
+                      on: {
+                        click: () => {
+
+                          let routeData = this.$router.resolve({
+                            path: "/center/record-repair",
+                            query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                          });
+                          window.open(routeData.href, '_blank');
+                        }
+                      }
+                    }, params.row.lastTime)
+                  ]);
+                }
               },
-              {title: '联系方式', key: 'telephone',  minWidth: 135,
+              {title: '联系方式', key: 'contactMobile',  minWidth: 135,
               },
-              
+
               {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
                 render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
               },
@@ -231,15 +396,77 @@ export default {
           ];
           this.topContent="提醒（未上传维修记录）未读"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.exportUrl="/monitoring/display/company/docking-unread/download";
           this.getReadInfo();
       }else if(routerData.path=="/center/repair-error-noread"){
           this.typeName=queryData.type;
           this.columns=[
             {title: '企业名称', key: 'companyName', minWidth: 120,
+
+                render: (h, params) => {
+
+
+
+                  return h('div', [
+                    h('a', {
+                      style:{
+                        // color:'#515a6e'
+                        textDecoration:"underline"
+                      },
+                      on: {
+                        click: () => {
+                          this.getCompanyId(params.row.companyCode);
+
+                        }
+                      }
+                    }, params.row.companyName)
+                  ]);
+                }
             },
             {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+              render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        // this.$router.push({path: '/center/record-repair',})
+
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordTotalCount)
+                ]);
+              }
             },
             {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+                render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordFaultCount)
+                ]);
+              }
             },
             {title: '错误率', key: 'probability',  minWidth: 120,
             },
@@ -273,6 +500,7 @@ export default {
           ];
           this.topContent="提醒（维修记录上传存在错误）"
           this.uploadUrl="/monitoring/display/company/docking-unread/query";
+          this.exportUrl="/monitoring/display/company/docking-unread/download";
           this.getReadInfo();
       }
           this.enter();
@@ -282,14 +510,19 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
+            if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+
           }
           if(this.typeName != ''){
             urlStr += '&type='+this.typeName;
           }
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
-              
+
           }).then( (res) => {
             if(res.status == 200){
               if(this.role){
@@ -300,7 +533,8 @@ export default {
               let data = res.data.content;
               for(let i in data){
                 if(data[i].recordFaultCount&&data[i].recordTotalCount){
-                  data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
+                  console.log(data[i].recordFaultCount,data[i].recordTotalCount);
+                  data[i]["probability"] = ((data[i].recordFaultCount/data[i].recordTotalCount) * 100).toFixed(2)+ "%";
                 }else{
                   data[i]["probability"] = '0';
                 }
@@ -315,14 +549,23 @@ export default {
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
-            urlStr+='&'+i+'='+this.search[i];
+           if(i=='endDate'){
+                urlStr+='&'+i+'='+(this.add1(this.search[i])||'');
+            }else{
+                urlStr+='&'+i+'='+(this.search[i]||'');
+            }
+
           }
           urlStr+='&type='+this.typeName;
           this.loading=true;
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
-              
+
           }).then( (res) => {
             if(res.status == 200){
+              if(this.role){
+                this.staticTotal = res.data.totalElements;
+                this.role = false;
+              }
               this.total = res.data.totalElements;
               let data = res.data.content;
               for(let i in data){
@@ -330,8 +573,8 @@ export default {
                     data[i]["probability"] = (data[i].recordFaultCount/data[i].recordTotalCount * 100).toFixed(2)+ "%";
                   }else{
                     data[i]["probability"] = '0';
-                  } 
-                 
+                  }
+
               }
               this.tableData = data;
               this.loading = false;
@@ -352,7 +595,7 @@ export default {
             let urlData="";
             urlData+="companyCode="+this.temObjectData.companyCode;
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
 
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
@@ -394,7 +637,7 @@ export default {
             }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
               urlData+="&type="+this.typeName;
                 this.$axios.post('/monitoring/message/company-docking/unread?'+urlData, {
-                      
+
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getReadInfo();
@@ -406,29 +649,26 @@ export default {
                   }
                 })
             }
-            
+
         },
         //提醒全部通知----------------------------
         sendAllCountFun(){
-            
             this.$Modal.confirm({
                 title:"提醒通知!",
-                content:"确定要給全部发送提醒吗？",
+                content:"确定要给全部发送提醒吗？",
                 onOk:this.sendAll,
             })
-
-            
         },
         sendAll(){
             let urlData="";
             urlData+="companyName="+(this.search.companyName|| "");
             urlData+="&license="+(this.search.license||"");
             urlData+="&startDate="+this.search.startDate;
-            urlData+="&endDate="+this.search.endDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
             urlData+="&deptCode="+this.search.deptCode;
             if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
                 this.$axios.post('/monitoring/message/company-docking/upload-not?'+urlData, {
-                      
+
                 }).then( (res) => {
                   if(res.data.code=='0'){
                     this.getList();
@@ -481,19 +721,19 @@ export default {
           if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
               this.title="（未上传维修记录）";
               this.description="【维修企业名称】，您门店在【所选时间区间】存在没有上传维修记录的情况，请按规定及时上传";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
               this.title="（上传维修记录存在错误）";
               this.description="【维修企业名称】，您门店在【所选时间区间】所上传维修记录中存在错误信息，请按规定上传正确无误的维修记录";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
               this.title="（未上传维修记录）";
               this.description="【维修企业名称】，您门店在【所选时间区间】，存在没有上传维修记录的情况且未读站内通知，请按规定及时上传并多关注平台通知";
-              
+
           }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
               this.title="（上传维修记录存在错误）";
               this.description="【维修企业名称】，您门店在【所选时间区间】，所上传维修记录中存在错误信息且未读平台通知，请按规定上传正确无误的维修记录并多关注平台通知";
-              
+
           }
           // alert(this.title);
           // this.modal3=true;
@@ -501,8 +741,74 @@ export default {
         leave(){
           console.log('2')
           this.modal3=false;
-        }
+        },
+        exportAllData(){
+            this.$Modal.confirm({
+                title:"提醒通知!",
+                content:"确定要导出全部吗？",
+                onOk:this.exportAllFun,
+            })
+        },
+        exportAllFun(){
+            let urlData="";
+            urlData+="companyName="+(this.search.companyName|| "");
+            urlData+="&license="+(this.search.license||"");
+            urlData+="&startDate="+this.search.startDate;
+            urlData+="&endDate="+this.add1(this.search.endDate);
+            urlData+="&deptCode="+this.search.deptCode;
 
+            if(this.uploadUrl=="/monitoring/display/company/upload-not/query"){
+            }else if(this.uploadUrl=="/monitoring/display/company/upload-fault/query"){
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="NOT_UPLOAD"){
+              urlData+="&type="+this.typeName;
+            }else if(this.uploadUrl=="/monitoring/display/company/docking-unread/query"&&this.typeName=="UPLOAD_FAULT"){
+              urlData+="&type="+this.typeName;
+            }
+            this.$axios({method: 'get',url:this.exportUrl+'?'+urlData}).then((res) => {
+              let data = "\ufeff"+res.data;
+              let blob = new Blob([data], {type: 'text/csv,charset=UTF-8'});
+              let headerData=res.headers["content-disposition"].split(';')[1].split('=');
+              let headerName=headerData[1].substring(1,(headerData[1].length)-1)
+              let a = document.createElement('a');
+              a.download = headerName;
+              a.href = window.URL.createObjectURL(blob);
+              $("body").append(a);
+              a.click();
+              $(a).remove();
+            })
+        },
+        getValuesByTypeFun() {
+          this.$axios.get('/dict/getValuesByTypeId/1', {}).then((res) => {
+            if (res.data.code == '0') {
+                this.repairType = res.data.items;
+            }
+          })
+        },
+        onRowSelect2(val){
+
+              this.search.chainBrand=val.name;
+        },
+        closeSelect(){
+            this.search.chainBrand='';
+        },
+        //根据code查找id--------
+        getCompanyId(code){
+          let self =this;
+          this.$axios.get('/company/get/corpId/'+code, {}).then((res) => {
+            if (res.data.code == '0') {
+                let routeData = self.$router.resolve({
+                        path: "/center/company-info-manage",
+                        query: {conpanyId:res.data.item}
+                });
+                window.open(routeData.href, '_blank');
+            }
+          })
+        },
+        add1(date){
+          let now = new Date(date);
+
+          return formatDate(new Date(now.getFullYear(),now.getMonth(),now.getDate()));
+        }
     },
 	}
 </script>
@@ -510,6 +816,9 @@ export default {
   .myTotilp .ivu-tooltip-light .ivu-tooltip-inner{
     max-width:500px;
   }
+
+
+
 </style>
 <style scoped lang="less">
 .menu-manage{

@@ -9,7 +9,8 @@
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
   </div>
   <div class="login isLogin" v-show="isLogin">
-    <span class="nick-name">{{nickName}}</span>
+    <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link> </span>
+    <!--<nuxt-link tag="a" to="/center/my-notes" ><Icon type="md-notifications" style="color: black;"/></nuxt-link>-->
     <nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>
     |<a @click="logout" class="logout">注销</a>
   </div>
