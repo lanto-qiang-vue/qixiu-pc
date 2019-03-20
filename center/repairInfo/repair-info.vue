@@ -23,25 +23,25 @@
 
       <Button type="error" v-if="accessBtn('removeBind')"  @click="removeBindFun" :disabled="!detailData">解绑</Button>
       <Button type="primary" v-if="accessBtn('bind')"  @click="showDetail=Math.random(),detailData=null" >绑定本人车辆</Button>
-      <!--<Button type="primary" v-if=""  @click="showOtherDetail=Math.random()" >绑定他人车辆</Button>-->
+
     </div>
 
 </common-table>
 <bind-my-car :showDetail='showDetail' :detailData="detailData" @closeDetail="closeDetail"></bind-my-car>
-<bind-other-car :showDetail='showOtherDetail' @closeDetail="closeDetail"></bind-other-car>
+
 </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
   import bindMyCar from './bind-my-car.vue'
-  import bindOtherCar from './bind-other-car.vue'
+
   import funMixin from '~/components/fun-auth-mixim.js'
 
 	export default {
 		name: "repair-info",
     components: {
-      CommonTable,bindMyCar,bindOtherCar
+      CommonTable,bindMyCar
     },
     mixins: [funMixin],
     data(){
@@ -62,8 +62,6 @@
           {title: '发动机', key: 'engineno', sortable: true, minWidth: 120},
         ],
         tableData: [],
-        searchSelectOption:[],
-        searchSelectOption1:[],//重新赋值--
         search:{
           input: '',
           select: '',
@@ -73,10 +71,10 @@
         total: 0,
         showTable:false,
         showDetail: false,
-        showOtherDetail:false,
+
         detailData: null,
         clearTableSelect: null,
-        showRepair:true,
+        showRepair:false,
 
       }
     },
@@ -101,7 +99,7 @@
                 }
            })
            this.detailData= null;
-           this.showRepair=true;
+           this.showRepair=false;
         },
         changePage(page){
           this.page= page
@@ -116,10 +114,10 @@
           this.detailData=row
 
           if(this.detailData.status==2){
-            this.showRepair=true;
+            this.showRepair=false;
           }else{
 
-            this.showRepair=false;
+            this.showRepair=true;
           }
         },
         closeDetail(){

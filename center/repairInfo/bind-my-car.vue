@@ -287,13 +287,13 @@
                         <Input type="text" v-model="infoDriverDataTem.address" placeholder="" :maxlength="20"></Input>
                     </FormItem>-->
                     <FormItem label="车牌号码:" style="width: 90%;" prop="vehiclePlateNumber">
-                        <Input type="text" v-model="infoDriverDataTem.vehiclePlateNumber" placeholder=""></Input>
+                        <Input type="text" v-model="infoDriverDataTemVehiclePlateNumber" placeholder=""></Input>
                     </FormItem>
                     <!--<FormItem label="品牌型号:" style="width: 400px;" prop="brandModel">
                         <Input type="text" v-model="infoDriverDataTem.brandModel" placeholder="" :maxlength="20"></Input>
                     </FormItem>-->
                     <FormItem label="车架号(VIN):" style="width: 90%;" prop="vin">
-                        <Input type="text" v-model="infoDriverDataTem.vin" placeholder="" :maxlength="17"></Input>
+                        <Input type="text" v-model="infoDriverDataTemVin" placeholder="" :maxlength="17"></Input>
                     </FormItem>
                     <FormItem label="发动机号:" style="width: 90%;" prop="engineNo">
                         <Input type="text" v-model="infoDriverDataTem.engineNo" placeholder="" :maxlength="20"></Input>
@@ -325,7 +325,7 @@
 </template>
 
 <script>
-import { getName, getDictGroup, imgToBase64 ,deepClone} from '@/static/util.js'
+import { getName, getDictGroup, imgToBase64 ,deepClone,reg} from '@/static/util.js'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 let commonRule={ required: true, message: '请填写信息', };
@@ -398,16 +398,46 @@ export default {
         
         ruleCard:{
             ownerName:[commonRule],
-            idCardNo: [commonRule],
+            idCardNo: [commonRule,
+                {
+                    validator: (rule, value, callback) => {
+                      if (reg.idcard.test(value)) {
+                        
+                        callback();
+                      } else {
+                        callback(new Error('请输入正确的身份证号码'));
+                      }
+                    }
+                }],
         },
         
         ruleDriver:{
             ownerName:[commonRule],
             vehiclePlateNumber: [
                 commonRule,
-				{ type:'string',pattern:/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1,2}$/, message:'请输入正确的车牌号码', trigger:'blur'}
+                {
+                    validator: (rule, value, callback) => {
+                      if (reg.vehicle.test(value)) {
+                        
+                        callback();
+                      } else {
+                        callback(new Error('请输入正确的车牌号码'));
+                      }
+                    }
+                }
+
             ],
-            vin: [commonRule],
+            vin: [commonRule,
+                {
+                    validator: (rule, value, callback) => {
+                      if (reg.vin.test(value)) {
+                        
+                        callback();
+                      } else {
+                        callback(new Error('请输入正确的车架号'));
+                      }
+                    }
+                }],
             engineNo: [commonRule],
             address: [commonRule],
             brandModel: [commonRule],
@@ -471,6 +501,24 @@ export default {
     },
     mounted () {
         
+    },
+    computed:{
+        infoDriverDataTemVehiclePlateNumber:{
+                get(){
+                    return this.infoDriverDataTem.vehiclePlateNumber;
+                },
+                set(val){
+                    this.infoDriverDataTem.vehiclePlateNumber = val.toUpperCase();
+                }
+            },
+            infoDriverDataTemVin:{
+                get(){
+                    return this.infoDriverDataTem.vin;
+                },
+                set(val){
+                    this.infoDriverDataTem.vin = val.toUpperCase();
+                }
+            }
     },
     methods:{
         //上传身份图片----------
@@ -614,21 +662,44 @@ export default {
         bindFun(){
             
             if(!this.displayDriverResive){
-                for(let i in this.infoDriverData){
-                    if(i=="binding"){
-
-                    }else if(!this.infoDriverData[i]){
-                        return this.$Message.error('行驶证信息不可为空');
-                    }
-                }
+                for(let key in this.infoDriverData){
+					let val= this.infoDriverData[key]
+					switch (key){
+						
+                        case 'vehiclePlateNumber': {
+                            console.log(val,reg.vehicle.test(val));
+							if(!reg.vehicle.test(val)){
+								return this.$Message.error('车牌号格式不正确，请修改')
+							}
+						}
+                        break;
+                        case 'vin': {
+							if(!reg.vin.test(val)){
+								return this.$Message.error('vin格式不正确，请修改')
+							}
+						}
+                        break;
+                        case 'ownerName':
+						case 'issueDate':
+						case 'engineNo':{
+							if(!val) return this.$Message.error('行驶证有空值，请修改')
+						}
+                        break;
+                        
+						
+					}
+				}
             }
 
             if(this.ownerType==1){
                 if(this.infoData.id){
                     if(!this.displayCardResive){
-                    
+                            
                             if(!this.infoData['idCardNo']&&!this.infoData['ownerName']){
                                 return this.$Message.error('身份证信息不可为空');
+                            }
+                            if(reg.idcard.test(this.infoData['idCardNo'])){
+                                return this.$Message.error('身份证信息格式不正确，请修改');
                             }
                         
                     }
@@ -648,9 +719,7 @@ export default {
             }
 
             
-
             
-
 
             this.$axios.post('/scan/newBind', {
                 "businessId": this.infoBusine.id,

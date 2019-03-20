@@ -174,13 +174,13 @@
         </div>
         <!--审核状态-->
         <Modal title="审核"
-            width="500"
+            width="600"
             v-model="showEdit"
             :mask-closable="false">
-                <Form :label-width="120">
-                    <FormItem label="不通过理由:" style="width:400px;" >
+                <Form :label-width="90">
+                    <FormItem label="不通过理由:"  >
                         <CheckboxGroup v-model="checkData.auditFailInfo">
-                            <Checkbox v-for="item in commonValue" :key="item.id" :label="item.id" >{{item.name}}</Checkbox>
+                            <Checkbox v-for="item in commonValue" :key="item.id" :label="item.id" style="width: 220px;">{{item.name}}</Checkbox>
                         </CheckboxGroup>
                     </FormItem>
                     <FormItem label="自定义理由:" style="width:400px;">
