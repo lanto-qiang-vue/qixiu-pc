@@ -62,7 +62,7 @@
                         <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{infoDriverData.engineNo}}</span>
                         </FormItem>
-                        <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" >
+                        <!--<FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{infoDriverData.address}}</span>
                         </FormItem>
                         <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" >
@@ -76,7 +76,7 @@
                         </FormItem>
                         <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{infoDriverData.registerDate}}</span>
-                        </FormItem>
+                        </FormItem>-->
                         <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{infoDriverData.issueDate}}</span>
                         </FormItem>
@@ -100,7 +100,7 @@
                         <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{reviseDriverData.engineNo}}</span>
                         </FormItem>
-                        <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" >
+                        <!--<FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{reviseDriverData.address}}</span>
                         </FormItem>
                         <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" >
@@ -114,7 +114,7 @@
                         </FormItem>
                         <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{reviseDriverData.registerDate}}</span>
-                        </FormItem>
+                        </FormItem>-->
                         <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" >
                             <span>{{reviseDriverData.issueDate}}</span>
                         </FormItem>
@@ -280,26 +280,26 @@
             v-model="showDriver"
             :mask-closable="false">
                 <Form :label-width="120" ref="infoDriverDataTem" :rules="ruleDriver"  :model="infoDriverDataTem">
-                    <FormItem label="所有人:" style="width: 400px;" prop="ownerName">
+                    <FormItem label="所有人:" style="width: 90%;" prop="ownerName">
                         <Input type="text" v-model="infoDriverDataTem.ownerName" placeholder="" :maxlength="20"></Input>
                     </FormItem>
-                    <FormItem label="住址:" style="width: 400px;" prop="address">
+                    <!--<FormItem label="住址:" style="width: 400px;" prop="address">
                         <Input type="text" v-model="infoDriverDataTem.address" placeholder="" :maxlength="20"></Input>
-                    </FormItem>
-                    <FormItem label="车牌号码:" style="width: 400px;" prop="vehiclePlateNumber">
+                    </FormItem>-->
+                    <FormItem label="车牌号码:" style="width: 90%;" prop="vehiclePlateNumber">
                         <Input type="text" v-model="infoDriverDataTem.vehiclePlateNumber" placeholder=""></Input>
                     </FormItem>
-                    <FormItem label="品牌型号:" style="width: 400px;" prop="brandModel">
+                    <!--<FormItem label="品牌型号:" style="width: 400px;" prop="brandModel">
                         <Input type="text" v-model="infoDriverDataTem.brandModel" placeholder="" :maxlength="20"></Input>
-                    </FormItem>
-                    <FormItem label="车架号(VIN):" style="width: 400px;" prop="vin">
+                    </FormItem>-->
+                    <FormItem label="车架号(VIN):" style="width: 90%;" prop="vin">
                         <Input type="text" v-model="infoDriverDataTem.vin" placeholder="" :maxlength="17"></Input>
                     </FormItem>
-                    <FormItem label="发动机号:" style="width: 400px;" prop="engineNo">
+                    <FormItem label="发动机号:" style="width: 90%;" prop="engineNo">
                         <Input type="text" v-model="infoDriverDataTem.engineNo" placeholder="" :maxlength="20"></Input>
                     </FormItem>
                    
-                    <FormItem label="车辆类型:" style="width: 400px;" prop="vehicleType">
+                    <!--<FormItem label="车辆类型:" style="width: 400px;" prop="vehicleType">
                         <Input type="text" v-model="infoDriverDataTem.vehicleType" placeholder="" :maxlength="20"></Input>
                     </FormItem>
 
@@ -308,11 +308,11 @@
                     </FormItem>
                     
                     <FormItem label="注册日期:" style="width: 400px;" prop="registerDate">
-                        <!--<Input type="text" v-model="infoDriverDataTem.registerDate" placeholder="" :maxlength="20"></Input>-->
+
                         <DatePicker v-model="infoDriverDataTem.registerDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
-                    </FormItem>
-                    <FormItem label="发证日期:" style="width: 400px;" prop="issueDate">
-                        <!--<Input type="text" v-model="infoDriverDataTem.issueDate" placeholder="" :maxlength="20"></Input>-->
+                    </FormItem>-->
+                    <FormItem label="发证日期:" style="width: 90%;" prop="issueDate">
+                        
                         <DatePicker v-model="infoDriverDataTem.issueDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
                     </FormItem>
                 </Form>

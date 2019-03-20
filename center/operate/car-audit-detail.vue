@@ -26,19 +26,19 @@
                     <FormItem label="修改前:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['ownerName'],userVehicleResive['ownerName'])">
+                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicle.ownerName}}</span>
                     </FormItem>
-                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehiclePlateNumber'],userVehicleResive['vehiclePlateNumber'])">
+                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicle.vehiclePlateNumber}}</span>
                     </FormItem>
-                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vin'],userVehicleResive['vin'])">
+                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicle.vin}}</span>
                     </FormItem>
-                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['engineNo'],userVehicleResive['engineNo'])">
+                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicle.engineNo}}</span>
                     </FormItem>
-                    <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
+                    <!--<FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
                         <span>{{userVehicle.address}}</span>
                     </FormItem>
                     <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehicleType'],userVehicleResive['vehicleType'])">
@@ -52,8 +52,8 @@
                     </FormItem>
                     <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['registerDate'],userVehicleResive['registerDate'])">
                         <span>{{userVehicle.registerDate}}</span>
-                    </FormItem>
-                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['issueDate'],userVehicleResive['issueDate'])">
+                    </FormItem>-->
+                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicle.issueDate}}</span>
                     </FormItem>
                 </div>
@@ -61,19 +61,19 @@
                     <FormItem label="修改后:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['ownerName'],userVehicleResive['ownerName'])">
+                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicleResive.ownerName}}</span>
                     </FormItem>
-                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehiclePlateNumber'],userVehicleResive['vehiclePlateNumber'])">
+                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicleResive.vehiclePlateNumber}}</span>
                     </FormItem>
-                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vin'],userVehicleResive['vin'])">
+                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicleResive.vin}}</span>
                     </FormItem>
-                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['engineNo'],userVehicleResive['engineNo'])">
+                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicleResive.engineNo}}</span>
                     </FormItem>
-                    <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
+                    <!--<FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
                         <span>{{userVehicleResive.address}}</span>
                     </FormItem>
                     <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehicleType'],userVehicleResive['vehicleType'])">
@@ -87,8 +87,8 @@
                     </FormItem>
                     <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['registerDate'],userVehicleResive['registerDate'])">
                         <span>{{userVehicleResive.registerDate}}</span>
-                    </FormItem>
-                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['issueDate'],userVehicleResive['issueDate'])">
+                    </FormItem>-->
+                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userVehicleResive.issueDate}}</span>
                     </FormItem>
                 </div>
@@ -107,10 +107,10 @@
                     <FormItem label="修改前:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['ownerName'],userIdCardResive['ownerName'])">
+                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userIdCard.ownerName}}</span>
                     </FormItem>
-                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['idCardNo'],userIdCardResive['idCardNo'])">
+                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userIdCard.idCardNo}}</span>
                     </FormItem>
                 </div>
@@ -118,10 +118,10 @@
                     <FormItem label="修改后:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['ownerName'],userIdCardResive['ownerName'])">
+                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userIdCardResive.ownerName}}</span>
                     </FormItem>
-                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['idCardNo'],userIdCardResive['idCardNo'])">
+                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userIdCardResive.idCardNo}}</span>
                     </FormItem>
                 </div>
@@ -141,10 +141,10 @@
                     <FormItem label="修改前:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['corpName'],userBusinessResive['corpName'])">
+                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userBusiness.corpName}}</span>
                     </FormItem>
-                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['legalPerson'],userBusinessResive['legalPerson'])">
+                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userBusiness.legalPerson}}</span>
                     </FormItem>
                 </div>
@@ -152,10 +152,10 @@
                     <FormItem label="修改后:" style="margin-bottom: 12px;">
                         <div></div>
                     </FormItem>
-                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['corpName'],userBusinessResive['corpName'])">
+                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userBusinessResive.corpName}}</span>
                     </FormItem>
-                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['legalPerson'],userBusinessResive['legalPerson'])">
+                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" >
                         <span>{{userBusinessResive.legalPerson}}</span>
                     </FormItem>
                 </div>
