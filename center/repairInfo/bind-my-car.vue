@@ -22,7 +22,7 @@
                     <Option v-for="item in bindTypeArr" :value="item.code" :key="item.code">{{ item.name }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="上传行驶证:" style="margin-bottom: 12px;">
+            <FormItem label="上传行驶证:" style="margin-bottom: 12px;" v-show="!commonFlag">
                 <div class="pic-card" v-if="accessBtn('uploadDriverLicense')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button"  style="text-align: left;">
@@ -124,7 +124,7 @@
         </Form>
         <!--上传身份证信息-->
         <Form :label-width="140" v-show="ownerType===1">
-            <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton">
+            <FormItem label="上传身份证(头像面):" style="margin-bottom: 12px;" v-show="upIdButton" >
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button"  style="text-align: left;">
@@ -177,7 +177,7 @@
         </Form>
         <!--上传营业执照信息-->
         <Form :label-width="140" v-show="ownerType===2">
-            <FormItem label="上传营业执照:" style="margin-bottom: 12px;" v-show="upIdBusine">
+            <FormItem label="上传营业执照:" style="margin-bottom: 12px;" v-show="upIdBusine" >
                 <div class="pic-card" v-if="accessBtn('newUpload')">
                     <div class="pic-body" style="height: 40px;">
                         <div class="button"  style="text-align: left;">
