@@ -12,7 +12,7 @@
     class="table-modal-detail "
     :transition-names="['', '']">
         <div style="height: 100%;overflow: auto;" class="bind-my-car">
-        
+
         <Form :label-width="140">
             <FormItem label="审核不通过原因:" style="width: 90%;" v-show="auditFailInfo">
                 <span style="color: red;">{{auditFailInfo}}</span>
@@ -30,11 +30,11 @@
                             <Button type="primary" :loading="loadImg" :disabled="commonFlag">上传图片</Button>
                             <input id="fileupload" class="input" type="file" accept="image/jpg,image/jpeg,image/png,image/bmp"
                                     @change="getDriverImg('frontImageUrl', $event)"/>
-                            
+
                             </div>
                             <span>仅支持PNG、JPG、JPEG、BMP</span>
                         </div>
-                        
+
                     </div>
                 </div>
             </FormItem>
@@ -120,7 +120,7 @@
                         </FormItem>
                     </div>
                 </div>
-                
+
         </Form>
         <!--上传身份证信息-->
         <Form :label-width="140" v-show="ownerType===1">
@@ -172,7 +172,7 @@
                         </FormItem>
                     </div>
             </div>
-            
+
 
         </Form>
         <!--上传营业执照信息-->
@@ -196,7 +196,7 @@
                     <div class="pic-body">
                         <img  class="pic" :src="infoBusine.frontImageUrl" v-img/>
                     </div>
-                    
+
                 </Card>
             </FormItem>
             <div style="overflow: hidden;" v-show="infoBusine.frontImageUrl">
@@ -226,11 +226,11 @@
                         </FormItem>
                     </div>
             </div>
-            
-            
+
+
         </Form>
 
-        
+
         </div>
         <div slot="footer">
             <Button v-if="accessBtn('bind')"  @click="bindFun" size="large" type="success" :disabled="commonFlag">提交</Button>
@@ -248,7 +248,7 @@
                     <FormItem label="身份证号:" style="width: 400px;" prop="idCardNo">
                         <Input type="text" v-model="infoDataTem.idCardNo" placeholder="" :maxlength="18"></Input>
                     </FormItem>
-                    
+
                 </Form>
                 <div slot="footer">
                     <Button v-if="accessBtn('update')"  @click="updateCard('infoDataTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
@@ -267,7 +267,7 @@
                     <FormItem label="法人代表:" style="width: 400px;" prop="legalPerson">
                         <Input type="text" v-model="infoBusineTem.legalPerson" placeholder="" :maxlength="20"></Input>
                     </FormItem>
-                    
+
                 </Form>
                 <div slot="footer">
                     <Button v-if="accessBtn('update')"  @click="updateBusine('infoBusineTem')" size="large" type="success"  style="margin-right: 10px;">提交</Button>
@@ -298,7 +298,7 @@
                     <FormItem label="发动机号:" style="width: 90%;" prop="engineNo">
                         <Input type="text" v-model="infoDriverDataTem.engineNo" placeholder="" :maxlength="20"></Input>
                     </FormItem>
-                   
+
                     <!--<FormItem label="车辆类型:" style="width: 400px;" prop="vehicleType">
                         <Input type="text" v-model="infoDriverDataTem.vehicleType" placeholder="" :maxlength="20"></Input>
                     </FormItem>
@@ -306,13 +306,13 @@
                     <FormItem label="使用性质:" style="width: 400px;" prop="useNature">
                         <Input type="text" v-model="infoDriverDataTem.useNature" placeholder="" :maxlength="20"></Input>
                     </FormItem>
-                    
+
                     <FormItem label="注册日期:" style="width: 400px;" prop="registerDate">
 
                         <DatePicker v-model="infoDriverDataTem.registerDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
                     </FormItem>-->
                     <FormItem label="发证日期:" style="width: 90%;" prop="issueDate">
-                        
+
                         <DatePicker v-model="infoDriverDataTem.issueDate" type="date" placeholder="" style="width: 100%;"></DatePicker>
                     </FormItem>
                 </Form>
@@ -368,7 +368,7 @@ export default {
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
     data(){
-        
+
 
 	return{
         showModal:false,
@@ -395,14 +395,14 @@ export default {
         editIDCard:false,//是否修改身份按钮
         upIdButton:false,//是否显示上传按钮
         upIdBusine:false,//是否显示上传按钮
-        
+
         ruleCard:{
             ownerName:[commonRule],
             idCardNo: [commonRule,
                 {
                     validator: (rule, value, callback) => {
                       if (reg.idcard.test(value)) {
-                        
+
                         callback();
                       } else {
                         callback(new Error('请输入正确的身份证号码'));
@@ -410,7 +410,7 @@ export default {
                     }
                 }],
         },
-        
+
         ruleDriver:{
             ownerName:[commonRule],
             vehiclePlateNumber: [
@@ -418,7 +418,7 @@ export default {
                 {
                     validator: (rule, value, callback) => {
                       if (reg.vehicle.test(value)) {
-                        
+
                         callback();
                       } else {
                         callback(new Error('请输入正确的车牌号码'));
@@ -431,7 +431,7 @@ export default {
                 {
                     validator: (rule, value, callback) => {
                       if (reg.vin.test(value)) {
-                        
+
                         callback();
                       } else {
                         callback(new Error('请输入正确的车架号'));
@@ -500,7 +500,7 @@ export default {
         },
     },
     mounted () {
-        
+
     },
     computed:{
         infoDriverDataTemVehiclePlateNumber:{
@@ -530,7 +530,7 @@ export default {
                 e.target.value='';
             })
         },
-        
+
         newUpload(){
             this.loading=true;
             this.$axios.post('/scan/newUpload', {
@@ -544,7 +544,7 @@ export default {
                 this.loading=false;
                 if(res.data.code=='0'){
                     this.editIDCard=true;
-                    
+
                     for(let i in res.data.item){
                         this.infoData[i]=res.data.item[i];
                     }
@@ -660,33 +660,30 @@ export default {
         },
         //提交绑定按钮-----------
         bindFun(){
-            
+
             if(!this.displayDriverResive){
                 for(let key in this.infoDriverData){
 					let val= this.infoDriverData[key]
 					switch (key){
-						
-                        case 'vehiclePlateNumber': {
+            case 'vehiclePlateNumber': {
                             console.log(val,reg.vehicle.test(val));
 							if(!reg.vehicle.test(val)){
 								return this.$Message.error('车牌号格式不正确，请修改')
 							}
+              break;
 						}
-                        break;
-                        case 'vin': {
+            case 'vin': {
 							if(!reg.vin.test(val)){
 								return this.$Message.error('vin格式不正确，请修改')
 							}
+              break;
 						}
-                        break;
-                        case 'ownerName':
+            case 'ownerName':
 						case 'issueDate':
 						case 'engineNo':{
 							if(!val) return this.$Message.error('行驶证有空值，请修改')
+              break;
 						}
-                        break;
-                        
-						
 					}
 				}
             }
@@ -694,32 +691,32 @@ export default {
             if(this.ownerType==1){
                 if(this.infoData.id){
                     if(!this.displayCardResive){
-                            
+
                             if(!this.infoData['idCardNo']&&!this.infoData['ownerName']){
                                 return this.$Message.error('身份证信息不可为空');
                             }
-                            if(reg.idcard.test(this.infoData['idCardNo'])){
+                            if(!reg.idcard.test(this.infoData['idCardNo'])){
                                 return this.$Message.error('身份证信息格式不正确，请修改');
                             }
-                        
+
                     }
                 }
-                
+
             }else if(this.ownerType==2){
                 if(this.infoBusine.id){
                     if(!this.displayBusine){
-                    
+
                             if(!this.infoBusine['legalPerson']&&!this.infoBusine['corpName']){
                                 return this.$Message.error('营业执照信息不可为空');
                             }
                     }
                 }
-                
-                
+
+
             }
 
-            
-            
+
+
 
             this.$axios.post('/scan/newBind', {
                 "businessId": this.infoBusine.id,
@@ -735,15 +732,15 @@ export default {
                 }else if(res.data.code=='10002'){
                     if(this.ownerType==1){
                         this.upIdButton=true;
-                        
+
                     }else if(this.ownerType==2){
                         this.upIdBusine=true;
                     }
                     setTimeout(()=>{
                         document.querySelector('.bind-my-car').scrollTop= 1000;
                     },30)
-                    
-                    
+
+
                 }
            })
         },
@@ -767,7 +764,7 @@ export default {
                 "property": 3,
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    
+
                     this.loadBusine=false;
 
                     for(let i in res.data.item){
@@ -791,7 +788,7 @@ export default {
                 if (valid) {
                     this.$axios.post('/businesslicense/update', upLoadData).then( (res) => {
                             if(res.data.code=='0'){
-                            
+
                                 this.showBusine=false;
                                 this.displayBusine=true;
                                 for(let i in this.infoBusineTem){
@@ -804,17 +801,17 @@ export default {
                     })
                 }
             });
-            
+
         },
         //选择绑定类型--------
         selectBindType(val){
-            
+
 
         },
         visibleChange(status){
           if(status === false){
             this.$emit('closeDetail');
-            
+
           }
         },
         //获取审核详情数据---
@@ -859,15 +856,15 @@ export default {
                   this.displayCardResive=true;
                   this.reviseInfoData=res.data.item.idCardRevise;
               }
-            
+
               this.spinShow=false;
             }
           })
-          
+
         },
 
 
-        
+
     },
 }
 </script>
@@ -886,7 +883,7 @@ export default {
       margin: 0 10px 10px 0;
       width: 350px;
       min-width: 250px;
-      
+
       .red{
         color: red;
       }
@@ -940,5 +937,5 @@ export default {
       }
     }
 
-        
+
 </style>
