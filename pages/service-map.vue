@@ -316,7 +316,7 @@ export default {
           this.geolocation.getCurrentPosition();
           AMap.event.addListener(this.geolocation, 'complete', (result)=>{
             this.map.setCenter(result.position)
-            this.map.add(new AMap.Marker({position: new AMap.LngLat(result.position) , icon: this.defauldPoint()}))
+            this.map.add(new AMap.Marker({position:result.position , icon: this.defauldPoint()}))
             this.search.lng= result.position.lng
             this.search.lat= result.position.lat
             // this.getCompList()
