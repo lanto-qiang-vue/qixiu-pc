@@ -167,8 +167,8 @@
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandId')}, 'width45']" v-show="listSearch.special?true:false">
-              <Select v-model="listSearch.majorBrandId" filterable remote multiple clearable placeholder="请输入主修品牌"
+            <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandIds')}, 'width45']" v-show="listSearch.special?true:false" prop="majorBrandIds">
+              <Select v-model="listSearch.majorBrandIds" filterable remote multiple clearable placeholder="请输入主修品牌"
                       @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
                 <Option v-for="(option, index) in chainBrand" :value="option.id" :key="index">{{option.name}}</Option>
               </Select>
@@ -638,6 +638,7 @@ let initList={
     "source": null,
     "special": false,
     "majorBrandId": 0,
+    "majorBrandIds":[],
     "storeSpecials": [],
     "technologyLeader": "",
     "throughEnvironmentalProtectionSpecialRenovation": false,
@@ -713,10 +714,11 @@ export default {
                     }
                   }
                 }],
-                majorBrandId:[{
+                majorBrandIds:[{
 
                   validator: (rule, value, callback) => {
-                    if (this.$data.listSearch.special && !value) {
+                    console.log('jiao',value)
+                    if (this.$data.listSearch.special && value.length==0) {
                       callback(new Error('请填写主修品牌'));
                     }else{
                       callback();
@@ -1519,7 +1521,7 @@ export default {
         })
       },
       resetsetChainBrand(isShow){
-          if(!isShow && !this.listSearch.majorBrandId){
+          if(!isShow && this.listSearch.majorBrandIds.length==0){
             this.$refs.chainBrand.clearSingleSelect()
           }
       }
