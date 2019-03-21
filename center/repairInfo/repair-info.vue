@@ -114,10 +114,11 @@
           this.detailData=row
 
           if(this.detailData.status==2){
-            this.showRepair=false;
-          }else{
-
             this.showRepair=true;
+            
+          }else{
+            this.showRepair=false;
+            
           }
         },
         closeDetail(){
