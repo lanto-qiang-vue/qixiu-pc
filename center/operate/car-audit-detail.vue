@@ -12,19 +12,17 @@
     class="table-modal-detail"
     :transition-names="['', '']">
         <div style="height: 100%;overflow: auto;" class="car-audit-detail">
-
-          <img :src="img"/>
         <Form :label-width="80">
                 <FormItem label="行驶证图片:" class="w60">
                     <div class="pic-body">
-                        <img  class="pic" :src="travelLicense.frontImageUrl" v-img/>
+                        <img  class="pic" :src="travelLicenseImg" v-img/>
                     </div>
-                  <!--<div>-->
-                    <!--<Button type="default" >旋转90°</Button>-->
-                    <!--<Button type="default" >旋转180°</Button>-->
-                    <!--<Button type="default" >旋转270°</Button>-->
-                    <!--<Button type="default" >还原</Button>-->
-                  <!--</div>-->
+                  <div>
+                    <Button type="default" @click="rotate('travelLicense', 90)">右转</Button>
+                    <Button type="default" @click="rotate('travelLicense', 270)">左转</Button>
+                    <Button type="default" @click="rotate('travelLicense', 180)">翻转</Button>
+                    <Button type="default" @click="rotate('travelLicense', false)">还原</Button>
+                  </div>
                 </FormItem>
                 <div class="w40">
                     <FormItem label="所有人:">
@@ -48,14 +46,14 @@
             <Form :label-width="80"v-show="userFlag">
               <FormItem label="身份证图片:" class="w60">
                 <div class="pic-body">
-                  <img  class="pic" :src="idCard.frontImageUrl" v-img/>
+                  <img  class="pic" :src="idCardImg" v-img/>
                 </div>
-                <!--<div>-->
-                  <!--<Button type="default" >旋转90°</Button>-->
-                  <!--<Button type="default" >旋转180°</Button>-->
-                  <!--<Button type="default" >旋转270°</Button>-->
-                  <!--<Button type="default" >还原</Button>-->
-                <!--</div>-->
+                <div>
+                  <Button type="default" @click="rotate('idCard', 90)">右转</Button>
+                  <Button type="default" @click="rotate('idCard', 270)">左转</Button>
+                  <Button type="default" @click="rotate('idCard', 180)">翻转</Button>
+                  <Button type="default" @click="rotate('idCard', false)">还原</Button>
+                </div>
               </FormItem>
 
                 <div class="w40">
@@ -71,14 +69,14 @@
             <Form :label-width="80"v-show="businessFlag">
               <FormItem label="营业执照图片:" class="w60">
                 <div class="pic-body">
-                  <img  class="pic" :src="business.frontImageUrl" v-img/>
+                  <img  class="pic" :src="businessImg" v-img/>
                 </div>
-                <!--<div>-->
-                  <!--<Button type="default" >旋转90°</Button>-->
-                  <!--<Button type="default" >旋转180°</Button>-->
-                  <!--<Button type="default" >旋转270°</Button>-->
-                  <!--<Button type="default" >还原</Button>-->
-                <!--</div>-->
+                <div>
+                  <Button type="default" @click="rotate('business', 90)">右转</Button>
+                  <Button type="default" @click="rotate('business', 270)">左转</Button>
+                  <Button type="default" @click="rotate('business', 180)">翻转</Button>
+                  <Button type="default" @click="rotate('business', false)">还原</Button>
+                </div>
               </FormItem>
 
               <div class="w40">
@@ -194,7 +192,9 @@ export default {
         checkData:deepClone(initCheckData),
         commonValue:[],
 
-    img:''
+    travelLicenseImg:'',
+    idCardImg:'',
+    businessImg:''
       }
     },
     watch:{
@@ -225,9 +225,7 @@ export default {
       },
     },
     mounted () {
-      // rotateImg('http://download.image.test.shanghaiqixiu.org/2019/03/19/1552961791343.jpg',90,(base64)=>{
-      //   this.img= base64
-      // })
+
 
     },
     methods:{
@@ -241,6 +239,8 @@ export default {
                   this.travelLicense=res.data.item.travelLicense;
                   this.travelLicense['registerDate']=formatDate(this.travelLicense['registerDate']);
                   this.travelLicense['issueDate']=formatDate(this.travelLicense['issueDate']);
+
+                  this.travelLicenseImg= res.data.item.travelLicense.frontImageUrl
               }
 
               if(res.data.item.travelLicenseRevise){
@@ -252,6 +252,8 @@ export default {
               if(res.data.item.business){
                   this.business=res.data.item.business;
                   this.businessFlag=true;
+
+                this.businessImg= res.data.item.business.frontImageUrl
               }else{
                   this.businessFlag=false;
               }
@@ -263,6 +265,8 @@ export default {
               if(res.data.item.idCard){
                   this.idCard=res.data.item.idCard;
                   this.userFlag=true;
+
+                this.idCardImg= res.data.item.idCard.frontImageUrl
               }else{
                   this.userFlag=false;
               }
@@ -319,6 +323,23 @@ export default {
           elRev= '<i>'+later[field]+'</i>'
         }
         return elRev
+      },
+      rotate(name, rot){
+        let url= this[name].frontImageUrl, imgUrl=''
+          if(rot &&url){
+            if(url ){
+              if(url.indexOf('.com')>=0){
+                imgUrl= '/staticArticle'+ url.split('.com')[1]
+              }else if(url.indexOf('.org')>=0){
+                imgUrl= '/staticArticle'+ url.split('.org')[1]
+              }
+            }
+            rotateImg(imgUrl, rot,(base64)=>{
+              this[name+'Img']= base64
+            })
+          }else{
+            this[name+'Img']=  url
+          }
       }
     },
 }
