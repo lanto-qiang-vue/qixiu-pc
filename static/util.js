@@ -725,3 +725,76 @@ export const formatArticle =(content)=>{
   return text
 }
 
+/**
+ * @description 改变对象key
+ * @param keyObj {Object} key数组对象,每组key长度必须相同
+ * @param obj {Object} 要改变key的对象（按情况需使用深拷贝对象）
+ * @param before {String} 改变前的key集合
+ * @param after {String} 改变后的key集合
+ * @returns {Object} 改变key后的对象
+ * @使用范例 let turn= new turnKey({
+	            key1:['a', 'b'],
+				key2:['a1', 'b1'],
+				key3:['a2', 'b2'],
+			})
+ console.log( turn({a: 123, b:456}, 'key1', 'key3'))  //{a2: 123, b2:456}
+ */
+export const turnKey= function(keyObj){
+  return (obj, before, after)=>{
+    let res= {}
+    for(let key in obj){
+      for(let i in keyObj[before]){
+        if(keyObj[before][i]== key){
+          res[keyObj[after][i]]= obj[key]
+        }
+      }
+    }
+    return res
+  }
+}
+
+export const reg={
+  idcard: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/,
+  vehicle: /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4,5}[A-Z0-9挂学警港澳]{1}$/,
+  vin: /^[A-Z0-9]{17}$/,
+  mobile: /^1[3456789]\d{9}$/,
+}
+
+export const rotateImg = (path, angle, callBack) => {
+  var img = new Image();
+  img.src = path;
+  img.setAttribute("crossOrigin",'Anonymous')
+  img.onload = function () {
+    var self= this
+    // for(let key in this){
+    //   console.log('Image()', key, this[key])
+    // }
+
+    var changeSize= (angle/90%2==1)
+    var w = changeSize?this.height: this.width, h = changeSize? this.width:this.height;
+
+    //生成canvas
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    // // 创建属性节点
+    var anw = document.createAttribute("width");
+    anw.nodeValue = w;
+    var anh = document.createAttribute("height");
+    anh.nodeValue = h;
+    canvas.setAttributeNode(anw);
+    canvas.setAttributeNode(anh);
+    ctx.drawImage(self, 0, 0, this.width, this.height);
+    // ctx.save();
+    // ctx.translate(this.width/2, this.height/2);
+    // ctx.rotate(angle * Math.PI / 180);
+    // ctx.translate(-this.width/2, -this.height/2);
+    // ctx.drawImage(self, 0, 0, w, h);
+    // ctx.restore();
+
+    var base64 = canvas.toDataURL('image/png', 1);
+    // console.log(base64)
+    // 返回base64的值
+    callBack(base64)
+  }
+
+}

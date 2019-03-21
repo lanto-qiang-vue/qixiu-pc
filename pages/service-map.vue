@@ -56,7 +56,8 @@
       <div class="res">查询结果：共<span>{{total}}</span>条记录，请在企业列表或地图中选择查看</div>
       <ul>
         <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
-          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'" v-if="item.type!='300'">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/school-head.jpg'" v-else>
           <div class="list-right" v-if="item.type!='300'">
             <span class="name">{{item.name}}</span>
             <span>地址：{{item.addr}}</span>
@@ -315,7 +316,7 @@ export default {
           this.geolocation.getCurrentPosition();
           AMap.event.addListener(this.geolocation, 'complete', (result)=>{
             this.map.setCenter(result.position)
-            this.map.add(new AMap.Marker({position: new AMap.LngLat(result.position) , icon: this.defauldPoint()}))
+            this.map.add(new AMap.Marker({position:result.position , icon: this.defauldPoint()}))
             this.search.lng= result.position.lng
             this.search.lat= result.position.lat
             // this.getCompList()
@@ -446,10 +447,10 @@ export default {
     },
     renderBase(baseList){
       let iconBase = new AMap.Icon({
-        image: "/img/map/icon-base.png",
-        size: new AMap.Size(30, 30),
+        image: "/img/map/point-base.png",
+        size: new AMap.Size(30, 37),
         // imageOffset: new AMap.Size(11, 11),
-        imageSize: new AMap.Size(30, 30),
+        imageSize: new AMap.Size(30, 37),
       });
       let markers= []
 
@@ -741,10 +742,10 @@ export default {
         imageSize: new AMap.Size(30, 30),
       });
       let iconSchool = new AMap.Icon({
-        image: "/img/map/icon-school.png",
-        size: new AMap.Size(30, 30),
+        image: "/img/map/point-school.png",
+        size: new AMap.Size(30, 37),
         // imageOffset: new AMap.Size(11, 11),
-        imageSize: new AMap.Size(30, 30),
+        imageSize: new AMap.Size(30, 37),
       });
 
       this.markers= []

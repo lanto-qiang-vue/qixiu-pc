@@ -5,167 +5,93 @@
     v-model="showModal"
     title="审核车辆"
     width="90"
-    @on-visible-change="visibleChange"
     :scrollable="true"
     :transfer= "false"
     :footer-hide="false"
     :mask-closable="false"
     class="table-modal-detail"
     :transition-names="['', '']">
-        <div style="height: 100%;overflow: auto;">
-        <div style="float: left; width: 90%;">
-            <Form :label-width="140">
-                <FormItem label="行驶证图片:">
-                    <Card class="pic-card">
-                        <div class="pic-body">
-                            <img  class="pic" :src="userVehicle.frontImageUrl" v-img/>
-                        </div>
-                    </Card>
-                </FormItem>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改前:" style="margin-bottom: 12px;">
-                        <div></div>
-                    </FormItem>
-                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['ownerName'],userVehicleResive['ownerName'])">
-                        <span>{{userVehicle.ownerName}}</span>
-                    </FormItem>
-                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehiclePlateNumber'],userVehicleResive['vehiclePlateNumber'])">
-                        <span>{{userVehicle.vehiclePlateNumber}}</span>
-                    </FormItem>
-                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vin'],userVehicleResive['vin'])">
-                        <span>{{userVehicle.vin}}</span>
-                    </FormItem>
-                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['engineNo'],userVehicleResive['engineNo'])">
-                        <span>{{userVehicle.engineNo}}</span>
-                    </FormItem>
-                    <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
-                        <span>{{userVehicle.address}}</span>
-                    </FormItem>
-                    <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehicleType'],userVehicleResive['vehicleType'])">
-                        <span>{{userVehicle.vehicleType}}</span>
-                    </FormItem>
-                    <FormItem  label="使用性质:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['useNature'],userVehicleResive['useNature'])">
-                        <span>{{userVehicle.useNature}}</span>
-                    </FormItem>
-                    <FormItem  label="品牌型号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['brandModel'],userVehicleResive['brandModel'])">
-                        <span>{{userVehicle.brandModel}}</span>
-                    </FormItem>
-                    <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['registerDate'],userVehicleResive['registerDate'])">
-                        <span>{{userVehicle.registerDate}}</span>
-                    </FormItem>
-                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['issueDate'],userVehicleResive['issueDate'])">
-                        <span>{{userVehicle.issueDate}}</span>
-                    </FormItem>
-                </div>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改后:" style="margin-bottom: 12px;">
-                        <div></div>
-                    </FormItem>
-                    <FormItem  label="所有人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['ownerName'],userVehicleResive['ownerName'])">
-                        <span>{{userVehicleResive.ownerName}}</span>
-                    </FormItem>
-                    <FormItem  label="车牌号码:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehiclePlateNumber'],userVehicleResive['vehiclePlateNumber'])">
-                        <span>{{userVehicleResive.vehiclePlateNumber}}</span>
-                    </FormItem>
-                    <FormItem  label="车架号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vin'],userVehicleResive['vin'])">
-                        <span>{{userVehicleResive.vin}}</span>
-                    </FormItem>
-                    <FormItem  label="发动机号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['engineNo'],userVehicleResive['engineNo'])">
-                        <span>{{userVehicleResive.engineNo}}</span>
-                    </FormItem>
-                    <FormItem  label="住址:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['address'],userVehicleResive['address'])">
-                        <span>{{userVehicleResive.address}}</span>
-                    </FormItem>
-                    <FormItem  label="车辆类型:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['vehicleType'],userVehicleResive['vehicleType'])">
-                        <span>{{userVehicleResive.vehicleType}}</span>
-                    </FormItem>
-                    <FormItem  label="使用性质:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['useNature'],userVehicleResive['useNature'])">
-                        <span>{{userVehicleResive.useNature}}</span>
-                    </FormItem>
-                    <FormItem  label="品牌型号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['brandModel'],userVehicleResive['brandModel'])">
-                        <span>{{userVehicleResive.brandModel}}</span>
-                    </FormItem>
-                    <FormItem  label="注册日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['registerDate'],userVehicleResive['registerDate'])">
-                        <span>{{userVehicleResive.registerDate}}</span>
-                    </FormItem>
-                    <FormItem  label="发证日期:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userVehicle['issueDate'],userVehicleResive['issueDate'])">
-                        <span>{{userVehicleResive.issueDate}}</span>
-                    </FormItem>
-                </div>
-            </Form>
-        </div>
-        <div style="float: left; width: 90%;" v-show="userFlag">
-            <Form :label-width="140">
-                <FormItem label="身份证图片:" >
-                    <Card class="pic-card">
-                        <div class="pic-body">
-                            <img  class="pic" :src="userIdCard.frontImageUrl" v-img/>
-                        </div>
-                    </Card>
-                </FormItem>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改前:" style="margin-bottom: 12px;">
-                        <div></div>
-                    </FormItem>
-                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['ownerName'],userIdCardResive['ownerName'])">
-                        <span>{{userIdCard.ownerName}}</span>
-                    </FormItem>
-                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['idCardNo'],userIdCardResive['idCardNo'])">
-                        <span>{{userIdCard.idCardNo}}</span>
-                    </FormItem>
-                </div>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改后:" style="margin-bottom: 12px;">
-                        <div></div>
-                    </FormItem>
-                    <FormItem  label="姓名:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['ownerName'],userIdCardResive['ownerName'])">
-                        <span>{{userIdCardResive.ownerName}}</span>
-                    </FormItem>
-                    <FormItem  label="身份证号:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userIdCard['idCardNo'],userIdCardResive['idCardNo'])">
-                        <span>{{userIdCardResive.idCardNo}}</span>
-                    </FormItem>
-                </div>
-            </Form>
-        </div>
+        <div style="height: 100%;overflow: auto;" class="car-audit-detail">
 
-        <div style="float: left; width: 90%;" v-show="businessFlag">
-            <Form :label-width="140">
-                <FormItem label="营业执照图片:" >
-                    <Card class="pic-card">
-                        <div class="pic-body">
-                            <img  class="pic" :src="userBusiness.frontImageUrl" v-img/>
-                        </div>
-                    </Card>
+          <img :src="img"/>
+        <Form :label-width="80">
+                <FormItem label="行驶证图片:" class="w60">
+                    <div class="pic-body">
+                        <img  class="pic" :src="travelLicense.frontImageUrl" v-img/>
+                    </div>
+                  <!--<div>-->
+                    <!--<Button type="default" >旋转90°</Button>-->
+                    <!--<Button type="default" >旋转180°</Button>-->
+                    <!--<Button type="default" >旋转270°</Button>-->
+                    <!--<Button type="default" >还原</Button>-->
+                  <!--</div>-->
                 </FormItem>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改前:" style="margin-bottom: 12px;">
-                        <div></div>
+                <div class="w40">
+                    <FormItem label="所有人:">
+                      <div class="field" v-html="showChangeCar('ownerName')"></div>
                     </FormItem>
-                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['corpName'],userBusinessResive['corpName'])">
-                        <span>{{userBusiness.corpName}}</span>
+                    <FormItem label="车牌号码:">
+                      <div class="field" v-html="showChangeCar('vehiclePlateNumber')"></div>
                     </FormItem>
-                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['legalPerson'],userBusinessResive['legalPerson'])">
-                        <span>{{userBusiness.legalPerson}}</span>
+                    <FormItem label="车架号:">
+                      <div class="field" v-html="showChangeCar('vin')"></div>
                     </FormItem>
-                </div>
-                <div style="float: left; width: 45%;">
-                    <FormItem label="修改后:" style="margin-bottom: 12px;">
-                        <div></div>
+                    <FormItem label="发动机号:">
+                      <div class="field" v-html="showChangeCar('engineNo')"></div>
                     </FormItem>
-                    <FormItem  label="企业名称:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['corpName'],userBusinessResive['corpName'])">
-                        <span>{{userBusinessResive.corpName}}</span>
-                    </FormItem>
-                    <FormItem  label="法定代表人:" style="width:100%;margin-bottom: 12px;" v-show="judgeData(userBusiness['legalPerson'],userBusinessResive['legalPerson'])">
-                        <span>{{userBusinessResive.legalPerson}}</span>
+                    <FormItem label="发证日期:">
+                      <div class="field" v-html="showChangeCar('issueDate')"></div>
                     </FormItem>
                 </div>
-                
-                
-                
             </Form>
-        </div>
-            
-        <Spin size="large" fix v-if="spinShow"></Spin>
+
+            <Form :label-width="80"v-show="userFlag">
+              <FormItem label="身份证图片:" class="w60">
+                <div class="pic-body">
+                  <img  class="pic" :src="idCard.frontImageUrl" v-img/>
+                </div>
+                <!--<div>-->
+                  <!--<Button type="default" >旋转90°</Button>-->
+                  <!--<Button type="default" >旋转180°</Button>-->
+                  <!--<Button type="default" >旋转270°</Button>-->
+                  <!--<Button type="default" >还原</Button>-->
+                <!--</div>-->
+              </FormItem>
+
+                <div class="w40">
+                    <FormItem  label="姓名:">
+                      <div class="field" v-html="showChangeId('ownerName')"></div>
+                    </FormItem>
+                    <FormItem  label="身份证号:">
+                      <div class="field" v-html="showChangeId('idCardNo')"></div>
+                    </FormItem>
+                </div>
+            </Form>
+
+            <Form :label-width="80"v-show="businessFlag">
+              <FormItem label="营业执照图片:" class="w60">
+                <div class="pic-body">
+                  <img  class="pic" :src="business.frontImageUrl" v-img/>
+                </div>
+                <!--<div>-->
+                  <!--<Button type="default" >旋转90°</Button>-->
+                  <!--<Button type="default" >旋转180°</Button>-->
+                  <!--<Button type="default" >旋转270°</Button>-->
+                  <!--<Button type="default" >还原</Button>-->
+                <!--</div>-->
+              </FormItem>
+
+              <div class="w40">
+                <FormItem  label="企业名称:">
+                  <div class="field" v-html="showChangeBus('corpName')"></div>
+                </FormItem>
+                <FormItem  label="法定代表人:">
+                  <div class="field" v-html="showChangeBus('legalPerson')"></div>
+                </FormItem>
+              </div>
+            </Form>
+
+        <Spin size="large" fix v-show="spinShow"></Spin>
         </div>
         <div slot="footer">
             <Button  @click="updateStatus(2)" size="large" type="success" v-if="accessBtn('edit')" >通过</Button>
@@ -174,13 +100,13 @@
         </div>
         <!--审核状态-->
         <Modal title="审核"
-            width="500"
+            width="600"
             v-model="showEdit"
             :mask-closable="false">
-                <Form :label-width="120">
-                    <FormItem label="不通过理由:" style="width:400px;" >
+                <Form :label-width="90">
+                    <FormItem label="不通过理由:"  >
                         <CheckboxGroup v-model="checkData.auditFailInfo">
-                            <Checkbox v-for="item in commonValue" :key="item.id" :label="item.id" >{{item.name}}</Checkbox>
+                            <Checkbox v-for="item in commonValue" :key="item.id" :label="item.id" style="width: 220px;">{{item.name}}</Checkbox>
                         </CheckboxGroup>
                     </FormItem>
                     <FormItem label="自定义理由:" style="width:400px;">
@@ -195,7 +121,7 @@
 </template>
 
 <script>
-import {deepClone, getName, getDictGroup, imgToBase64 } from '@/static/util.js'
+import {deepClone, getName, getDictGroup, imgToBase64, rotateImg } from '@/static/util.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { formatDate } from '@/static/tools.js'
 let initCheckData={
@@ -239,7 +165,7 @@ let initBusiness={
       "socialCreditCode": ""
 }
 export default {
-    
+
 	name: "car-audit-detail",
     props:['showDetail', 'detailData'],
     mixins: [funMixin],
@@ -248,17 +174,27 @@ export default {
         spinShow:false,
         showModal:false,
         showEdit:false,
-        userIdCard:deepClone(initCard),//获取身份信息---------------
-        userIdCardResive:deepClone(initCard),//获取身份信息---------------
-        userVehicle:deepClone(initVehice),//获取车辆信息-----------
-        userVehicleResive:deepClone(initVehice),//获取车辆信息-----------
-        userBusiness:deepClone(initBusiness),//营业执照信息-----
-        userBusinessResive:deepClone(initBusiness),//营业执照信息-----
+        // idCard:deepClone(initCard),//获取身份信息---------------
+        // idCardRevise:deepClone(initCard),//获取身份信息---------------
+        // travelLicense:deepClone(initVehice),//获取车辆信息-----------
+        // travelLicenseRevise:deepClone(initVehice),//获取车辆信息-----------
+        // business:deepClone(initBusiness),//营业执照信息-----
+        // businessRevise:deepClone(initBusiness),//营业执照信息-----
+
+    idCard: {},
+    idCardRevise: {},
+    travelLicense: {},
+    travelLicenseRevise: {},
+    business: {},
+    businessRevise: {},
+
         userFlag:false,
         businessFlag:false,
 
         checkData:deepClone(initCheckData),
         commonValue:[],
+
+    img:''
       }
     },
     watch:{
@@ -271,8 +207,28 @@ export default {
             this.checkData['vehicleId']=this.detailData.vehicleId;
         },
     },
+    computed:{
+      showChangeCar(){
+        return (field)=>{
+          return this.compareHtml(this.travelLicense, this.travelLicenseRevise, field)
+        }
+      },
+      showChangeId(){
+        return (field)=>{
+          return this.compareHtml(this.idCard, this.idCardRevise, field)
+        }
+      },
+      showChangeBus(){
+        return (field)=>{
+          return this.compareHtml(this.business, this.businessRevise, field)
+        }
+      },
+    },
     mounted () {
-        
+      // rotateImg('http://download.image.test.shanghaiqixiu.org/2019/03/19/1552961791343.jpg',90,(base64)=>{
+      //   this.img= base64
+      // })
+
     },
     methods:{
         getDetail(){
@@ -282,43 +238,43 @@ export default {
             if(res.data.code=='0'){
 
               if(res.data.item.travelLicense){
-                  this.userVehicle=res.data.item.travelLicense;
-                  this.userVehicle['registerDate']=formatDate(this.userVehicle['registerDate']);
-                  this.userVehicle['issueDate']=formatDate(this.userVehicle['issueDate']);
+                  this.travelLicense=res.data.item.travelLicense;
+                  this.travelLicense['registerDate']=formatDate(this.travelLicense['registerDate']);
+                  this.travelLicense['issueDate']=formatDate(this.travelLicense['issueDate']);
               }
 
               if(res.data.item.travelLicenseRevise){
-                  this.userVehicleResive=res.data.item.travelLicenseRevise;
-                  this.userVehicleResive['registerDate']=formatDate(this.userVehicleResive['registerDate']);
-                  this.userVehicleResive['issueDate']=formatDate(this.userVehicleResive['issueDate']);
+                  this.travelLicenseRevise=res.data.item.travelLicenseRevise;
+                  this.travelLicenseRevise['registerDate']=formatDate(this.travelLicenseRevise['registerDate']);
+                  this.travelLicenseRevise['issueDate']=formatDate(this.travelLicenseRevise['issueDate']);
               }
 
               if(res.data.item.business){
-                  this.userBusiness=res.data.item.business;
+                  this.business=res.data.item.business;
                   this.businessFlag=true;
               }else{
                   this.businessFlag=false;
               }
 
               if(res.data.item.businessRevise){
-                  this.userBusinessResive=res.data.item.businessRevise;
+                  this.businessRevise=res.data.item.businessRevise;
               }
 
               if(res.data.item.idCard){
-                  this.userIdCard=res.data.item.idCard;
+                  this.idCard=res.data.item.idCard;
                   this.userFlag=true;
               }else{
                   this.userFlag=false;
               }
 
               if(res.data.item.idCardRevise){
-                  this.userIdCardResive=res.data.item.idCardRevise;
+                  this.idCardRevise=res.data.item.idCardRevise;
               }
-            
+
               this.spinShow=false;
             }
           })
-          
+
         },
         updateStatus(status){
             this.checkData['status']=status;
@@ -327,14 +283,9 @@ export default {
                     this.showEdit=false;
                     this.showModal=false;
                     this.$Message.info("审核状态已更新");
+                  this.$emit('closeDetail');
                 }
             })
-        },
-        visibleChange(status){
-          if(status === false){
-            this.$emit('closeDetail');
-            
-          }
         },
         //获取公共数据--
         getValues(){
@@ -344,85 +295,77 @@ export default {
                 }
             })
         },
-        //审核相同数据不显示--
-        judgeData(name,name1){
-            let flag=true;
-            if(name===name1){
-                flag=false;
-            }
-            return flag;
+      compareHtml(original, later, field){
+        let html=''
+        if(original[field]== later[field]){
+          html=  original[field]
+        }else{
+          html= ('<p><label>修改前：</label><span>'+original[field]+'</span></p><p><label>修改后：</label><span>'+
+            this.compareLight(original, later, field)+'</span></p>')
         }
+        return html
+      },
+      compareLight(original, later, field){
+        let elRev=''
+        if(original[field].length== later[field].length){
+          for(let i in original[field]){
+            if(original[field][i]== later[field][i]){
+              elRev+=later[field][i]
+            }else{
+              elRev+= ('<i>'+later[field][i]+'</i>')
+            }
+          }
+        }else{
+          elRev= '<i>'+later[field]+'</i>'
+        }
+        return elRev
+      }
     },
 }
 </script>
 
 <style scoped lang="less">
-.menu-manage{
+.car-audit-detail{
+
+  .w60{
+    float: left;
+    width: 60%;
+    margin-bottom: 20px;
+  }
+  .w40{
+    float: left;
+    width: 40%;
+    margin-bottom: 20px;
+  }
+  .pic-body{
+    padding-right: 10px;
+    margin-bottom: 10px;
+    line-height: 0;
+    img{
+      width: 100%;
+    }
+  }
 
 }
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
-.pic-card{
-      display: inline-block;
-      margin: 0 10px 10px 0;
-      width: 350px;
-      min-width: 250px;
-      
-      .red{
-        color: red;
+</style>
+<style lang="less">
+.car-audit-detail{
+  .ivu-form-item{
+    margin-bottom: 0;
+  }
+  .ivu-form-item-content{
+    font-size: 14px;
+  }
+  .field{
+    p{
+      label{
+        font-weight: 600;
       }
-      .pic-body{
-        width: 100%;
-        height: 200px;
-        /*border: 1px solid #dcdee2;*/
-        position: relative;
-        .no-pic{
-          width: 250px;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-        }
-        .pic{
-          max-width: 100%;
-          max-height: 100%;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50% , -50%);
-          cursor: pointer;
-        }
-        .button{
-          width: 100%;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          text-align: center;
-          > *{
-            margin: 0 5px;
-            vertical-align: top;
-          }
-          .up-img{
-            display: inline-block;
-            overflow: hidden;
-            position: relative;
-            .input{
-              width: 100%;
-              height: 100%;
-              position: absolute;
-              left: 0;
-              top: 0;
-              opacity: 0;
-              font-size: 0;
-              cursor: pointer;
-            }
-          }
-        }
+      i{
+        color: red;
+        font-style: normal;
       }
     }
-
-        
+  }
+}
 </style>
