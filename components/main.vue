@@ -17,7 +17,7 @@
       <nuxt-child v-else/>
     </Content>
   </Layout>
-  <butt-joint :type="showType" :dataInit="dataInit" :stage="1"></butt-joint>
+  <butt-joint ref="butt" @refresh=""></butt-joint>
 </basic-container>
 </template>
 
@@ -47,8 +47,6 @@ export default {
   },
   data () {
     return {
-      dataInit:null,
-      showType:false,
       collapsed: false,
       showMenu: true
     }
@@ -90,11 +88,19 @@ export default {
     }
 
   },
+  provide () {
+    return {
+      showButt: this.showButt
+    }
+  },
   methods: {
+    showButt(data){
+      this.$refs.butt.show(data)
+    },
      checkButt(){
        this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
          if(res.data.content &&res.data.content.length == 0){
-           this.showType = true;
+            this.showButt()
          }else if(res.data.code=='1000'){
            this.$router.push('/')
          }

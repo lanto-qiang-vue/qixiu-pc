@@ -18,6 +18,7 @@ export default {
       let order=[
         {code:'chezhu', path: '/center/my-car-record'},
         {code:'weixiuqiye', path: '/center/company-home'},
+        {code:'jiaxiao', path: '/center/school-home'},
         {code:'zhuanjia', path: '/center/answer-questions'},
         {code:'xiehui', path: '/center/account-info'},
         {code:'yunying', path: '/center/operator-home'},

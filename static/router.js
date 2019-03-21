@@ -143,36 +143,24 @@ export default [
         },
         component: resolve('center/operate/user-login-list.vue'),
       },
-    ]
-  },
-  //驾校中心...
-  {
-    path: '/schoolCenter',
-    alias: '/center',
-    meta: {
-      icon: 'logo-buffer',
-      title: '驾校中心',
-      // accessId: '/schoolCenter',
-    },
-    component: Main,
-    children: [
+
       {
-        path: 'schoolCenter-index',
+        path: 'school-home',
         meta: {
           icon: '',
-          title: '驾校中心首页',
+          title: '驾校中心首页(驾校企业)',
           // accessId: '/center/schoolCenter-index',
         },
-        component: resolve('center/schoolCenter/schoolCenter-index.vue'),
+        component: resolve('center/schoolCenter/school-home.vue'),
       },
       {
-        path: 'schoolCenter-apply',
+        path: 'learn-apply-list',
         meta: {
           icon: '',
-          title: '学车报名管理',
+          title: '学车报名管理(驾校企业)',
           // accessId: '/center/schoolCenter-index',
         },
-        component: resolve('center/schoolCenter/schoolCenter-apply.vue'),
+        component: resolve('center/schoolCenter/learn-apply-list.vue'),
       },
     ]
   },

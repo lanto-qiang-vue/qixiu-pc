@@ -2,11 +2,11 @@
   <!--组件先放这里先-->
   <div class="butt-joint">
 <Modal
-    v-model="commentModal"
+    v-model="showModal"
     title="请填写企业联系人"
     width="540"
     :scrollable="true"
-    :closable="closableType"
+    :closable="!newCreate"
     :transfer="false"
     :footer-hide="false"
     :mask-closable="false"
@@ -22,7 +22,7 @@
         <Input type="text" v-model="formData.contactMobile" :maxlength="11" placeholder="请输入手机号码"></Input>
       </FormItem>
     </Form>
-    <div v-show="showErcode" class="step">
+    <div class="step">
       <h2>如果您填写的手机号还未注册并登录过汽修平台微信，请按以下步骤操作：</h2>
       <li><span>1. 打开微信扫一扫，关注“上海汽修平台”微信公众号。</span>
         <img src="/img/garage-info/shqx_wx.png" style="height:126px;">
@@ -33,7 +33,7 @@
       <p class="red">完成登录后在本页面填写企业联系人及手机号后保存即可。</p>
     </div>
     <div slot="footer">
-      <Button  type="primary" @click="submit('formData')">保存</Button>
+      <Button  type="primary" @click="submit">保存</Button>
     </div>
 
 </Modal>
@@ -42,94 +42,65 @@
 </template>
 
 <script>
-  import { deepClone } from '../static/util'
+  import { deepClone, reg } from '../static/util'
 
   export default {
     name: 'butt-joint',
-    props:['type','dataInit','stage'],
+    props:['type'],
     data(){
       return {
-        commentModal2:false,
-        closableType:false,
-        commentModal:false,
-        showErcode: true,
         formData:{contactMobile:'',contactName:''},
         rules:{
-          contactName:{required:true,message:'对接人必填'},
-          contactMobile:[{required:true,message:'填写正确的手机号', pattern: /^1[3456789]\d{9}$/,}],
+          contactName:{required:true,message:'联系人姓名不能为空'},
+          contactMobile:[{required:true,message:'填写正确的手机号', pattern: reg.mobile,}, {
+              validator: (rule, value, callback) => {
+                if (value === this.$data.errorMobile) {
+                  callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
+                } else {
+                  callback();
+                }
+              }
+            }],
         },
+        errorMobile: '',
+        newCreate: true,
+        showModal:false,
       }
     },
+
     methods:{
-      submit(name){
-        let url = "/monitoring/config/company-docking";
-        if(this.stage == 1) this.$router.push({ path: '/center/company-home',query:{refresh:Math.random()}});
-        this.$refs[name].validate((valid) => {
+      show(data){
+        this.$refs.formData.resetFields();
+        if(data){
+          this.newCreate= false
+          this.formData = deepClone(data);
+        }
+        this.showModal = true;
+      },
+      submit(){
+        this.$store.commit('app/setButt')
+        this.errorMobile= ''
+        this.$refs.formData.validate((valid) => {
            if(valid){
-
-              if(!this.closableType){
-                this.$axios.post(url,this.formData).then((res) => {
-
-                  if(res.data.code == 0){
-                    this.$Message.success("保存成功");
-                    this.commentModal = false;
-                    this.$emit('refresh');
-                  }
-                  if(res.data.code=='1000'){
-                    this.showErcode= true
-                    let oldTel= this.formData.contactMobile
-                    this.rules.contactMobile.push({
-                      validator: (rule, value, callback) => {
-                        if (value === oldTel) {
-                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
-                        } else {
-                          callback();
-                        }
-                      }
-                    })
-                    this.$refs.formData.validate()
-                  }
-                })
-              }else{
-                this.$axios.put(url+"/"+this.formData.id,this.formData).then((res) => {
-                  if(res.data.code == 0){
-                    this.$Message.success("修改成功");
-                    this.commentModal = false;
-                    this.$emit('refresh');
-                  }
-                  if(res.data.code=='1000'){
-                    this.showErcode= true
-                    let oldTel= this.formData.contactMobile
-                    this.rules.contactMobile.push({
-                      validator: (rule, value, callback) => {
-                        if (value === oldTel) {
-                          callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
-                        } else {
-                          callback();
-                        }
-                      }
-                    })
-                    this.$refs.formData.validate()
-                  }
-                })
+             let url = "/monitoring/config/company-docking";
+             let oldTel= this.formData.contactMobile, method='post'
+              if(!this.newCreate){
+                method= 'put'
+                url+=("/"+this.formData.id)
               }
-           }else{
-            // this.$Message.errro("请检查红框信息");
+             this.$axios[method](url,this.formData).then((res) => {
+               if(res.data.code == 0){
+                 this.$Message.success("保存成功");
+                 this.showModal = false;
+                 this.$store.app.commit('app/setButt')
+               }
+               if(res.data.code=='1000'){
+                 this.errorMobile= oldTel
+                 this.$refs.formData.validate()
+               }
+             })
            }
         });
-      }
-    },
-    watch:{
-      type(){
-        this.$refs.formData.resetFields();
-        if(this.dataInit == null){
-          this.closableType = false;
-        }else{
-          this.closableType = true;
-          this.formData = deepClone(this.dataInit);
-        }
-        this.commentModal = true;
-        // this.commentModal2 = true;
       }
     },
   }

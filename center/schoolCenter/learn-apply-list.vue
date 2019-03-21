@@ -31,7 +31,7 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   export default {
-    name: 'schoolCenter-apply',
+    name: 'learn-apply-list',
     data(){
       return {
         tableData:[
