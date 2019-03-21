@@ -771,6 +771,7 @@ export const rotateImg = (path, angle, callBack) => {
     // }
 
     var changeSize= (angle/90%2==1)
+    // var changeSize= false
     var w = changeSize?this.height: this.width, h = changeSize? this.width:this.height;
 
     //生成canvas
@@ -784,16 +785,17 @@ export const rotateImg = (path, angle, callBack) => {
     canvas.setAttributeNode(anw);
     canvas.setAttributeNode(anh);
     ctx.drawImage(self, 0, 0, this.width, this.height);
-    // ctx.save();
-    // ctx.translate(this.width/2, this.height/2);
-    // ctx.rotate(angle * Math.PI / 180);
-    // ctx.translate(-this.width/2, -this.height/2);
-    // ctx.drawImage(self, 0, 0, w, h);
-    // ctx.restore();
+    ctx.save();
+    ctx.rotate(angle * Math.PI / 180);
+    switch (angle){
+      case 90: ctx.translate(0, -this.height); break;
+      case 180: ctx.translate(-this.width, -this.height); break;
+      case 270: ctx.translate(-this.width,0); break;
+    }
+    ctx.drawImage(self, 0, 0, this.width, this.height);
+    ctx.restore();
 
     var base64 = canvas.toDataURL('image/png', 1);
-    // console.log(base64)
-    // 返回base64的值
     callBack(base64)
   }
 
