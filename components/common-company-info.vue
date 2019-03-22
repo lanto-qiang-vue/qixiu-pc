@@ -168,6 +168,7 @@
               </i-switch>
             </FormItem>
             <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandIds')}, 'width45']" v-show="listSearch.special?true:false" prop="majorBrandIds">
+              <p v-if="listSearch.majorBrandName">原主修品牌：{{listSearch.majorBrandName}}</p>
               <Select v-model="listSearch.majorBrandIds" filterable remote multiple clearable placeholder="请输入主修品牌"
                       @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
                 <Option v-for="(option, index) in listSearch.majorBrandNames" :value="option.id" :key="index">{{option.name}}</Option>
