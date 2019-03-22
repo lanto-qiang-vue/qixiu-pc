@@ -130,7 +130,6 @@
   import { formatDate } from '~/static/tools.js'
 	export default {
 		name: "company-home",
-    inject: ['showButt'],
     data(){
       return{
         commentModal:true,
@@ -155,8 +154,7 @@
                   },
                   on: {
                     click: (index) => {
-                      // this.changeButt(params.row);
-                      this.showButt(params.row)
+                      this.$store.commit('app/setButtShow', params.row, 'weixiuqiye')
                     }
                   }
                 }, buttonContent),
@@ -302,12 +300,12 @@
       }
 		},
     computed:{
-      butts(){
-        return this.$store.state.app.butt
+      buttRefresh(){
+        return this.$store.state.app.butt.refresh
       }
     },
     watch:{
-      butts(val){
+      buttRefresh(val){
         // console.log('butts', val)
         this.checkButt();
       }

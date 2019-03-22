@@ -29,7 +29,6 @@
 
 export default {
   name: 'school-home',
-  inject: ['showButt'],
   data(){
       return {
         dataInit:null,
@@ -60,7 +59,7 @@ export default {
                   },
                   on: {
                     click: (index) => {
-                      this.showButt(params.row)
+                      this.$store.commit('app/setButtShow', params.row, 'jiaxiao')
                     }
                   }
                 }, buttonContent),
@@ -74,14 +73,10 @@ export default {
       }
   },
   computed:{
-    butts(){
-      return this.$store.state.app.butt
-    }
+
   },
   watch:{
-    butts(val){
-      console.log('butts', val)
-    }
+
   },
   methods:{
   }

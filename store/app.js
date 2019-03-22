@@ -1,7 +1,14 @@
 
 export const state = () => ({
   articleType:  null,
-  butt: 0
+  buttRefresh: 0,
+  buttShow: 0,
+  butt:{
+    refresh: 0,
+    show: 0,
+    data: {},
+    type: ''
+  }
 })
 
 export const mutations = {
@@ -9,8 +16,13 @@ export const mutations = {
     state.articleType = type
     // setToken(token)
   },
-  setButt(state) {
-    state.butt ++
+  setbuttRefresh(state) {
+    state.butt.refresh ++
+  },
+  setButtShow(state, data, type) {
+    state.butt.data= data
+    state.butt.type= type
+    state.butt.show ++
   },
 }
 

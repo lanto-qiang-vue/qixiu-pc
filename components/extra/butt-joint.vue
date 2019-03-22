@@ -42,11 +42,9 @@
 </template>
 
 <script>
-  import { deepClone, reg } from '../static/util'
-
-  export default {
+import { deepClone, reg } from '~/static/util.js'
+export default {
     name: 'butt-joint',
-    props:['type'],
     data(){
       return {
         formData:{contactMobile:'',contactName:''},
@@ -63,15 +61,16 @@
             }],
         },
         errorMobile: '',
+        type: '',
         newCreate: true,
         showModal:false,
       }
     },
 
     methods:{
-      show(data){
-        console.log('show')
+      show(data, type){
         this.$refs.formData.resetFields();
+        this.type= type
         if(data){
           this.newCreate= false
           this.formData = deepClone(data);
@@ -82,8 +81,8 @@
         this.errorMobile= ''
         this.$refs.formData.validate((valid) => {
            if(valid){
-             let url = "/monitoring/config/company-docking";
-             let oldTel= this.formData.contactMobile, method='post'
+             let url = "/monitoring/config/company-docking", method='post';
+             let oldTel= this.formData.contactMobile
               if(!this.newCreate){
                 method= 'put'
                 url+=("/"+this.formData.id)
@@ -92,7 +91,7 @@
                if(res.data.code == 0){
                  this.$Message.success("保存成功");
                  this.showModal = false;
-                 this.$store.commit('app/setButt')
+                 this.$store.commit('app/setbuttRefresh')
                }
                if(res.data.code=='1000'){
                  this.errorMobile= oldTel
