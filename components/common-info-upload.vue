@@ -37,7 +37,11 @@
   import { getType} from '~/static/util.js'
   export default {
     name: 'common-info-upload',
-    props:{'description':{},'callback':{},'data':{},'index':{},'isDisable':false,
+    props:{'description':{},'callback':{},'data':{},'index':{},
+     'isDisable':{
+        type: Boolean,
+        default: false
+      },
       num: {
         default: 1
       }
