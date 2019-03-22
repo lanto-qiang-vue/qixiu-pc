@@ -149,7 +149,7 @@ export default [
         meta: {
           icon: '',
           title: '驾校中心首页(驾校企业)',
-          // accessId: '/center/schoolCenter-index',
+          accessId: '/center/school-home',
         },
         component: resolve('center/schoolCenter/school-home.vue'),
       },
@@ -158,7 +158,7 @@ export default [
         meta: {
           icon: '',
           title: '学车报名管理(驾校企业)',
-          // accessId: '/center/schoolCenter-index',
+          accessId: '/center/learn-apply-list',
         },
         component: resolve('center/schoolCenter/learn-apply-list.vue'),
       },

@@ -14,7 +14,7 @@
       <h1 class="dtitle">企业联系人（用于接收汽修平台公众号通知）</h1>
       <div class="center">
         <div class="inline-box">
-          <Table :columns="buttColumns" :data="buttData"  width="800"
+          <Table :columns="buttColumns" :data="infoData"  width="800"
                  stripe border></Table>
         </div>
       </div>
@@ -24,9 +24,7 @@
 
 </div>
 </template>
-
 <script>
-
 export default {
   name: 'school-home',
   inject: ['showButt'],
@@ -34,9 +32,9 @@ export default {
       return {
         dataInit:null,
         infoColumns: [
-          {title: '业户名称', key: 'companyName',  minWidth: 100,},
-          {title: '许可证号', key: 'license',  minWidth: 100,},
-          {title: '信誉等级', key: 'dj',  minWidth: 100},
+          {title: '业户名称', key: 'schoolName',  minWidth: 100,},
+          {title: '许可证号', key: 'licenseNo',  minWidth: 100,},
+          {title: '信誉等级', key: 'creditLevel',  minWidth: 100},
         ],
         infoData:[
           {companyName:'上海XXX机动车驾驶员培训部',license:'310000003094',dj:'AAA'}
@@ -68,9 +66,6 @@ export default {
             }
           },
         ],
-        buttData:[
-          {contactName:'陈鑫',contactMobile:'18858886888'}
-        ],
       }
   },
   computed:{
@@ -78,12 +73,21 @@ export default {
       return this.$store.state.app.butt
     }
   },
+  mounted(){
+    this.getCompany();
+  },
   watch:{
     butts(val){
       console.log('butts', val)
     }
   },
   methods:{
+    getCompany(){
+      this.$axios.get('/training/center/driving', {
+      }).then( (res) => {
+      this.infoData = [res.data];
+      })
+    }
   }
 }
 </script>
