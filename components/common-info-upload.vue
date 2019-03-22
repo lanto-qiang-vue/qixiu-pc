@@ -24,11 +24,11 @@
         accept=".PNG, .JPG, .JPEG,.BMP"
         :on-success="handleSuccess"
         action="/proxy/file/image/add"
-        style="display: inline-block;width:60px;height:35px;">
+        style="display: inline-block;width:60px;height:35px;" >
         <!--<div style="width: 80px;height:35px;margin-top:20px; border: 1px solid #ccc;">
             <p>{{this.description}}</p>
         </div>-->
-        <Button icon="ios-cloud-upload-outline">{{this.description}}</Button>
+        <Button icon="ios-cloud-upload-outline" :disabled="isDisable">{{this.description}}</Button>
         </Upload>
 
   </div>
@@ -38,6 +38,10 @@
   export default {
     name: 'common-info-upload',
     props:{'description':{},'callback':{},'data':{},'index':{},
+     'isDisable':{
+        type: Boolean,
+        default: false
+      },
       num: {
         default: 1
       }
