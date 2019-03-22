@@ -9,22 +9,22 @@
               <Form ref="requireList" :rules="ruleValidate1" :model="requireList" :label-width="140" class="common-form">
             <FormItem label="企业名称:" :class="[{'mark-change': markChange('name')}, 'width45']" prop="name">
               <Input type="text" v-model="requireList.name" placeholder="请输入企业名称"
-                     :readonly="isCompany" ></Input>
+                     :readonly="isCompany||isGuanlibumen" ></Input>
             </FormItem>
             <FormItem label="许可证号:" :class="[{'mark-change': markChange('license')}, 'width45']" prop="license">
               <Input type="text" v-model="requireList.license" placeholder="请输入许可证号"
-                     :readonly="isCompany" ></Input>
+                     :readonly="isCompany||isGuanlibumen" ></Input>
             </FormItem>
             <FormItem label="许可证有效期:" :class="[{'mark-change': markChange('licenceBeginDate,licenceEndDate')}, 'width45']" prop="licenceDate">
               <DatePicker type="daterange" v-model="requireList.licenceDate" placeholder="请选择" style="width: 100%;"
-                          :readonly="isCompany"  @on-change="onOpenChangeDate"></DatePicker>
+                          :readonly="isCompany||isGuanlibumen"  @on-change="onOpenChangeDate"></DatePicker>
             </FormItem>
             <FormItem label="工商注册地址:" :class="[{'mark-change': markChange('registerAddress')}, 'width45']" prop="registerAddress">
               <Input type="text" v-model="requireList.registerAddress" placeholder="请输入工商注册地址"
-                     :readonly="isCompany" ></Input>
+                     :readonly="isCompany||isGuanlibumen" ></Input>
             </FormItem>
             <FormItem label="工商注册区域:" :class="[{'mark-change': markChange('registerRegion')}, 'width45']" prop="registerRegion">
-              <Select v-model="requireList.registerRegion" :transfer="true" :disabled="isCompany" >
+              <Select v-model="requireList.registerRegion" :transfer="true" :disabled="isCompany||isGuanlibumen" >
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
@@ -32,66 +32,66 @@
             <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('registerDate')}, 'width45']" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
                           :value="requireList.registerDate"
-                          :readonly="isCompany" @on-change="changeRegisterDate"></DatePicker>
+                          :readonly="isCompany||isGuanlibumen" @on-change="changeRegisterDate"></DatePicker>
             </FormItem>
 
             <FormItem label="经营地地址:" :class="[{'mark-change': markChange('businessAddress')}, 'width45']" prop="businessAddress">
               <Input type="text" v-model="requireList.businessAddress" placeholder="请输入经营地地址"
-                     :readonly="isCompany"  @on-change="changeBusinessAddress"></Input>
+                     :readonly="isCompany||isGuanlibumen"  @on-change="changeBusinessAddress"></Input>
             </FormItem>
             <FormItem label="经营地址区域:" :class="[{'mark-change': markChange('businessRegion')}, 'width45']" prop="businessRegion">
-              <Select v-model="requireList.businessRegion" :transfer="true" :disabled="isCompany" >
+              <Select v-model="requireList.businessRegion" :transfer="true" :disabled="isCompany||isGuanlibumen" >
                 <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
             <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('longitude')}, 'width45']" prop="longitude">
-              <Input type="text" v-model="requireList.longitude" :readonly="isCompany" placeholder="请输入经营地址经度" ></Input>
+              <Input type="text" v-model="requireList.longitude" :readonly="isCompany||isGuanlibumen" placeholder="请输入经营地址经度" ></Input>
             </FormItem>
             <FormItem label="经营地址维度:" :class="[{'mark-change': markChange('latitude')}, 'width45']" prop="latitude">
-              <Input type="text" v-model="requireList.latitude" :readonly="isCompany" placeholder="请输入经营地址维度"></Input>
+              <Input type="text" v-model="requireList.latitude" :readonly="isCompany||isGuanlibumen" placeholder="请输入经营地址维度"></Input>
             </FormItem>
 
             <FormItem label="经营范围:" :class="[{'mark-change': markChange('businessScope')}, 'width45']" prop="businessScope">
               <Select v-model="requireList.businessScope" @on-change="repairTypeFun($event, [])"
-                      :disabled="isCompany" :transfer="true">
+                      :disabled="isCompany||isGuanlibumen" :transfer="true">
                 <Option v-for="item in repairType" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
             <FormItem label="经营范围子类:" :class="[{'mark-change': markChange('businessScope2')}, 'width45']" prop="businessScope2">
               <Select v-model="requireList.businessScope2" multiple clearable :transfer="true"
-                      :disabled="isCompany" >
+                      :disabled="isCompany||isGuanlibumen" >
                 <Option v-for="item in businessScope2" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
             <FormItem label="法定代表人:" :class="[{'mark-change': markChange('legalName')}, 'width45']" prop="legalName">
               <Input type="text" v-model="requireList.legalName" placeholder="请输入法定代表人"
-                     :readonly="isCompany" ></Input>
+                     :readonly="isCompany||isGuanlibumen" ></Input>
             </FormItem>
             <FormItem label="经营状态:" :class="[{'mark-change': markChange('businessStatus')}, 'width45']" prop="businessStatus">
-              <Select v-model="requireList.businessStatus" :transfer="true" :disabled="isCompany" >
+              <Select v-model="requireList.businessStatus" :transfer="true" :disabled="isCompany||isGuanlibumen" >
                 <Option v-for="item in businessStatusArr" :value="item.key" :key="item.key">{{ item.name }}</Option>
               </Select>
             </FormItem>
 
                 <FormItem label="经济类型:" :class="[{'mark-change': markChange('economicType')}, 'width45']">
 
-                  <Select v-model="requireList.economicType" :transfer="true" :disabled="isCompany">
+                  <Select v-model="requireList.economicType" :transfer="true" :disabled="isCompany||isGuanlibumen">
                     <Option v-for="item in moneyType" :value="item.key" :key="item.key">{{ item.name }}</Option>
                   </Select>
                 </FormItem>
                 <FormItem label="其他经济类型:" :class="[{'mark-change': markChange('economicTypeOther')}, 'width45']" v-show="requireList.economicType==900" prop="economicTypeOther">
-                  <Input type="text" v-model="requireList.economicTypeOther" :readonly="isCompany"></Input>
+                  <Input type="text" v-model="requireList.economicTypeOther" :readonly="isCompany||isGuanlibumen"></Input>
                 </FormItem>
 
             <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
-                    <common-info-upload :description="'上传图片'" :data="requireList.yyzz" :callback="'yyzzFun'" @yyzzFun="yyzzFun"></common-info-upload>
+                    <common-info-upload :description="'上传图片'" :data="requireList.yyzz" :callback="'yyzzFun'" @yyzzFun="yyzzFun" :isDisable="isGuanlibumen"></common-info-upload>
 
             </FormItem>
             <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('dlysxkz')}, 'width45']" prop="dlysxkz">
 
 
-              <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun"></common-info-upload>
+              <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun" :isDisable="isGuanlibumen"></common-info-upload>
             </FormItem>
 
           </Form>
@@ -968,6 +968,9 @@ export default {
       },
       isCompany(){
           return this.roleType=="weixiuqiye"
+      },
+      isGuanlibumen(){
+          return this.roleType=="guanlibumen"
       },
       label(){
         let obj= this.calcStatus(this.requireList.status)

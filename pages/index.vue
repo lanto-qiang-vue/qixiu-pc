@@ -34,10 +34,12 @@
       <swiper-slide v-for="(item, index) in banners" :key="index">
         <div class='dummy'></div>
         <ul class='content'>
-          <li class="banner-body" :style="(item.linkUrl&&item.linkUrl!='/')?'cursor: pointer;':''"
-             @click="clickBanner(item.linkUrl, item.linkTarget)">
-            <img :src="item.imageUrl">
-          </li>
+          <a v-if="bannerLink(item).outside" class="banner-body" :href="bannerLink(item).to"
+             :target="bannerLink(item).target" :style="'cursor:'+ bannerLink(item).cursor">
+            <img :src="item.imageUrl"></a>
+          <nuxt-link v-else tag="a" :to="bannerLink(item).to" class="banner-body" :target="bannerLink(item).target"
+                     :style="'cursor:'+ bannerLink(item).cursor">
+            <img :src="item.imageUrl"></nuxt-link>
         </ul>
       </swiper-slide>
 
@@ -573,7 +575,26 @@ export default {
           }
         }
       }
-    }
+    },
+    bannerLink(item){
+      let obj={
+        cursor: 'default',
+        target: '',
+        to: '/',
+        outside: false
+      }
+      if(item.linkUrl.indexOf('http')>=0){
+        obj.outside= true
+      }
+      if(item.linkUrl!='/'){
+        obj.cursor= 'pointer'
+        obj.to= item.linkUrl
+        if(item.linkTarget== '_blank'){
+          obj.target= '_blank'
+        }
+      }
+      return obj
+    },
   },
   beforeRouteLeave (to, from, next) {
     // 导航离开该组件的对应路由时调用
