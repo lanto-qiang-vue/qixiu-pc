@@ -70,6 +70,7 @@
 
     methods:{
       show(data){
+        console.log('show')
         this.$refs.formData.resetFields();
         if(data){
           this.newCreate= false
@@ -78,7 +79,6 @@
         this.showModal = true;
       },
       submit(){
-        this.$store.commit('app/setButt')
         this.errorMobile= ''
         this.$refs.formData.validate((valid) => {
            if(valid){
@@ -92,7 +92,7 @@
                if(res.data.code == 0){
                  this.$Message.success("保存成功");
                  this.showModal = false;
-                 this.$store.app.commit('app/setButt')
+                 this.$store.commit('app/setButt')
                }
                if(res.data.code=='1000'){
                  this.errorMobile= oldTel

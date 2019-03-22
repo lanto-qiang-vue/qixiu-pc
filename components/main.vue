@@ -77,16 +77,9 @@ export default {
   },
   mounted(){
     // console.log('main-mounted', this.$route)
-    let roles= this.$store.state.user.userInfo.roles;
-    if(this.$route.path != '/center/company-home'){
-      for(let i in roles){
-        if(roles[i].code == 'weixiuqiye'){
-          this.checkButt();
-          break;
-        }
-      }
-    }
-
+    let roles= JSON.stringify(this.$store.state.user.userInfo.roles);
+    // console.log('roles', roles)
+    if(roles.indexOf('weixiuqiye')>=0) this.checkButt();
   },
   provide () {
     return {
@@ -99,11 +92,12 @@ export default {
     },
      checkButt(){
        this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
-         if(res.data.content &&res.data.content.length == 0){
+         if( !res.data.content || !res.data.content.length){
             this.showButt()
-         }else if(res.data.code=='1000'){
-           this.$router.push('/')
          }
+         // else if(res.data.code=='1000'){
+         //   this.$router.push('/')
+         // }
        })
      },
     turnToPage (name, meta) {
