@@ -170,10 +170,8 @@
             <FormItem label="主修品牌:" :class="[{'mark-change': markChange('majorBrandIds')}, 'width45']" v-show="listSearch.special?true:false" prop="majorBrandIds">
               <Select v-model="listSearch.majorBrandIds" filterable remote multiple clearable placeholder="请输入主修品牌"
                       @on-open-change="resetsetChainBrand" ref="chainBrand" :remote-method="getChainBrand" >
-                <Option v-for="(option, index) in chainBrand" :value="option.id" :key="index">{{option.name}}</Option>
+                <Option v-for="(option, index) in listSearch.majorBrandNames" :value="option.id" :key="index">{{option.name}}</Option>
               </Select>
-              <!--<Input type="text" v-model="listSearch.majorBrandId" placeholder=""></Input>-->
-              <!--<unit-search-input  :searchTableData="listSearch.majorBrandName" :showChange="showChange" :tableData="tableData1" :flagData=3 @closeSelect="closeSelect" @onRowSelect="onRowSelect1"></unit-search-input>-->
             </FormItem>
 
             <FormItem label="连锁经营企业:" :class="[{'mark-change': markChange('chainBusiness')}, 'width45']">
@@ -638,6 +636,7 @@ let initList={
     "source": null,
     "special": false,
     "majorBrandId": 0,
+    "majorBrandNames":[],
     "majorBrandIds":[],
     "storeSpecials": [],
     "technologyLeader": "",
@@ -697,7 +696,6 @@ export default {
             showAdd: false,
             uploadData:{},
             uploadOtherData:{},
-            chainBrand:[],
 
             requireList:deepClone(initList1),
             listSearch:deepClone(initList),
@@ -1516,7 +1514,7 @@ export default {
           "name":name
         }).then( (res) => {
           if(res.data.code==='0'){
-            this.chainBrand=res.data.items;
+            this.listSearch.majorBrandNames=res.data.items;
           }
         })
       },
