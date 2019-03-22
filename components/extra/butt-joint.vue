@@ -3,7 +3,7 @@
   <div class="butt-joint">
 <Modal
     v-model="showModal"
-    title="请填写企业联系人"
+    :title="'请填写'+typeName+'联系人'"
     width="540"
     :scrollable="true"
     :closable="!newCreate"
@@ -13,10 +13,10 @@
     :z-index="1000"
     :transition-names="['', '']">
 
-    <p class="remark">注：企业联系人为维修企业日常经营负责人，用于接收汽修平台公众号通知。</p>
+    <p class="remark">注：{{typeName}}联系人为{{typeName}}日常经营负责人，用于接收汽修平台公众号通知。</p>
     <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:420px;">
-      <FormItem label="企业联系人:" prop="contactName">
-        <Input type="text" v-model="formData.contactName"  placeholder="请输入企业联系人"></Input>
+      <FormItem :label="typeName+'联系人:'" prop="contactName">
+        <Input type="text" v-model="formData.contactName"  :placeholder="'请输入'+typeName+'联系人'"></Input>
       </FormItem>
       <FormItem label="手机号:" prop="contactMobile">
         <Input type="text" v-model="formData.contactMobile" :maxlength="11" placeholder="请输入手机号码"></Input>
@@ -30,7 +30,7 @@
       </li>
       <li>2. 关注微信公众号后，点击“我的”-“个人中心”。</li>
       <li>3. “点击登录”- 在“验证码登录”下输入企业联系人手机号，“验证并登录”后即完成登录。</li>
-      <p class="red">完成登录后在本页面填写企业联系人及手机号后保存即可。</p>
+      <p class="red">完成登录后在本页面填写{{typeName}}联系人及手机号后保存即可。</p>
     </div>
     <div slot="footer">
       <Button  type="primary" @click="submit">保存</Button>
@@ -66,7 +66,22 @@ export default {
         showModal:false,
       }
     },
-
+  computed:{
+      typeName(){
+        let name= ''
+        switch (this.type){
+          case 'weixiuqiye':{
+            name= '企业'
+            break;
+          }
+          case 'jiaxiao':{
+            name= '驾校'
+            break;
+          }
+        }
+        return name
+      }
+  },
     methods:{
       show(data, type){
         this.$refs.formData.resetFields();

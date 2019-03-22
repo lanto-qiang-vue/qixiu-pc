@@ -154,7 +154,7 @@
                   },
                   on: {
                     click: (index) => {
-                      this.$store.commit('app/setButtShow', params.row, 'weixiuqiye')
+                      this.$store.commit('app/setButtShow', {data: params.row, type: 'weixiuqiye'})
                     }
                   }
                 }, buttonContent),

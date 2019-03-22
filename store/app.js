@@ -19,9 +19,9 @@ export const mutations = {
   setbuttRefresh(state) {
     state.butt.refresh ++
   },
-  setButtShow(state, data, type) {
-    state.butt.data= data
-    state.butt.type= type
+  setButtShow(state, payload) {
+    state.butt.data= payload.data
+    state.butt.type= payload.type
     state.butt.show ++
   },
 }

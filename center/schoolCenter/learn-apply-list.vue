@@ -3,19 +3,19 @@
                 @changePage="changePage" @changePageSize="changePageSize"
                 :show="showTable" :page="page" :loading="loading" :showOperate="false">
     <div slot="search">
-      <Form class="common-form">
-        <FormItem :label-width="80" label="报名人姓名:">
+      <Form class="common-form" :label-width="90">
+        <FormItem label="报名人姓名:">
           <Input type="text" v-model="search.name" placeholder="请输入姓名"></Input>
         </FormItem>
-        <FormItem :label-width="90" label="报名人手机号:">
+        <FormItem label="报名人手机号:">
           <Input type="text" v-model="search.phoneNo" placeholder="请输入手机号"></Input>
         </FormItem>
-        <FormItem :label-width="90" label="驾照类型:">
+        <FormItem label="驾照类型:">
           <Select v-model="search.category">
             <Option v-for="item in checkList" :value="item.name" :key="item.name">{{item.name}}</Option>
           </Select>
         </FormItem>
-        <FormItem :label-width="90" label="是否联系:">
+        <FormItem label="是否联系:">
           <Select v-model="search.contact">
             <Option v-for="item in typeList" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>

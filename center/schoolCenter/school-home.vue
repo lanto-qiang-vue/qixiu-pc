@@ -57,7 +57,7 @@ export default {
                   },
                   on: {
                     click: (index) => {
-                      this.$store.commit('app/setButtShow', params.row, 'jiaxiao')
+                      this.$store.commit('app/setButtShow', {data: params.row, type: 'jiaxiao'})
                     }
                   }
                 }, buttonContent),

@@ -13,7 +13,7 @@
     :transition-names="['', '']">
 
     <div slot="footer">
-      <Button type="success" @click="submit">同意协议</Button>
+      <Button type="success" @click="schoolAgreementAgree">同意协议</Button>
     </div>
   </Modal>
 </div>
@@ -65,7 +65,10 @@ export default {
 
         }
       })
-    }
+    },
+    schoolAgreementAgree(){
+
+    },
   }
 }
 </script>
