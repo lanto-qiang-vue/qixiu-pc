@@ -800,3 +800,16 @@ export const rotateImg = (path, angle, callBack) => {
   }
 
 }
+
+export const isWeixn= ()=>{
+  var ua = navigator.userAgent.toLowerCase();
+  if(ua.match(/MicroMessenger/i)=="micromessenger") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export const isIOS =()=>{
+  return !!(/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent))
+}

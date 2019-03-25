@@ -64,7 +64,7 @@ export default {
         if(res.agreement){
           this.checkJiaxiaoContacts()
         }else{
-          this.$axios.$post('/infopublic/detail/protocol').then((res) => {
+          this.$axios.$post('/infopublic/detail/school-protocol').then((res) => {
             this.protocol= res.item.content
             this.schoolAgreementModal= true
           })

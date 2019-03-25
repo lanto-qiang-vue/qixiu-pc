@@ -31,7 +31,6 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { deepClone } from '../../static/util'
-
   export default {
     name: 'learn-apply-list',
     data() {

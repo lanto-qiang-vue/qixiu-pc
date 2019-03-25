@@ -29,7 +29,7 @@
         <div>上海汽修平台公众号</div>
       </li>
       <li>2. 关注微信公众号后，点击“我的”-“个人中心”。</li>
-      <li>3. “点击登录”- 在“验证码登录”下输入企业联系人手机号，“验证并登录”后即完成登录。</li>
+      <li>3. “点击登录”- 在“验证码登录”下输入{{typeName}}联系人手机号，“验证并登录”后即完成登录。</li>
       <p class="red">完成登录后在本页面填写{{typeName}}联系人及手机号后保存即可。</p>
     </div>
     <div slot="footer">
@@ -118,13 +118,15 @@ export default {
              }
              this.$axios[method](url,this.formData).then((res) => {
                if(res.data.code == 0){
-                 this.$Message.success("保存成功");
-                 this.showModal = false;
-                 this.$store.commit('app/setbuttRefresh')
+
                }
                if(res.data.code=='1000'){
                  this.errorMobile= oldTel
                  this.$refs.formData.validate()
+               }else{
+                 this.$Message.success("保存成功");
+                 this.showModal = false;
+                 this.$store.commit('app/setbuttRefresh')
                }
              })
            }

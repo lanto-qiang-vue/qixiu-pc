@@ -25,8 +25,10 @@
 </div>
 </template>
 <script>
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
   name: 'school-home',
+  mixins: [funMixin],
   data(){
       return {
         dataInit:null,
@@ -41,29 +43,6 @@ export default {
         buttColumns:[
           {title: '联系人', key: 'contactName',  minWidth: 100,},
           {title: '联系人手机', key: 'contactMobile',  minWidth: 100,},
-          {title: '操作', key: 'cz',  width: 100,
-            render: (h, params) => {
-              let buttonContent= '更改';
-              let buttonStatus = 'primary';
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: buttonStatus,
-                  },
-                  style: {
-                    width:"60px",
-                    textAlign: "center",
-                    marginRight: '10px',
-                  },
-                  on: {
-                    click: (index) => {
-                      this.$store.commit('app/setButtShow', {data: params.row, type: 'jiaxiao'})
-                    }
-                  }
-                }, buttonContent),
-              ]);
-            }
-          },
         ],
       }
   },
@@ -74,6 +53,32 @@ export default {
   },
   mounted(){
     this.getCompany();
+
+    if(this.accessBtn('update-contacts')){
+      this.buttColumns.push( {title: '操作', key: 'cz',  width: 100,
+        render: (h, params) => {
+          let buttonContent= '更改';
+          let buttonStatus = 'primary';
+          return h('div', [
+            h('Button', {
+              props: {
+                type: buttonStatus,
+              },
+              style: {
+                width:"60px",
+                textAlign: "center",
+                marginRight: '10px',
+              },
+              on: {
+                click: (index) => {
+                  this.$store.commit('app/setButtShow', {data: params.row, type: 'jiaxiao'})
+                }
+              }
+            }, buttonContent),
+          ]);
+        }
+      })
+    }
   },
   watch:{
     buttRefresh(val){
