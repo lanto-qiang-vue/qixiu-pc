@@ -12,7 +12,6 @@
     :mask-closable="false"
     :z-index="1000"
     :transition-names="['', '']">
-
     <p class="remark">注：{{typeName}}联系人为{{typeName}}日常经营负责人，用于接收汽修平台公众号通知。</p>
     <Form :label-width="140" ref="formData" :model="formData" :rules="rules" style="width:420px;">
       <FormItem :label="typeName+'联系人:'" prop="contactName">
@@ -53,7 +52,7 @@ export default {
           contactMobile:[{required:true,message:'填写正确的手机号', pattern: reg.mobile,}, {
               validator: (rule, value, callback) => {
                 if (value === this.$data.errorMobile) {
-                  callback(new Error('您输入的手机号还未登录过汽修平台微信公众号'));
+                  callback(new Error(this.$data.errorMsg));
                 } else {
                   callback();
                 }
@@ -61,6 +60,7 @@ export default {
             }],
         },
         errorMobile: '',
+        errorMsg: '',
         type: '',
         newCreate: true,
         showModal:false,
@@ -120,13 +120,18 @@ export default {
                if(res.data.code == 0){
 
                }
-               if(res.data.code=='1000'){
-                 this.errorMobile= oldTel
-                 this.$refs.formData.validate()
-               }else{
-                 this.$Message.success("保存成功");
-                 this.showModal = false;
-                 this.$store.commit('app/setbuttRefresh')
+               switch (res.data.code){
+                 case '1000':{
+                   this.errorMobile= oldTel
+                   this.errorMsg= res.data.msg
+                   this.$refs.formData.validate()
+                   break;
+                 }
+                 default :{
+                   this.$Message.success("保存成功");
+                   this.showModal = false;
+                   this.$store.commit('app/setbuttRefresh')
+                 }
                }
              })
            }
