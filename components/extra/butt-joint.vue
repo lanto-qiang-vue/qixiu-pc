@@ -96,12 +96,26 @@ export default {
         this.errorMobile= ''
         this.$refs.formData.validate((valid) => {
            if(valid){
-             let url = "/monitoring/config/company-docking", method='post';
+             let url = "", method='post';
              let oldTel= this.formData.contactMobile
-              if(!this.newCreate){
-                method= 'put'
-                url+=("/"+this.formData.id)
-              }
+             switch (this.type){
+               case 'weixiuqiye':{
+                 url = "/monitoring/config/company-docking"
+                 if(!this.newCreate){
+                   method= 'put'
+                   url+=("/"+this.formData.id)
+                 }
+                 break;
+               }
+               case 'jiaxiao':{
+                 url = "/training/center/driving/contacts"
+                 if(!this.newCreate){
+                   method= 'put'
+                   url+=("/"+this.formData.id)
+                 }
+                 break;
+               }
+             }
              this.$axios[method](url,this.formData).then((res) => {
                if(res.data.code == 0){
                  this.$Message.success("保存成功");

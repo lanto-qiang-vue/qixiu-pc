@@ -27,7 +27,7 @@ export default {
       ]
       for (let i in order){
         for (let j in roles){
-          if(order[i].code== roles[j].code){
+          if(order[i].code.indexOf(roles[j].code)){
             flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
           }
         }

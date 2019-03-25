@@ -68,13 +68,17 @@ export default {
       }
   },
   computed:{
-
+    buttRefresh(){
+      return this.$store.state.app.butt.refresh
+    }
   },
   mounted(){
     this.getCompany();
   },
   watch:{
-
+    buttRefresh(val){
+      this.getCompany();
+    }
   },
   methods:{
     getCompany(){
