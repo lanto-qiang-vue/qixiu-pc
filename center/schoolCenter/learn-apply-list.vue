@@ -81,7 +81,7 @@
             render: (h, params) => h('Button', {
               props: {
                 type: params.row.contact ? 'primary' : 'default',
-                disabled:this.accessBtn('update'),
+                disabled:!this.accessBtn('update'),
               }, on: {
                 click: (index) => {
                   this.$axios.post('/training/center/driving/contact_status',params.row).then( (res) => {
