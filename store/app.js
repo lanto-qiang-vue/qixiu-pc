@@ -1,8 +1,6 @@
 
 export const state = () => ({
   articleType:  null,
-  buttRefresh: 0,
-  buttShow: 0,
   butt:{
     refresh: 0,
     show: 0,
