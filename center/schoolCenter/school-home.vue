@@ -38,7 +38,7 @@ export default {
           {title: '信誉等级', key: 'creditLevel',  minWidth: 100},
         ],
         infoData:[
-          {companyName:'上海XXX机动车驾驶员培训部',license:'310000003094',dj:'AAA'}
+
         ],
         buttColumns:[
           {title: '联系人', key: 'contactName',  minWidth: 100,},
@@ -52,7 +52,7 @@ export default {
     }
   },
   mounted(){
-    this.getCompany();
+    if(this.accessBtn('get-school')) this.getCompany();
 
     if(this.accessBtn('update-contacts')){
       this.buttColumns.push( {title: '操作', key: 'cz',  width: 100,

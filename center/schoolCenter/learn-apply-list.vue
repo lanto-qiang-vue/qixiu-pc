@@ -21,7 +21,7 @@
           </Select>
         </FormItem>
         <FormItem>
-          <Button type="primary" @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('query')"  @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
@@ -31,8 +31,10 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { deepClone } from '../../static/util'
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'learn-apply-list',
+    mixins: [funMixin],
     data() {
       return {
         tableData: [],
@@ -78,7 +80,8 @@
             title: '操作', key: 'cz',width: 100,align:'center',
             render: (h, params) => h('Button', {
               props: {
-                type: params.row.contact ? 'primary' : 'default'
+                type: params.row.contact ? 'primary' : 'default',
+                disabled:this.accessBtn('update'),
               }, on: {
                 click: (index) => {
                   this.$axios.post('/training/center/driving/contact_status',params.row).then( (res) => {
