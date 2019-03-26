@@ -736,9 +736,10 @@ export default {
                     }else if(this.ownerType==2){
                         this.upIdBusine=true;
                     }
-                    setTimeout(()=>{
+
+                    this.$nextTick (function () {
                         document.querySelector('.bind-my-car').scrollTop= 1000;
-                    },30)
+                    })
 
 
                 }
