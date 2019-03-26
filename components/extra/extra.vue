@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { signIn} from '~/static/util.js'
 import buttJoint from '~/components/extra/butt-joint.vue'
 export default {
   name: "contacts-form",
@@ -44,12 +45,29 @@ export default {
   mounted(){
     let roles= JSON.stringify(this.$store.state.user.userInfo.roles);
     // console.log('roles', roles)
-    if(roles.indexOf('weixiuqiye')>=0) this.checkWeixiuButt();
+    if(roles.indexOf('weixiuqiye')>=0) {
+      this.sigin()
+      this.checkWeixiuButt()
+    }
     if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoButt();
   },
   methods:{
     showButt(data, type){
       this.$refs.butt.show(data, type)
+    },
+    sigin(){
+      signIn({
+        route: this.$route,
+        store: this.$store,
+        $axios: this.$axios,
+        Message: this.$Message,
+        Modal: this.$Modal,
+        Spin: this.$Spin
+      }, ()=>{
+        this.$router.replace({
+          path: '/'
+        })
+      })
     },
     checkWeixiuButt(){
       this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
