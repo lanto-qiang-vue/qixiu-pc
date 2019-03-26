@@ -77,7 +77,6 @@
             {'name':'D'},
             {'name':'E'},
             {'name':'F'},
-
         ],
         checkAllGroup: [],
         columns: [

@@ -144,18 +144,24 @@ export default [
         component: resolve('center/operate/user-login-list.vue'),
       },
 
-
-
       {
-        path: 'unaccess',
+        path: 'school-home',
         meta: {
           icon: '',
-          title: '无权限',
-          accessId: 999,
+          title: '驾校中心首页(驾校企业)',
+          accessId: '/center/school-home',
         },
-        component: resolve('center/index.vue'),
+        component: resolve('center/schoolCenter/school-home.vue'),
       },
-
+      {
+        path: 'learn-apply-list',
+        meta: {
+          icon: '',
+          title: '学车报名管理(驾校企业)',
+          accessId: '/center/learn-apply-list',
+        },
+        component: resolve('center/schoolCenter/learn-apply-list.vue'),
+      },
     ]
   },
   {

@@ -13,7 +13,7 @@
       </div>
       <div class="right">
         <span class="tel">400-663-8210</span>
-        <a href="http://www.lantoev.com/android/DownLoad.html" target="_blank" class="app">
+        <a href="/download-app" target="_blank" class="app">
           <p>下载APP</p>
           <img src="~@/assets/img/index/qrcode_app.png">
         </a>

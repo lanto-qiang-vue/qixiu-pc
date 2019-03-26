@@ -18,6 +18,7 @@ export default {
       let order=[
         {code:'chezhu', path: '/center/my-car-record'},
         {code:'weixiuqiye', path: '/center/company-home'},
+        {code:'jiaxiao', path: '/center/school-home'},
         {code:'zhuanjia', path: '/center/answer-questions'},
         {code:'xiehui', path: '/center/account-info'},
         {code:'yunying', path: '/center/operator-home'},
@@ -26,7 +27,7 @@ export default {
       ]
       for (let i in order){
         for (let j in roles){
-          if(order[i].code== roles[j].code){
+          if(order[i].code.indexOf(roles[j].code)>=0){
             flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
           }
         }

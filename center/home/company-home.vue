@@ -123,28 +123,16 @@
         <Button size="large" type="primary" @click="updateTags">提交</Button>
       </div>
     </Modal>
-<butt-joint :type="showType" :dataInit="dataInit" @refresh="checkButt" stage="2"></butt-joint>
   </div>
 </template>
 
 <script>
   import { formatDate } from '~/static/tools.js'
-  import buttJoint from '~/components/butt-joint.vue'
 	export default {
 		name: "company-home",
-    // head () {
-    //   return {
-    //     script: [
-    //       { type: 'text/javascript', src: "/libs/echarts.common.min.js"},
-    //     ],
-    //   }
-    // },
-    components:{buttJoint},
     data(){
       return{
         commentModal:true,
-        showType:false,
-        dataInit:null,
         modal2:false,
         modal3:false,
         buttColumns:[
@@ -166,7 +154,7 @@
                   },
                   on: {
                     click: (index) => {
-                      this.changeButt(params.row);
+                      this.$store.commit('app/setButtShow', {data: params.row, type: 'weixiuqiye'})
                     }
                   }
                 }, buttonContent),
@@ -315,6 +303,15 @@
       isShanghai(){
         return process.env.config.areaName=='shanghai'
       },
+      buttRefresh(){
+        return this.$store.state.app.butt.refresh
+      }
+    },
+    watch:{
+      buttRefresh(val){
+        // console.log('butts', val)
+        this.checkButt();
+      }
     },
     mounted(){
       $.getScript('/libs/echarts.common.min.js',()=>{
@@ -335,7 +332,7 @@
         this.visitDate.unshift(newDate);
       }
       this.checkButt();
-      console.log(this.visitDate);
+      // console.log(this.visitDate);
 
       // this.getServerDate();
 
@@ -349,16 +346,7 @@
           if(res.status == 200){
             this.buttData = res.data.content;
           }
-          if(res.data.content &&res.data.content.length == 0){
-            this.showType = true;
-          }else if(res.data.code=='1000'){
-            this.$router.push('/')
-          }
         })
-      },
-      changeButt(row){
-        this.dataInit = row;
-        this.showType = Math.random();
       },
         getServerDate(){
           this.$axios.get('/statistics/admin/comStatistics',{

@@ -17,7 +17,7 @@
       <nuxt-child v-else/>
     </Content>
   </Layout>
-  <butt-joint :type="showType" :dataInit="dataInit" :stage="1"></butt-joint>
+  <extra></extra>
 </basic-container>
 </template>
 
@@ -25,7 +25,7 @@
 import BasicContainer from '~/components/basic-container.vue'
 import SideMenu from './menu/side-menu.vue'
 import MyBreadCrumb from '~/components/bread-crumb.vue'
-import buttJoint from '~/components/butt-joint.vue'
+import Extra from '~/components/extra/extra.vue'
 import {  getMenuByRouter2 } from '@/static/util'
 import mixin from '~/components/home-path-mixin.js'
 import router from '@/static/router'
@@ -38,7 +38,7 @@ export default {
     BasicContainer,
     SideMenu,
     MyBreadCrumb,
-    buttJoint
+    Extra,
   },
   mixins: [mixin],
   props: ['paraMenu', 'pageName'],
@@ -47,8 +47,6 @@ export default {
   },
   data () {
     return {
-      dataInit:null,
-      showType:false,
       collapsed: false,
       showMenu: true
     }
@@ -78,28 +76,9 @@ export default {
     }
   },
   mounted(){
-    // console.log('main-mounted', this.$route)
-    let roles= this.$store.state.user.userInfo.roles;
-    if(this.$route.path != '/center/company-home'){
-      for(let i in roles){
-        if(roles[i].code == 'weixiuqiye'){
-          this.checkButt();
-          break;
-        }
-      }
-    }
 
   },
   methods: {
-     checkButt(){
-       this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
-         if(res.data.content &&res.data.content.length == 0){
-           this.showType = true;
-         }else if(res.data.code=='1000'){
-           this.$router.push('/')
-         }
-       })
-     },
     turnToPage (name, meta) {
       // console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {

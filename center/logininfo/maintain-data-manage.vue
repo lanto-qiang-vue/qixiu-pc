@@ -415,7 +415,7 @@
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#557D98"></div>记录数:' + obj[company].success + '条<br/>'
               str += '<div style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:#61A0A8"></div>评论数:' + obj[company].error + '条<br/>'
               str += "占比:"+obj[company].gl * 100 + "%";
-              return str
+              return str;
             },
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
               type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'

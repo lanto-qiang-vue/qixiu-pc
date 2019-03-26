@@ -46,7 +46,6 @@ export default function ({ $axios, redirect, store, route, app }) {
         default: {
           if (process.client && code!= undefined) {
             // if(Message && Message.destroy)Message.destroy()
-
             (response.data.status || response.data.code)? Message.error({
               content: getContent(response),
               duration: 5}): '';

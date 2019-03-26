@@ -1,6 +1,8 @@
 <template>
+<div class="layout-root">
   <nuxt v-if="isKeepAlive" keep-alive/>
   <nuxt v-else/>
+</div>
 </template>
 
 
