@@ -6,17 +6,20 @@
     <div slot="search">
       <Form :label-width="80" class="common-form">
         <FormItem label="区域:">
-          <Select v-model="search.corpArea">
-            <Option v-for="item in areaList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
-            </Option>
-          </Select>
-        </FormItem>
-        <FormItem label="区域:">
-          <!--<Cascader :data="levelAreaData" change-on-select  v-model="levelArea" @on-change="changeLevelArea" :clearable=true></Cascader>-->
+          <!--<Select v-model="search.area">-->
+            <!--<Option v-for="item in areaList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}-->
+            <!--</Option>-->
+          <!--</Select>-->
+
+          <area-select :value-select="search.area" :value-cascader="areaCascader"
+                       :clearable="false" :change-on-select="true"
+                       @changeSelect="search.area= $event"
+                       @changeCascader="cascaderArea"
+          ></area-select>
         </FormItem>
 
         <FormItem label="企业名称:">
-          <Input type="text" v-model="search.corpName" placeholder="请输入企业名称"></Input>
+          <Input type="text" v-model="search.companyName" placeholder="请输入企业名称"></Input>
         </FormItem>
         <FormItem :label-width="80" style="width: 100px;">
           <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
@@ -31,20 +34,21 @@
   </common-table>
 </template>
 <script>
-  import CommonTable from '~/components/common-table.vue'
+import CommonTable from '~/components/common-table.vue'
+import AreaSelect from '~/components/area-select.vue'
 import { getName, deepClone } from '@/static/util.js'
 import funMixin from '~/components/fun-auth-mixim.js'
-  export default {
+export default {
     name: 'by-company',
-    components: { CommonTable },
+    components: { CommonTable, AreaSelect },
     mixins: [funMixin],
     data: function() {
       return {
-        areaList:[],
+        // areaList:[],
         clearTableSelect: false,
         search: {
-          corpArea:'',
-          corpName:'',
+          area:'',
+          companyName:'',
           "order": 0,
           "orderField": 0,
         },
@@ -94,24 +98,27 @@ import funMixin from '~/components/fun-auth-mixim.js'
           {code:"regNumber",name:1},
           {code:"regRate",name:2},
         ],
+
+        areaCascader: []
       }
+    },
+    computed: {},
+    mounted() {
+      // this.getArea();
+      this.showTable = Math.random()
+      this.getList()
     },
     methods: {
       rowClick(row) {
         this.$router.push({path: "/center/employees-query", query:{id: row.companyId}})
       },
       exportFun(){
+        this.search.pageNo= this.page,
+        this.search.pageSize= this.limit
         this.$axios({
           method: 'post',
           url: '/company/getEmployeeList/export',
-          data:{
-            companyName: this.search.corpName,
-          area: this.search.corpArea == 0 ? '' : this.search.corpArea,
-          "order": this.search.order,
-          "orderField": this.search.orderField,
-          pageNo: this.page,
-          pageSize: this.limit
-          },
+          data: this.search,
           responseType: 'arraybuffer'
         }).then( (res) => {
 
@@ -152,30 +159,24 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.limit = size
         this.getList()
       },
-      getArea() {
-        this.$axios.post('/area/region/list', {
-          areaName: process.env.config.areaName
-        }).then((res) => {
-          if (res.data.code == '0') {
-            this.areaList = res.data.items
-            this.areaList.unshift({ regionCode: '0', shortName: '全部' })
-          }
-        })
-      },
+      // getArea() {
+      //   this.$axios.post('/area/region/list', {
+      //     areaName: process.env.config.areaName
+      //   }).then((res) => {
+      //     if (res.data.code == '0') {
+      //       this.areaList = res.data.items
+      //       this.areaList.unshift({ regionCode: '0', shortName: '全部' })
+      //     }
+      //   })
+      // },
       getList() {
+        this.search.pageNo= this.page,
+        this.search.pageSize= this.limit
         this.loading = true
-        this.$axios.post('/company/repaircompany/getEmployeeList', {
-          companyName: this.search.corpName,
-          area: this.search.corpArea == 0 ? '' : this.search.corpArea,
-          "order": this.search.order,
-          "orderField": this.search.orderField,
-          pageNo: this.page,
-          pageSize: this.limit
-        }).then((res) => {
+        this.$axios.post('/company/repaircompany/getEmployeeList', this.search).then((res) => {
           if (res.data.code == '0') {
             this.total = res.data.total
             this.tableData = res.data.items
-
             this.loading = false
           }
         })
@@ -199,13 +200,18 @@ import funMixin from '~/components/fun-auth-mixim.js'
           }
 
       },
+      cascaderArea(value){
+        this.areaCascader= value
+        switch (value.length){
+          case 1:{
+            this.search.area= value[0]
+          }
+          case 2:{
+            this.search.area= value[1]
+          }
+        }
+      }
     },
-    computed: {},
-    mounted() {
-      this.search.corpArea = '0';
-      this.getArea();
-      this.showTable = Math.random()
-      this.getList()
-    }
+
   }
 </script>

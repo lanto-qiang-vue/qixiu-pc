@@ -71,7 +71,7 @@ export default {
     },
     checkWeixiuButt(){
       this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
-        if( !res.data.content || !res.data.content.length){
+        if( res.data.content && !res.data.content.length){
           this.showButt(null, 'weixiuqiye')
         }
       })

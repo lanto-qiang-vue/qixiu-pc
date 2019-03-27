@@ -24,10 +24,20 @@
                      :readonly="isCompany||isGuanlibumen" ></Input>
             </FormItem>
             <FormItem label="工商注册区域:" :class="[{'mark-change': markChange('registerRegion')}, 'width45']" prop="registerRegion">
-              <Select v-model="requireList.registerRegion" :transfer="true" :disabled="isCompany||isGuanlibumen" >
-                <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
-                </Option>
-              </Select>
+              <!--<Select v-model="requireList.registerRegion" :transfer="true" v-if="isShanghai"-->
+                      <!--:disabled="isCompany||isGuanlibumen" >-->
+                <!--<Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}-->
+                <!--</Option>-->
+              <!--</Select>-->
+              <!--<Cascader v-else :data="typeList" v-model="registerRegionCascader" :disabled="isCompany||isGuanlibumen"-->
+                        <!--@on-change="cascaderRegisterRegion" :clearable="false" change-on-select></Cascader>-->
+
+              <area-select :value-select="requireList.registerRegion" :value-cascader="registerRegionCascader"
+                           :disabled="isCompany||isGuanlibumen" :transfer="true" :clearable="false"
+                           :change-on-select="true"
+                           @changeSelect="requireList.registerRegion= $event"
+                           @changeCascader="cascaderRegisterRegion"
+              ></area-select>
             </FormItem>
             <FormItem label="工商注册日期:" :class="[{'mark-change': markChange('registerDate')}, 'width45']" prop="registerDate">
               <DatePicker type="date" placeholder="请选择" style="width: 100%;"
@@ -40,10 +50,21 @@
                      :readonly="isCompany||isGuanlibumen"  @on-change="changeBusinessAddress"></Input>
             </FormItem>
             <FormItem label="经营地址区域:" :class="[{'mark-change': markChange('businessRegion')}, 'width45']" prop="businessRegion">
-              <Select v-model="requireList.businessRegion" :transfer="true" :disabled="isCompany||isGuanlibumen" >
-                <Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
-                </Option>
-              </Select>
+              <!--<Select v-model="requireList.businessRegion" :transfer="true" v-if="isShanghai"-->
+                      <!--:disabled="isCompany||isGuanlibumen" >-->
+                <!--<Option v-for="item in typeList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}-->
+                <!--</Option>-->
+              <!--</Select>-->
+
+              <!--<Cascader v-else :data="typeList" v-model="businessRegionCascader" :disabled="isCompany||isGuanlibumen"-->
+                        <!--@on-change="cascaderBusinessRegion" :clearable="false" change-on-select></Cascader>-->
+
+              <area-select :value-select="requireList.businessRegion" :value-cascader="businessRegionCascader"
+                           :disabled="isCompany||isGuanlibumen" :transfer="true" :clearable="false"
+                           :change-on-select="true"
+                           @changeSelect="requireList.businessRegion= $event"
+                           @changeCascader="cascaderBusinessRegion"
+              ></area-select>
             </FormItem>
             <FormItem label="经营地址经度:" :class="[{'mark-change': markChange('longitude')}, 'width45']" prop="longitude">
               <Input type="text" v-model="requireList.longitude" :readonly="isCompany||isGuanlibumen" placeholder="请输入经营地址经度" ></Input>
@@ -570,6 +591,7 @@ import { deepClone, imgToBase64,getName, deepTurn} from '~/static/util.js'
 import { formatDate } from '@/static/tools'
 import commonInfoUpload  from '~/components/common-info-upload.vue'
 import unitSearchInput from '~/components/unit-search-input.vue'
+import AreaSelect from '~/components/area-select.vue'
 let initList={
     "manageArr":[],//管理机构--
     "fours": false,
@@ -674,10 +696,12 @@ let initList1={
   "registerAddress": "",
   "registerDate": "",
   "registerRegion": "",
+  "registerSecondRegion": "",
   "status": 0,
   "yyzz": "",
-  "businessAddress": "",//----------
-  "businessRegion": "",//----------
+  "businessAddress": "",
+  "businessRegion": "",
+  "businessSecondRegion": "",
   "longitude": '',
   "latitude": '',
   "economicType": 0,
@@ -687,7 +711,7 @@ let initList1={
 export default {
     name: "common-company-info",
     props: ['roleType'],
-    components: {commonInfoUpload,unitSearchInput},
+    components: {commonInfoUpload,unitSearchInput, AreaSelect},
     data(){
       let rulesObj={ required: true, message: '必填项不可为空' };
       let isYunying= this.roleType=='yunying'
@@ -882,7 +906,7 @@ export default {
             ],
             manageType: [],//管理部门数据集合--------
             manageArr: [],
-            typeList: [],//学历类别数据------
+            // typeList: [],//学历类别数据------
             channels: [],//对接渠道-----------
             //维修类别数据---------
             repairType: [],
@@ -960,9 +984,16 @@ export default {
 
           geocoder:null,//地标
           wrongAddress: [],
+
+          registerRegionCascader: [],
+          businessRegionCascader: [],
+
         }
     },
     computed:{
+      isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
       isYunying(){
         return this.roleType=='yunying'
       },
@@ -1023,10 +1054,10 @@ export default {
       this.getValuesByTypeFun(33)
       this.getValuesByTypeFun(1)
       this.getValuesByTypeFun(34)
-      this.getType()
+      // this.getType()
       $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2&plugin=AMap.Geocoder',()=>{
         this.geocoder = new AMap.Geocoder({
-          city: "021",
+          city: process.env.config.areaKey,
         });
       });
 
@@ -1070,6 +1101,10 @@ export default {
             if(!this.requireList.longitude || !this.requireList.latitude){
               this.geoCode(this.requireList.businessAddress)
             }
+
+              this.registerRegionCascader= this.requireList.registerSecondRegion?[this.requireList.registerRegion, this.requireList.registerSecondRegion]: [this.requireList.registerRegion]
+              this.businessRegionCascader= this.requireList.businessSecondRegion?[this.requireList.businessRegion, this.requireList.businessSecondRegion]:[this.requireList.businessRegion]
+
           }else{
             this.uploadData= this.requireList
           }
@@ -1219,6 +1254,30 @@ export default {
         }
         return obj
       },
+      cascaderRegisterRegion(value, selectedData){
+        // console.log('value, selectedData', value, selectedData)
+        this.registerRegionCascader= value
+        switch (value.length){
+          case 1:{
+            this.requireList.registerRegion= value[0]
+          }
+          case 2:{
+            this.requireList.registerSecondRegion= value[1]
+          }
+        }
+      },
+      cascaderBusinessRegion(value, selectedData){
+        // console.log('value, selectedData', value, selectedData)
+        this.businessRegionCascader= value
+        switch (value.length){
+          case 1:{
+            this.requireList.businessRegion= value[0]
+          }
+          case 2:{
+            this.requireList.businessSecondRegion= value[1]
+          }
+        }
+      },
       //选择维修类别时带的参数--------
       repairTypeFun(val, arr) {
         // console.log('repairTypeFun.clear', clear)
@@ -1337,15 +1396,16 @@ export default {
         })
       },
       //获取区域信息
-      getType() {
-        this.$axios.post('/area/region/list', {
-          areaName: process.env.config.areaName
-        }).then((res) => {
-          if (res.data.code == '0') {
-            this.typeList = res.data.items
-          }
-        })
-      },
+      // getType() {
+      //   this.$axios.post('/area/region/list', {
+      //     areaName: process.env.config.areaName
+      //   }).then((res) => {
+      //     if (res.data.code == '0') {
+      //       console.log('this.typeList ', res.data.items)
+      //       this.typeList = res.data.items
+      //     }
+      //   })
+      // },
       //新增自定义对接渠道---------------
       addTypeName() {
         if (!this.sourceName) {

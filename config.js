@@ -86,7 +86,7 @@ const conf={
     socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
-    articlePath: 'http://download.image.lanto.com/',
+    articlePath: 'http://download.image.shandongqixiu.com/',
 
     ...dev,
     ...shandong,

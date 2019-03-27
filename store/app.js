@@ -6,6 +6,10 @@ export const state = () => ({
     show: 0,
     data: {},
     type: ''
+  },
+  area:{
+    lock: 0,
+    list: []
   }
 })
 
@@ -22,5 +26,11 @@ export const mutations = {
     state.butt.type= payload.type
     state.butt.show ++
   },
+  setAreaLock(state) {
+    state.area.lock ++
+  },
+  setAreaList(state, list){
+    state.area.list = list
+  }
 }
 
