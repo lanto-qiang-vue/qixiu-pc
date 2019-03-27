@@ -1552,7 +1552,7 @@
             this.$refs[name].validate((valid) => {
               if (valid) {
                 this.$Modal.confirm({
-                  title: '系统提示', content: '确认保存吗2?', onOk: () => {
+                  title: '系统提示', content: '确认保存吗?', onOk: () => {
                     console.log(this.formData.certDate);
                     let formData = deepClone(this.formData)
                     formData.drivingLicensePic = this.pjUrl(this.img1)
