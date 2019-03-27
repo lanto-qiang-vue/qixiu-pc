@@ -438,7 +438,7 @@
         // /comment/maintain/repairId?repairId
         this.$axios.get('/comment/maintain/query/repairId?repairId='+this.detailData.id, {
         }).then((res) => {
-          if(res.data.id > 1){
+          if(res.data.id > 0){
              this.commentData = res.data;
           }else{
             this.commentData = {};
