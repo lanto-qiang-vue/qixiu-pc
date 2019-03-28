@@ -9,7 +9,8 @@ export const state = () => ({
   },
   area:{
     lock: 0,
-    list: []
+    regionList: [],
+    deptList: [],
   }
 })
 
@@ -29,8 +30,11 @@ export const mutations = {
   setAreaLock(state) {
     state.area.lock ++
   },
-  setAreaList(state, list){
-    state.area.list = list
-  }
+  setRegionList(state, list){
+    state.area.regionList = list
+  },
+  setDeptList(state, list){
+    state.area.deptList = list
+  },
 }
 

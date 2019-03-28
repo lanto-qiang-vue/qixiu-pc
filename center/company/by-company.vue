@@ -11,8 +11,7 @@
             <!--</Option>-->
           <!--</Select>-->
 
-          <area-select :value-select="search.area" :value-cascader="areaCascader"
-                       :clearable="false" :change-on-select="true"
+          <area-select :change-on-select="true"
                        @changeSelect="search.area= $event"
                        @changeCascader="cascaderArea"
           ></area-select>
@@ -98,8 +97,6 @@ export default {
           {code:"regNumber",name:1},
           {code:"regRate",name:2},
         ],
-
-        areaCascader: []
       }
     },
     computed: {},
@@ -198,16 +195,16 @@ export default {
               this.search.orderField=getName(this.typeArr,value);
               this.getList();
           }
-
       },
       cascaderArea(value){
-        this.areaCascader= value
         switch (value.length){
           case 1:{
             this.search.area= value[0]
+            break
           }
           case 2:{
             this.search.area= value[1]
+            break
           }
         }
       }

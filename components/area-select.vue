@@ -1,16 +1,26 @@
 <template>
 <div class="area-select">
-  <Select :value="valueSelect" :transfer="transfer" v-if="isShanghai"
+  <Select :value="calcSelectValue" :transfer="transfer" v-if="useSelect"
           :disabled="disabled" :clearable="clearable" @on-change="changeSelect">
-    <Option v-for="item in areaList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
+    <Option v-for="(item , key) in areaList" :value="item.regionCode || item.value" :key="key">{{ item.shortName }}
     </Option>
   </Select>
-  <Cascader v-else :data="areaList" :value="valueCascader" :disabled="disabled" :clearable="clearable"
+  <Cascader v-else :data="areaList" :value="calcCascaderValue" :disabled="disabled" :clearable="clearable"
             @on-change="changeCascader"  :change-on-select="changeOnSelect"></Cascader>
 </div>
 </template>
 
 <script>
+import { deepClone } from '~/static/util.js'
+let rules= {
+  shanghai: { useSelect: true, useRegion: true },
+  other: { useSelect: false, useRegion: true}
+}
+/*
+* 默认情况下
+* 上海使用一级下拉区域，使用region接口
+* 其他使用二级下拉区域，使用region接口
+* */
 export default {
   name: "area-select",
   props: {
@@ -18,7 +28,9 @@ export default {
       default: ''
     },
     valueCascader: {
-      default: []
+      default(){
+        return []
+      }
     },
     disabled:{
       default: false
@@ -32,18 +44,56 @@ export default {
     changeOnSelect:{
       default: false
     },
+    rules:{
+      default(){
+        return rules
+      }
+    }
   },
   data(){
     return{
-
+      selectValue: '',
+      cascaderValue: []
     }
   },
   computed:{
+    calcSelectValue(){
+      return this.valueSelect? this.valueSelect: this.selectValue
+    },
+    calcCascaderValue(){
+      return this.valueCascader.length? this.valueCascader: this.cascaderValue
+    },
     isShanghai(){
       return process.env.config.areaName=='shanghai'
     },
+    thisRule(){
+      let defaultRule= deepClone(rules)
+      for(let key in this.rules){
+        defaultRule[key]= this.rules[key]
+      }
+      return defaultRule
+    },
+    useSelect(){
+      let select= true
+      if(this.isShanghai){
+        select= this.thisRule.shanghai.useSelect
+      }else{
+        select= this.thisRule.other.useSelect
+      }
+      return select
+    },
+    useRegion(){
+      let region= true
+      if(this.isShanghai){
+        region= this.thisRule.shanghai.useRegion
+      }else{
+        region= this.thisRule.other.useRegion
+      }
+      return region
+    },
     areaList(){
-      return this.$store.state.app.area.list
+      let listName= this.useRegion?'regionList': 'deptList'
+      return this.$store.state.app.area[listName]
     },
     lock(){
       return this.$store.state.app.area.lock
@@ -61,11 +111,17 @@ export default {
       this.$axios.post('/area/region/list', {
         areaName: process.env.config.areaName
       }).then((res) => {
-        // console.log('!getArea!')
         if (res.data.code == '0') {
           this.resetArea(res.data.items)
           // console.log('res.data.items', res.data.items)
-          this.$store.commit('app/setAreaList', res.data.items)
+          this.$store.commit('app/setRegionList', res.data.items)
+        }
+      })
+      this.$axios.get('/area/dept/list/all/'+ process.env.config.areaName).then((res) => {
+        if (res.data.code == '0') {
+          this.resetArea(res.data.items)
+          // console.log('res.data.items', res.data.items)
+          this.$store.commit('app/setDeptList', res.data.items)
         }
       })
     },
@@ -79,9 +135,11 @@ export default {
       }
     },
     changeSelect(value){
+      this.selectValue= value
       this.$emit('changeSelect', value);
     },
     changeCascader(value){
+      this.cascaderValue= value
       this.$emit('changeCascader', value);
     },
   }
