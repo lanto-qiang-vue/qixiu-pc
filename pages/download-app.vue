@@ -32,7 +32,7 @@ export default {
       if(isWeixn()) {
         this.showMask= true
       }else{
-        if(isIOS){
+        if(isIOS()){
           window.location.href= "https://itunes.apple.com/cn/app/id1356038665?mt=8"
         }else{
           window.location.href= "https://download.hoxiuxiu.com/app/qx.apk"
