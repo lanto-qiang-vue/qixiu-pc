@@ -20,7 +20,7 @@
             <Input type="text" v-model="search.type" :readonly="true" placeholder=""></Input>
           </FormItem>
           <FormItem label="事件发生日期:" style="width: 60%">
-            <Input type="text" v-model="search.cmCreateDate" :readonly="true" placeholder=""></Input>
+            <Input type="text" v-model="search.billCreateDate" :readonly="true" placeholder=""></Input>
           </FormItem>
           <FormItem label="反馈日期:" style="width: 60%">
             <Input type="text" v-model="search.createDate" :readonly="true" placeholder=""></Input>
@@ -43,23 +43,22 @@
     props:['showType','detailData'],
     watch:{
       showType(){
-        this.showModal = true;
-        for(let i in this.detailData){
-            this.search[i]=this.detailData[i];
-        }
-        this.search['cmCreateDate']=formatDate(this.search['cmCreateDate']);
-        this.search['createDate']=formatDate(this.search['createDate']);
-        this.search['type']=getName(this.typeList,this.search['type']);
+          this.showModal = true;
+          for(let i in this.detailData){
+              this.search[i]=this.detailData[i];
+          }
+          this.search['createDate']=formatDate(this.search['createDate']);
+          this.search['type']=getName(this.typeList,this.search['type']);
 
-        if(!this.search['hasRead']){
-            this.updateStatus();
-        }
+          if(!this.search['hasRead']){
+              this.updateStatus();
+          }
       }
     },
     data(){
       return {
         search:{
-            cmCreateDate:"",
+            billCreateDate:"",
             createDate:"",
             photoUrl:"",
             type:"",
@@ -69,74 +68,12 @@
             {code:0,name:"维修记录未上传"},
             {code:1,name:"维修记录不正确"},
         ],
-        total:0,
-        page:1,
-        limit:10,
         showModal:false,
-        tableData:[],
-        showTable:false,
-        area:[],
-        loading:false,
-        columns: [
-            {title: '企业名称', key: 'companyName', sortable: true, minWidth: 110},
-            { title: '许可证号', key: 'license', sortable: true, minWidth: 150 },
-            { title: '经营地址', key: 'businessAddress', sortable: true, minWidth: 120 ,},
-            { title: '法定代表人', key: 'corporate', sortable: true, minWidth: 120,},
-            { title: '联系方式', key: 'companyLinkMantel', sortable: true, minWidth: 120,},
-        ],
+
+
       }
     },
     methods:{
-      changePage(page) {
-        this.page = page
-        this.getList()
-      },
-      changePageSize(size) {
-        this.limit = size
-        this.getList()
-      },
-      onRowClick( row, index){
-            console.log('row：',row);
-            
-          this.setRepairCompany(row)
-        },
-      getName(data, code) {
-        let name = ''
-        for (let i in data) {
-          if (data[i].regionCode == code) {
-            name = data[i].shortName
-            break
-          }
-        }
-        return name
-      },
-      getList() {
-        this.loading = true
-        this.$axios.post('company/list', {
-            businessAddress:"",
-            companyLinkMantel:"",
-            companyName:"",
-            license:"",
-            'pageNo': this.page,
-            'pageSize': this.limit
-        }).then((res) => {
-          if (res.data.code == '0') {
-            this.total = res.data.total
-            this.tableData = res.data.items
-            this.loading = false
-          }
-        })
-      },
-      setRepairCompany(row) {
-        this.$axios.post('/service/setRepairCompany', {
-            "companyId": row.companyId,
-            "id": this.detailData.id
-        }).then((res) => {
-          if (res.data.code == '0') {
-            
-          }
-        })
-      },
       //监听界面变化--------
       visibleChange(status){
         if(status === false){

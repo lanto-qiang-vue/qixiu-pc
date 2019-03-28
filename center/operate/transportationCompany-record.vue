@@ -41,7 +41,7 @@
       </Form>
     </div>
     <div slot="operate">
-      <Button type="primary"  @click="add">新增</Button>
+      <Button type="primary" @click="add">新增</Button>
       <Button type="info" v-if="" :disabled="canDo" @click="edit">查看/修改</Button>
       <Button type="error" v-if="accessBtn('delete')" :disabled="canDo" @click="del">删除</Button>
     </div>
@@ -321,8 +321,11 @@
         </TabPane>
       </Tabs>
       <div slot="footer">
-        <Button type="success" v-if="accessBtn('save')" v-show="indexName == 'm1'" @click="addPost('formData',1)">提交</Button>
-        <Button type="success" v-if="accessBtn('paramSave')" v-show="indexName == 'm2'" @click="addPost('formData2',2)">提交</Button>
+        <Button type="success" v-if="accessBtn('save')" v-show="indexName == 'm1'" @click="addPost('formData',1)">提交
+        </Button>
+        <Button type="success" v-if="accessBtn('paramSave')" v-show="indexName == 'm2'" @click="addPost('formData2',2)">
+          提交
+        </Button>
         <Button @click="showModal=false">返回</Button>
       </div>
     </Modal>
@@ -335,7 +338,7 @@
   import uploadImg from '~/components/uploadImg.vue'
   import SelectCompany from '~/components/select-company.vue'
   import { deepClone } from '../../static/util'
-import funMixin from '~/components/fun-auth-mixim.js'
+  import funMixin from '~/components/fun-auth-mixim.js'
 
   export default {
     name: 'transportationCompany-record',
@@ -1053,7 +1056,12 @@ import funMixin from '~/components/fun-auth-mixim.js'
         ],
         rule1: {
           corpName: [{ required: true, message: '请选择维修企业' }],
-          plateNum: [{ required: true, message: '必填项不能为空' },{ type:'string',pattern:/^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1,2}$/, message:'请输入正确的车牌号码', trigger:'change,blur'}],
+          plateNum: [{ required: true, message: '必填项不能为空' }, {
+            type: 'string',
+            pattern: /^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学警港澳]{1,2}$/,
+            message: '请输入正确的车牌号码',
+            trigger: 'change,blur'
+          }],
           plateColor: [{ required: true, message: '必填项不能为空' },
             { validator: validateColor, trigger: 'blur' }
           ],
@@ -1253,7 +1261,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
           'guaranteeSlipPic': '',
           'vehicleId': ''
         },
-        formData2:{},
+        formData2: {},
         storeData2: {
           'axleNumber': 0,
           'brakeType': '',
@@ -1289,20 +1297,25 @@ import funMixin from '~/components/fun-auth-mixim.js'
 
       }
     },
+    watch:{
+      'formData.certDate'(val){
+        console.log(val);
+      }
+    },
     methods: {
-      getDriver(id){
+      getDriver(id) {
         //获取驾驶员登记
         this.$axios.post('/manage/vehicle/driver/list', {
           pageNo: 1,
           pageSize: 10,
-          vehicleId: id,
+          vehicleId: id
         }).then((res) => {
-          this.tableData6 = [];
-          for(let i =0;i<res.data.items.length;i++){
-            res.data.items[i]['xid'] = i;
-            res.data.items[i].dimissionTime = new Date(res.data.items[i].dimissionTime);
-            res.data.items[i].entryTime = new Date(res.data.items[i].entryTime);
-            this.tableData6.push(res.data.items[i]);
+          this.tableData6 = []
+          for (let i = 0; i < res.data.items.length; i++) {
+            res.data.items[i]['xid'] = i
+            res.data.items[i].dimissionTime = new Date(res.data.items[i].dimissionTime)
+            res.data.items[i].entryTime = new Date(res.data.items[i].entryTime)
+            this.tableData6.push(res.data.items[i])
           }
         })
       },
@@ -1312,64 +1325,67 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.$axios.post('/manage/vehicle/change/list', {
           pageNo: 1,
           pageSize: 10,
-          vehicleId: id,
+          vehicleId: id
         }).then((res) => {
-          this.tableData3 = [];
-          for(let i =0;i<res.data.items.length;i++){
-            res.data.items[i]['xid'] = i;
-            res.data.items[i].changeDate = new Date(res.data.items[i].changeDate);
-            this.tableData3.push(res.data.items[i]);
+          this.tableData3 = []
+          for (let i = 0; i < res.data.items.length; i++) {
+            res.data.items[i]['xid'] = i
+            res.data.items[i].changeDate = new Date(res.data.items[i].changeDate)
+            this.tableData3.push(res.data.items[i])
           }
         })
       },
-      getAccident(id){
+      getAccident(id) {
         this.$axios.post('/manage/vehicle/accident/list', {
           pageNo: 1,
           pageSize: 10,
-          vehicleId: id,
+          vehicleId: id
         }).then((res) => {
-          this.tableData5 = [];
-          for(let i =0;i<res.data.items.length;i++){
-            res.data.items[i]['xid'] = i;
-            res.data.items[i].accidentDate = new Date(res.data.items[i].accidentDate);
-            this.tableData5.push(res.data.items[i]);
+          this.tableData5 = []
+          for (let i = 0; i < res.data.items.length; i++) {
+            res.data.items[i]['xid'] = i
+            res.data.items[i].accidentDate = new Date(res.data.items[i].accidentDate)
+            this.tableData5.push(res.data.items[i])
           }
         })
       },
-      getUseRecord(id){
+      getUseRecord(id) {
         //车辆使用登记...
         this.$axios.post('/manage/vehicle/uses/list', {
           pageNo: 1,
           pageSize: 10,
-          vehicleId: id,
+          vehicleId: id
         }).then((res) => {
-          this.tableData4 = [];
-            for(let i =0;i<res.data.items.length;i++){
-              res.data.items[i]['xid'] = i;
-              res.data.items[i].usesTime = new Date(res.data.items[i].usesTime);
-              this.tableData4.push(res.data.items[i]);
-            }
+          this.tableData4 = []
+          for (let i = 0; i < res.data.items.length; i++) {
+            res.data.items[i]['xid'] = i
+            res.data.items[i].usesTime = new Date(res.data.items[i].usesTime)
+            this.tableData4.push(res.data.items[i])
+          }
         })
       },
       edit() {
-        this.indexName = "m1";
-        this.formData = this.list
-        this.formData.plateColor = this.formData.plateColor || '0';
-        this.formData.vehicleType = this.formData.vehicleType || '0';
-        this.formData.status = this.formData.status || '0';
-        this.formData.county = this.formData.county || '0';
-        this.formData.fuelType = this.formData.fuelType || '0';
-        this.formData.single = this.formData.single || '0';
+        // this.indexName = "m1";
+        // this.$refs.formData.resetFields()
+        this.formData = {};
+        this.formData = deepClone(this.list)
+
+        this.formData.plateColor = this.formData.plateColor || '0'
+        this.formData.vehicleType = this.formData.vehicleType || '0'
+        this.formData.status = this.formData.status || '0'
+        this.formData.county = this.formData.county || '0'
+        this.formData.fuelType = this.formData.fuelType || '0'
+        this.formData.single = this.formData.single || '0'
         //查询车辆技术参数
-        this.getParameter(this.list.vehicleId);
+        this.getParameter(this.list.vehicleId)
         //获取变更记录....
-        this.getChange(this.list.vehicleId);
+        this.getChange(this.list.vehicleId)
         //获取车辆使用记录....
-        this.getUseRecord(this.list.vehicleId);
+        this.getUseRecord(this.list.vehicleId)
         //获取交通事故...
-        this.getAccident(this.list.vehicleId);
+        this.getAccident(this.list.vehicleId)
         //查询车辆驾驶员...
-        this.getDriver(this.list.vehicleId);
+        this.getDriver(this.list.vehicleId)
         this.imgData1 = this.toObj(this.list.drivingLicensePic.split(';'))
         this.imgData2 = this.toObj(this.list.tradingCardPic.split(';'))
         this.imgData3 = this.toObj(this.list.trafficPermitPic.split(';'))
@@ -1390,10 +1406,10 @@ import funMixin from '~/components/fun-auth-mixim.js'
         }
         return data
       },
-      getParameter(id){
+      getParameter(id) {
         ///manage/vehicle/vehiclebase/vehicleParam
-        this.$axios.get('/manage/vehicle/param/get/'+id).then((res) => {
-          this.formData2 = res.data.item || deepClone(this.storeData2);
+        this.$axios.get('/manage/vehicle/param/get/' + id).then((res) => {
+          this.formData2 = res.data.item || deepClone(this.storeData2)
           // console.log(JSON.stringify(res.data.item));
         })
       },
@@ -1416,7 +1432,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
         } else {
           xid = this.tableData4[this.tableData4.length - 1].xid + 1
         }
-        this.tableData3.push({xid:xid, changeDate: '', changeReason: '', changeItem: '' })
+        this.tableData3.push({ xid: xid, changeDate: '', changeReason: '', changeItem: '' })
       },
       del3() {
         for (let i in this.select3) {
@@ -1537,26 +1553,44 @@ import funMixin from '~/components/fun-auth-mixim.js'
               if (valid) {
                 this.$Modal.confirm({
                   title: '系统提示', content: '确认保存吗?', onOk: () => {
-                    this.formData.drivingLicensePic = this.pjUrl(this.img1)
-                    this.formData.firstMileage = this.formData.firstMileage || 0
-                    this.formData.tradingCardPic = this.pjUrl(this.img2)
-                    this.formData.trafficPermitPic = this.pjUrl(this.img3)
-                    this.formData.guaranteeSlipPic = this.pjUrl(this.img4)
+                    console.log(this.formData.certDate);
+                    let formData = deepClone(this.formData)
+                    formData.drivingLicensePic = this.pjUrl(this.img1)
+                    formData.firstMileage = this.formData.firstMileage || 0
+                    formData.tradingCardPic = this.pjUrl(this.img2)
+                    formData.trafficPermitPic = this.pjUrl(this.img3)
+                    formData.guaranteeSlipPic = this.pjUrl(this.img4)
                     //0转空....
-                    this.formData.plateColor = this.formData.plateColor == 0 ? '' : this.formData.plateColor
-                    this.formData.vehicleType = this.formData.vehicleType == 0 ? '' : this.formData.vehicleType
-                    this.formData.status = this.formData.status == 0 ? '' : this.formData.status
-                    this.formData.county = this.formData.county == 0 ? '' : this.formData.county
-                    this.formData.fuelType = this.formData.fuelType == 0 ? '' : this.formData.fuelType
-                    this.formData.single = this.formData.single == 0 ? '' : this.formData.single
-                    this.$axios.post('/manage/vehicle/base/save', this.formData).then((res) => {
+                    formData.plateColor = this.formData.plateColor == 0 ? '' : this.formData.plateColor
+                    formData.vehicleType = this.formData.vehicleType == 0 ? '' : this.formData.vehicleType
+                    formData.status = this.formData.status == 0 ? '' : this.formData.status
+                    formData.county = this.formData.county == 0 ? '' : this.formData.county
+                    formData.fuelType = this.formData.fuelType == 0 ? '' : this.formData.fuelType
+                    formData.single = this.formData.single == 0 ? '' : this.formData.single
+                    if(typeof(formData.certDate)=='string'){
+                      formData.certDate =  new Date(formData.certDate);
+                    }
+                    if(typeof(formData.checkDate)=='string'){
+                      formData.checkDate =  new Date(formData.checkDate);
+                    }
+                    if(typeof(formData.lastCheckDate)=='string'){
+                      formData.lastCheckDate =  new Date(formData.lastCheckDate);
+                    }
+                    if(typeof(formData.lastRepairDate)=='string'){
+                      formData.lastRepairDate =  new Date(formData.lastRepairDate);
+                    }
+                    if(typeof(formData.regDate)=='string'){
+                      formData.regDate =  new Date(formData.regDate);
+                    }
+                     //xieruixiang
+                    this.$axios.post('/manage/vehicle/base/save', formData).then((res) => {
                       if (res.data.code == '0') {
                         if (this.formData.vehicleId == '') {
                           this.$Message.success('新增成功')
+                          this.formData.vehicleId = res.data.id
                         } else {
                           this.$Message.success('修改成功')
                         }
-                        this.formData.vehicleId = res.data.id;
                         this.getList()
                       }
                     })
@@ -1611,7 +1645,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
             this.$axios.post('/manage/vehicle/change/save', data).then((res) => {
               if (res.data.code == '0') {
                 this.$Message.success('保存成功')
-                this.getChange(this.formData.vehicleId);
+                this.getChange(this.formData.vehicleId)
               }
             })
             break
@@ -1627,8 +1661,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
             let data3 = { data: this.tableData4, vehicleId: this.formData.vehicleId }
             this.$axios.post('/manage/vehicle/uses/save', data3).then((res) => {
               if (res.data.code == '0') {
-                this.$Message.success('保存成功');
-                this.getUseRecord(this.formData.vehicleId);
+                this.$Message.success('保存成功')
+                this.getUseRecord(this.formData.vehicleId)
               }
             })
             break
@@ -1636,8 +1670,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
             let data5 = { data: this.tableData5, vehicleId: this.formData.vehicleId }
             this.$axios.post('/manage/vehicle/accident/save', data5).then((res) => {
               if (res.data.code == '0') {
-                this.$Message.success('保存成功');
-                this.getAccident(this.formData.vehicleId);
+                this.$Message.success('保存成功')
+                this.getAccident(this.formData.vehicleId)
               }
             })
             break
@@ -1645,8 +1679,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
             let data6 = { data: this.tableData6, vehicleId: this.formData.vehicleId }
             this.$axios.post('/manage/vehicle/driver/save', data6).then((res) => {
               if (res.data.code == '0') {
-                this.$Message.success('保存成功');
-                this.getDriver(this.formData.vehicleId);
+                this.$Message.success('保存成功')
+                this.getDriver(this.formData.vehicleId)
               }
             })
             break
@@ -1675,14 +1709,14 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.indexName = 'm1'
         this.formData = deepClone(this.storeData)
         this.formData2 = deepClone(this.storeData2)
-        this.imgData1 = [];
-        this.imgData2 = [];
-        this.imgData3 = [];
-        this.imgData4 = [];
-        this.tableData3 = [];
-        this.tableData4 = [];
-        this.tableData5 = [];
-        this.tableData6 = [];
+        this.imgData1 = []
+        this.imgData2 = []
+        this.imgData3 = []
+        this.imgData4 = []
+        this.tableData3 = []
+        this.tableData4 = []
+        this.tableData5 = []
+        this.tableData6 = []
         this.$refs.formData.resetFields()
         this.showModal = true
       },

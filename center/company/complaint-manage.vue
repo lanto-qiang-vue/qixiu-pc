@@ -47,7 +47,7 @@
       complaintManageDetail
     },
     data(){
-		  return{
+	return{
         loading:false,
         columns: [
           {title: '反馈日期', key: 'createDate', sortable: true, minWidth: 120,

@@ -27,10 +27,10 @@
                     <Checkbox :value="checkAll" @on-change="handleCheckAll">全选</Checkbox>
                 </div>
 
-                <div v-for="item in newCheckList" >
-                    <Checkbox  v-model="item.checked" @on-change="newTestChange" :label="item.name" :key="item.name">{{item.name}}</Checkbox>
+                <div v-for="(item,index1) in newCheckList" >
+                    <Checkbox  v-model="item.checked" @on-change="newTestChange" :label="item.name" :key="index1">{{item.name}}</Checkbox>
                     <div v-if="item.types" v-show="item.checked">
-                        <Checkbox v-for="item2 in item.types" v-model="item2.checked" @on-change="newTestChildren" :label="item2.name" :key="item2.name">{{item2.name}}</Checkbox>
+                        <Checkbox v-for="(item2,index) in item.types" v-model="item2.checked" @on-change="newTestChildren" :label="item2.name" :key="index">{{item2.name}}</Checkbox>
                     </div>
                 </div>
                 
@@ -162,29 +162,35 @@ export default {
     },
     methods:{
         newTestChange(){
-            console.log('dfsf',this.newCheckList);
+
 
             for(let i in this.newCheckList){
-                if(this.newCheckList[i].checked){
-
-                    this.newCheckList[i].full=true;
-                }else{
-                    this.newCheckList[i].full=false;
-                }
 
                 if(this.newCheckList[i].checked&&this.newCheckList[i].types){
                     // alert('寄哪里了')
-                    for(let j in this.newCheckList[i].types){
-                        this.newCheckList[i].types[j].checked=true;
+                    let tem=this.newCheckList[i];
+                    for(let j in tem.types){
+                        tem.types[j].checked=true;
                     }
-                    this.newCheckList[i].full=true;
+                    tem.full=true;
+
+                    this.newCheckList.splice(i,1,tem);
                 }else if(!this.newCheckList[i].checked&&this.newCheckList[i].types){
-                    for(let j in this.newCheckList[i].types){
-                        this.newCheckList[i].types[j].checked=false;
+                    // for(let j in this.newCheckList[i].types){
+                    //     this.newCheckList[i].types[j].checked=false;
+                    // }
+                    // this.newCheckList[i].full=false;
+                    let tem=this.newCheckList[i];
+                    for(let j in tem.types){
+                        tem.types[j].checked=false;
                     }
-                    this.newCheckList[i].full=false;
+                    tem.full=false;
+
+                    this.newCheckList.splice(i,1,tem);
                 }
             }
+
+
         },
         newTestChildren(){
             for(let i in this.newCheckList){
@@ -257,24 +263,6 @@ export default {
                                 this.newCheckList.push(res.data.items[i]);
                             }
                             
-                            // for(let i in resData){
-                            //     this.checkList.push(resData[i]);
-                            //     this.checkListName.push(resData[i].name);
-
-                            //     if(resData[i].name=="维修企业"){
-                            //         for(let j in resData[i].types){
-                            //             this.repairData.push(resData[i].types[j]);
-                            //             this.repairDataName.push(resData[i].types[j].name);
-                            //         }
-
-
-                            //     }else if(resData[i].name=="管理"){
-                            //         for(let j in resData[i].types){
-                            //             this.manageData.push(resData[i].types[j]);
-                            //             this.manageDataName.push(resData[i].types[j].name);
-                            //         }
-                            //     }
-                            // }
                             this.spinShow=false;
                         }else{
                             // this.$Message.info(res.data.status)
@@ -288,51 +276,6 @@ export default {
             sendData["title"]=this.search["title"];
             sendData["id"]=this.search["id"];
             sendData["url"]=this.search["docPath"];
-
-            // let objTem=[];
-            // console.log(this.checkAllGroup);
-            // for(let i in this.checkAllGroup){
-
-            // if(this.checkAllGroup[i]=="维修企业"){
-            //         let objWX=this.checkList[this.checkListName.indexOf(this.checkAllGroup[i])];
-            //         objWX.types=[];
-            //         for(let j in this.checkRepairGroup){
-            //             objWX.types.push(this.repairData[this.repairDataName.indexOf(this.checkRepairGroup[j])]);
-            //         }
-            //         objTem.push(objWX);
-            //     }else if(this.checkAllGroup[i]=="管理部门"){
-            //         let objBM=this.checkList[this.checkListName.indexOf(this.checkAllGroup[i])];
-            //         objBM.types=[];
-
-            //         for(let j in this.checkTypeGroup){
-            //             objBM.types.push(this.manageData[this.manageDataName.indexOf(this.checkTypeGroup[j])]);
-            //         }
-            //         objTem.push(objBM);
-            //     }else{
-            //         let objOther=this.checkList[this.checkListName.indexOf(this.checkAllGroup[i])];
-            //         objTem.push(objOther);
-            //     }
-            // }
-
-            // for(let i in this.newCheckList){
-            //     if(this.newCheckList[i].checked){
-            //         let objWX=this.newCheckList[i];
-            //         objWX.types=[];
-            //         if(this.newCheckList[i].checked&&this.newCheckList[i].types){
-            //             for(let j in this.newCheckList[i].types){
-            //                 if(this.newCheckList[i].types[j].checked){
-            //                     objWX.types.push(this.newCheckList[i].types[j]);
-            //                 }
-                            
-            //             }
-            //         }
-                    
-            //     }
-
-            //     objTem.push(objBM);
-                
-            // }
-            // sendData['items']=objTem;
 
 
             this.$refs[name].validate((valid) => {
@@ -393,91 +336,15 @@ export default {
                             }
                     })
 
-                    // if(this.checkAllGroup.length>0){
-                    //     if(this.checkAllGroup.indexOf('维修企业')!=-1&&this.checkAllGroup.indexOf('管理部门')!=-1){
-                    //         if(this.checkRepairGroup.length>0&&this.checkTypeGroup.length>0){
-                    //             this.$axios.post('/message/notify/sendNotify', sendData).then( (res) => {
-                    //                     if(res.data.code=='0'){
-                    //                         this.$Message.info('提交成功')
-                    //                         this.showModal=false;
-                    //                     }else{
-                    //                         this.$Message.info(res.data.status)
-                    //                     }
-                    //             })
-                    //         }else{
-                    //             this.$Message.error("请选择类别");
-                    //         }
-                    //     }else if(this.checkAllGroup.indexOf('维修企业')!=-1){
-                    //         if(this.checkRepairGroup.length>0){
-                    //             this.$axios.post('/message/notify/sendNotify', sendData).then( (res) => {
-                    //                     if(res.data.code=='0'){
-                    //                         this.$Message.info('提交成功')
-                    //                         this.showModal=false;
-                    //                     }else{
-                    //                         this.$Message.info(res.data.status)
-                    //                     }
-                    //             })
-                    //         }else{
-                    //             this.$Message.error("请选择类别");
-                    //         }
-                    //     }else if(this.checkAllGroup.indexOf('管理部门')!=-1){
-                    //         if(this.checkTypeGroup.length>0){
-                    //             this.$axios.post('/message/notify/sendNotify', sendData).then( (res) => {
-                    //                     if(res.data.code=='0'){
-                    //                         this.$Message.info('提交成功')
-                    //                         this.showModal=false;
-                    //                     }else{
-                    //                         this.$Message.info(res.data.status)
-                    //                     }
-                    //             })
-                    //         }else{
-                    //             this.$Message.error("请选择类别");
-                    //         }
-                    //     }else{
-                    //         this.$axios.post('/message/notify/sendNotify', sendData).then( (res) => {
-                    //                     if(res.data.code=='0'){
-                    //                         this.$Message.info('提交成功')
-                    //                         this.showModal=false;
-                    //                     }else{
-                    //                         this.$Message.info(res.data.status)
-                    //                     }
-                    //             })
-                    //     }
-
-                    // }else{
-                    //     this.$Message.error("请选择发送对象");
-                    // }
-
                 }
             });
 
         },
         //选择发送对象-----------------------
         handleCheckAll (flag) {
-            // this.checkAllGroup = [];
-            //         this.checkRepair=[];
-            //         this.checkmanage=[];
-            //     if (flag) {
-            //         for(let i in this.checkList){
-            //             this.checkAllGroup.push(this.checkList[i]["name"]);
-            //         }
-            //         for(let i in this.repairData){
-            //             this.checkRepair.push(this.repairData[i]);
-            //         }
-            //         for(let i in this.manageData){
-            //             this.checkmanage.push(this.manageData[i]);
-            //         }
-            //         this.checkAll = true;
-            //     } else {
-            //         this.checkAllGroup = [];
-            //         this.checkRepair=[];
-            //         this.checkmanage=[];
-            //         this.checkAll = false;
-            //     }
 
-
-            //      console.log(flag,this.checkAllGroup);
                 if (flag) {
+                    this.checkAll = true;
                     for(let i in this.newCheckList){
                         this.newCheckList[i].checked=true;
                          this.newCheckList[i].full=true;
@@ -489,8 +356,9 @@ export default {
                         }
                     }
                     
-                    this.checkAll = true;
+                    
                 }else {
+                    this.checkAll = false;
                    for(let i in this.newCheckList){
                         this.newCheckList[i].checked=false;
                          this.newCheckList[i].full=false;
@@ -501,7 +369,7 @@ export default {
                             }
                         }
                     }
-                    this.checkAll = false;
+                    
                 }
 
         },
