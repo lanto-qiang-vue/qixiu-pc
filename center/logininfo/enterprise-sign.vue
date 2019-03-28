@@ -20,9 +20,13 @@
               </FormItem>
               <FormItem label="所属辖区:">
 
-                  <Select v-model="searchList.areaKey" clearable>
-                      <Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
-                  </Select>
+                  <!--<Select v-model="searchList.areaKey" clearable>-->
+                      <!--<Option v-for="item in searchSelectOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
+                  <!--</Select>-->
+                <area-select :change-on-select="true"
+                             @changeSelect="searchList.areaKey= $event"
+                             :rules="{other: { useSelect: false, useRegion: false}}"
+                ></area-select>
               </FormItem>
             <FormItem :label-width="0" style="width: 70px;">
                 <Button type="primary" v-if="" @click="searchFun">搜索</Button>
@@ -41,6 +45,7 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
+import AreaSelect from '~/components/area-select.vue'
 import SignInCalendar from '~/components/sign-in-calendar.vue'
 import { formatDate } from '@/static/tools'
 import funMixin from '~/components/fun-auth-mixim.js'
@@ -49,7 +54,8 @@ export default {
   mixins: [funMixin],
     components: {
       CommonTable,
-      SignInCalendar
+      SignInCalendar,
+      AreaSelect,
     },
     data(){
 		  return{
@@ -68,7 +74,7 @@ export default {
               },
           ],
           tableData: [],
-          searchSelectOption:[],
+          // searchSelectOption:[],
           searchList:{
               areaKey:"",
               companyName:"",
@@ -95,7 +101,7 @@ export default {
     mounted () {
 
       this.getList();
-      this.getAreaInfo();
+      // this.getAreaInfo();
     },
     // beforeMount(){
     //   this.$axios.post('/menu/list', {
@@ -125,18 +131,18 @@ export default {
            this.detailData= {};
 
         },
-        getAreaInfo(){
-            this.$axios.post('/area/region/list', {
-                   "areaName": process.env.config.areaName
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.searchSelectOption=res.data.items;
-                }else{
-                    this.$Message.error(res.data.status);
-                }
-           })
-
-        },
+        // getAreaInfo(){
+        //     this.$axios.post('/area/region/list', {
+        //            "areaName": process.env.config.areaName
+        //     }).then( (res) => {
+        //         if(res.data.code=='0'){
+        //             this.searchSelectOption=res.data.items;
+        //         }else{
+        //             this.$Message.error(res.data.status);
+        //         }
+        //    })
+        //
+        // },
         changePage(page){
           this.page= page
           this.getList()

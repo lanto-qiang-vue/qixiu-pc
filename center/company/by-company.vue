@@ -13,7 +13,6 @@
 
           <area-select :change-on-select="true"
                        @changeSelect="search.area= $event"
-                       @changeCascader="cascaderArea"
           ></area-select>
         </FormItem>
 
@@ -196,18 +195,6 @@ export default {
               this.getList();
           }
       },
-      cascaderArea(value){
-        switch (value.length){
-          case 1:{
-            this.search.area= value[0]
-            break
-          }
-          case 2:{
-            this.search.area= value[1]
-            break
-          }
-        }
-      }
     },
 
   }

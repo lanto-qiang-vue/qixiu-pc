@@ -492,7 +492,7 @@ export default [
         path: 'record-company',
         meta: {
           icon: '',
-          title: '维修记录管理(按企业)',
+          title: '维修企业综合情况',
           accessId: '/center/record-company',
           keepAlive: true
         },
@@ -502,7 +502,7 @@ export default [
         path: 'record-repair',
         meta: {
           icon: '',
-          title: '维修记录管理',
+          title: '电子健康档案',
           accessId: '/center/record-repair',
           keepAlive: true
         },

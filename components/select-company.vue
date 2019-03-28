@@ -21,7 +21,7 @@
           </FormItem>
           <FormItem label="所属辖区:" prop="corp_area">
             <Select v-model="search.corp_area">
-              <Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
+              <Option v-for="(item, key) in area" :value="item.regionCode || item.value" :key="key">{{ item.shortName }}</Option>
             </Select>
           </FormItem>
           <FormItem :label-width="80" style="width: 100px;">

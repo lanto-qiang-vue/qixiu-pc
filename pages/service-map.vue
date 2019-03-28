@@ -32,9 +32,12 @@
         <Select v-model="search.is4s" placeholder="企业类型"  clearable @on-change="changeSelectAll">
           <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
-        <Select v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
+        <Select v-if="isShanghai" v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
+        <area-select v-else :change-on-select="true" placeholder="所在区域" class="area-select"
+                     @changeSelect="search.area= $event, changeSelectAll()"
+        ></area-select>
         <Select v-model="search.hot" placeholder="热门搜索"  clearable class="brand" @on-change='selectHot' ref="hot">
           <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
@@ -102,13 +105,14 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
+import AreaSelect from '~/components/area-select.vue'
 import { formatArticle } from '@/static/util.js'
 import Vue from 'vue'
 export default {
   name: "service-map",
   layout: 'layout-root',
   components: {
-    BasicContainer
+    BasicContainer, AreaSelect
   },
   // props:['type','tolimit'],
   // head () {
@@ -223,6 +227,9 @@ export default {
     }
   },
   computed:{
+    isShanghai(){
+      return process.env.config.areaName=='shanghai'
+    },
     nowType(){
       return this.search.type
     }
@@ -969,11 +976,10 @@ export default {
       .select-bar{
         display: flex;
         margin-top: 10px;
-        .ivu-select{
+        .ivu-select, .area-select{
           width: 25%;
           padding-right: 5px;
         }
-
       }
       .res{
         text-align: center;

@@ -14,7 +14,7 @@
         <FormItem label="许可证号:">
             <Input type="text" v-model="searchList.companyroadtransportationlicense" placeholder="请输入许可证号"></Input>
         </FormItem>
-        
+
         <FormItem :label-width="0" style="width: 90px;">
             <Button type="primary" v-if="accessBtn('list')" @click="searchFun">搜索</Button>
         </FormItem>
@@ -38,15 +38,15 @@ export default {
 	name: "company-qualify-manage",
     components: {
       CommonTable,
-      companyQualifyDetail
+      companyQualifyDetail,
     },
     mixins: [funMixin],
     data(){
 		  return{
               loading:false,
-              
+
         columns: [
-          
+
           {title: '单位名称', key: 'companyName', sortable: true, minWidth: 120,
             // render: (h, params) => h('span', getName(this.$store.state.app.dict, params.row.ORDER_TYPE))
           },
@@ -56,8 +56,8 @@ export default {
           {title: '当年累计发放量', key: 'thisYearNum', sortable: true, minWidth: 120},
           {title: '去年累计发放量', key: 'lastYearNum', sortable: true, minWidth: 135},
           {title: '去年累计销证量', key: 'lastYearSalesVolume', sortable: true, minWidth: 120},
-          
-          
+
+
         ],
         tableData: [],
         searchList:{
@@ -75,27 +75,13 @@ export default {
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-        areaOption:[],//区域数据集合----
       }
     },
     mounted () {
       this.getList();
-      
+
     },
     methods:{
-        //获取区域数据-------
-        getAreaInfo(){
-            this.$axios.post('/area/region/list', {
-                   "areaName": process.env.config.areaName
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.areaOption=res.data.items;
-                }else{
-                    this.$Message.error(res.data.status);
-                }
-           })
-           
-        },
         getList(){
             this.loading=true;
             this.$axios.post('/company/repaircompany/query/company/detail', {
@@ -124,7 +110,7 @@ export default {
             this.$axios.get('/dict/getValuesByTypeId/1', {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    
+
                 }
            })
         },
@@ -142,7 +128,7 @@ export default {
         },
         closeDetail(){
           this.detailData= null
-          
+
           this.clearTableSelect= Math.random();
           this.getList();
         },
@@ -168,9 +154,9 @@ export default {
                 }
             })
         },
-        
 
-        
+
+
     },
 	}
 </script>

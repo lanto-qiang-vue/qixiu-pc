@@ -11,9 +11,14 @@
           <Input type="text" v-model="search.corp_name" placeholder="请输入企业名称"></Input>
         </FormItem>
         <FormItem label="所属辖区:" prop="corp_area">
-          <Select v-model="search.corp_area" style="width:200px">
-            <Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
-          </Select>
+          <!--<Select v-model="search.corp_area" style="width:200px">-->
+            <!--<Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
+          <!--</Select>-->
+
+          <area-select :change-on-select="true"
+                       :rules="{other: { useSelect: true, useRegion: true}}"
+                       @changeSelect="search.corp_area= $event"
+          ></area-select>
         </FormItem>
         <div style="clear:both;"></div>
         <FormItem label="道路经营许可证:">
@@ -52,10 +57,15 @@
           <Input v-model="formData.chargePerson" type="text"> </Input>
         </FormItem>
         <FormItem label="所属辖区:" prop="corpArea">
-          <Select v-model="formData.corpArea">
-            <Option v-for="item in area2" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
-            </Option>
-          </Select>
+          <!--<Select v-model="formData.corpArea">-->
+            <!--<Option v-for="item in area2" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}-->
+            <!--</Option>-->
+          <!--</Select>-->
+
+          <area-select :change-on-select="true" :value-select="formData.corpArea"
+                       :rules="{other: { useSelect: true, useRegion: true}}"
+                       @changeSelect="formData.corpArea= $event"
+          ></area-select>
         </FormItem>
         <FormItem label="企业联系电话:">
           <Input v-model="formData.serviceHotLine" type="text"> </Input>
@@ -100,16 +110,17 @@
 </template>
 
 <script>
-  import CommonTable from '~/components/common-table.vue'
-  import { deepClone } from '../../static/util'
-  import funMixin from '~/components/fun-auth-mixim.js'
-  export default {
+import CommonTable from '~/components/common-table.vue'
+import AreaSelect from '~/components/area-select.vue'
+import { deepClone } from '../../static/util'
+import funMixin from '~/components/fun-auth-mixim.js'
+export default {
     name: 'transportationCompany-manage',
-    components: { CommonTable },
+    components: { CommonTable, AreaSelect },
     mixins: [funMixin],
     data() {
       const validateChange = (rule, value, callback) => {
-        if (value == 0) {
+        if (!value) {
           callback(new Error('请选择区域'))
         } else {
           callback()
@@ -147,8 +158,8 @@
           corp_name: '',
           corp_num: ''
         },
-        area: [],
-        area2: [],
+        // area: [],
+        // area2: [],
         list: '',
         formData: {
           'businessNum': '',
@@ -157,7 +168,7 @@
           'contacts': '',
           'contactsTel': '',
           'corpAdd': '',
-          'corpArea': '0',
+          'corpArea': '',
           'id': '',
           'corpName': '',
           'corpNum': '',
@@ -201,6 +212,10 @@
       canDo() {
         return this.list == ''
       }
+    },
+    mounted() {
+      // this.getAreaList()
+      this.getList()
     },
     methods: {
       visibleChange() {
@@ -297,7 +312,7 @@
         this.$axios.post('/manage/transcorp/tccorpinfo/info/list', {
           'businessNum': this.search.business_num,
           'corpAdd': this.search.corp_add,
-          'corpArea': this.search.corp_area == 0 ? '' : this.search.corp_area,
+          'corpArea': this.search.corp_area ,
           'corpName': this.search.corp_name,
           'corpNum': this.search.corp_num,
           'pageNo': this.page,
@@ -310,24 +325,19 @@
           }
         })
       },
-      getAreaList() {
-        this.$axios.post('/area/region/list', {
-          areaName: process.env.config.areaName
-        }).then((res) => {
-          if (res.data.code == '0') {
-            this.area = res.data.items
-            this.area2 = deepClone(res.data.items)
-            this.area.unshift({ regionCode: '0', shortName: '全部' })
-            this.area2.unshift({ regionCode: '0', shortName: '请选择' })
-          }
-        })
-      }
+      // getAreaList() {
+      //   this.$axios.post('/area/region/list', {
+      //     areaName: process.env.config.areaName
+      //   }).then((res) => {
+      //     if (res.data.code == '0') {
+      //       this.area = res.data.items
+      //       this.area2 = deepClone(res.data.items)
+      //       this.area.unshift({ regionCode: '0', shortName: '全部' })
+      //       this.area2.unshift({ regionCode: '0', shortName: '请选择' })
+      //     }
+      //   })
+      // }
     },
-    mounted() {
-      this.search.corp_area = '0'
-      this.getAreaList()
-      this.getList()
-    }
   }
 </script>
 

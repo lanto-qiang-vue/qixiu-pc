@@ -9,9 +9,13 @@
     <div  slot="search"  >
       <Form :label-width="80" class="common-form">
         <FormItem label="区域:">
-            <Select v-model="searchList.area" clearable>
-                <Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
-            </Select>
+            <!--<Select v-model="searchList.area" clearable>-->
+                <!--<Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
+            <!--</Select>-->
+          <area-select :change-on-select="true"
+                       @changeSelect="searchList.area= $event"
+                       :rules="{other: { useSelect: false, useRegion: false}}"
+          ></area-select>
         </FormItem>
         <FormItem label="企业名称:">
             <Input type="text" v-model="searchList.companyName" placeholder="请输入企业名称"></Input>
@@ -50,6 +54,7 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
+import AreaSelect from '~/components/area-select.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
 import repairCompanyInfo from '~/center/operate/repair-company-info.vue'
 import { getName } from '~/static/util.js'
@@ -57,7 +62,8 @@ export default {
 	name: "company-info-manage",
     components: {
       CommonTable,
-      repairCompanyInfo
+      repairCompanyInfo,
+      AreaSelect
     },
     mixins: [funMixin],
     data(){
@@ -117,12 +123,12 @@ export default {
         showOtherDetail:false,
         detailData: null,
         clearTableSelect: null,
-        areaOption:[],//区域数据集合----
+        // areaOption:[],//区域数据集合----
         businessStatusArr:[]
       }
     },
     mounted () {
-        this.getAreaInfo();
+        // this.getAreaInfo();
         this.getBusStatus();
         let queryData=this.$route.query;
 
@@ -135,18 +141,18 @@ export default {
     },
     methods:{
         //获取区域数据-------
-        getAreaInfo(){
-            this.$axios.post('/area/region/list', {
-                   "areaName": process.env.config.areaName
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.areaOption=res.data.items;
-                }else{
-                    this.$Message.error(res.data.status);
-                }
-           })
-
-        },
+        // getAreaInfo(){
+        //     this.$axios.post('/area/region/list', {
+        //            "areaName": process.env.config.areaName
+        //     }).then( (res) => {
+        //         if(res.data.code=='0'){
+        //             this.areaOption=res.data.items;
+        //         }else{
+        //             this.$Message.error(res.data.status);
+        //         }
+        //    })
+        //
+        // },
         getList(){
             this.loading=true;
             // this.$axios.post('/company/list', {
@@ -230,8 +236,6 @@ export default {
                 }
             })
         },
-
-
 
     },
 	}

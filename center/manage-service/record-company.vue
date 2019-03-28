@@ -8,9 +8,13 @@
     <div  slot="search"  >
       <Form :label-width="100" class="common-form" :model="searchList" ref="searchForm">
           <FormItem label="区域:">
-            <Select v-model="searchList.area.key" clearable>
-                <Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
-            </Select>
+            <!--<Select v-model="searchList.area.key" clearable>-->
+                <!--<Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
+            <!--</Select>-->
+
+            <area-select :change-on-select="true"
+                         @changeSelect="searchList.area.key= $event"
+            ></area-select>
         </FormItem>
         <FormItem label="企业名称:">
             <Input type="text" v-model="searchList.companyName" placeholder="请输入企业名称"></Input>
@@ -88,6 +92,7 @@
 
 <script>
 import CommonTable from '~/components/common-table.vue'
+import AreaSelect from '~/components/area-select.vue'
 import { formatDate } from '@/static/tools.js'
 import funMixin from '~/components/fun-auth-mixim.js'
 import { getName, deepClone } from '@/static/util.js'
@@ -155,7 +160,7 @@ if(!thisData) {
     showOtherDetail:false,
     detailData: null,
     clearTableSelect: null,
-    areaOption:[],//区域数据集合----
+    // areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
     businessType:[],//经营状态类型集合------
     manageType:[],//管理部门数据集合--------
@@ -223,7 +228,7 @@ if(!thisData) {
 export default {
 	name: "record-company",
     components: {
-      CommonTable,
+      CommonTable, AreaSelect,
     },
     mixins: [funMixin],
     data(){
@@ -250,7 +255,7 @@ export default {
   // },
   mounted () {
 	    // console.log('record-company: mounted', this.$route.query)
-        this.getAreaInfo();
+	    // this.getAreaInfo();
         this.getType('1');
         this.getBusinessType();
         this.getCompanyArea();
@@ -285,9 +290,9 @@ activated(){
                 search= deepClone(searchList)
 
                 if(queryData.area){
-                search.area= {
-                    key: queryData.area
-                }
+                  search.area= {
+                      key: queryData.area
+                  }
                 }
                 if(queryData.category){
                 search.companyCategory= parseInt(queryData.category);
@@ -408,18 +413,18 @@ activated(){
             this.searchList.chainBrand=val.id;
         },
         //获取区域数据-------
-        getAreaInfo(){
-            this.$axios.post('/area/region/list', {
-                   "areaName": process.env.config.areaName
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.areaOption=res.data.items;
-                }else{
-                    // this.$Message.error(res.data.status);
-                }
-           })
-
-        },
+        // getAreaInfo(){
+        //     this.$axios.post('/area/region/list', {
+        //            "areaName": process.env.config.areaName
+        //     }).then( (res) => {
+        //         if(res.data.code=='0'){
+        //             this.areaOption=res.data.items;
+        //         }else{
+        //             // this.$Message.error(res.data.status);
+        //         }
+        //    })
+        //
+        // },
         getBusinessType(){
             this.$axios.get('/company/category/business/list', {
             }).then( (res) => {
@@ -445,7 +450,7 @@ activated(){
            })
         },
         getCompanyArea(){
-            
+
             this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {
             }).then( (res) => {
                 if(res.data.code=='0'){

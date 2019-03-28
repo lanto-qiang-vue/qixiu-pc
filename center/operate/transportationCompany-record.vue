@@ -105,7 +105,7 @@
             </FormItem>
             <FormItem label="所属辖区:" prop="contacts">
               <Select v-model="formData.county">
-                <Option v-for="item in area" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}
+                <Option v-for="(item, key) in area" :value="item.regionCode || item.value" :key="key">{{ item.shortName }}
                 </Option>
               </Select>
             </FormItem>
@@ -1084,7 +1084,8 @@
         area: [],
         list: '',
         clearTableSelect: false,
-        columns: [{
+        columns: [
+          {
           title: '档案号', key: 'recordNo', sortable: true, minWidth: 100
         },
           { title: '车牌号', key: 'plateNum', sortable: true, minWidth: 100 },
@@ -1297,10 +1298,34 @@
 
       }
     },
+    computed: {
+      canDo() {
+        return this.list == ''
+      },
+      canEdit() {
+        return this.formData.vehicleId == ''
+      },
+      canDo3() {
+        return this.select3.length == 0
+      },
+      canDo4() {
+        return this.select4.length == 0
+      },
+      canDo5() {
+        return this.select5.length == 0
+      },
+      canDo6() {
+        return this.select6.length == 0
+      }
+    },
     watch:{
       'formData.certDate'(val){
         console.log(val);
       }
+    },
+    mounted() {
+      this.getList()
+      this.getAreaList()
     },
     methods: {
       getDriver(id) {
@@ -1789,29 +1814,6 @@
         })
       }
     },
-    mounted() {
-      this.getList()
-      this.getAreaList()
-    },
-    computed: {
-      canDo() {
-        return this.list == ''
-      },
-      canEdit() {
-        return this.formData.vehicleId == ''
-      },
-      canDo3() {
-        return this.select3.length == 0
-      },
-      canDo4() {
-        return this.select4.length == 0
-      },
-      canDo5() {
-        return this.select5.length == 0
-      },
-      canDo6() {
-        return this.select6.length == 0
-      }
-    }
+
   }
 </script>

@@ -1,12 +1,12 @@
 <template>
 <div class="area-select">
-  <Select :value="calcSelectValue" :transfer="transfer" v-if="useSelect"
-          :disabled="disabled" :clearable="clearable" @on-change="changeSelect">
+  <Select :value="calcSelectValue" :transfer="transfer" v-if="useSelect" :label-in-value="labelInValue"
+          :disabled="disabled" :clearable="clearable" @on-change="changeSelect" :placeholder="placeholder">
     <Option v-for="(item , key) in areaList" :value="item.regionCode || item.value" :key="key">{{ item.shortName }}
     </Option>
   </Select>
   <Cascader v-else :data="areaList" :value="calcCascaderValue" :disabled="disabled" :clearable="clearable"
-            @on-change="changeCascader"  :change-on-select="changeOnSelect"></Cascader>
+            @on-change="changeCascader"  :change-on-select="changeOnSelect" :placeholder="placeholder"></Cascader>
 </div>
 </template>
 
@@ -32,6 +32,9 @@ export default {
         return []
       }
     },
+    placeholder:{
+      default: ''
+    },
     disabled:{
       default: false
     },
@@ -42,6 +45,9 @@ export default {
       default: true
     },
     changeOnSelect:{
+      default: true
+    },
+    labelInValue:{
       default: false
     },
     rules:{
@@ -140,6 +146,18 @@ export default {
     },
     changeCascader(value){
       this.cascaderValue= value
+      let singleVal= ''
+      switch (value.length){
+        case 1:{
+          singleVal= value[0]
+          break
+        }
+        case 2:{
+          singleVal= value[1]
+          break
+        }
+      }
+      this.$emit('changeSelect', singleVal);
       this.$emit('changeCascader', value);
     },
   }
