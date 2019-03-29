@@ -49,7 +49,7 @@ export default {
       this.sigin()
       this.checkWeixiuButt()
     }
-    if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoButt();
+    if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoContacts();
   },
   methods:{
     showButt(data, type){
