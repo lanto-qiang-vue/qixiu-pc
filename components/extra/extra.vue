@@ -14,7 +14,7 @@
     :transition-names="['', '']">
     <div v-html="protocol"></div>
     <div slot="footer">
-      <Button type="success" @click="schoolAgreementAgree">同意协议</Button>
+      <Button type="primary" @click="schoolAgreementAgree">同意协议</Button>
     </div>
   </Modal>
 </div>
