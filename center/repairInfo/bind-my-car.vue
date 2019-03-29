@@ -608,9 +608,16 @@ export default {
         //修改身份信息----------------
         updateIdFun(){
             this.showCard=true;
-            for(let i in this.infoData){
-                this.infoDataTem[i]=this.infoData[i];
+            if(this.displayCardResive){
+                for(let i in this.reviseInfoData){
+                    this.infoDataTem[i]=this.reviseInfoData[i];
+                }
+            }else{
+                for(let i in this.infoData){
+                    this.infoDataTem[i]=this.infoData[i];
+                }
             }
+            
         },
         updateCard(name){
             let uploadInfo=deepClone(this.infoDataTem);
@@ -634,9 +641,16 @@ export default {
         //修改驾驶证信息-----------
         updateDriver(){
             this.showDriver=true;
-            for(let i in this.infoDriverData){
-                this.infoDriverDataTem[i]=this.infoDriverData[i];
+            if(this.displayDriverResive){
+                for(let i in this.reviseDriverData){
+                    this.infoDriverDataTem[i]=this.reviseDriverData[i];
+                }
+            }else{
+                for(let i in this.infoDriverData){
+                    this.infoDriverDataTem[i]=this.infoDriverData[i];
+                }
             }
+            
         },
         updateDriverFun(name){
            let upLoadData=deepClone(this.infoDriverDataTem);
@@ -779,9 +793,16 @@ export default {
         },
         updateBusineFun(){
             this.showBusine=true;
-            for(let i in this.infoBusine){
-                this.infoBusineTem[i]=this.infoBusine[i];
+            if(this.displayBusine){
+                for(let i in this.reviseBusine){
+                    this.infoBusineTem[i]=this.reviseBusine[i];
+                }
+            }else{
+                for(let i in this.infoBusine){
+                    this.infoBusineTem[i]=this.infoBusine[i];
+                }
             }
+            
         },
         updateBusine(name){
             let upLoadData=deepClone(this.infoBusineTem);
