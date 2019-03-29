@@ -67,7 +67,17 @@ export default {
           columns: [
               {title: '名称', key: 'name', sortable: true, minWidth: 120,
               },
-              {title: '区域', key: 'areaName', sortable: true, minWidth: 120},
+              {title: '区域', key: 'areaName', sortable: true, minWidth: 120,
+                render: (h, params) => {
+                  let name= ''
+                    if(process.env.config.areaName=='shanghai') name= params.row.areaName
+                    else{
+                      if(params.row.org) name= params.row.org
+                      if(params.row.dept) name+= (' / '+ params.row.dept)
+                    }
+                  return h('span',name)
+                }
+              },
               {title: '经营许可证', key: 'roadPermit', sortable: true, minWidth: 135},
               {title: '最后登录时间', key: 'lastLogin', sortable: true, minWidth: 120,
                   render: (h, params) => h('span', params.row.lastLogin||'无')

@@ -1,6 +1,5 @@
 export default {
-  props:['banners', 'swiperOption', 'showSwiper', 'area', 'questionList', 'cdfList', 'articleBanner',
-    'articleMiddle', 'articleRight'],
+  props:['banners', 'swiperOption', 'showSwiper', 'information'],
   data(){
     return{
       search:{

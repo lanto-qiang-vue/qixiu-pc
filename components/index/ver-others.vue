@@ -1,14 +1,13 @@
 <template>
 <div class="home">
   <index-component  class="index-component" :banners="banners" :swiperOption="swiperOption"
-                   :showSwiper="showSwiper" :area="area" :questionList="questionList" :cdfList="cdfList"
-                   :articleBanner="articleBanner" :articleMiddle="articleMiddle" :articleRight="articleRight">
+                   :showSwiper="showSwiper"  :information="information">
     <div class="head" slot="header">
       <div class="title">
         <img src="~@/assets/img/login_img/logo.png">
         <div>
-          <h1>上海市机动车维修公共服务平台</h1>
-          <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
+          <h1>山东省机动车维修公共服务平台</h1>
+          <span style="font-size: 16px">Shandong Automobile Maintenance Public Service Platform</span>
         </div>
       </div>
       <div class="right">
@@ -31,7 +30,7 @@
       <div class="left">
         <div class="title"><h1>系统介绍</h1></div>
         <swiper :options="swiperOption" ref="mySwiper" class="system-swiper" v-if="showSwiper">
-          <swiper-slide v-for="(item, index) in systemArticle" :key="index">
+          <swiper-slide v-for="(item, index) in information.systemList" :key="index">
             <div class='content'>
               <img :src="item.photo || '/img/default-car.png'">
               <p style="-webkit-box-orient: vertical;">{{item.text}}<span>详情</span></p>
@@ -56,10 +55,14 @@
                     transfer style="width:24%;">
               <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
             </Select>
-            <Select v-model="search.area" size="large" placeholder="企业区域" clearable
-                    transfer style="width:24%;">
-              <Option v-for="(item, index) in area" :value="item.code" :key="index">{{item.name}}</Option>
-            </Select>
+            <!--<Select v-model="search.area" size="large" placeholder="企业区域" clearable-->
+                    <!--transfer style="width:24%;">-->
+              <!--<Option v-for="(item, index) in area" :value="item.code" :key="index">{{item.name}}</Option>-->
+            <!--</Select>-->
+
+            <area-select :change-on-select="true" :transfer="true" placeholder="企业区域" size="large"
+                         @changeSelect="search.area= $event" style="width:24%;display: inline-block;"
+            ></area-select>
             <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable
                     transfer style="width:24%;" ref="hot" @on-change='selectHot' >
               <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
@@ -80,8 +83,8 @@
       <div class="right">
         <div class="title"><h1>通知公告</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
         <ul>
-          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
-          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+Math.random()">{{item.title}}</nuxt-link>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in information.noticeList" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in information.noticeList" :key="'articleMiddle-latest'+Math.random()">{{item.title}}</nuxt-link>
         </ul>
       </div>
     </div>
@@ -94,11 +97,12 @@
 
 <script>
 import IndexComponent from '~/components/index/index-component.vue'
+import AreaSelect from '~/components/area-select.vue'
 import LoginStatus from '~/components/login-status.vue'
 import IndexMixin from '~/components/index/index-mixin.js'
 export default {
   name: "ver-others",
-  components: { IndexComponent, LoginStatus},
+  components: { IndexComponent, LoginStatus, AreaSelect},
   mixins: [IndexMixin],
   data(){
     return{
@@ -314,6 +318,7 @@ export default {
           }
           img{
             width: 80px;
+            margin-right: 5px;
           }
           div{
             h1{

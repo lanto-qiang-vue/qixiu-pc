@@ -1,19 +1,17 @@
 <template>
 <div>
-  <ver-shanghai :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper" :area="area"
-  :questionList="questionList" :cdfList="cdfList" :articleBanner="articleBanner" :articleMiddle="articleMiddle"
-                :articleRight="articleRight" v-if="isShanghai"></ver-shanghai>
-  <ver-others :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper" :area="area"
-  :questionList="questionList" :cdfList="cdfList" :articleBanner="articleBanner" :articleMiddle="articleMiddle"
-  :articleRight="articleRight" v-else></ver-others>
+  <ver-shanghai :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper"
+                :information="information" v-if="isShanghai"></ver-shanghai>
+  <ver-others :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper"
+              :information="information" v-else></ver-others>
 <common-footer></common-footer>
 </div>
 </template>
 
 <script>
-  import VerShanghai from '~/components/index/ver-shanghai.vue'
-  import VerOthers from '~/components/index/ver-others.vue'
-  // import CommonFooter from '~/components/common-footer.vue'
+import VerShanghai from '~/components/index/ver-shanghai.vue'
+import VerOthers from '~/components/index/ver-others.vue'
+// import CommonFooter from '~/components/common-footer.vue'
 import CommonFooter from '~/components/common-footer.vue'
 // import IconBlock from '~/components/menu/icon-block.vue'
 // import LoginStatus from '~/components/login-status.vue'
@@ -45,16 +43,19 @@ if(!thisData) {
       },
     },
     showSwiper: false,
-    area: [],
 
-    questionList: [],
-    cdfList: [],
-    articleBanner: [],
-    articleMiddle: {
-      latest: [],
-      hottest: [],
+    information:{
+      questionList: [],
+      cdfList: [],
+      articleBanner: [],
+      articleMiddle: {
+        latest: [],
+        hottest: [],
+      },
+      articleRight: [],
     },
-    articleRight: [],
+
+
     error: null,
     isGetData: false
   }
@@ -71,7 +72,7 @@ export default {
       return thisData
     }
 
-    let articles= new Promise((resolve, reject) => {
+    let homeArticles= new Promise((resolve, reject) => {
       app.$axios.$get('/infopublic/home/all').then(res => {
         if (res.code === '0') {
           resolve( res.item)
@@ -103,10 +104,57 @@ export default {
       })
     })
 
-    return Promise.all([
+    let articles= (type, limit)=>{
+      return new Promise((resolve, reject) => {
+        app.$axios.$post('/infopublic/home/all',{
+          infoType: type,
+          pageNo: 1,
+          pageSize: limit
+        }).then(res => {
+          if (res.code === '0') {
+            resolve( res.items)
+          } else reject( res)
+        },err => {
+          reject(err)
+        })
+      })
+    }
+
+    let errFun= (errData)=>{
+      return (err)=>{
+
+        console.log('is-err',err)
+
+
+        let setData= errData
+
+        // if(err.response && err.response.config && err.response.data){
+        //   console.log('err',err.response)
+        if(err.response){
+          setData.error=  {
+            url: err.response.config?err.response.config.url: '',
+            // headers: JSON.stringify(err.response.config.headers),
+            status: err.response.status,
+            statusText: err.response.statusText,
+            headers: err.response.config?err.response.config.headers: '',
+            data: err.response.config.data,
+            response: JSON.stringify(err.response.data),
+            // response: err.response.data
+          }
+        }else{
+          setData.error= err
+        }
+
+        return setData
+      }
+    }
+
+
+    let shanghai=()=>{
+      return Promise.all([
       questionList,
       cdfList,
-      articles
+      homeArticles
 
     ]).then(([resQuestion, resCdf, resArticle ]) => {
       let latest= resArticle.middle10281020
@@ -122,22 +170,20 @@ export default {
         hottest[randomIndex]= temp
       }
       return {
-        questionList: resQuestion,
-        cdfList: resCdf,
-        articleBanner: resArticle.left10281019.concat(resArticle.middle10281013),
-        articleMiddle: {
-          latest: latest,
-          hottest: hottest,
-        },
-        articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
-        isGetData: true
+        information:{
+          questionList: resQuestion,
+          cdfList: resCdf,
+          articleBanner: resArticle.left10281019.concat(resArticle.middle10281013),
+          articleMiddle: {
+            latest: latest,
+            hottest: hottest,
+          },
+          articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
+          isGetData: true
+        }
       }
-    },(err)=>{
-
-      console.log('is-err',err)
-
-
-      let setData={
+    }, errFun({
+      information:{
         questionList: [],
         cdfList: [],
         articleBanner: [],
@@ -146,28 +192,56 @@ export default {
           hottest: [],
         },
         articleRight: [],
-        height: 100
       }
+    }))
+    }
 
-      // if(err.response && err.response.config && err.response.data){
-      //   console.log('err',err.response)
-      if(err.response){
-        setData.error=  {
-          url: err.response.config?err.response.config.url: '',
-          // headers: JSON.stringify(err.response.config.headers),
-          status: err.response.status,
-          statusText: err.response.statusText,
-          headers: err.response.config?err.response.config.headers: '',
-          data: err.response.config.data,
-          response: JSON.stringify(err.response.data),
-          // response: err.response.data
+    let other= ()=>{
+      return Promise.all([
+      homeArticles,
+      articles( '10281038', 10),
+      articles( '10281039', 10)
+    ]).then(([ resArticle, resSystem, resNotice ]) => {
+      let latest= resArticle.middle10281020
+      let hottest= deepClone(latest)
+      // latest.sort(function (a,b) {
+      //   return (new Date(a.createTime|| 0) > new Date(b.createTime || 0))? -1: 1
+      // })
+      for (let i in hottest){
+        let temp={}
+        let randomIndex = Math.floor(Math.random()*(hottest.length-1));
+        temp= hottest[i]
+        hottest[i]= hottest[randomIndex]
+        hottest[randomIndex]= temp
+      }
+      return {
+        information:{
+          systemList: resSystem,
+          noticeList: resNotice,
+          articleBanner: resArticle.left10281019.concat(resArticle.middle10281013),
+          articleMiddle: {
+            latest: latest,
+            hottest: hottest,
+          },
+          articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
+          isGetData: true
         }
-      }else{
-        setData.error= err
       }
+    }, errFun({
+      information:{
+        systemList: [],
+        noticeList: [],
+        articleBanner: [],
+        articleMiddle: {
+          latest: [],
+          hottest: [],
+        },
+        articleRight: [],
+      }
+    }))
+    }
 
-      return setData
-    })
+    return process.env.config.areaName=='shanghai'? shanghai(): other()
   },
   data () {
     return thisData
@@ -181,16 +255,16 @@ export default {
     }
   },
   mounted(){
-    console.log("index.mounted")
-    console.log('process.env.config', process.env.config)
+    // console.log("index.mounted")
+    // console.log('process.env.config', process.env.config)
 
-    let self= this
+    // let self= this
     if(!this.banners.length){
       this.getBanner()
     }
-    if(!this.area.length){
-      this.getArea()
-    }
+    // if(!this.area.length){
+    //   this.getArea()
+    // }
 
 
     this.error? console.error('error: ', this.error) : console.log('no-error')
@@ -198,11 +272,11 @@ export default {
 
   },
   methods:{
-    getArea(){
-      this.$axios.$get('/area/query').then( (res) => {
-        this.area= res.items
-      })
-    },
+    // getArea(){
+    //   this.$axios.$get('/area/query').then( (res) => {
+    //     this.area= res.items
+    //   })
+    // },
     getBanner(){
       this.$axios.$post('/banner/query', {
         terminal: 'P'

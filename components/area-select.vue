@@ -1,12 +1,14 @@
 <template>
 <div class="area-select">
   <Select :value="calcSelectValue" :transfer="transfer" v-if="useSelect" :label-in-value="labelInValue"
-          :disabled="disabled" :clearable="clearable" @on-change="changeSelect" :placeholder="placeholder">
+          :disabled="disabled" :clearable="clearable" @on-change="changeSelect" :placeholder="placeholder"
+          :size="size">
     <Option v-for="(item , key) in areaList" :value="item.regionCode || item.value" :key="key">{{ item.shortName }}
     </Option>
   </Select>
   <Cascader v-else :data="areaList" :value="calcCascaderValue" :disabled="disabled" :clearable="clearable"
-            @on-change="changeCascader"  :change-on-select="changeOnSelect" :placeholder="placeholder"></Cascader>
+            @on-change="changeCascader"  :change-on-select="changeOnSelect" :placeholder="placeholder"
+            :size="size" :transfer="transfer"></Cascader>
 </div>
 </template>
 
@@ -31,6 +33,9 @@ export default {
       default(){
         return []
       }
+    },
+    size:{
+      default: ''
     },
     placeholder:{
       default: ''

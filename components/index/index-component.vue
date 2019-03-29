@@ -31,7 +31,7 @@
       <div class="title"><h1>新闻动态</h1><nuxt-link tag="a" :to="'/gov-article/10281019/'">更多</nuxt-link></div>
       <swiper :options="swiperOption" ref="mySwiper" class="news-swiper" v-if="showSwiper">
         <!-- slides -->
-        <swiper-slide v-for="(item, index) in articleBanner" :key="index">
+        <swiper-slide v-for="(item, index) in information.articleBanner" :key="index">
           <div class='dummy'></div>
           <div class='content'>
             <!--<a :href="item.id" class="news-swiper-body">-->
@@ -60,21 +60,21 @@
       <div class="best best1">
         <div class="left">最新</div>
         <ul>
-          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
+          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in information.articleMiddle.latest" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
       <div class="best best2">
         <div class="left hot">最热</div>
         <ul>
           <!--<a v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id">{{item.title}}</a>-->
-          <nuxt-link v-for="item in articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id" :to="'/gov-article/10281020/'+item.id">{{item.title}}</nuxt-link>
+          <nuxt-link v-for="item in information.articleMiddle.hottest" :key="'articleMiddle-hottest'+item.id" :to="'/gov-article/10281020/'+item.id">{{item.title}}</nuxt-link>
         </ul>
       </div>
     </div>
     <div class="block block3">
       <div class="title"><h1>行业监管</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
       <ul>
-        <nuxt-link class="article" v-for="item in articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
+        <nuxt-link class="article" v-for="item in information.articleRight" :key="'articleRight'+item.id" :to="'/gov-article/10281001/'+item.id">
           <h3>{{item.title}}</h3>
           <p style="-webkit-box-orient: vertical;">{{item.meno | FormatArticle(item.title)}}</p>
         </nuxt-link>
@@ -90,8 +90,7 @@
 
 export default {
   name: "index-component",
-  props:['banners', 'swiperOption', 'showSwiper', 'area', 'questionList', 'cdfList', 'articleBanner',
-    'articleMiddle', 'articleRight'],
+  props:['banners', 'swiperOption', 'showSwiper', 'information'],
   computed:{
     areaShanghai(){
       return process.env.config.areaName=='shanghai'

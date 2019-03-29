@@ -1,8 +1,7 @@
 <template>
 <div class="home">
-  <index-component :banners="banners" :swiperOption="swiperOption"
-                   :showSwiper="showSwiper" :area="area" :questionList="questionList" :cdfList="cdfList"
-  :articleBanner="articleBanner" :articleMiddle="articleMiddle" :articleRight="articleRight">
+  <index-component :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper"
+                   :information="information">
     <!--<img class="new-text temp" src="~@/assets/img/temp-red/new-text.png"/>-->
     <!--<img class="lantern-left temp" src="~@/assets/img/temp-red/lantern01.png"/>-->
     <!--<img class="lantern-right  temp" src="~@/assets/img/temp-red/lantern02.png"/>-->
@@ -161,6 +160,7 @@ export default {
       iconBlockLeft: 128,
       iconBlockShow: false,
       showCdfFlag: true,
+      area: []
     }
   },
   mounted(){
@@ -181,9 +181,15 @@ export default {
     $(".service .left ul li, .service .left .icon-block").mouseleave(function () {
       self.iconBlockShow= false
     })
+
+    this.getArea()
   },
   methods:{
-
+    getArea(){
+      this.$axios.$get('/area/query').then( (res) => {
+        this.area= res.items
+      })
+    },
   }
 }
 </script>
