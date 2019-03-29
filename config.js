@@ -8,7 +8,7 @@ const dev={
 }
 
 const shanghai={
-  zhName: '上海',
+  zhName: '上海市',
   areaName:'shanghai',
   areaKey:'310000',
   lnglat:{
@@ -18,7 +18,7 @@ const shanghai={
 }
 
 const shandong={
-  zhName: '山东',
+  zhName: '山东省',
   areaName:'shandong',
   areaKey:'370000',
   lnglat:{

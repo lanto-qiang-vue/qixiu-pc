@@ -9,15 +9,8 @@
           <FormItem label="文章类型名:">
             <Input type="text" v-model="search.codeDesc"></Input>
           </FormItem>
-          <FormItem>
-            <ButtonGroup size="small">
-              <Button type="primary" @click="page=1;getList()">
-                <Icon type="ios-search" size="24"/>
-              </Button>
-              <Button type="primary" @click="clear()">
-                <Icon type="ios-undo" size="24"/>
-              </Button>
-            </ButtonGroup>
+          <FormItem :label-width="0">
+            <Button type="primary" @click="page=1;getList()">查询</Button>
           </FormItem>
         </Form>
       </div>
@@ -37,7 +30,7 @@
       :mask-closable="false"
       :transition-names="['', '']"
     >
-      <Form ref="form" :model="detail" :label-width="110" class="common-form">
+      <Form ref="form" :model="selectRow" :label-width="110" class="common-form">
         <FormItem label="文章类型名" prop="name">
           <Input type="text" v-model="selectRow.codeDesc"></Input>
         </FormItem>

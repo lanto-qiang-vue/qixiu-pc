@@ -4,18 +4,18 @@
                    :showSwiper="showSwiper"  :information="information">
     <div class="head" slot="header">
       <div class="title">
-        <img src="~@/assets/img/login_img/logo.png">
+        <img src="~@/assets/img/login_img/shandong-logo.png">
         <div>
           <h1>山东省机动车维修公共服务平台</h1>
           <span style="font-size: 16px">Shandong Automobile Maintenance Public Service Platform</span>
         </div>
       </div>
       <div class="right">
-        <span class="tel">400-663-8210</span>
-        <a href="/download-app" target="_blank" class="app">
-          <p>下载APP</p>
-          <img src="~@/assets/img/index/qrcode_app.png">
-        </a>
+        <span class="tel">950-456-897</span>
+        <!--<a href="/download-app" target="_blank" class="app">-->
+          <!--<p>下载APP</p>-->
+          <!--<img src="~@/assets/img/index/qrcode_app.png">-->
+        <!--</a>-->
         <div class="wx">
           <p>关注微信</p>
           <img src="~@/assets/img/index/qrcode_weixin.jpg">
@@ -24,7 +24,7 @@
           <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
       </div>
 
-      <login-status :isIndex="true"></login-status>
+      <login-status ></login-status>
     </div>
     <div class="service" slot="service">
       <div class="left">
@@ -75,9 +75,12 @@
 
         </div>
         <div class="button justify">
-          <a class="b1"><img style="width: 27px" src="~@/assets/img/index/icon-维修记录.png"/><span>维修记录</span></a>
-          <a class="b2"><img style="width: 28px" src="~@/assets/img/index/icon-维修点评.png"/><span>维修点评</span></a>
-          <a class="b3"><img style="width: 30px" src="~@/assets/img/index/icon-爱车小贴士.png"/><span>爱车小贴士</span></a>
+          <nuxt-link to="/center/my-car-record" class="b1">
+            <img style="width: 27px" src="~@/assets/img/index/icon-维修记录.png"/><span>维修记录</span></nuxt-link>
+          <nuxt-link to="/center/my-car-record" class="b2">
+            <img style="width: 28px" src="~@/assets/img/index/icon-维修点评.png"/><span>维修点评</span></nuxt-link>
+          <a href="/file/tips.pdf" target="_blank" class="b3">
+            <img style="width: 30px" src="~@/assets/img/index/icon-爱车小贴士.png"/><span>爱车小贴士</span></a>
         </div>
       </div>
       <div class="right">
@@ -129,7 +132,7 @@ export default {
   }
   .head{
     padding: 20px 10px;
-    background-color: #6091b7;
+    background-color: white;
     position: relative;
     .title{
       display: inline-block;
@@ -213,6 +216,11 @@ export default {
       .logout{
         margin-left: 10px;
       }
+    }
+    .login-status{
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
     }
   }
   .service{

@@ -6,8 +6,8 @@
         <nuxt-link tag="a" class="title" to="/">
             <img src="../assets/img/login_img/logo.png">
             <div style="text-align: left;">
-                <h1 style="font-size: 32px">上海市机动车维修公共服务平台</h1>
-                <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
+                <h1 style="font-size: 32px">{{env.zhName}}机动车维修公共服务平台</h1>
+                <span style="font-size: 16px">{{env.areaName.charAt(0).toUpperCase() + env.areaName.slice(1)}} Automobile Maintenance Public Service Platform</span>
             </div>
         </nuxt-link>
 
@@ -88,6 +88,11 @@ export default {
       iconBlockShow: false,
     }
   },
+  computed:{
+    env(){
+      return process.env.config
+    },
+  },
   mounted(){
     let self= this
     $(".icon-menus a, .icon-menus .icon-block").hover(function () {
@@ -118,6 +123,12 @@ export default {
     /*overflow: hidden;*/
     background-color: white;
     position: relative;
+    .login-status{
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 
   .top .title{

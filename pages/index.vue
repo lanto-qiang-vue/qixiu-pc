@@ -44,16 +44,7 @@ if(!thisData) {
     },
     showSwiper: false,
 
-    information:{
-      questionList: [],
-      cdfList: [],
-      articleBanner: [],
-      articleMiddle: {
-        latest: [],
-        hottest: [],
-      },
-      articleRight: [],
-    },
+    information:{},
 
 
     error: null,
@@ -66,7 +57,8 @@ export default {
   layout: 'layout-root',
   components: {CommonFooter,VerShanghai, VerOthers},
   mixins: [mixin],
-  asyncData ({ app, error }) {
+  asyncData ({ app, env, error }) {
+    // console.log('env', env)
     if(process.client && thisData && thisData.isGetData) {
       console.log('cache')
       return thisData
@@ -82,28 +74,31 @@ export default {
       })
     })
 
-    let questionList= new Promise((resolve, reject) => {
-      app.$axios.$post('/question/nostate/list',{
-        "pageNo": 1,
-        "pageSize": 5,
-      }).then(res => {
-        if (res.code === '0') {
-          resolve( res.items)
-        } else reject( res)
-      },err => {
-        reject(err)
+    let questionList= ()=>{
+      return new Promise((resolve, reject) => {
+        app.$axios.$post('/question/nostate/list',{
+          "pageNo": 1,
+          "pageSize": 5,
+        }).then(res => {
+          if (res.code === '0') {
+            resolve( res.items)
+          } else reject( res)
+        },err => {
+          reject(err)
+        })
       })
-    })
-    let cdfList= new Promise((resolve, reject) => {
-      app.$axios.$get('/expert/nostate/list' ).then(res => {
-        if (res.code === '0') {
-          resolve( res.items)
-        } else reject( res)
-      },err => {
-        reject(err)
+    }
+    let cdfList= ()=>{
+      new Promise((resolve, reject) => {
+        app.$axios.$get('/expert/nostate/list' ).then(res => {
+          if (res.code === '0') {
+            resolve( res.items)
+          } else reject( res)
+        },err => {
+          reject(err)
+        })
       })
-    })
-
+    }
     let articles= (type, limit)=>{
       return new Promise((resolve, reject) => {
         app.$axios.$post('/infopublic/home/all',{
@@ -151,9 +146,10 @@ export default {
 
 
     let shanghai=()=>{
+      // console.log('in.shanghai')
       return Promise.all([
-      questionList,
-      cdfList,
+      questionList(),
+      cdfList(),
       homeArticles
 
     ]).then(([resQuestion, resCdf, resArticle ]) => {
@@ -179,8 +175,8 @@ export default {
             hottest: hottest,
           },
           articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
-          isGetData: true
-        }
+        },
+        isGetData: true
       }
     }, errFun({
       information:{
@@ -197,6 +193,7 @@ export default {
     }
 
     let other= ()=>{
+      // console.log('in.other')
       return Promise.all([
       homeArticles,
       articles( '10281038', 10),
@@ -224,11 +221,11 @@ export default {
             hottest: hottest,
           },
           articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
-          isGetData: true
-        }
+        },
+        isGetData: true
       }
     }, errFun({
-      information:{
+        information:{
         systemList: [],
         noticeList: [],
         articleBanner: [],
@@ -241,7 +238,9 @@ export default {
     }))
     }
 
-    return process.env.config.areaName=='shanghai'? shanghai(): other()
+    // console.log('env.config.areaName=="shanghai"', env.config.areaName=="shanghai")
+
+    return env.config.areaName=='shanghai'? shanghai(): other()
   },
   data () {
     return thisData

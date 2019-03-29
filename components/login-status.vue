@@ -90,11 +90,6 @@ export default {
 <style scoped lang="less">
 .login-status{
   height: 40px;
-  position: absolute;
-  right: 10px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
   .login {
     font-size: 16px;
     color: #2d8cf0;
@@ -126,8 +121,6 @@ export default {
   }
 }
 .login-status.is-index{
-  top: auto;
-  bottom: 10px;
   .login {
     color: white;
     .nick-name{
