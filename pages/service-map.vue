@@ -18,7 +18,7 @@
         <Option value="214">危运车辆维修</Option>
         <Option value="215">新能源汽车维修</Option>
         <!--<Option value="213">施救牵引企业</Option>-->
-        <Option value="300">驾校</Option>
+        <Option v-if="isShanghai" value="300">驾校</Option>
       </Select>
       <!--<Input v-model="search.q" placeholder="输入企业名称/地址" :class="{inline: search.type=='1', search: true}"-->
       <Input v-model="search.q" placeholder="输入名称/地址" class="inline search" clearable
@@ -642,10 +642,12 @@ export default {
                 '<li v-show="is164"><span>主修品牌：</span>{{datas.brand}}</li>'+
                 '<li v-show="is164"><span>业户类别：</span>{{category}}</li>'+
                 '</ul>'+
-                '<div class="button-block"  v-show="is164">' +
-                  '<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
-                  '<Button :to="\'/appointment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>'+
-                  '<Button :to="\'/garage-info/\'+datas.sid" type="info">查看详情</Button>'+
+                '<div class="button-block"  v-show="is164">'
+                  if(this.isShanghai){
+                    template+=('<Button :to="\'/visit-service/?id=\'+datas.sid">上门服务</Button>'+
+                      '<Button :to="\'/appointment/?id=\'+datas.sid+\'&name=\'+datas.name">预约服务</Button>')
+                  }
+        template+= '<Button :to="\'/garage-info/\'+datas.sid" type="info">查看详情</Button>'+
                 '</div>'+
                 '</div>'+
                 '</div>'

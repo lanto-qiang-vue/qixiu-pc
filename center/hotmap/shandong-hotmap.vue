@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import config from '~/config.js'
+// import config from '~/config.js'
 import Mixin from '~/center/hotmap/hotmap-mixin.js'
 export default {
   name: "shandong-hotmap",
@@ -84,7 +84,7 @@ export default {
   },
   methods:{
     connect() {
-      let socket = new SockJS(config.shandongSocket);//连接SockJs的endpoint
+      let socket = new SockJS(process.env.config.socketUrl);//连接SockJs的endpoint
       this.stompClient = Stomp.over(socket)//使用STOMP子协议的WebSocket客户端
       this.stompClient.connect({}, (frame)=> {
         //console.log("Connected:"+frame);

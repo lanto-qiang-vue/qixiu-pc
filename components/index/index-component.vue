@@ -336,28 +336,7 @@ export default {
   }
 </style>
 <style lang="less">
-  .swiper-pagination .swiper-pagination-bullet-active{
-    background: white;
-  }
-  .swiper-button-prev, .swiper-button-next{
-    /*background-size: 20px auto;*/
-    /*background: none;*/
-    background-color: rgba(0, 0, 0, 0.2);
-    background-image: none;
-    &:before{
-      content: '';
-      width: 20px;
-      height: 20px;
-      border-top: 2px solid rgba(255, 255, 255, 0.5);
-      border-left: 2px solid rgba(255, 255, 255, 0.5);
-      position: absolute;
-      top: 12px;
-      left: 10px;
-      transform: rotate(-45deg);
-    }
-  }
-  .swiper-button-next:before{
-    transform: rotate(135deg);
-    left: -2px;
+  .index-content{
+
   }
 </style>

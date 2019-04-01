@@ -35,7 +35,7 @@ export default {
       }
     },
     size:{
-      default: ''
+      default: 'default'
     },
     placeholder:{
       default: ''

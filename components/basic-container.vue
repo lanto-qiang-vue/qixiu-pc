@@ -20,7 +20,7 @@
             <MenuItem name="head-menu-1" to="/">
                 主页
             </MenuItem>
-            <Submenu name="head-menu-2">
+            <Submenu name="head-menu-2" v-if="isShanghai">
                 <template slot="title">
                     服务中心
                 </template>
@@ -42,13 +42,13 @@
             <MenuItem name="head-menu-3" to="/center/repair-info-detail">
                 电子健康档案系统
             </MenuItem>
-            <MenuItem name="head-menu-4" to="/cdf">
+            <MenuItem name="head-menu-4" to="/cdf" v-if="isShanghai">
                 车大夫门诊
             </MenuItem>
-            <MenuItem name="head-menu-5" to="/visit-service">
+            <MenuItem name="head-menu-5" to="/visit-service" v-if="isShanghai">
               上门服务
             </MenuItem>
-            <MenuItem name="head-menu-6" to="/service-map">
+            <MenuItem name="head-menu-6" to="/service-map" v-if="isShanghai">
               预约维修
             </MenuItem>
             <MenuItem name="head-menu-7" to="/feedback">
@@ -89,6 +89,9 @@ export default {
     }
   },
   computed:{
+    isShanghai(){
+      return process.env.config.areaName=='shanghai'
+    },
     env(){
       return process.env.config
     },

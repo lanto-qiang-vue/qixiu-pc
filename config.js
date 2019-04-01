@@ -80,9 +80,9 @@ const conf={
     apiUrl: 'http://192.168.169.208:8888/',
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
-    repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+    repairUrl: 'http://192.168.169.211:7210/',
 
-    socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
+    socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
     articlePath: 'http://download.image.shandongqixiu.com/',
@@ -95,9 +95,9 @@ const conf={
     apiUrl: 'http://192.168.169.208:8888/',
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
-    repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+    repairUrl: 'http://192.168.169.211:7210/',
 
-    socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
+    socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
     articlePath: 'http://download.image.shandongqixiu.com/',

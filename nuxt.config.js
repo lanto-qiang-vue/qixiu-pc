@@ -45,6 +45,7 @@ let conf= {
   ** Global CSS
   */
   css: [
+    'swiper/dist/css/swiper.css',
     'iview/dist/styles/iview.css',
     '~assets/font-awesome/css/font-awesome.min.css',
     { src: '~assets/css/common.less', lang: 'less' },
