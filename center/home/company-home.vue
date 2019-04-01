@@ -211,7 +211,12 @@
                     click: (index) => {
                       this.modal2=true;
                       this.businessHours.yyState=this.infoData[0].yyState;
-                      this.businessHours.businessHours=this.infoData[0].businessHours.split('-');
+                      if(this.infoData[0].businessHours){
+                        this.businessHours.businessHours=this.infoData[0].businessHours.split('-');
+                      }else{
+                        this.businessHours.businessHours='';
+                      }
+                      
 
                     }
                   }
