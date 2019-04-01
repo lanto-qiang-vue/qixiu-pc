@@ -19,9 +19,9 @@
     </div>
 
   <div class="content" v-if="areaName=='shandong'">
-    <p class="link">
-      指导部门：<a >山东省交通运输厅</a>
-    </p>
+    <!--<p class="link">-->
+      <!--指导部门：<a >山东省交通运输厅</a>-->
+    <!--</p>-->
     <p class="copyright">
       copyright &#169 2019 山东中交车服网络科技有限公司. All Rights Reserved. | 鲁ICP备18044033号-1
     </p>
