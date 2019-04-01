@@ -14,7 +14,7 @@
     :transition-names="['', '']">
     <div v-html="protocol"></div>
     <div slot="footer">
-      <Button type="success" @click="schoolAgreementAgree">同意协议</Button>
+      <Button type="primary" @click="schoolAgreementAgree">同意协议</Button>
     </div>
   </Modal>
 </div>
@@ -49,7 +49,7 @@ export default {
       this.sigin()
       this.checkWeixiuButt()
     }
-    if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoButt();
+    if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoContacts();
   },
   methods:{
     showButt(data, type){
