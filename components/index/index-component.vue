@@ -172,19 +172,21 @@ export default {
       margin-top: 30px;
       position: relative;
       background-color: white;
-      opacity: .8;
+      /*opacity: .8;*/
       /*padding: 15px;*/
       overflow: hidden;
       .block {
         float: left;
         overflow: hidden;
-        .title {
-          height: 40px;
-          line-height: 40px;
-          border-bottom: 1px solid #999999;
-          h1 {
+        .title{
+          border-bottom: 1px solid #C4C4C4;
+          h1{
+            color: #333333;
             font-size: 20px;
-            color: #1c6c93;
+            line-height: 20px;
+            padding-left: 10px;
+            border-left: 3px solid #4A90E2;
+            margin-bottom: 5px;
             font-weight: 400;
             display: inline-block;
           }

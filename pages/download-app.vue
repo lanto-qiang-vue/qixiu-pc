@@ -1,6 +1,6 @@
 <template>
 <div class="download-app">
-  <img class="head" src="~@/assets/img/login_img/logo.png"/>
+  <img class="head" src="/img/logo-shanghai.png"/>
   <p>上海市机动车维修公共服务平台</p>
   <img class="pic" src="/img/download/picture.png"/>
   <img class="button" src="/img/download/button.png" @click="toClick"/>

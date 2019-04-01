@@ -12,7 +12,7 @@
 
     <div class="head" slot="header">
       <div class="title">
-        <img src="~@/assets/img/login_img/logo.png">
+        <img src="/img/logo-shanghai.png">
         <div>
           <h1>上海市机动车维修公共服务平台</h1>
           <span style="font-size: 16px">Shanghai Automobile Maintenance Public Service Platform</span>
@@ -589,7 +589,7 @@ export default {
     }
     .us{
       padding-left: 25px;
-      background: url(~@/assets/img/login_img/logo.png) no-repeat left center;
+      background: url(/img/logo-shanghai.png) no-repeat left center;
       background-size: 22px auto;
     }
   }

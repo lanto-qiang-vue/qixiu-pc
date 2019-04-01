@@ -1,10 +1,10 @@
 <template>
 <div :class="['login-status', {'is-index': isIndex}]">
   <div class="login unLogin" v-show="!isLogin">
-    <span class="nick-name">您好，欢迎光临本站！</span>
+    <!--<span class="nick-name">您好，欢迎光临本站！</span>-->
     <nuxt-link tag="a" to="/login">
       <!--<img src="../assets/img/index/login.png" v-show="isIndex">-->
-      <Icon type="md-power" size="20" v-show="isIndex" style="vertical-align: text-top"/>
+      <Icon type="md-power" size="20"  style="vertical-align: text-top"/>
       登录</nuxt-link>|
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
   </div>

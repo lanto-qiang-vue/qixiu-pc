@@ -4,37 +4,38 @@
                    :showSwiper="showSwiper"  :information="information">
     <div class="head" slot="header">
       <div class="title">
-        <img src="~@/assets/img/login_img/shandong-logo.png">
+        <img :src="'/img/logo-'+env.areaName+'.png'">
         <div>
-          <h1>山东省机动车维修公共服务平台</h1>
-          <span style="font-size: 16px">Shandong Automobile Maintenance Public Service Platform</span>
+          <h1>{{env.zhName}}机动车维修公共服务平台</h1>
+          <span style="font-size: 16px">{{env.areaName.charAt(0).toUpperCase() + env.areaName.slice(1)}} Automobile Maintenance Public Service Platform</span>
         </div>
       </div>
       <div class="right">
-        <span class="tel">950-456-897</span>
+        <span class="tel"><Icon type="ios-call" size="20"/>950-456-897</span>
         <!--<a href="/download-app" target="_blank" class="app">-->
           <!--<p>下载APP</p>-->
           <!--<img src="~@/assets/img/index/qrcode_app.png">-->
         <!--</a>-->
         <div class="wx">
+          <i class="fa fa-weixin" style="font-size: 16px"></i>
           <p>关注微信</p>
           <img src="~@/assets/img/index/qrcode_weixin.jpg">
         </div>
-        <nuxt-link tag="a" to="/article/guide">
-          <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
       </div>
 
       <login-status ></login-status>
+      <nuxt-link tag="a" to="/article/guide">
+        <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
     </div>
     <div class="service" slot="service">
       <div class="left">
         <div class="title"><h1>系统介绍</h1></div>
         <swiper :options="swiperOption" ref="mySwiper" class="system-swiper" v-if="showSwiper">
           <swiper-slide v-for="(item, index) in information.systemList" :key="index">
-            <div class='content'>
+            <nuxt-link tag="div" :to="'/article/'+item.id" class='content'>
               <img :src="item.photo || '/img/default-car.png'">
-              <p style="-webkit-box-orient: vertical;">{{item.text}}<span>详情</span></p>
-            </div>
+              <p style="-webkit-box-orient: vertical;">{{item.content| FormatArticle(item.title)}}<span>详情>></span></p>
+            </nuxt-link>
           </swiper-slide>
 
           <div class="swiper-pagination"  slot="pagination"></div>
@@ -84,10 +85,10 @@
         </div>
       </div>
       <div class="right">
-        <div class="title"><h1>通知公告</h1><nuxt-link :to="'/gov-article/10281001'">更多</nuxt-link></div>
+        <div class="title"><h1>通知公告</h1><nuxt-link :to="'/gov-article/10281039'">更多</nuxt-link></div>
         <ul>
-          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in information.noticeList" :key="'articleMiddle-latest'+item.id">{{item.title}}</nuxt-link>
-          <nuxt-link tag="a" :to="'/gov-article/10281020/'+item.id" v-for="item in information.noticeList" :key="'articleMiddle-latest'+Math.random()">{{item.title}}</nuxt-link>
+          <nuxt-link tag="a" :to="'/gov-article/10281039/'+item.id" v-for="(item, key ) in information.noticeList" :key="key">{{item.title}}</nuxt-link>
+
         </ul>
       </div>
     </div>
@@ -95,6 +96,14 @@
 
     </ul>
   </index-component>
+
+  <div ref="qrfloar" style="padding: 10px;position: fixed;right: 10px;bottom: 30%;background-color: #8ACFFF;color: #2E5F96;text-align: center;width: 120px;z-index: 1">
+    <Icon type="ios-close-circle-outline" size="18" style="position: absolute;top: 5px;right: 5px;color: #2E5F96;cursor: pointer" @click="$refs.qrfloar.style.display='none'"/>
+    <p>欢迎关注</p>
+    <p>{{env.zhName}}汽修平台</p>
+    <p>微信公众号</p>
+    <img src="~@/assets/img/index/qrcode_weixin.jpg" style="margin-top: 10px;width: 100%">
+  </div>
 </div>
 </template>
 
@@ -116,7 +125,12 @@ export default {
         {text: '管理职责管理职责上海市城市交通运输管理处负责具体实施本市机动车维修行业的日常管理和监督工作。1、负责管辖的机动车维修行业行政事项核查工作，负责审核企业经营许可事项的申请、变更、终止等相关工作，并建立行政许可档案；2、负责行业精神文明建设，做好管辖的机动车维修经营企业的诚信考核工作，建立诚信考核档案；指导和监督经营者建立质量信誉诚信档案；3、负责管辖的机动车维修行业的经营者聘用的持有从业资格证人员的审核和日'},
       ]
     }
-  }
+  },
+  computed:{
+    env(){
+      return process.env.config
+    },
+  },
 }
 </script>
 
@@ -139,10 +153,11 @@ export default {
       img{
         width: 80px;
         float: left;
+        padding: 6px;
       }
       div {
         float: left;
-        color: white;
+        color: #333333;
         /*margin-top: 5px;*/
         h1{
           font-size: 32px;
@@ -154,19 +169,20 @@ export default {
       display: inline-block;
       float: right;
       font-size: 13px;
+      line-height: 40px;
       *{
-        color: white;
+        color:  #333333;
         display: inline-block;
         vertical-align: middle;
       }
       >*{
-        margin-left: 10px;
+        margin-left: 20px;
         position: relative;
         overflow: visible;
       }
       .tel{
-        padding-left: 18px;
-        background: url('~@/assets/img/index/tel.png') no-repeat left center;
+        /*padding-left: 18px;*/
+        /*background: url('~@/assets/img/index/tel.png') no-repeat left center;*/
         background-size: 13px;
       }
       .app{
@@ -174,8 +190,8 @@ export default {
         background: url('~@/assets/img/index/app.png') no-repeat left center;
       }
       .wx{
-        padding-left: 20px;
-        background: url('~@/assets/img/index/wechat.png') no-repeat left center;
+        /*padding-left: 20px;*/
+        /*background: url('~@/assets/img/index/wechat.png') no-repeat left center;*/
         cursor: pointer;
       }
       .app img, .wx img{
@@ -188,45 +204,46 @@ export default {
       .app:hover img, .wx:hover img{
         display: block;
       }
-      .czzn{
-        width: 40px;
-      }
     }
-    .login {
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      color: white;
-      font-size: 16px;
-      >*{
-        height: 40px;
-        line-height: 40px;
-        display: inline-block;
-      }
-      .nick-name{
-        color: #d1d1d2;
-      }
-      .center{
-        padding: 0 10px;
-        color: white;
-      }
-      .center:hover{
-        background-color: #0c6dbe;
-      }
-      .logout{
-        margin-left: 10px;
-      }
-    }
+    /*.login {*/
+      /*position: absolute;*/
+      /*right: 10px;*/
+      /*bottom: 10px;*/
+      /*color: white;*/
+      /*font-size: 16px;*/
+      /*>*{*/
+        /*height: 40px;*/
+        /*line-height: 40px;*/
+        /*display: inline-block;*/
+      /*}*/
+      /*.nick-name{*/
+        /*color: #d1d1d2;*/
+      /*}*/
+      /*.center{*/
+        /*padding: 0 10px;*/
+        /*color: white;*/
+      /*}*/
+      /*.center:hover{*/
+        /*background-color: #0c6dbe;*/
+      /*}*/
+      /*.logout{*/
+        /*margin-left: 10px;*/
+      /*}*/
+    /*}*/
     .login-status{
       position: absolute;
       bottom: 10px;
+      right: 40px;
+    }
+    .czzn{
+      position: absolute;
+      bottom: 18px;
       right: 10px;
+      width: 22px;
     }
   }
   .service{
-    margin-top: 30px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin: 30px 10px;
     /*padding: 0 15px;*/
     overflow: hidden;
     >div{
@@ -236,6 +253,7 @@ export default {
     .title{
       border-bottom: 1px solid #C4C4C4;
       h1{
+        color: #333333;
         font-size: 20px;
         line-height: 20px;
         padding-left: 10px;
@@ -270,6 +288,7 @@ export default {
         }
         .content{
           height: 200px;
+          cursor: pointer;
           img{
             width: 100%;
             height: 130px;
@@ -285,6 +304,10 @@ export default {
             line-height: 20px;
             display: -webkit-box;
             -webkit-line-clamp: 3;
+            span{
+              color: #FF0200;
+              margin-left: 10px;
+            }
           }
         }
         .swiper-pagination{

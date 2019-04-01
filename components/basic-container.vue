@@ -4,7 +4,7 @@
     <header>
       <div class="top center">
         <nuxt-link tag="a" class="title" to="/">
-            <img src="../assets/img/login_img/logo.png">
+            <img :src="'/img/logo-'+env.areaName+'.png'">
             <div style="text-align: left;">
                 <h1 style="font-size: 32px">{{env.zhName}}机动车维修公共服务平台</h1>
                 <span style="font-size: 16px">{{env.areaName.charAt(0).toUpperCase() + env.areaName.slice(1)}} Automobile Maintenance Public Service Platform</span>
@@ -136,6 +136,7 @@ export default {
     /*width: 100%;*/
   }
   .top .title img{
+    padding: 6px;
     width: 70px;
     float: left;
   }
