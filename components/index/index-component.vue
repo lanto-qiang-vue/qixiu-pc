@@ -82,15 +82,17 @@
     </div>
   </div>
   <slot name="cooperator"></slot>
+  <common-footer></common-footer>
 </div>
 
 </template>
 
 <script>
-
+import CommonFooter from '~/components/common-footer.vue'
 export default {
   name: "index-component",
   props:['banners', 'swiperOption', 'showSwiper', 'information'],
+  components: {CommonFooter},
   computed:{
     areaShanghai(){
       return process.env.config.areaName=='shanghai'
@@ -169,17 +171,17 @@ export default {
       }
     }
     .news {
-      margin-top: 30px;
+      margin: 30px 10px 0;
       position: relative;
       background-color: white;
-      /*opacity: .8;*/
-      /*padding: 15px;*/
+      padding: 20px 0;
       overflow: hidden;
       .block {
         float: left;
         overflow: hidden;
         .title{
           border-bottom: 1px solid #C4C4C4;
+          margin-left: 10px;
           h1{
             color: #333333;
             font-size: 20px;
@@ -330,10 +332,6 @@ export default {
           }
         }
       }
-    }
-    .news{
-      margin-left: 10px;
-      margin-right: 10px;
     }
   }
 </style>

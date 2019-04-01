@@ -7,8 +7,11 @@
   "scripts": {
     "dev": "nuxt",
     "dev_shandong": "cross-env area=dev_shandong nuxt",
+    "build_dev_shandong": "cross-env area=dev_shandong nuxt build",
+    "build_test_shandong": "cross-env area=test_shandong nuxt build",
     "build": "nuxt build",
     "start": "nuxt start",
+    "start_dev_shandong": "cross-env area=dev_shandong nuxt start",
     "generate": "nuxt generate"
   },
   "dependencies": {

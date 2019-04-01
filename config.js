@@ -1,9 +1,8 @@
 const prod={
-  port: '3000',
+
   workOn: 'pPro',
 }
 const dev={
-  port: '3333',
   workOn: 'pDev',
 }
 
@@ -29,7 +28,7 @@ const shandong={
 
 //打包编译环境配置
 const prodConfig={
-
+  port: '3000',
   //接口地址
   // apiUrl: 'http://212.64.5.54:8888/',
   apiUrl: 'http://gateway.qixiu.lanto.com/',
@@ -77,7 +76,7 @@ const shanghaiConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
 const conf={
   shanghai: shanghaiConf,
   dev_shandong: {
-
+    port: '3733',
     apiUrl: 'http://192.168.169.208:8888/',
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
@@ -87,10 +86,23 @@ const conf={
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
     articlePath: 'http://download.image.shandongqixiu.com/',
-
     ...dev,
     ...shandong,
 
+  },
+  test_shandong: {
+    port: '3733',
+    apiUrl: 'http://192.168.169.208:8888/',
+    // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
+
+    repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+
+    socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
+    shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
+
+    articlePath: 'http://download.image.shandongqixiu.com/',
+    ...dev,
+    ...shandong,
   }
 }
 

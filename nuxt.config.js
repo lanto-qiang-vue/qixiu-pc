@@ -135,7 +135,7 @@ let conf= {
     }
   }
 }
-if( process.env.NODE_ENV==='development'){
+if( process.env.NODE_ENV==='development' || !shanghai){
   conf.axios.port= config.port
 }
 

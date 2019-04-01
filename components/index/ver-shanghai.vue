@@ -207,6 +207,7 @@ export default {
       .title{
         display: inline-block;
         img{
+          padding: 6px;
           width: 80px;
           float: left;
         }
@@ -262,30 +263,10 @@ export default {
           width: 40px;
         }
       }
-      .login {
+      .login-status{
         position: absolute;
-        right: 10px;
         bottom: 10px;
-        color: white;
-        font-size: 16px;
-        >*{
-          height: 40px;
-          line-height: 40px;
-          display: inline-block;
-        }
-        .nick-name{
-          color: #d1d1d2;
-        }
-        .center{
-          padding: 0 10px;
-          color: white;
-        }
-        .center:hover{
-          background-color: #0c6dbe;
-        }
-        .logout{
-          margin-left: 10px;
-        }
+        right: 10px;
       }
     }
   }

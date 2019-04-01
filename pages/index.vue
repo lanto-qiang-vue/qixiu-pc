@@ -4,7 +4,7 @@
                 :information="information" v-if="isShanghai"></ver-shanghai>
   <ver-others :banners="banners" :swiperOption="swiperOption" :showSwiper="showSwiper"
               :information="information" v-else></ver-others>
-<common-footer></common-footer>
+<!--<common-footer></common-footer>-->
 </div>
 </template>
 
@@ -12,7 +12,7 @@
 import VerShanghai from '~/components/index/ver-shanghai.vue'
 import VerOthers from '~/components/index/ver-others.vue'
 // import CommonFooter from '~/components/common-footer.vue'
-import CommonFooter from '~/components/common-footer.vue'
+// import CommonFooter from '~/components/common-footer.vue'
 // import IconBlock from '~/components/menu/icon-block.vue'
 // import LoginStatus from '~/components/login-status.vue'
 import { deepClone } from '~/static/util.js'
@@ -55,7 +55,7 @@ if(!thisData) {
 export default {
   name: 'index',
   layout: 'layout-root',
-  components: {CommonFooter,VerShanghai, VerOthers},
+  components: {VerShanghai, VerOthers},
   mixins: [mixin],
   asyncData ({ app, env, error }) {
     // console.log('env', env)

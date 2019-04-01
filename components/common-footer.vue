@@ -1,5 +1,5 @@
 <template>
-<div class="footer">
+<div :class="['footer', {blue: areaName=='shanghai'}]">
     <div class="content" v-if="areaName=='shanghai'">
       <p class="link">
         友情链接：<a href="http://www.mot.gov.cn/" target="_Blank">中华人民共和国交通运输部</a>
@@ -44,8 +44,9 @@
 
 <style scoped lang="less">
   .footer{
+    margin-top: 20px;
     width: 100%;
-    border-top: 2px solid #4ba7f5;
+    border-top: 2px solid #F3F3F3;
     padding: 30px 0;
     text-align: center;
     color: #666666;
@@ -59,6 +60,9 @@
     .copyright{
       margin-top: 20px;
     }
+  }
+  .footer.blue{
+    border-top: 2px solid #4ba7f5;
   }
 
 </style>
