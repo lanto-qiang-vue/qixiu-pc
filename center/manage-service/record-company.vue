@@ -13,7 +13,7 @@
             <!--</Select>-->
 
             <area-select :change-on-select="true"
-                         @changeSelect="searchList.area.key= $event"
+                         @changeSelect="searchList.area.key= $event" :placeholder="'请选择'"
             ></area-select>
         </FormItem>
         <FormItem label="企业名称:">

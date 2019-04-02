@@ -176,7 +176,12 @@
         this.filename = "请选择文件";
       },
       down() {
-        window.location.href = "/企业信息导入模板.xlsx";
+        if(process.env.config.areaName=='shanghai'){
+          window.location.href = "/企业信息导入模板.xlsx";
+        }else{
+          window.location.href = "/企业信息导入模板2.xlsx";
+        }
+        
       },
     }
   }

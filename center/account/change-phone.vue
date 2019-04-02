@@ -1,6 +1,6 @@
 <!--     修改手机号     -->
 <template>
-    <div style="height: 100%;overflow: auto;">
+    <div>
         <div style="max-width:300px;margin-top: 40px;">
             <Form ref="formData"  :model="formData" :label-width="120" class="common-form">
                 <FormItem label="原手机号码:" style="width: 350px;">
