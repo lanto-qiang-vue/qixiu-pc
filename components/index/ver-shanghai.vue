@@ -94,8 +94,8 @@
         <div class="msg">
           <div class="owner">
             <div class="tit">
-              <!--<img src="~@/assets/img/index/person.png">-->
-              <img class="temp" src="~@/assets/img/temp-red/icon-service.png">
+              <img src="~@/assets/img/index/person.png">
+              <!--<img class="temp" src="~@/assets/img/temp-red/icon-service.png">-->
               <p>车主</p>
               <p>服务</p>
               <p>中心</p>
