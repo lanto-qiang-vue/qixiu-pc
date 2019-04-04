@@ -13,8 +13,11 @@
             <!--</Select>-->
 
             <area-select :change-on-select="true"
-                         @changeSelect="searchList.area.key= $event"
+                         @changeSelect="searchList.area.key= $event" :placeholder="'请选择'"
             ></area-select>
+        </FormItem>
+        <FormItem label="管理部门:" v-show="isShangHai">
+            <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
         <FormItem label="企业名称:">
             <Input type="text" v-model="searchList.companyName" placeholder="请输入企业名称"></Input>
@@ -66,9 +69,7 @@
                 <Option v-for="item in isFlagType" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
-        <FormItem label="管理部门:">
-            <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
-        </FormItem>
+        
         <FormItem label="按月查询:">
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions" @on-change="clear('year')"></DatePicker>
         </FormItem>
@@ -275,6 +276,11 @@ activated(){
   // console.log('thisData.searchList.companyCategory', thisData.searchList.companyCategory)
   // console.log('this.$data', this.$data)
 },
+computed:{
+    isShangHai(){
+      return process.env.config.areaName=='shanghai';
+    }
+  },
     methods:{
         getRouterData(){
             let queryData= this.$route.query
@@ -320,7 +326,7 @@ activated(){
         getList(){
             this.loading=true;
             let upData={};
-            console.log(',,,,,,,,',this.searchList);
+            
             for(let i in this.searchList){
                 if(this.searchList[i]=="是"){
                     upData[i]=true;

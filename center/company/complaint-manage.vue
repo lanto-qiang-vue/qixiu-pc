@@ -10,7 +10,7 @@
                     <Input type="text" v-model="searchList.vehicleNum" placeholder="请输入车牌号"></Input>
                 </FormItem>
                 <FormItem label="反馈日期:">
-                    <DatePicker type="date" placeholder="请选择" v-model="searchList.createDate" clearable></DatePicker>
+                    <DatePicker type="date" placeholder="请选择" @on-change="selectDate" clearable></DatePicker>
                 </FormItem>
                 <FormItem label="有无凭证:">
                     <Select v-model="searchList.hasEvidence" clearable>
@@ -39,7 +39,14 @@
   import CommonTable from '~/components/common-table.vue'
   import complaintManageDetail from './complaint-manage-detail.vue'
   import { formatDate } from '@/static/tools.js'
-  import { getName } from '@/static/util.js'
+  import { getName ,deepClone} from '@/static/util.js'
+  let initSearch={
+    createDate:'',
+    hasEvidence:'',
+    type:'',
+    vehicleNum:'',
+    
+}
 	export default {
 		name: "complaint-manage",
     components: {
@@ -102,13 +109,7 @@
           
         ],
         tableData: [],
-        searchList:{
-            createDate:'',
-            hasEvidence:'',
-            type:'',
-            vehicleNum:'',
-            
-        },
+        searchList:deepClone(initSearch),
         page: 1,
         limit: 10,
         total: 0,
@@ -121,8 +122,8 @@
             {code:"1",name:"维修记录不正确"},
         ],
         evidenceList:[
-            {code:"0",name:"有"},
-            {code:"1",name:"无"},
+            {code:"true",name:"有"},
+            {code:"false",name:"无"},
         ],
         showType:null,
       }
@@ -138,27 +139,13 @@
             this.loading=true;
             let page=this.page-1;
             
-            let strUrl="";
-            this.searchList.createDate=formatDate(this.searchList.createDate);
-            for(let i in this.searchList){
-                if(i=="hasEvidence"){
-                    if(this.searchList[i]=="0"){
-                        strUrl+='&'+i+'=true';
-                    }else if(this.searchList[i]=="1"){
-                        strUrl+='&'+i+'=false';
-                    }
-                }else if(i=="type"){
-                    if(this.searchList[i]=="0"){
-                        strUrl+='&'+i+'=0';
-                    }else if(this.searchList[i]=="1"){
-                        strUrl+='&'+i+'=1';
-                    }
-                }else if(this.searchList[i]){
-                    strUrl+='&'+i+'='+this.searchList[i];
-                }
-            }
+            let temUpload=null;
+            temUpload=deepClone(this.searchList);
+            temUpload['page']=page;
+            temUpload['size']=this.limit;
 
-            this.$axios.get('/comment/complaint/maintain/query/companyId?size='+this.limit+'&page='+page+strUrl, {
+            this.$axios.get('/comment/complaint/maintain/query/companyId', {
+                params: temUpload,
             }).then( (res) => {
               console.log(res);
               if(res.status===200){
@@ -211,7 +198,10 @@
                 closable: true,
                 content: '<img src="'+img+'" style="width: 100%"/>'
                 })
-            },
+        },
+        selectDate(date, type){
+            this.searchList.createDate= date
+        },
     },
 	}
 </script>

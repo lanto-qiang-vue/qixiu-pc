@@ -42,7 +42,15 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { formatDate } from '@/static/tools.js'
-  import { getName } from '@/static/util.js'
+  import { getName ,deepClone} from '@/static/util.js'
+  let initSearch={
+    companyName:'',
+    createDate:'',
+    hasEvidence:'',
+    type:'',
+    vehicleNum:'',
+
+}
 	export default {
 		name: "operate-complaint",
     components: {
@@ -109,14 +117,7 @@
 
         ],
         tableData: [],
-        searchList:{
-            companyName:'',
-            createDate:'',
-            hasEvidence:'',
-            type:'',
-            vehicleNum:'',
-
-        },
+        searchList:deepClone(initSearch),
         page: 1,
         limit: 10,
         total: 0,
@@ -129,8 +130,8 @@
             {code:1,name:"维修记录不正确"},
         ],
         evidenceList:[
-            {code:"0",name:"有"},
-            {code:"1",name:"无"},
+            {code:"true",name:"有"},
+            {code:"false",name:"无"},
         ],
       }
     },
@@ -142,34 +143,22 @@
 
     methods:{
         getOperate(){
+            let temUpload=null;
             this.loading=true;
             let page=this.page-1;
+            temUpload=deepClone(this.searchList);
+            temUpload['page']=page;
+            temUpload['size']=this.limit;
 
-            let strUrl="";
-            for(let i in this.searchList){
-                if(i=="hasEvidence"){
-                    if(this.searchList[i]=="0"){
-                        strUrl+='&'+i+'=true';
-                    }else if(this.searchList[i]=="1"){
-                        strUrl+='&'+i+'=false';
-                    }
-                }else if(this.searchList[i]){
-                    strUrl+='&'+i+'='+this.searchList[i];
-                }
-            }
-
-            this.$axios.get('/comment/complaint/maintain/query/operator?size='+this.limit+'&page='+page+strUrl, {
+            this.$axios.get('/comment/complaint/maintain/query/operator', {
+                params: temUpload,
             }).then( (res) => {
-              console.log(res);
               if(res.status===200){
                   this.tableData=res.data.content;
                   this.total=res.data.totalElements;
-                  this.loading=false;
-              }else{
-                this.loading=false;
-                // this.$Message.error(res.statusText);
+                  
               }
-
+              this.loading=false;
             })
         },
       selectDate(date, type){

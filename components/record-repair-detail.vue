@@ -18,36 +18,28 @@
           <Panel name="1">维修记录
             <Form slot="content" :label-width="120" class="common-form">
               <FormItem label="维修企业名称:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.companyName" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('companyName')}]">{{listSearch.companyName}}</span>
               </FormItem>
               <FormItem label="车牌号码:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.plateNumber" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('plateNumber')}]">{{listSearch.plateNumber}}</span>
               </FormItem>
               <FormItem label="车辆识别号VIN:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.vin" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('vin')}]">{{listSearch.vin}}</span>
               </FormItem>
               <FormItem label="送修里程:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.repairMileage" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('repairMileage')}]">{{listSearch.repairMileage}}</span>
 
               </FormItem>
               <FormItem label="送修日期:" prop="ORDER_TIME" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.repairDate" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('repairDate')}]">{{listSearch.repairDate}}</span>
               </FormItem>
               <FormItem label="结算日期:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.settleDate" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('settleDate')}]">{{listSearch.settleDate}}</span>
               </FormItem>
               <FormItem label="结算编号:" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.costlistcode" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('costlistcode')}]">{{listSearch.costlistcode}}</span>
               </FormItem>
               <FormItem label="故障描述:" prop="TELPHONE" class="common-span">
-                <!--<Input type="text" disabled v-model="listSearch.faultDescription" placeholder=""> </Input>-->
                 <span :class="[{'mark-change': markChange('faultDescription')}]">{{listSearch.faultDescription}}</span>
               </FormItem>
 
@@ -457,6 +449,7 @@
         })
       },
       getDetail() {
+        this.$Spin.show();
         this.$axios.post('/vehicle/carfile/queryDetail', {
           'repairbasicinfoId': this.detailData.id
         }).then((res) => {
@@ -468,6 +461,7 @@
           } else {
             this.$Message.error(res.data.status)
           }
+          this.$Spin.hide();
         })
       },
       visibleChange(status) {

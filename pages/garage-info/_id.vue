@@ -18,7 +18,7 @@
             <div class="icon"><img src="/img/garage-info/business.png"><img src="/img/garage-info/certification.png"></div>
             <div class="address"><span>{{info.addr}}</span><nuxt-link tag="a" :to="'/service-map?type=164&q='+info.name">导航地图</nuxt-link></div>
             <div class="tel" v-show="info.tel"><span>{{info.tel}}</span></div>
-            <div class="button">
+            <div class="button" v-show="isShangHai">
               <nuxt-link tag="a" :to="'/visit-service/?id='+$route.params.id">上门服务</nuxt-link>
               <nuxt-link tag="a" :to="'/appointment/?id='+$route.params.id+'&name='+info.name">预约服务</nuxt-link>
             </div>
@@ -206,6 +206,11 @@ export default {
 
     this.getList();
 
+  },
+  computed:{
+    isShangHai(){
+      return process.env.config.areaName=='shanghai';
+    }
   },
   methods:{
     getStars( val) {

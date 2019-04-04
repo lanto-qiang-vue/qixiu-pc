@@ -47,7 +47,7 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="accessBtn('view')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
+      <Button type="info" v-if="accessBtn('detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看</Button>
     </div>
     <record-repair-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></record-repair-detail>
 </common-table>

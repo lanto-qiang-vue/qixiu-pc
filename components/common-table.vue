@@ -18,7 +18,7 @@
     ref="tablesMain"
     :data="data"
     :columns="columns"
-    stripe
+    :stripe="stripe"
     border
     :highlight-row="true"
     :show-header="showHeader"
@@ -71,7 +71,7 @@
       },
       stripe: {
         type: Boolean,
-        default: false
+        default: true
       },
       border: {
         type: Boolean,

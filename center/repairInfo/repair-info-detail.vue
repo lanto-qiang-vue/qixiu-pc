@@ -1,6 +1,6 @@
 <!--车主中心 爱车档案 查看页面 2018-11-19-->
 <template>
-<div class="menu-manage">
+<div>
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
@@ -11,12 +11,12 @@
                 <Input type="text" v-model="searchList.companyName" placeholder="请输入维修企业"></Input>
             </FormItem>
             <FormItem :label-width="0" style="width: 100px;">
-                <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
             </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
+      <Button type="primary" v-if="accessBtn('detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
       <Button type="info" v-if="" @click="lastFun">后退</Button>
     </div>
     <record-repair-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></record-repair-detail>
@@ -27,12 +27,14 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
+  import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "repair-info-detail",
     components: {
         CommonTable,
         recordRepairDetail
     },
+    mixins: [funMixin],
     data(){
 		  return{
               loading:true,
@@ -119,14 +121,3 @@ export default {
     },
 	}
 </script>
-
-<style scoped lang="less">
-.menu-manage{
-
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
-</style>
