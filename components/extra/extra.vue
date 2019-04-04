@@ -43,13 +43,16 @@ export default {
     }
   },
   mounted(){
-    let roles= JSON.stringify(this.$store.state.user.userInfo.roles);
-    // console.log('roles', roles)
-    if(roles.indexOf('weixiuqiye')>=0) {
-      this.sigin()
-      this.checkWeixiuButt()
+    if(this.$store.state.user.userInfo.roles){
+      let roles= JSON.stringify(this.$store.state.user.userInfo.roles);
+      // console.log('roles', roles)
+      if(roles.indexOf('weixiuqiye')>=0) {
+        this.sigin()
+        this.checkWeixiuButt()
+      }
+      if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoContacts();
     }
-    if(roles.indexOf('jiaxiao')>=0) this.checkJiaxiaoContacts();
+    
   },
   methods:{
     showButt(data, type){

@@ -57,7 +57,7 @@ export default {
       // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
       let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
       // console.log('this.$store.state.user.accessMenu', this.$store.state.user.accessMenu )
-      // console.log('menuList', list )
+      // console.log('menuList111', list )
       return this.paraMenu|| list
     },
     setOpenedNames(){
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     turnToPage (name, meta) {
-      // console.log('click', name, meta)
+      console.log('click', name, meta)
       if (name.indexOf('isTurnByHref_') > -1) {
         window.open(name.split('_')[1])
         return

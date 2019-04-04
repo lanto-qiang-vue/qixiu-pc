@@ -2,8 +2,8 @@
   <div class="menu-manage">
 
     <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
-                  @changePage="changePage" @changePageSize="changePageSize"
-                  :show="showTable" :page="page" :loading="loading" :showOperate=false>
+                  @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick" :rowClassName="rowClassName"
+                  :show="showTable" :page="page" :loading="loading">
       <div slot="search">
         <Form :label-width="80" class="common-form">
           <FormItem label="维修单号:">
@@ -17,22 +17,31 @@
           </FormItem>
         </Form>
       </div>
+      <div slot="operate">
+        <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
+        
+      </div>
     </common-table>
+    <record-repair-detail :showDetail="showDetail" :detailData="detailData" @closeDetail="closeDetail"></record-repair-detail>
   </div>
 </template>
 
 <script>
   import CommonTable from '~/components/common-table.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
+  import recordRepairDetail from '~/components/record-repair-detail.vue'
   export default {
     name: 'repored',
     components: {
-      CommonTable
+      CommonTable,
+      recordRepairDetail
     },
     mixins: [funMixin],
     data() {
       return {
         loading: false,
+        showDetail:null,
+        detailData:null,
         columns: [
           {
             title: '结算日期', key: 'settleDate', sortable: true, minWidth: 120
@@ -71,6 +80,7 @@
             this.loading = false
           }
         })
+        this.detailData= null
       },
       changePage(page) {
         this.page = page
@@ -85,6 +95,21 @@
         this.loading = true
         this.page=1;
         this.getList()
+      },
+      onRowClick( row, index){
+        this.detailData=row
+      },
+      closeDetail(){
+        this.detailData= null
+        this.clearTableSelect= Math.random();
+        
+        this.getList();
+      },
+      rowClassName (row, index) {
+        if (row.fields.length>0) {
+            return 'demo-table-error-row';
+        }
+        return '';
       }
     }
   }
@@ -100,4 +125,17 @@
     width: 200px;
     margin-right: 10px;
   }
+
+
+</style>
+
+<style  lang="less">
+
+    .ivu-table .ivu-table-body .ivu-table-tbody .demo-table-error-row td{
+        background-color: #FB9606;
+        
+    }
+    
+
+
 </style>
