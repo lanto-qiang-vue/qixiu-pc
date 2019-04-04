@@ -119,7 +119,7 @@
             <div class="doctor_content active" id="gather_content" v-show="showCdfFlag">
               <ul>
                 <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
-                <nuxt-link tag="li" v-for="item in questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
+                <nuxt-link tag="li" v-for="item in information.questionList" :key="'questionList-'+item.id" :to="'/cdf/'+item.id">{{item.content}}</nuxt-link>
               </ul>
               <nuxt-link class="list_button" tag="a" :to="'/cdf'">浏览更多</nuxt-link>
             </div>
@@ -127,7 +127,7 @@
             <div class="doctor_content" id="professor_content" v-show="!showCdfFlag">
               <ul>
                 <!--<li v-for="item in cdfList" :key="'cdfList-'+item.id">{{item.name}}</li>-->
-                <nuxt-link tag="li" v-for="item in cdfList" :key="'cdfList-'+item.id" :to="'/cdf/expert/'+item.id">{{item.name}}</nuxt-link>
+                <nuxt-link tag="li" v-for="item in information.cdfList" :key="'cdfList-'+item.id" :to="'/cdf/expert/'+item.id">{{item.name}}</nuxt-link>
               </ul>
               <nuxt-link tag="a" :to="'/article/specialist'" class="list_button">浏览更多</nuxt-link>
             </div>
