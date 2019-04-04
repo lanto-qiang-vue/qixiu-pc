@@ -1,11 +1,15 @@
 <template>
-  <div class="menu-manage">
+  <div class="company-upload-repored">
 
     <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                   @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick" :rowClassName="rowClassName"
-                  :show="showTable" :page="page" :loading="loading">
+                  :show="showTable" :page="page" :loading="loading" :stripe=false>
       <div slot="search">
         <Form :label-width="80" class="common-form">
+          <FormItem label="上传日期:">
+            <!--<Input type="text" v-model="search.costlistcode" placeholder="请输入维修单号"></Input>-->
+            <DatePicker type="daterange" placeholder="请选择" @on-change="selectDate" clearable></DatePicker>
+          </FormItem>
           <FormItem label="维修单号:">
             <Input type="text" v-model="search.costlistcode" placeholder="请输入维修单号"></Input>
           </FormItem>
@@ -31,7 +35,7 @@
   import funMixin from '~/components/fun-auth-mixim.js'
   import recordRepairDetail from '~/components/record-repair-detail.vue'
   export default {
-    name: 'repored',
+    name: 'company-upload-repored',
     components: {
       CommonTable,
       recordRepairDetail
@@ -44,6 +48,9 @@
         detailData:null,
         columns: [
           {
+            title: '上传日期', key: 'receiveTime', sortable: true, minWidth: 120
+          },
+          {
             title: '结算日期', key: 'settleDate', sortable: true, minWidth: 120
           },
           { title: '维修单号', key: 'code', sortable: true, minWidth: 120 },
@@ -54,7 +61,9 @@
         clearTableSelect: false,
         search: {
           costlistcode: '',
-          vehicleplatenumber: ''
+          vehicleplatenumber: '',
+          receiveTimeBegin:'',
+          receiveTimeEnd:'',
         },
         page: 1,
         limit: 10,
@@ -71,6 +80,8 @@
         this.$axios.post('/company/carfile/query', {
           code: this.search.costlistcode,
           plateNumber: this.search.vehicleplatenumber,
+          receiveTimeBegin:this.search.receiveTimeBegin,
+          receiveTimeEnd:this.search.receiveTimeEnd,
           pageNo:this.page,
           pageSize:this.limit,
         }).then((res) => {
@@ -106,35 +117,49 @@
         this.getList();
       },
       rowClassName (row, index) {
+        
         if (row.fields.length>0) {
             return 'demo-table-error-row';
         }
-        return '';
+      },
+      selectDate(val){
+
+        if(val.length>0&&val[0]){
+          this.search.receiveTimeBegin=val[0];
+          this.search.receiveTimeEnd=val[1];
+        }else{
+          this.search.receiveTimeBegin='';
+          this.search.receiveTimeEnd='';
+        }
+
       }
     }
   }
 </script>
 
 <style scoped lang="less">
-  .menu-manage {
+.company-upload-repored{
 
-  }
 
-  .search-block {
-    display: inline-block;
-    width: 200px;
-    margin-right: 10px;
-  }
 
+}
 
 </style>
 
 <style  lang="less">
-
-    .ivu-table .ivu-table-body .ivu-table-tbody .demo-table-error-row td{
-        background-color: #FB9606;
+.company-upload-repored{
+    .demo-table-error-row td{
+        background-color: #ff6600;
+        color: #fff;
         
     }
+    .ivu-table-row-highlight td {
+      background-color: #ebf7ff;
+      color: #515a6e;
+    }
+
+}
+
     
 
 

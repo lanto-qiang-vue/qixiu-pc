@@ -438,7 +438,7 @@ export default [
           title: '维修数据上报查询',
           accessId: '/center/repored',
         },
-        component: resolve('center/company/repored.vue'),
+        component: resolve('center/company/company-upload-repored.vue'),
       },
 
 

@@ -1,6 +1,6 @@
 <!--车主中心 爱车档案 查看页面 2018-11-19-->
 <template>
-<div class="menu-manage">
+<div>
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
@@ -121,14 +121,3 @@ export default {
     },
 	}
 </script>
-
-<style scoped lang="less">
-.menu-manage{
-
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
-</style>
