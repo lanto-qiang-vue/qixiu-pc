@@ -523,5 +523,6 @@
   .mark-border{
     border: 1px solid #ed4014;
     margin-top: 2px;
+    padding-top: 2px;
   }
 </style>
