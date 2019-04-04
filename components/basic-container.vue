@@ -25,7 +25,7 @@
                     服务中心
                 </template>
                 <ul class="ivu-menu-drop-list icon-menus">
-                  <a class="ivu-menu-item" @click="$router.push('/center/repair-info-detail')"
+                  <a class="ivu-menu-item" @click="$router.push('/center/my-car-record')"
                              @mouseover="iconBlockShow= false">电子健康档案系统</a>
                   <a class="ivu-menu-item" icon-block-type="1">车主服务中心</a>
                   <a class="ivu-menu-item" icon-block-type="2">汽修企业服务中心</a>
@@ -39,7 +39,7 @@
                   <icon-block :type="iconBlockType" :left="iconBlockLeft" :show="iconBlockShow"></icon-block>
                 </ul>
             </Submenu>
-            <MenuItem name="head-menu-3" to="/center/repair-info-detail">
+            <MenuItem name="head-menu-3" to="/center/my-car-record">
                 电子健康档案系统
             </MenuItem>
             <MenuItem name="head-menu-4" to="/cdf" v-if="isShanghai">
