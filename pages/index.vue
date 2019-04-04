@@ -89,7 +89,7 @@ export default {
       })
     }
     let cdfList= ()=>{
-      new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         app.$axios.$get('/expert/nostate/list' ).then(res => {
           if (res.code === '0') {
             resolve( res.items)
