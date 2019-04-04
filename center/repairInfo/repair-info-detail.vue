@@ -27,7 +27,7 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import recordRepairDetail from '~/components/record-repair-detail.vue'
-  import funMixin from '~/components/fun-auth-mixim.js'
+import funMixin from '~/components/fun-auth-mixim.js'
 export default {
 	name: "repair-info-detail",
     components: {

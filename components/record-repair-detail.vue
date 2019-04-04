@@ -5,7 +5,6 @@
       v-model="showModal"
       title="车辆档案详情"
       width="90"
-      @on-visible-change="visibleChange"
       :scrollable="true"
       :transfer="true"
       :footer-hide="false"
@@ -13,41 +12,41 @@
       class="table-modal-detail"
       :transition-names="['', '']">
 
-      <div style="height: 100%;overflow: auto;">
+      <div style="height: 100%;overflow: auto;" class="record-repair-detail">
         <Collapse v-model="collapse">
           <Panel name="1">维修记录
             <Form slot="content" :label-width="120" class="common-form">
-              <FormItem label="维修企业名称:" class="common-span">
-                <span :class="[{'mark-change': markChange('companyName')}]">{{listSearch.companyName}}</span>
+              <FormItem label="维修企业名称:" :class="[{'mark-change': markChange('companyName')},'common-span']">
+                <span >{{listSearch.companyName}}</span>
               </FormItem>
-              <FormItem label="车牌号码:" class="common-span">
-                <span :class="[{'mark-change': markChange('plateNumber')}]">{{listSearch.plateNumber}}</span>
+              <FormItem label="车牌号码:" :class="[{'mark-change': markChange('plateNumber')},'common-span']">
+                <span >{{listSearch.plateNumber}}</span>
               </FormItem>
-              <FormItem label="车辆识别号VIN:" class="common-span">
-                <span :class="[{'mark-change': markChange('vin')}]">{{listSearch.vin}}</span>
+              <FormItem label="车辆识别号VIN:" :class="[{'mark-change': markChange('vin')},'common-span']">
+                <span >{{listSearch.vin}}</span>
               </FormItem>
-              <FormItem label="送修里程:" class="common-span">
-                <span :class="[{'mark-change': markChange('repairMileage')}]">{{listSearch.repairMileage}}</span>
+              <FormItem label="送修里程:" :class="[{'mark-change': markChange('repairMileage')},'common-span']">
+                <span >{{listSearch.repairMileage}}</span>
 
               </FormItem>
-              <FormItem label="送修日期:" prop="ORDER_TIME" class="common-span">
-                <span :class="[{'mark-change': markChange('repairDate')}]">{{listSearch.repairDate}}</span>
+              <FormItem label="送修日期:" prop="ORDER_TIME" :class="[{'mark-change': markChange('repairDate')},'common-span']">
+                <span >{{listSearch.repairDate}}</span>
               </FormItem>
-              <FormItem label="结算日期:" class="common-span">
-                <span :class="[{'mark-change': markChange('settleDate')}]">{{listSearch.settleDate}}</span>
+              <FormItem label="结算日期:" :class="[{'mark-change': markChange('settleDate')},'common-span']">
+                <span >{{listSearch.settleDate}}</span>
               </FormItem>
-              <FormItem label="结算编号:" class="common-span">
-                <span :class="[{'mark-change': markChange('costlistcode')}]">{{listSearch.costlistcode}}</span>
+              <FormItem label="结算编号:" :class="[{'mark-change': markChange('costlistcode')},'common-span']">
+                <span >{{listSearch.costlistcode}}</span>
               </FormItem>
-              <FormItem label="故障描述:" prop="TELPHONE" class="common-span">
-                <span :class="[{'mark-change': markChange('faultDescription')}]">{{listSearch.faultDescription}}</span>
+              <FormItem label="故障描述:" prop="TELPHONE" :class="[{'mark-change': markChange('faultDescription')},'common-span']">
+                <span >{{listSearch.faultDescription}}</span>
               </FormItem>
 
             </Form>
           </Panel>
         </Collapse>
         <div class="r-list-search">
-          <h4>维修项目</h4>
+          <h4 :class="[{'mark-header': markChange('repairprojectlist')}, 'main-table']">维修项目</h4>
         </div>
         <Table
           :class="[{'mark-border': markChange('repairprojectlist')}, 'main-table']"
@@ -59,7 +58,7 @@
         ></Table>
 
         <div class="r-list-search">
-          <h4>维修配件</h4>
+          <h4 :class="[{'mark-header': markChange('repairprojectlist')}, 'main-table']">维修配件</h4>
         </div>
         <Table
           :class="[{'mark-border': markChange('vehiclepartslist')}, 'main-table']"
@@ -129,7 +128,7 @@
       title="点评"
       width="500"
       :styles="{height:'600px'}"
-      @on-visible-change="visibleChange"
+
       :scrollable="true"
       :transfer="true"
       :footer-hide="false"
@@ -187,7 +186,7 @@
       v-model="feedbackModal"
       title="反馈"
       width="500"
-      @on-visible-change="visibleChange"
+
       :scrollable="true"
       :transfer="true"
       :footer-hide="false"
@@ -464,12 +463,7 @@
           this.$Spin.hide();
         })
       },
-      visibleChange(status) {
-        if (status === false) {
-          this.$emit('closeDetail')
 
-        }
-      },
       //判断是否错误
       markChange(field){
         let arr= field.split(','),flag=false
@@ -488,19 +482,13 @@
 </script>
 
 <style scoped lang="less">
-  .menu-manage {
 
-  }
 .content p{
   font-size: 13px;
   color: #999999;
   margin-bottom: 5px;
 }
-  .search-block {
-    display: inline-block;
-    width: 200px;
-    margin-right: 10px;
-  }
+
 
   .r-list-search {
     width: 100%;
@@ -509,19 +497,36 @@
   }
   .common-span{
     width: 30%;
-
     span{
       width:100%;
       height:32px;
       display: block;
     }
+  }
 
-  }
-  .mark-change{
-    color: #ed4014;
-  }
   .mark-border{
     border: 1px solid #ed4014;
     margin-top: 2px;
   }
+  .mark-header{
+    color: #ed4014;
+  }
+</style>
+
+<style lang="less">
+.record-repair-detail{
+    .mark-change{
+        .ivu-form-item-label{
+          color: #ed4014;
+        }
+        .ivu-form-item-content{
+          span{
+            color:#ed4014;
+          }
+        } 
+      
+      
+    }
+} 
+
 </style>
