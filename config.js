@@ -76,7 +76,7 @@ const shanghaiConf= process.env.NODE_ENV==='development'? devConfig: prodConfig
 const conf={
   shanghai: shanghaiConf,
   dev_shandong: {
-    port: '3700',
+    port: '3000',
     apiUrl: 'http://192.168.169.208:8888/',
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
