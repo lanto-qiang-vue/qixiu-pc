@@ -149,13 +149,11 @@
 <style  lang="less">
 .company-upload-repored{
     .demo-table-error-row td{
-        background-color: #ff6600;
-        color: #fff;
+        background-color: #ff9494;
         
     }
     .ivu-table-row-highlight td {
       background-color: #ebf7ff;
-      color: #515a6e;
     }
 
 }

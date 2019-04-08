@@ -16,30 +16,30 @@
         <Collapse v-model="collapse">
           <Panel name="1">维修记录
             <Form slot="content" :label-width="120" class="common-form">
-              <FormItem label="维修企业名称:" :class="[{'mark-change': markChange('companyName')},'common-span']">
-                <span >{{listSearch.companyName}}</span>
+              <FormItem label="维修企业名称:" :class="[{'mark-change': markChange('companyName',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('companyName')}]">{{listSearch.companyName}}</span>
               </FormItem>
-              <FormItem label="车牌号码:" :class="[{'mark-change': markChange('plateNumber')},'common-span']">
-                <span >{{listSearch.plateNumber}}</span>
+              <FormItem label="车牌号码:" :class="[{'mark-change': markChange('plateNumber',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('plateNumber')}]">{{listSearch.plateNumber}}</span>
               </FormItem>
-              <FormItem label="车辆识别号VIN:" :class="[{'mark-change': markChange('vin')},'common-span']">
-                <span >{{listSearch.vin}}</span>
+              <FormItem label="车辆识别号VIN:" :class="[{'mark-change': markChange('vin',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('vin')}]">{{listSearch.vin}}</span>
               </FormItem>
-              <FormItem label="送修里程:" :class="[{'mark-change': markChange('repairMileage')},'common-span']">
-                <span >{{listSearch.repairMileage}}</span>
+              <FormItem label="送修里程:" :class="[{'mark-change': markChange('repairMileage',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('repairMileage')}]">{{listSearch.repairMileage}}</span>
 
               </FormItem>
-              <FormItem label="送修日期:" prop="ORDER_TIME" :class="[{'mark-change': markChange('repairDate')},'common-span']">
-                <span >{{listSearch.repairDate}}</span>
+              <FormItem label="送修日期:" prop="ORDER_TIME" :class="[{'mark-change': markChange('repairDate',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('repairDate')}]">{{listSearch.repairDate}}</span>
               </FormItem>
-              <FormItem label="结算日期:" :class="[{'mark-change': markChange('settleDate')},'common-span']">
-                <span >{{listSearch.settleDate}}</span>
+              <FormItem label="结算日期:" :class="[{'mark-change': markChange('settleDate',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('settleDate')}]">{{listSearch.settleDate}}</span>
               </FormItem>
-              <FormItem label="结算编号:" :class="[{'mark-change': markChange('costlistcode')},'common-span']">
-                <span >{{listSearch.costlistcode}}</span>
+              <FormItem label="结算编号:" :class="[{'mark-change': markChange('costlistcode',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('costlistcode')}]">{{listSearch.costlistcode}}</span>
               </FormItem>
-              <FormItem label="故障描述:" prop="TELPHONE" :class="[{'mark-change': markChange('faultDescription')},'common-span']">
-                <span >{{listSearch.faultDescription}}</span>
+              <FormItem label="故障描述:" prop="TELPHONE" :class="[{'mark-change': markChange('faultDescription',true)},'common-span']">
+                <span :class="[{'mark-header': markChange('faultDescription')}]">{{listSearch.faultDescription}}</span>
               </FormItem>
 
             </Form>
@@ -465,7 +465,8 @@
       },
 
       //判断是否错误
-      markChange(field){
+      markChange(field,val){
+        
         let arr= field.split(','),flag=false
         for(let i in arr){
           if(this.allFields.indexOf(arr[i])>=0){
@@ -473,7 +474,9 @@
             break
           }
         }
-
+        if(val){
+          return (flag&&!this.listSearch[field])
+        }
         return flag
       },
 
@@ -520,13 +523,6 @@
         .ivu-form-item-label{
           color: #ed4014;
         }
-        .ivu-form-item-content{
-          span{
-            color:#ed4014;
-          }
-        } 
-      
-      
     }
 } 
 
