@@ -90,7 +90,21 @@ const conf={
     ...shandong,
 
   },
+  shandong: {
+    port: '3000',
+    apiUrl: 'http://gateway.shandongqixiu.com/',
+    // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
+    repairUrl: 'http://192.168.169.211:7210/',
+
+    socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
+    shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
+
+    articlePath: 'http://download.image.shandongqixiu.com/',
+    ...prod,
+    ...shandong,
+
+  },
 
 }
 

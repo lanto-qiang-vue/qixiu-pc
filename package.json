@@ -10,8 +10,9 @@
     "start": "nuxt start",
 
     "dev_shandong": "cross-env area=dev_shandong nuxt",
-    "build_dev_shandong": "cross-env area=dev_shandong nuxt build",
-    "start_dev_shandong": "cross-env area=dev_shandong nuxt start",
+
+    "build_shandong": "cross-env area=shandong nuxt build",
+    "start_shandong": "cross-env area=shandong nuxt start",
 
     "generate": "nuxt generate"
   },
