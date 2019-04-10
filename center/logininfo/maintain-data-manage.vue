@@ -88,7 +88,7 @@
           </div>
         </div>
         <!--试点企业维修点评情况-->
-        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;" v-if="isShanghai">
           <div id="bar" style="width: 100%;height: 650px;"></div>
         </div>
       </div>
@@ -137,6 +137,11 @@
         bar: null,
         isManage:false,
       }
+    },
+    computed:{
+      isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
     },
     mounted() {
 

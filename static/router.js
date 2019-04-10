@@ -652,11 +652,11 @@ export default [
         // component: resolve('center/operate/repair-company-manage.vue'),
       },
       {
-        path: 'quality-manage',
+        path: 'quality-manager',
         meta: {
           icon: '',
           title: '质量信誉考核管理',
-          accessId: '/center/quality-manage',
+          accessId: '/center/quality-manager',
         },
         component: resolve('center/company-info/quality-manage.vue'),
       },
@@ -748,7 +748,7 @@ export default [
         path: 'company-white-list',
         meta: {
           icon: '',
-          title: '白名单管理',
+          title: '监控白名单',
           accessId: '/center/company-white-list',
         },
         component: resolve('center/operate/company-white-list.vue'),

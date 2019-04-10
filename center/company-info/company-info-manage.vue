@@ -37,13 +37,13 @@
           </Select>
         </FormItem>
         <FormItem :label-width="0" style="width: 90px;">
-            <Button type="primary" v-if="" @click="searchFun">搜索</Button>
+            <Button type="primary" v-if="accessBtn('query-list')" @click="searchFun">搜索</Button>
         </FormItem>
 
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="accessBtn('query-list')" @click="showDetail=Math.random();" :disabled="!detailData">查看|审核</Button>
+      <Button type="info" v-if="accessBtn('crux-detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看|审核</Button>
     </div>
   <repair-company-info :showDetail='showDetail' :detailData="detailData" :businessStatusArr="businessStatusArr"
                        roleType="guanlibumen" @closeDetail="closeDetail"></repair-company-info>

@@ -202,37 +202,6 @@ activated(){
               
             })
         },
-        getOperate(){
-            this.loading=true;
-            let page=this.page-1;
-            
-            let strUrl="";
-            for(let i in this.searchList){
-                if(i=="hasEvidence"){
-                    if(this.searchList[i]=="0"){
-                        strUrl+='&'+i+'=true';
-                    }else if(this.searchList[i]=="1"){
-                        strUrl+='&'+i+'=false';
-                    }
-                }else if(this.searchList[i]){
-                    strUrl+='&'+i+'='+this.searchList[i];
-                }
-            }
-
-            this.$axios.get('/comment/complaint/maintain/query/operator?size='+this.limit+'&page='+page+strUrl, {
-            }).then( (res) => {
-              console.log(res);
-              if(res.status===200){
-                  this.tableData=res.data.content;
-                  this.total=res.data.totalElements;
-                  this.loading=false;
-              }else{
-                this.loading=false;
-                // this.$Message.error(res.statusText);
-              }
-              
-            })
-        },
         changePage(page){
           this.page= page
           this.getList()

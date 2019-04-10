@@ -531,14 +531,14 @@
               <Input type="text" v-model="listSearch.serviceCategoryOther" placeholder=""></Input>
             </FormItem>
 
-            <FormItem label="是否愿意开通车大夫服务等在线维修服务:" :class="[{'mark-change': markChange('openOnlineRepairService')}, 'width90']">
+            <FormItem label="是否愿意开通车大夫服务等在线维修服务:" :class="[{'mark-change': markChange('openOnlineRepairService')}, 'width90']" v-if="isShanghai">
 
               <i-switch size="large" v-model="listSearch.openOnlineRepairService">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
             </FormItem>
-            <FormItem label="是否愿意开通在线商务服务:" :class="[{'mark-change': markChange('openOnlineBusinessService')}, 'width90']">
+            <FormItem label="是否愿意开通在线商务服务:" :class="[{'mark-change': markChange('openOnlineBusinessService')}, 'width90']" v-if="isShanghai">
               <i-switch size="large" v-model="listSearch.openOnlineBusinessService">
                 <span slot="open">是</span>
                 <span slot="close">否</span>

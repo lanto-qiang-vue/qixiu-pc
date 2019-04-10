@@ -11,21 +11,21 @@
         </div>
       </div>
       <div class="right">
-        <span class="tel"><Icon type="ios-call" size="20"/>950-456-897</span>
+        <span class="tel"><Icon type="ios-call" size="20"/>400-663-8210</span>
         <!--<a href="/download-app" target="_blank" class="app">-->
           <!--<p>下载APP</p>-->
           <!--<img src="~@/assets/img/index/qrcode_app.png">-->
         <!--</a>-->
-        <div class="wx">
+        <!--<div class="wx">
           <i class="fa fa-weixin" style="font-size: 16px"></i>
           <p>关注微信</p>
           <img src="~@/assets/img/index/qrcode_weixin.jpg">
-        </div>
+        </div>-->
       </div>
 
       <login-status ></login-status>
-      <nuxt-link tag="a" to="/article/guide">
-        <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
+      <!--<nuxt-link tag="a" to="/article/guide">
+        <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>-->
     </div>
     <div class="service" slot="service">
       <div class="left">
@@ -46,12 +46,12 @@
       </div>
       <div class="center">
         <div class="query">
-          <div class="sub-title"><img src="~@/assets/img/index/glass.png"><div><h1>维修服务查询</h1><p>快速定位，为您提供满意的服务</p></div></div>
-          <div class="select justify top">
-            <Select v-model="search.sort" size="large" placeholder="企业排序" clearable
+          <div class="sub-title"><img src="~@/assets/img/index/glass.png"><div><h1>查选维修</h1><p>快速查找附近正规维修企业</p></div></div>
+          <div class="select justify top justify-left">
+            <!--<Select v-model="search.sort" size="large" placeholder="企业排序" clearable
                     transfer style="width:24%;">
               <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
-            </Select>
+            </Select>-->
             <Select v-model="search.is4s" size="large" placeholder="企业类型" clearable
                     transfer style="width:24%;">
               <Option v-for="(item, index) in maintainType" :value="item.value" :key="index">{{item.name}}</Option>
@@ -78,10 +78,10 @@
         <div class="button justify">
           <nuxt-link to="/center/my-car-record" class="b1">
             <img style="width: 27px" src="~@/assets/img/index/icon-维修记录.png"/><span>维修记录</span></nuxt-link>
-          <nuxt-link to="/center/my-car-record" class="b2">
+          <!--<nuxt-link to="/center/my-car-record" class="b2">
             <img style="width: 28px" src="~@/assets/img/index/icon-维修点评.png"/><span>维修点评</span></nuxt-link>
           <a href="/file/tips.pdf" target="_blank" class="b3">
-            <img style="width: 30px" src="~@/assets/img/index/icon-爱车小贴士.png"/><span>爱车小贴士</span></a>
+            <img style="width: 30px" src="~@/assets/img/index/icon-爱车小贴士.png"/><span>爱车小贴士</span></a>-->
         </div>
       </div>
       <div class="right">
@@ -97,13 +97,13 @@
     </ul>
   </index-component>
 
-  <div ref="qrfloar" style="padding: 10px;position: fixed;right: 10px;bottom: 30%;background-color: #8ACFFF;color: #2E5F96;text-align: center;width: 120px;z-index: 1">
+  <!--<div ref="qrfloar" style="padding: 10px;position: fixed;right: 10px;bottom: 30%;background-color: #8ACFFF;color: #2E5F96;text-align: center;width: 120px;z-index: 1">
     <Icon type="ios-close-circle-outline" size="18" style="position: absolute;top: 5px;right: 5px;color: #2E5F96;cursor: pointer" @click="$refs.qrfloar.style.display='none'"/>
     <p>欢迎关注</p>
     <p>{{env.zhName}}汽修平台</p>
     <p>微信公众号</p>
     <img src="~@/assets/img/index/qrcode_weixin.jpg" style="margin-top: 10px;width: 100%">
-  </div>
+  </div>-->
 </div>
 </template>
 
@@ -410,6 +410,9 @@ export default {
       display: inline-block;
       width: 100%;
     }
+  }
+  .justify-left{
+    text-align: left;
   }
 }
 </style>

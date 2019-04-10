@@ -26,7 +26,7 @@
       </Input>
       <Button type="primary" @click="getCompList">搜索</Button>
       <div class="select-bar" v-show="search.type=='164'">
-        <Select  v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll">
+        <Select  v-model="search.sort" placeholder="企业排序" clearable @on-change="changeSelectAll" v-if="isShanghai">
           <Option v-for="(item, index) in sort" :value="item.value" :key="index">{{item.name}}</Option>
         </Select>
         <Select v-model="search.is4s" placeholder="企业类型"  clearable @on-change="changeSelectAll">

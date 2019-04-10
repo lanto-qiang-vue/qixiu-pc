@@ -27,7 +27,7 @@
                 </FormItem>
 
                 <FormItem :label-width="0" style="width: 60px;">
-                    <Button type="primary" v-if="" @click="page=1;getOperate()">搜索</Button>
+                    <Button type="primary" v-if="" @click="page=1;getList()">搜索</Button>
                 </FormItem>
         </Form>
     </div>
@@ -137,12 +137,12 @@
     },
     mounted () {
       this.showTable= Math.random();
-      this.getOperate();
+      this.getList();
 
     },
 
     methods:{
-        getOperate(){
+        getList(){
             let temUpload=null;
             this.loading=true;
             let page=this.page-1;
