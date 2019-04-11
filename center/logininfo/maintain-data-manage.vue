@@ -33,7 +33,7 @@
           </FormItem>
         </Form>
       </div>
-      <div class="center">
+      <div class="center" v-if="accessBtn('upload-not-count')&&accessBtn('upload-fault-count')&&accessBtn('dept-count')">
         <!--各区维修记录上传情况-->
         <div class="inline-box" style="width:100%;position:relative;margin-top:20px;padding-top:20px;">
           <div id="bar2" style="width: 100%;height: 600px;"></div>
@@ -64,7 +64,7 @@
           </div>
         </div>
         <!--各区推送阅读情况-->
-        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;">
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;" v-if="accessBtn('unread-count')">
           <div id="bar3" style="width: 100%;height: 600px;"></div>
           <div style="position:absolute;left:10%;top:15px;font-size:12px;" v-show="apiShow">
             <div>
@@ -88,7 +88,7 @@
           </div>
         </div>
         <!--试点企业维修点评情况-->
-        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;" v-if="isShanghai">
+        <div class="inline-box" style="width:100%;position:relative;margin-top:20px;" v-if="accessBtn('comment-count')">
           <div id="bar" style="width: 100%;height: 650px;"></div>
         </div>
       </div>
@@ -99,8 +99,10 @@
 </template>
 
 <script>
+import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'maintain-data-manage',
+    mixins: [funMixin],
     data() {
       return {
         searchType: 0,
@@ -174,9 +176,18 @@
     },
     methods: {
       getAll() {
-        this.getData()
-        this.getRead()
-        this.getComment()
+        if(this.accessBtn('upload-not-count')&&this.accessBtn('upload-fault-count')&&this.accessBtn('dept-count')){
+          this.getData()
+        }
+        if(this.accessBtn('unread-count')){
+          this.getRead()
+        }
+        if(this.accessBtn('comment-count')){
+          this.getComment()
+        }
+        
+        
+        
       },
       computedTime(day){
         let date = new Date()

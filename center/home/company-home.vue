@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="dblock">
+    <div class="dblock" v-if="isShanghai">
       <h1 class="dtitle">企业联系人（用于接收汽修平台公众号通知）</h1>
       <div class="center">
         <div class="inline-box">

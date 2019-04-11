@@ -35,11 +35,17 @@ export default {
   computed:{
     buttShow(){
       return this.$store.state.app.butt.show
-    }
+    },
+    isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
   },
   watch:{
     buttShow(){
-      this.showButt(this.$store.state.app.butt.data, this.$store.state.app.butt.type)
+      if(this.isShanghai){
+        this.showButt(this.$store.state.app.butt.data, this.$store.state.app.butt.type)
+      }
+      
     }
   },
   mounted(){
@@ -74,7 +80,7 @@ export default {
     },
     checkWeixiuButt(){
       this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
-        if( res.data.content && !res.data.content.length){
+        if( res.data.content && !res.data.content.length&&this.isShanghai){
           this.showButt(null, 'weixiuqiye')
         }
       })
@@ -95,7 +101,7 @@ export default {
     checkJiaxiaoContacts(){
       this.$axios.$get('/training/center/driving').then((res) => {
         console.log(res)
-        if(!res.contactMobile){
+        if(!res.contactMobile&&this.isShanghai){
           this.showButt(null, 'jiaxiao')
         }
       })

@@ -17,7 +17,7 @@
             <Option v-for="item in showList" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
-        <FormItem label="系统类型:">
+        <FormItem label="系统类型:" v-if="isShanghai">
           <Select v-model="search.useSystem" clearable>
             <Option v-for="item in typeSystem" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
@@ -49,7 +49,7 @@
             <Option v-for="item in typeList2" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
-        <FormItem label="系统类型:" prop="useSystem">
+        <FormItem label="系统类型:" prop="useSystem" v-if="isShanghai">
           <Select v-model="formData.useSystem" clearable>
             <Option v-for="item in typeSystem" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
@@ -141,56 +141,7 @@
           terminal:[{required:true,message:'必选'},{ validator: terminalRule, trigger: 'blur' }],
           useSystem:{required:true,message:'必选'},
         },
-        columns: [
-          {
-            title: '序号', key: '', sortable: true, minWidth: 80,
-            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
-          },
-          {
-            title: '终端类型', key: 'terminal', sortable: true, minWidth: 150,
-            render: (h, params) => h('span', this.getName(params.row.terminal))
-          },
-          { title: '标题', key: 'title', sortable: true, minWidth: 150 },
-          {
-            title: '排序值', key: 'seq', sortable: true, minWidth: 120
-          },
-          {
-            title: '创建日期', key: 'createTime', sortable: true, minWidth: 120
-          },
-          {
-            title: '是否显示', key: 'show', sortable: true, minWidth: 120,
-            render: (h, params) => {
-              let buttonContent = params.row.show ? '是' : '否'
-              let buttonStatus = params.row.show ? 'primary' : 'error'
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: buttonStatus,
-                    size: 'small'
-                  },
-                  style: {
-                    width: '60px',
-                    textAlign: 'center',
-                    marginRight: '10px'
-
-                  },
-                  on: {
-                    click: () => {
-                      this.$axios.post('/banner/update/' + this.tableData[params.index].id + '/' + !this.tableData[params.index].show, {
-                        id: this.tableData[params.index].id,
-                        show: !this.tableData[params.index].show
-                      }).then((res) => {
-                        if (res.data.code == '0') {
-                          this.tableData[params.index].show = !this.tableData[params.index].show
-                        }
-                      })
-                    }
-                  }
-                }, buttonContent)
-              ])
-            }
-          }
-        ],
+        columns: [],
         typeList: [
           { id: 'zero', name: '全部' },
           { id: 'A', name: '安卓' },
@@ -283,10 +234,10 @@
         this.limit = size
         this.getList()
       },
-      getName(id) {
-        for (let i in this.typeList) {
-          if (this.typeList[i].id == id) {
-            return this.typeList[i].name
+      getName(id,arr) {
+        for (let i in arr) {
+          if (arr[i].id == id) {
+            return arr[i].name
             break
           }
         }
@@ -329,13 +280,125 @@
       }
     },
     computed: {
+      isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
       canDo() {
         return this.list == ''
       }
     },
     mounted() {
+      if(this.isShanghai){
+        this.columns=[
+          {
+            title: '序号', key: '', sortable: true, minWidth: 80,
+            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
+          },
+          {
+            title: '终端类型', key: 'terminal', sortable: true, minWidth: 150,
+            render: (h, params) => h('span', this.getName(params.row.terminal,this.typeList))
+          },
+          {
+            title: '系统类型', key: 'useSystem', sortable: true, minWidth: 150,
+            render: (h, params) => h('span', this.getName(params.row.useSystem,this.typeSystem))
+          },
+          { title: '标题', key: 'title', sortable: true, minWidth: 150 },
+          {
+            title: '排序值', key: 'seq', sortable: true, minWidth: 120
+          },
+          {
+            title: '创建日期', key: 'createTime', sortable: true, minWidth: 120
+          },
+          {
+            title: '是否显示', key: 'show', sortable: true, minWidth: 120,
+            render: (h, params) => {
+              let buttonContent = params.row.show ? '是' : '否'
+              let buttonStatus = params.row.show ? 'primary' : 'error'
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                    size: 'small'
+                  },
+                  style: {
+                    width: '60px',
+                    textAlign: 'center',
+                    marginRight: '10px'
+
+                  },
+                  on: {
+                    click: () => {
+                      this.$axios.post('/banner/update/' + this.tableData[params.index].id + '/' + !this.tableData[params.index].show, {
+                        id: this.tableData[params.index].id,
+                        show: !this.tableData[params.index].show
+                      }).then((res) => {
+                        if (res.data.code == '0') {
+                          this.tableData[params.index].show = !this.tableData[params.index].show
+                        }
+                      })
+                    }
+                  }
+                }, buttonContent)
+              ])
+            }
+          }
+        ]
+      }else{
+        this.columns=[
+          {
+            title: '序号', key: '', sortable: true, minWidth: 80,
+            render: (h, params) => h('span', (this.page - 1) * this.limit + params.index + 1)
+          },
+          {
+            title: '终端类型', key: 'terminal', sortable: true, minWidth: 150,
+            render: (h, params) => h('span', this.getName(params.row.terminal,this.typeList))
+          },
+          
+          { title: '标题', key: 'title', sortable: true, minWidth: 150 },
+          {
+            title: '排序值', key: 'seq', sortable: true, minWidth: 120
+          },
+          {
+            title: '创建日期', key: 'createTime', sortable: true, minWidth: 120
+          },
+          {
+            title: '是否显示', key: 'show', sortable: true, minWidth: 120,
+            render: (h, params) => {
+              let buttonContent = params.row.show ? '是' : '否'
+              let buttonStatus = params.row.show ? 'primary' : 'error'
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: buttonStatus,
+                    size: 'small'
+                  },
+                  style: {
+                    width: '60px',
+                    textAlign: 'center',
+                    marginRight: '10px'
+
+                  },
+                  on: {
+                    click: () => {
+                      this.$axios.post('/banner/update/' + this.tableData[params.index].id + '/' + !this.tableData[params.index].show, {
+                        id: this.tableData[params.index].id,
+                        show: !this.tableData[params.index].show
+                      }).then((res) => {
+                        if (res.data.code == '0') {
+                          this.tableData[params.index].show = !this.tableData[params.index].show
+                        }
+                      })
+                    }
+                  }
+                }, buttonContent)
+              ])
+            }
+          }
+        ]
+      }
       this.showTable = Math.random()
       this.getList()
+      
     }
   }
 </script>

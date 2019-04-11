@@ -27,12 +27,14 @@
                   </FormItem>
             </Form>
         </div>
-        <div slot="operate" style="position:relative;">
+        <div slot="operate" style="overflow: hidden;">
           <Button type="primary" v-if="accessBtn('export')" @click="exportAllData">导出全部</Button>
           <Button type="primary" v-if="accessBtn('message')" @click="sendAllCountFun">提醒全部</Button>
-          <Button type="default"  @click="$router.go(-1)" style="position: absolute;right: 5px;">返回</Button>
+          <Button type="default"  @click="$router.go(-1)" style="float: right;right: 5px;">返回</Button>
+
+          
           <!--<div class="publice-button" style="position:absolute;top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>-->
-          <Tooltip placement="right" class="myTotilp" theme="light">
+          <Tooltip placement="right" class="myTotilp" theme="light" v-if="isShanghai">
             <div class="publice-button" style="top:3px;margin-left:3px;cursor:pointer;" @click="enter"><Icon class="publice-button-i" type="md-help" /></div>
             <div slot="content">
               <p class="publice-info">提醒模板说明{{title}}</p>
@@ -118,6 +120,11 @@ export default {
 
       }
     },
+    computed:{
+      isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
+    },
     mounted () {
       // console.log(this.accessBtn('view'));
       let routerData=this.$route;
@@ -198,10 +205,10 @@ export default {
           },
           {title: '错误率', key: 'probability',  minWidth: 120,
           },
-          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+          {title: '已提醒数/已读数', key: '', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor',  minWidth: 120,
+          {title: '操作', key: '',  minWidth: 120,
             render: (h, params) => {
                if(this.accessBtn('message')){
                  return h('div', [
@@ -281,10 +288,10 @@ export default {
           {title: '联系方式', key: 'contactMobile',  minWidth: 135,
           },
 
-          {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+          {title: '已提醒数/已读数', key: '', minWidth: 120,
             render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
           },
-          {title: '操作', key: 'honor',  minWidth: 120,
+          {title: '操作', key: '',  minWidth: 120,
             render: (h, params) => {
               if(this.accessBtn('message')){
                 return h('div', [
@@ -366,10 +373,10 @@ export default {
               {title: '联系方式', key: 'contactMobile',  minWidth: 135,
               },
 
-              {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+              {title: '已提醒数/已读数', key: '', minWidth: 120,
                 render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
               },
-              {title: '操作', key: 'honor',  minWidth: 120,
+              {title: '操作', key: '',  minWidth: 120,
                 render: (h, params) => {
                   if(this.accessBtn('message')){
                     return h('div', [
@@ -470,10 +477,10 @@ export default {
             },
             {title: '错误率', key: 'probability',  minWidth: 120,
             },
-            {title: '已提醒数/已读数', key: 'honor', minWidth: 120,
+            {title: '已提醒数/已读数', key: '', minWidth: 120,
               render: (h, params) => h('span', params.row.msgSendCount + "/" + params.row.msgReadCount)
             },
-            {title: '操作', key: 'honor',  minWidth: 120,
+            {title: '操作', key: '',  minWidth: 120,
               render: (h, params) => {
                 if(this.accessBtn('message')){
                   return h('div', [
