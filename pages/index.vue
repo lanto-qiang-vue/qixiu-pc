@@ -243,7 +243,6 @@ export default {
     return env.config.areaName=='shanghai'? shanghai(): other()
   },
   data () {
-    console.log("index.mounted111",this.banners)
     return thisData
   },
   computed:{
@@ -255,7 +254,6 @@ export default {
     }
   },
   mounted(){
-    console.log("index.mounted",this.banners)
     // console.log('process.env.config', process.env.config)
 
     // let self= this

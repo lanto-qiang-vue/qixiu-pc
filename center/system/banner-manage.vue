@@ -17,6 +17,11 @@
             <Option v-for="item in showList" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
+        <FormItem label="系统类型:">
+          <Select v-model="search.useSystem" clearable>
+            <Option v-for="item in typeSystem" :value="item.id" :key="item.id">{{item.name}}</Option>
+          </Select>
+        </FormItem>
         <FormItem :label-width="80" style="width: 100px;">
           <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
         </FormItem>
@@ -42,6 +47,11 @@
         <FormItem label="终端" prop="terminal">
           <Select v-model="formData.terminal">
             <Option v-for="item in typeList2" :value="item.id" :key="item.id">{{item.name}}</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="系统类型:" prop="useSystem">
+          <Select v-model="formData.useSystem" clearable>
+            <Option v-for="item in typeSystem" :value="item.id" :key="item.id">{{item.name}}</Option>
           </Select>
         </FormItem>
         <FormItem label="链接地址" prop="linkUrl">
@@ -106,13 +116,15 @@
           'place': 0,
           'seq': 0,
           'terminal': 'zero',
-          'title': ''
+          'title': '',
+          'useSystem':1
         },
         formData: {},
         search: {
           show: '1',
           title: '',
-          terminal: 'zero'
+          terminal: 'zero',
+          useSystem:''
         },
         total: 0,
         page: 1,
@@ -127,6 +139,7 @@
           title:{required:true,message:'标题必填'},
           linkUrl:{required:true,message:'连接地址必填'},
           terminal:[{required:true,message:'必选'},{ validator: terminalRule, trigger: 'blur' }],
+          useSystem:{required:true,message:'必选'},
         },
         columns: [
           {
@@ -196,6 +209,11 @@
           { id: '1', name: '全部' },
           { id: '2', name: '是' },
           { id: '3', name: '否' }
+        ],
+        typeSystem:[
+          { id: 1, name: '上海汽修' },
+          { id: 2, name: '好修修' }
+          
         ]
       }
     },
@@ -293,9 +311,11 @@
         } else {
           terminal = this.search.terminal
         }
+
         this.$axios.post('/banner/list', {
           'terminal': terminal,
           'show': show,
+          'useSystem':this.search.useSystem,
           'pageNo': this.page,
           'pageSize': this.limit,
           'title': this.search.title
