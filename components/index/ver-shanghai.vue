@@ -10,6 +10,17 @@
       <p>企业员工信息</p>
     </nuxt-link>
 
+
+    <div  style="width: 800px; height: 20px;position: relative;overflow: hidden;">
+        <div id="tem-header" style="color: #e00316;overflow: hidden;position: absolute;right: 0px;top: 0px;font-size: 14px;line-height: 20px;width: 1200px;">
+          <div style="display: inline-block;width: 16px;height: 20px;line-height: 20px;">
+            <img src="/img/title1.png" alt="" style="width: 16px;height: 14px;">
+          </div>
+          
+          公告：致各维修企业负责人，自2019年4月15日起，将会有上海汽修平台线下服务人员进行上门走访，届时将会协助各维修企业完成市运管处签发的【2018】250号文件相关要求，特此告知！
+        </div>
+    </div>
+
     <div class="head" slot="header">
       <div class="title">
         <img src="/img/logo-shanghai.png">
@@ -33,6 +44,9 @@
       </div>
 
       <login-status :isIndex="true"></login-status>
+
+
+      
     </div>
 
     <div class="service" slot="service">
@@ -160,11 +174,26 @@ export default {
       iconBlockLeft: 128,
       iconBlockShow: false,
       showCdfFlag: true,
-      area: []
+      area: [],
+      timer:null
     }
   },
   mounted(){
     let self= this
+
+    let temHeader=document.getElementById('tem-header');
+    let num=800;
+    clearInterval(this.timer);
+    this.timer=setInterval(()=>{
+      num--;
+      // console.log(num);
+      temHeader.style.left=num+'px';
+      if(num==-1200){
+        num=800;
+      }
+    },30)
+    
+
     // $('body').on('mouseover', ".service .left ul li, .service .left .icon-block")
     $(".service .left ul li, .service .left .icon-block").hover( function() {
       self.iconBlockShow= true

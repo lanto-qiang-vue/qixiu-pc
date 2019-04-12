@@ -6,8 +6,8 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                  :show="showTable" :page="page" :loading="loading" @onSortChange="onSortChange">
     <div  slot="search"  >
-      <Form :label-width="100" class="common-form" :model="searchList" ref="searchForm">
-          <FormItem label="区域:">
+      <Form :label-width="100" class="common-form" :model="searchList" ref="searchForm" >
+          <FormItem label="区域:" v-show="isShangHai">
             <!--<Select v-model="searchList.area.key" clearable>-->
                 <!--<Option v-for="item in areaOption" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>-->
             <!--</Select>-->
@@ -16,7 +16,7 @@
                          @changeSelect="searchList.area.key= $event" :placeholder="'请选择'"
             ></area-select>
         </FormItem>
-        <FormItem label="管理部门:" v-show="isShangHai">
+        <FormItem label="管理部门:">
             <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
         </FormItem>
         <FormItem label="企业名称:">

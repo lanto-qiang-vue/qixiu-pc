@@ -61,6 +61,11 @@ export default {
   components: {
       maintainDataManage
   },
+  computed:{
+    isShanghai(){
+        return process.env.config.areaName=='shanghai'
+      },
+  },
   data(){
     return{
       res:{},
@@ -115,14 +120,24 @@ export default {
       })
     },
     showChart(data){
-      this.recordData=[
-        {category: 0, type: '维修企业', count: data.corpcount, uploadCount: data.uploadcorpcount, rate: data.corprate.toFixed(2)+'%'},
-        {category: 43, type: '一类维修企业', count: data.class1corpcount, uploadCount: data.class1uploadcorpcount, rate: data.class1corprate.toFixed(2)+'%'},
-        {category: 44, type: '二类维修企业', count: data.class2corpcount, uploadCount: data.class2uploadcorpcount, rate: data.class2corprate.toFixed(2)+'%'},
-        {category: 45, type: '三类维修业户', count: data.class3corpcount, uploadCount: data.class3uploadcorpcount, rate: data.class3corprate.toFixed(2)+'%'},
-        {category: 47, type: '汽车快修业户', count: data.class5corpcount, uploadCount: data.class5uploadcorpcount, rate: data.class5corprate.toFixed(2)+'%'},
-        {category: 46, type: '摩托车维修业户', count: data.class4corpcount, uploadCount: data.class4uploadcorpcount, rate: data.class4corprate.toFixed(2)+'%'},
-      ]
+      if(this.isShanghai){
+        this.recordData=[
+          {category: 0, type: '维修企业', count: data.corpcount, uploadCount: data.uploadcorpcount, rate: data.corprate.toFixed(2)+'%'},
+          {category: 43, type: '一类维修企业', count: data.class1corpcount, uploadCount: data.class1uploadcorpcount, rate: data.class1corprate.toFixed(2)+'%'},
+          {category: 44, type: '二类维修企业', count: data.class2corpcount, uploadCount: data.class2uploadcorpcount, rate: data.class2corprate.toFixed(2)+'%'},
+          {category: 45, type: '三类维修业户', count: data.class3corpcount, uploadCount: data.class3uploadcorpcount, rate: data.class3corprate.toFixed(2)+'%'},
+          {category: 47, type: '汽车快修业户', count: data.class5corpcount, uploadCount: data.class5uploadcorpcount, rate: data.class5corprate.toFixed(2)+'%'},
+          {category: 46, type: '摩托车维修业户', count: data.class4corpcount, uploadCount: data.class4uploadcorpcount, rate: data.class4corprate.toFixed(2)+'%'},
+        ]
+      }else{
+        this.recordData=[
+          {category: 0, type: '维修企业', count: data.corpcount, uploadCount: data.uploadcorpcount, rate: data.corprate.toFixed(2)+'%'},
+          {category: 43, type: '一类维修企业', count: data.class1corpcount, uploadCount: data.class1uploadcorpcount, rate: data.class1corprate.toFixed(2)+'%'},
+          {category: 44, type: '二类维修企业', count: data.class2corpcount, uploadCount: data.class2uploadcorpcount, rate: data.class2corprate.toFixed(2)+'%'},
+          {category: 45, type: '三类维修业户', count: data.class3corpcount, uploadCount: data.class3uploadcorpcount, rate: data.class3corprate.toFixed(2)+'%'},
+        ]
+      }
+      
       this.areaType=this.res.areaItems;
 
       let pie1 = echarts.init(document.getElementById('pie1'));

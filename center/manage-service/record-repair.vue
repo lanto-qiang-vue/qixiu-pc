@@ -379,7 +379,7 @@ export default {
     // 导航离开该组件的对应路由时调用
     // 可以访问组件实例 `this`
     thisData= this.$data
-    // console.log('beforeRouteLeave:', thisData)
+    console.log('beforeRouteLeave:', thisData)
     next()
   }
 }
