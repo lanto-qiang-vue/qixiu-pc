@@ -347,6 +347,7 @@
     },
     methods:{
       checkButt(){
+        alert('是你吗')
         this.$axios.get('/monitoring/config/company-docking/query/companyCode').then((res) => {
           if(res.status == 200){
             this.buttData = res.data.content;

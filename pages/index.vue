@@ -68,6 +68,7 @@ export default {
       app.$axios.$get('/infopublic/home/all').then(res => {
         if (res.code === '0') {
           resolve( res.item)
+          
         } else reject( res)
       },err => {
         reject(err)
@@ -165,7 +166,9 @@ export default {
         hottest[i]= hottest[randomIndex]
         hottest[randomIndex]= temp
       }
-      return {
+
+
+      let temInfo={
         information:{
           questionList: resQuestion,
           cdfList: resCdf,
@@ -174,10 +177,21 @@ export default {
             latest: latest,
             hottest: hottest,
           },
-          articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
+          articleRight: [],
         },
         isGetData: true
       }
+      if(resArticle.right10281006){
+        temInfo['information']['articleRight'].push(resArticle.right10281006)
+      }
+      if(resArticle.right10281016){
+        temInfo['information']['articleRight'].push(resArticle.right10281016)
+      }
+      if(resArticle.right10281017){
+        temInfo['information']['articleRight'].push(resArticle.right10281017)
+      }
+
+      return temInfo;
     }, errFun({
       information:{
         questionList: [],
@@ -211,7 +225,8 @@ export default {
         hottest[i]= hottest[randomIndex]
         hottest[randomIndex]= temp
       }
-      return {
+
+      let temInfo={
         information:{
           systemList: resSystem,
           noticeList: resNotice,
@@ -220,10 +235,21 @@ export default {
             latest: latest,
             hottest: hottest,
           },
-          articleRight: [resArticle.right10281006, resArticle.right10281016, resArticle.right10281017],
+          articleRight: [],
         },
         isGetData: true
       }
+      if(resArticle.right10281006){
+        temInfo['information']['articleRight'].push(resArticle.right10281006)
+      }
+      if(resArticle.right10281016){
+        temInfo['information']['articleRight'].push(resArticle.right10281016)
+      }
+      if(resArticle.right10281017){
+        temInfo['information']['articleRight'].push(resArticle.right10281017)
+      }
+
+      return temInfo;
     }, errFun({
         information:{
         systemList: [],

@@ -27,7 +27,7 @@
             </FormItem>
             <div class="deal">
               <p>新用户完成注册，代表同意</p>
-              <a href="/article/protocol" target="_blank">《上海汽修平台用户协议》</a>
+              <a href="/article/protocol" target="_blank">{{isShanghai==true?'《上海汽修平台用户协议》':"《山东汽修平台用户协议》"}}</a>
             </div>
             </Form>
         </TabPane>
@@ -97,7 +97,7 @@
         </FormItem>
         <div class="deal" style="text-align: center">
           <p>新用户完成注册，代表同意</p>
-          <a href="/article/protocol" target="_blank">《上海汽修平台用户协议》</a>
+          <a href="/article/protocol" target="_blank">{{isShanghai==true?'《上海汽修平台用户协议》':"《山东汽修平台用户协议》"}}</a>
         </div>
       </Form>
   </Modal>
@@ -226,6 +226,11 @@ export default {
         }
 			}
 		},
+    computed:{
+    isShanghai(){
+      return process.env.config.areaName=='shanghai'
+    },
+  },
     mounted(){
       if(this.$route.query.redirect) this.$Message.info('请登录')
       this.getOpenId()

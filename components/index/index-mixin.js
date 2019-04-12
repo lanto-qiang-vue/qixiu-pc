@@ -42,5 +42,12 @@ export default {
     selectHot(val){
       if(val) this.search.q= val
     },
+    editLength(val){
+      let newVal=val? val.replace(/<\/?.+?>/g,"").replace(/\ +/g,"").replace(/[ ]/g,"").replace(/[\r\n]/g,"").replace(/&nbsp;/ig, "") :'';
+      if(newVal.length>40){
+        newVal=newVal.substring(0,40)+'...';
+      }
+      return newVal;
+    }
   }
 }

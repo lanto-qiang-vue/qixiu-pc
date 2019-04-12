@@ -34,7 +34,7 @@
           <swiper-slide v-for="(item, index) in information.systemList" :key="index">
             <nuxt-link tag="div" :to="'/article/'+item.id" class='content'>
               <img :src="item.photo || '/img/default-car.png'">
-              <p style="-webkit-box-orient: vertical;">{{item.content| FormatArticle(item.title)}}<span>详情>></span></p>
+              <p style="-webkit-box-orient: vertical;">{{editLength(item.content)| FormatArticle(editLength(item.title))}}<span>详情>></span></p>
             </nuxt-link>
           </swiper-slide>
 
