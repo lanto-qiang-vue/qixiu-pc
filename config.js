@@ -96,7 +96,7 @@ const conf={
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
     // repairUrl: 'http://192.168.169.211:7210/',
-    repairUrl: 'https://search.shandongqixiu.com/micro/search/company/',
+    repairUrl: 'https://search.shandongqixiu.com/',
 
     socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
