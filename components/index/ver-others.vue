@@ -335,7 +335,7 @@ export default {
       }
       .select{
         margin-top: 10px;
-        height: 38px;
+        height: 42px;
       }
       .select.top{
         margin-top: 40px;
@@ -345,10 +345,10 @@ export default {
         height: 60px;
         a{
           display: inline-block;
-          height: 60px;
-          line-height: 60px;
+          height: 40px;
+          line-height: 40px;
           text-align: center;
-          width: 32%;
+          width: 100%;
           border-radius: 3px;
           >*{
             vertical-align: middle;
