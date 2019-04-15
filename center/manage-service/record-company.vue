@@ -233,7 +233,7 @@ export default {
     },
     mixins: [funMixin],
     data(){
-	  console.log('data()')
+	//   console.log('data()')
       // this.testFun()
       thisData.searchList= this.getRouterData()
 	    return thisData
@@ -264,7 +264,7 @@ export default {
 
 },
 activated(){
-  console.log('activated()')
+//   console.log('activated()')
     // this.getRouterData();
   if(!this.queryed || Object.keys(this.$route.query).length){
     this.getList()
@@ -285,7 +285,7 @@ computed:{
         getRouterData(){
             let queryData= this.$route.query
             let search= thisData.searchList
-            console.log(JSON.stringify(queryData))
+            // console.log(JSON.stringify(queryData))
                     // for(let key in queryData){
                     //   if(key) flag= true
                     // }
@@ -317,7 +317,7 @@ computed:{
                 // this.getList();
 
             }
-            console.log('search', search)
+            // console.log('search', search)
             return search
 
 
@@ -341,7 +341,7 @@ computed:{
                     upData[i]=null;
                 }
             }
-            console.log(upData["uploadMonth"],this.manageArr);
+            // console.log(upData["uploadMonth"],this.manageArr);
             if(this.manageArr.length>0){
                 upData["org"]=this.manageArr[0]||'';
                 upData["dept"]=this.manageArr[1]||'';
@@ -376,7 +376,7 @@ computed:{
                     upData[i]=null;
                 }
             }
-            console.log(upData["uploadMonth"],this.manageArr);
+            // console.log(upData["uploadMonth"],this.manageArr);
             if(this.manageArr.length>0){
                 upData["org"]=this.manageArr[0]||'';
                 upData["dept"]=this.manageArr[1]||'';
@@ -391,11 +391,11 @@ computed:{
               data: upData,
               responseType: 'arraybuffer'
             }).then( (res) => {
-                console.log('res',res)
+                // console.log('res',res)
 
                 let headerData=res.headers["content-disposition"].split(';')[1].split('=');
                 let headerName=headerData[1].substring(1,(headerData[1].length)-1)
-                console.log(headerData,headerName);
+                // console.log(headerData,headerName);
 
 
                 let blob = new Blob([res.data], {type: 'application/octet-stream'});

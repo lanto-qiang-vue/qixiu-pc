@@ -382,12 +382,14 @@ export default {
         color: #333333;
         a{
           display: block;
-          line-height: 35px;
+          line-height: 20px;
+          min-height: 35px;
+          padding-top: 7px;
           overflow: hidden;
           text-overflow: ellipsis;
           padding-left: 10px;
           position: relative;
-          white-space: nowrap;
+          /* white-space: nowrap; */
           &:after{
             content: '';
             width: 4px;

@@ -194,7 +194,7 @@ export default {
         },
         newTestChildren(){
             for(let i in this.newCheckList){
-                if(this.newCheckList[i].types){
+                if(this.newCheckList[i].types>0){
                     // alert('寄哪里了')
                     let num=0;
                     for(let j in this.newCheckList[i].types){
@@ -281,12 +281,14 @@ export default {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     let num=0, data=[], list= deepClone(this.newCheckList);
+
+                    console.log('list',list);
                     for(let i in list){
                         if(list[i].full){
                            list[i].types=[{id: 0}]
                            num++
                         }else if(!list[i].full&&list[i].types){
-                                console.log(list[i].code,!list[i].full&&list[i].types);
+                                // console.log(list[i].code,!list[i].full&&list[i].types);
                                 let newTypes=[];
                                 for(let j in list[i].types){
                                     

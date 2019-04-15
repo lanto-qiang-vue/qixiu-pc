@@ -69,10 +69,10 @@ export default {
   },
   computed:{
     calcSelectValue(){
-      return this.valueSelect? this.valueSelect: this.selectValue
+      return this.valueSelect? this.valueSelect: ''
     },
     calcCascaderValue(){
-      return this.valueCascader.length? this.valueCascader: this.cascaderValue
+      return this.valueCascader.length? this.valueCascader: []
     },
     isShanghai(){
       return process.env.config.areaName=='shanghai'
@@ -162,6 +162,7 @@ export default {
           break
         }
       }
+      console.log(value);
       this.$emit('changeSelect', singleVal);
       this.$emit('changeCascader', value);
     },

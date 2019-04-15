@@ -1109,6 +1109,8 @@ export default {
 
           }else{
             this.uploadData= this.requireList
+            this.registerRegionCascader=[]
+            this.businessRegionCascader=[]
           }
       },
 
@@ -1264,6 +1266,7 @@ export default {
             this.requireList.registerRegion= value[0]
           }
           case 2:{
+            this.requireList.registerRegion= value[0]
             this.requireList.registerSecondRegion= value[1]
           }
         }
@@ -1276,6 +1279,7 @@ export default {
             this.requireList.businessRegion= value[0]
           }
           case 2:{
+            this.requireList.businessRegion= value[0]
             this.requireList.businessSecondRegion= value[1]
           }
         }

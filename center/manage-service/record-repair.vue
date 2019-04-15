@@ -227,6 +227,7 @@ export default {
     },
     mixins: [funMixin],
     data(){
+      console.log('data()事件');
       thisData.searchList= this.getRouterData()
 
 		  return thisData
@@ -238,7 +239,7 @@ export default {
     //   this.getType();
     },
   activated(){
-    // console.log('activated()')
+    console.log('activated()')
     // this.getRouterData();
     if(!this.queryed || Object.keys(this.$route.query)){
       this.getList()
