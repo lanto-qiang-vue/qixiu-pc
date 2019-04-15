@@ -95,17 +95,17 @@ const conf={
     apiUrl: 'http://gateway.shandongqixiu.com/',
     // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
-    repairUrl: 'http://192.168.169.211:7210/',
+    // repairUrl: 'http://192.168.169.211:7210/',
+    repairUrl: 'https://search.shandongqixiu.com/micro/search/company/',
 
     socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
-    articlePath: 'http://download.image.shandongqixiu.com/',
+    articlePath: 'http://filedownload.shandongqixiu.com/',
     ...prod,
     ...shandong,
 
   },
-
 }
 
 export default conf
