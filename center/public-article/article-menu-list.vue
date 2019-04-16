@@ -50,7 +50,7 @@
       getMenu(){
         switch (this.articlePage){
           case 1: {
-            if(process.env.config.areaName=='shanghai'){
+            // if(process.env.config.areaName=='shanghai'){
 
             this.menuList =[{
               meta: {title: '政务公开', accessId:'政务公开'},
@@ -103,26 +103,26 @@
               meta: {title: '行业文明创建', accessId: 10281010},
               path: "/gov-article/10281010"
             }];
-            } else{
-              this.menuList = [
-                // {
-                //   meta: {title: '系统介绍', accessId: 10281038},
-                //   path: "/gov-article/10281038"
-                // },
-                {
-                  meta: {title: '通知公告', accessId: 10281039},
-                  path: "/gov-article/10281039"
-                },{
-                  meta: {title: '新闻动态', accessId: 10281019},
-                  path: "/gov-article/10281019"
-                },{
-                  meta: {title: '管理动态', accessId: 10281020},
-                  path: "/gov-article/10281020"
-                },{
-                  meta: {title: '行业监管', accessId: 10281001},
-                  path: "/gov-article/10281001"
-                },]
-            }
+            // } else{
+            //   this.menuList = [
+            //     // {
+            //     //   meta: {title: '系统介绍', accessId: 10281038},
+            //     //   path: "/gov-article/10281038"
+            //     // },
+            //     {
+            //       meta: {title: '通知公告', accessId: 10281039},
+            //       path: "/gov-article/10281039"
+            //     },{
+            //       meta: {title: '新闻动态', accessId: 10281019},
+            //       path: "/gov-article/10281019"
+            //     },{
+            //       meta: {title: '管理动态', accessId: 10281020},
+            //       path: "/gov-article/10281020"
+            //     },{
+            //       meta: {title: '行业监管', accessId: 10281001},
+            //       path: "/gov-article/10281001"
+            //     },]
+            // }
             break
           }
           case 2:{
