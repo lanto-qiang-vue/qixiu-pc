@@ -162,7 +162,7 @@ export default {
           break
         }
       }
-      console.log(value);
+      // console.log(value);
       this.$emit('changeSelect', singleVal);
       this.$emit('changeCascader', value);
     },

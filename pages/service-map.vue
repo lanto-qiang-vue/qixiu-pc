@@ -35,7 +35,7 @@
         <Select v-if="isShanghai" v-model="search.area" placeholder="所在区域" clearable @on-change="changeSelectAll">
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
-        <area-select v-else :change-on-select="true" placeholder="所在区域" class="area-select"
+        <area-select v-else :change-on-select="true" placeholder="所在区域" class="area-select"  :value-cascader="areaCascader"
                      @changeSelect="search.area= $event, changeSelectAll()"
         ></area-select>
         <Select v-model="search.hot" placeholder="热门搜索"  clearable class="brand" @on-change='selectHot' ref="hot">
@@ -60,7 +60,7 @@
       <ul>
         <li class="info" v-for="(item, key) in list" :key="key" @click.stop="openMapInfo(item.sid)">
           <img :src="item.pic? item.pic.split(',')[0]:'/img/map/com-head.jpg'" v-if="item.type!='300'&&isShanghai">
-          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/shandong-head.jpg'" v-if="item.type!='300'&&!isShanghai">
+          <img :src="item.pic? item.pic.split(',')[0]:'/img/map/shandong-head.jpg'" v-else-if="item.type!='300'&&!isShanghai">
           <img :src="item.pic? item.pic.split(',')[0]:'/img/map/school-head.jpg'" v-else>
           <div class="list-right" v-if="item.type!='300'">
             <span class="name">{{item.name}}</span>
@@ -207,7 +207,7 @@ export default {
       geolocation: null,
       markerClusterer: null,
       markers: null,
-
+      areaCascader:[],
       infoWindow:{
         garage: {
           type: ['164','166','214','215','213'],
@@ -226,6 +226,7 @@ export default {
         }
       }
     }
+    
   },
   computed:{
     isShanghai(){
@@ -299,9 +300,23 @@ export default {
       });
 
       for(let key in this.$route.query){
-        this.search[key]= this.$route.query[key]
+        if(key=='area'&&typeof(this.$route.query[key])=='object'){
+          switch(this.$route.query[key].length){
+            case 1:
+              this.search[key]= this.$route.query[key][0]
+            break;
+            case 2:
+              this.search[key]= this.$route.query[key][1]
+            break;
+          }
+
+          this.areaCascader=this.$route.query[key];
+        }else{
+          this.search[key]= this.$route.query[key]
+        }
+        
       }
-      // console.log(this.$route.query)
+      // console.log(this.search)
       this.getArea()
       this.getBase()
       this.initInfoWindow()

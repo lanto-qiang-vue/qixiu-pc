@@ -474,6 +474,7 @@ computed:{
             list[i].children= []
           }
         }
+        return list;
       },
       clear(item){
           this.searchList[item]= null

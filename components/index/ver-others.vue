@@ -62,7 +62,7 @@
             <!--</Select>-->
 
             <area-select :change-on-select="true" :transfer="true" placeholder="企业区域" size="large"
-                         @changeSelect="search.area= $event" style="width:24%;display: inline-block;"
+                         @changeCascader="changeCascader" style="width:24%;display: inline-block;"
             ></area-select>
             <Select v-model="search.hot" size="large" placeholder="热门搜索" clearable
                     transfer style="width:24%;" ref="hot" @on-change='selectHot' >
