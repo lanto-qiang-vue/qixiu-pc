@@ -57,7 +57,7 @@
           </Form>
         </TabPane>
       </Tabs>
-      <div class="other-way">
+      <div class="other-way" v-if='isShanghai'>
         <span>使用其他方式登录:</span>
         <!--<img src="../assets/img/login_img/qq_logo.png" @click="uniteLogin('qq')" style="width: 20px">-->
         <img src="../assets/img/login_img/wx_logo.png" @click="uniteLogin('wx')" style="width: 27px">

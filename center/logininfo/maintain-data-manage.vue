@@ -696,7 +696,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
               axisLabel: {
                 interval: 0,
                 rotate: 0,
-                padding: [4, 20]
+                padding: [4, 0]
               },
               triggerEvent: true
             }
