@@ -87,7 +87,7 @@ function markChange(newArr,field){
 }
 
 if(!thisData) {
-  
+
 
   var thisData= {
     loading:false,
@@ -216,7 +216,7 @@ if(!thisData) {
         return date > d1;
       }
     },
-
+    queryed: false
   }
 }
 export default {
@@ -241,7 +241,13 @@ export default {
   activated(){
     console.log('activated()')
     // this.getRouterData();
-    if(!this.queryed || Object.keys(this.$route.query)){
+    let query= this.$route.query
+    if(!this.queryed || Object.keys(query)){
+      this.searchList.companyName= query.name|| ''
+      if(query.start && query.end){
+        this.searchList.receiveTime= [query.start, query.end]
+      }
+      this.searchList.fault= query.fault|| ''
       this.getList()
     }
   },
