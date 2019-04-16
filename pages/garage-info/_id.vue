@@ -116,7 +116,6 @@
 <script>
 import BasicContainer from '~/components/basic-container.vue'
 import CommonTable from '~/components/common-table.vue'
-import config from '../../config.js'
 export default {
   name: "garage-info",
   layout: 'layout-root',
@@ -130,11 +129,12 @@ export default {
       meta: [{ hid: 'description', name: 'description', content: this.info.name }]
     }
   },
-  validate ({ app, params, store }) {
+  validate ({ app, params, store}) {
     return params.id? true: false
   },
-  asyncData ({ app, params, error }) {
-    let  baseURL= 'http://127.0.0.1:'+config.port+'/repair'
+  asyncData ({ app, params, error, env  }) {
+    // console.log(env)
+    let  baseURL= 'http://127.0.0.1:'+ env.config.port+'/repair'
     if(process.client)  baseURL= window.location.origin +'/repair'
     return app.$axios({
       baseURL: baseURL,
