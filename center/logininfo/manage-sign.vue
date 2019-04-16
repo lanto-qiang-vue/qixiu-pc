@@ -22,6 +22,7 @@
                   <!--</Select>-->
                 <area-select :change-on-select="true"
                              @changeSelect="searchList.areaKey= $event"
+                              :rules="{other: { useSelect: false, useRegion: false}}"
                 ></area-select>
               </FormItem>
             <FormItem :label-width="0" style="width: 70px;">
@@ -69,7 +70,7 @@ export default {
                 tableData: [],
                 // searchSelectOption:[],
                 searchList:{
-                    areaKey:process.env.config.areaKey,
+                    areaKey:(process.env.config.areaName=='shanghai'?process.env.config.areaKey:''),
                     companyName:"",
                     isLogin:"yes",
                     startDate:"",

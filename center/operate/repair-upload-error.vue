@@ -126,7 +126,6 @@ export default {
       },
     },
     mounted () {
-      // console.log(this.accessBtn('view'));
       let routerData=this.$route;
       let queryData=this.$route.query;
       this.search.deptCode=queryData.deptCode;
@@ -136,11 +135,12 @@ export default {
       this.areaName=queryData.deptName;
       this.isNoUpload=false;
 
-      // console.log("queryData",queryData);
       if(routerData.path=="/center/repair-upload-error"){
         this.isNoUpload=true;
         this.getValuesByTypeFun();
-        this.columns=[
+        
+        if(this.isShanghai){
+          this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
             render: (h, params) => {
 
@@ -233,6 +233,98 @@ export default {
             }
           },
         ];
+        }else{
+          this.columns=[
+          {title: '企业名称', key: 'companyName', minWidth: 120,
+            render: (h, params) => {
+
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                    // marginLeft:"100px"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
+          },
+          {title: '期间上传数', key: 'recordTotalCount',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+
+                    }
+                  }
+                }, params.row.recordTotalCount)
+              ]);
+            }
+          },
+          {title: '错误记录数', key: 'recordFaultCount',  minWidth: 135,
+              render: (h, params) => {
+                return h('div', [
+                  h('a', {
+                    style:{
+                      // color:'#515a6e'
+                      textDecoration:"underline"
+                    },
+                    on: {
+                      click: () => {
+                        let routeData = this.$router.resolve({
+                          path: "/center/record-repair",
+                          query: {fault:"true",name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                        });
+                        window.open(routeData.href, '_blank');
+                      }
+                    }
+                  }, params.row.recordFaultCount)
+                ]);
+              }
+          },
+          {title: '错误率', key: 'probability',  minWidth: 120,
+          },
+          {title: '操作', key: '',  minWidth: 120,
+            render: (h, params) => {
+               if(this.accessBtn('message')){
+                 return h('div', [
+                   h('Button', {
+                     props: {
+                       type: 'warning',
+                       size: 'small'
+                     },
+                     on: {
+                       click: () => {
+                         this.temObjectData=params.row;
+                         this.$Modal.confirm({
+                           title:"提醒通知!",
+                           content:"确定要发送提醒吗？",
+                           onOk:this.sendCountFun,
+                         })
+                       }
+                     }
+                   }, '发送提醒')
+                 ]);
+               }
+            }
+          },
+        ];
+        }
         this.uploadUrl="/monitoring/display/company/upload-fault/query";
         this.topContent="维修记录上传存在错误"
         this.exportUrl="/monitoring/display/company/upload-fault/download";
@@ -240,12 +332,11 @@ export default {
       }else if(routerData.path=="/center/repair-upload"){
         this.isNoUpload=true;
         this.getValuesByTypeFun();
-        this.columns=[
+
+        if(this.isShanghai){
+                  this.columns=[
           {title: '企业名称', key: 'companyName', minWidth: 120,
-              render: (h, params) => {
-
-
-
+            render: (h, params) => {
               return h('div', [
                 h('a', {
                   style:{
@@ -316,6 +407,77 @@ export default {
             }
           },
         ];
+        }else{
+        this.columns=[
+          {title: '企业名称', key: 'companyName', minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+                      this.getCompanyId(params.row.companyCode);
+
+                    }
+                  }
+                }, params.row.companyName)
+              ]);
+            }
+          },
+          {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
+            render: (h, params) => {
+              return h('div', [
+                h('a', {
+                  style:{
+                    // color:'#515a6e'
+                    textDecoration:"underline"
+                  },
+                  on: {
+                    click: () => {
+
+
+                      let routeData = this.$router.resolve({
+                        path: "/center/record-repair",
+                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
+                      });
+                      window.open(routeData.href, '_blank');
+                    }
+                  }
+                }, params.row.lastTime)
+              ]);
+            }
+          },
+          {title: '联系方式', key: 'contactMobile',  minWidth: 135,
+          },
+          {title: '操作', key: '',  minWidth: 120,
+            render: (h, params) => {
+              if(this.accessBtn('message')){
+                return h('div', [
+                  h('Button', {
+                    props: {
+                      type: 'warning',
+                      size: 'small'
+                    },
+                    on: {
+                      click: () => {
+                        this.temObjectData=params.row;
+                        this.$Modal.confirm({
+                          title:"提醒通知!",
+                          content:"确定要发送提醒吗？",
+                          onOk:this.sendCountFun,
+                        })
+                      }
+                    }
+                  }, '发送提醒')
+                ]);
+              }
+            }
+          },
+        ];
+        }
         this.topContent="未上传维修记录"
         this.uploadUrl="/monitoring/display/company/upload-not/query";
         this.exportUrl="/monitoring/display/company/upload-not/download";
