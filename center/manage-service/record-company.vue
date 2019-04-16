@@ -69,7 +69,7 @@
                 <Option v-for="item in isFlagType" :value="item.code" :key="item.code">{{ item.name }}</Option>
             </Select>
         </FormItem>
-        
+
         <FormItem label="按月查询:">
             <DatePicker v-model="searchList.uploadMonth" type="month" placeholder="请选择" :options="dateOptions" @on-change="clear('year')"></DatePicker>
         </FormItem>
@@ -326,7 +326,7 @@ computed:{
         getList(){
             this.loading=true;
             let upData={};
-            
+
             for(let i in this.searchList){
                 if(this.searchList[i]=="是"){
                     upData[i]=true;
@@ -460,12 +460,21 @@ computed:{
             this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {
             }).then( (res) => {
                 if(res.data.code=='0'){
-                    this.manageType=res.data.items;
+                    this.manageType= this.resetArea(res.data.items);
                 }else{
                     // this.$Message.error(res.data.status);
                 }
            })
         },
+      resetArea(list){
+        for(let i in list){
+          if(list[i].children){
+            this.resetArea(list[i].children)
+          }else{
+            list[i].children= []
+          }
+        }
+      },
       clear(item){
           this.searchList[item]= null
       },
