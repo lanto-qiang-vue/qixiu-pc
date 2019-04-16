@@ -48,6 +48,9 @@ export default {
         newVal=newVal.substring(0,40)+'...';
       }
       return newVal;
+    },
+    changeCascader(value){
+      this.search.area=value;
     }
   }
 }
