@@ -227,7 +227,7 @@ export default {
     },
     mixins: [funMixin],
     data(){
-      console.log('data()事件');
+      // console.log('data()事件');
       thisData.searchList= this.getRouterData()
 
 		  return thisData
@@ -239,7 +239,7 @@ export default {
     //   this.getType();
     },
   activated(){
-    console.log('activated()')
+    // console.log('activated()')
     // this.getRouterData();
     let query= this.$route.query
     if(!this.queryed || Object.keys(query)){
@@ -255,7 +255,7 @@ export default {
     methods:{
       getRouterData(){
         let queryData=this.$route.query;
-        console.log('this.$route.query',this.$route);
+        // console.log('this.$route.query',this.$route);
         let search= thisData.searchList
         search= deepClone(searchList)
         if(Object.keys(queryData).length){

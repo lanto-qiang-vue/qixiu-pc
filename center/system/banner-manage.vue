@@ -124,7 +124,7 @@
           show: '1',
           title: '',
           terminal: 'zero',
-          useSystem:''
+          useSystem:1
         },
         total: 0,
         page: 1,
@@ -162,7 +162,7 @@
           { id: '3', name: '否' }
         ],
         typeSystem:[
-          { id: 1, name: '上海汽修' },
+          { id: 1, name: '汽修平台' },
           { id: 2, name: '好修修' }
           
         ]

@@ -54,7 +54,7 @@
             title: '结算日期', key: 'settleDate', sortable: true, minWidth: 120
           },
           { title: '维修单号', key: 'code', sortable: true, minWidth: 120 },
-          { title: '维修内容', key: 'description', sortable: true, minWidth: 135 },
+          { title: '故障描述', key: 'description', sortable: true, minWidth: 135 },
           { title: '维修车牌', key: 'plateNumber', sortable: true, minWidth: 120 }
         ],
         tableData: [],

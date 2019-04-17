@@ -194,7 +194,7 @@ export default {
         },
         newTestChildren(){
             for(let i in this.newCheckList){
-                if(this.newCheckList[i].types>0){
+                if(this.newCheckList[i].types.length>0){
                     // alert('寄哪里了')
                     let num=0;
                     for(let j in this.newCheckList[i].types){
@@ -206,7 +206,7 @@ export default {
                     if(num==0){
                         this.newCheckList[i].checked=false;
                     }
-                    
+                    // console.log('测试,',num);
                     if(num==this.newCheckList[i].types.length){
                         this.newCheckList[i].full=true;
                     }else{
@@ -214,7 +214,7 @@ export default {
                     }
                 }
             }
-            console.log(this.newCheckList);
+            // console.log(this.newCheckList);
         },
         getNotify(){
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
@@ -282,7 +282,7 @@ export default {
                 if (valid) {
                     let num=0, data=[], list= deepClone(this.newCheckList);
 
-                    console.log('list',list);
+                    // console.log('list1111',list);
                     for(let i in list){
                         if(list[i].full){
                            list[i].types=[{id: 0}]
