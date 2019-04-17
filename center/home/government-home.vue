@@ -23,8 +23,8 @@
   <div class="dblock">
     <h1 class="dtitle">区域对接状况</h1>
     <div class="center">
-      <div class="inline-box">
-        <div id="bar1" style="width: 800px;height: 350px"></div>
+      <div class="inline-box" style="width: 100%">
+        <div id="bar1" style="width: 100%;height: 400px"></div>
       </div>
     </div>
 
@@ -54,7 +54,7 @@
 
 <script>
   import funMixin from '~/components/fun-auth-mixim.js'
-  import maintainDataManage from '../logininfo/maintain-data-manage.vue'
+  import maintainDataManage from '~/center/logininfo/maintain-data-manage.vue'
 export default {
   name: "government-center",
   mixins: [funMixin],
@@ -97,6 +97,7 @@ export default {
         ],
         searchType:0,
         areaType:[],
+      barTotal:[]
     }
   },
   mounted() {
@@ -137,7 +138,7 @@ export default {
           {category: 45, type: '三类维修业户', count: data.class3corpcount, uploadCount: data.class3uploadcorpcount, rate: data.class3corprate.toFixed(2)+'%'},
         ]
       }
-      
+
       this.areaType=this.res.areaItems;
 
       let pie1 = echarts.init(document.getElementById('pie1'));
@@ -240,12 +241,13 @@ export default {
           axisPointer : {            // 坐标轴指示器，坐标轴触发有效
             type : 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
             label:{show: true}
-          }
+          },
+          extraCssText: 'text-align: left;'
         },
         grid: {
         },
         legend: {
-          data:['非总对总数', '总对总数量', '全部'],
+          data:['非总对总数', '总对总数量', '已对接总数'],
         },
         xAxis : [
           {
@@ -258,6 +260,7 @@ export default {
               interval: 0,
               rotate: 40
             },
+            triggerEvent: true
           }
         ],
         yAxis : [
@@ -312,7 +315,7 @@ export default {
             stack: '数量',
           },
           {
-            name:'全部',
+            name:'已对接总数',
             type:'line',
             data:[],
             label: {
@@ -359,23 +362,43 @@ export default {
       $("#pie3").append("<div class='pie-num'><p>总数</p><p>"+this.res.currentuploadcount+"</p></div>")
 
       let datas = data.areaItems;
-      let area=[], num=[], num2=[], sum=[]
+      let area=[], num=[], num2=[], sum=[], total=[]
 
-      for (var i in datas){
+      for (let i in datas){
           area.push(datas[i].areaname)
           num.push(datas[i].nzdzcount)
           num2.push(datas[i].zdzcount)
           sum.push(datas[i].nzdzcount+ datas[i].zdzcount)
+          if(!this.isShangHai) total.push(datas[i].total)
       }
 
       optionBar.xAxis[0].data= area;
-
       optionBar.series[0].data=num;
       optionBar.series[1].data=num2;
       optionBar.series[2].data=sum;
+      if(!this.isShangHai){
+        optionBar.tooltip.formatter= function (params) {
+          // console.log(params)
+          let tooltip= params[0].name+ '<br/>'+
+            params[0].marker+params[0].seriesName+':'+ params[0].value+ '<br/>'+
+            params[1].marker+params[1].seriesName+':'+ params[1].value+ '<br/>'+
+            params[2].marker+params[2].seriesName+':'+ params[2].value+ '<br/>'+
+            '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:black;"></span>' +
+            '对接完成率:'+(params[2].value/total[params[2].dataIndex]*100).toFixed(0)+'%'
+          return tooltip
+        }
+        optionBar.series[2].label.normal.formatter= function (params) {
+          // console.log('params', params)
+          var data=  '{b|'+(params.value/total[params.dataIndex]*100).toFixed(0)+'%}'+'\n'+'{a|'+params.value+'}'
+          return data
+        }
+        optionBar.series[2].label.normal.rich= {
+          a: {},
+          b: {color: 'black',},
+        }
+      }
+
       bar1.setOption(optionBar);
-
-
 
       bar1.on('click', (params)=>{
           console.log(params)
