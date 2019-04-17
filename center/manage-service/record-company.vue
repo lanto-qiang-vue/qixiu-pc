@@ -236,6 +236,7 @@ export default {
 	//   console.log('data()')
       // this.testFun()
       thisData.searchList= this.getRouterData()
+      thisData.manageArr= thisData.searchList.manageArr||[]
 	    return thisData
     },
   // watch:{
@@ -296,9 +297,15 @@ computed:{
                 search= deepClone(searchList)
 
                 if(queryData.area){
-                  search.area= {
+                  if(this.isShangHai){
+                    search.area= {
                       key: queryData.area
+                    }
+                  }else{
+                    search["org"]= queryData.area
+                    search.manageArr= [queryData.area, '']
                   }
+
                 }
                 if(queryData.category){
                 search.companyCategory= parseInt(queryData.category);
