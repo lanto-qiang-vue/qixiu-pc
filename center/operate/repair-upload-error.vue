@@ -356,23 +356,7 @@ export default {
           {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
             render: (h, params) => {
               return h('div', [
-                h('a', {
-                  style:{
-                    // color:'#515a6e'
-                    textDecoration:"underline"
-                  },
-                  on: {
-                    click: () => {
-
-
-                      let routeData = this.$router.resolve({
-                        path: "/center/record-repair",
-                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
-                      });
-                      window.open(routeData.href, '_blank');
-                    }
-                  }
-                }, params.row.lastTime)
+                h('span', params.row.lastTime)
               ]);
             }
           },
@@ -430,23 +414,7 @@ export default {
           {title: '最后一次上传记录时间', key: 'lastTime',  minWidth: 120,
             render: (h, params) => {
               return h('div', [
-                h('a', {
-                  style:{
-                    // color:'#515a6e'
-                    textDecoration:"underline"
-                  },
-                  on: {
-                    click: () => {
-
-
-                      let routeData = this.$router.resolve({
-                        path: "/center/record-repair",
-                        query: {name:params.row.companyName,start:this.search.startDate,end:this.search.endDate}
-                      });
-                      window.open(routeData.href, '_blank');
-                    }
-                  }
-                }, params.row.lastTime)
+                h('span', params.row.lastTime)
               ]);
             }
           },
