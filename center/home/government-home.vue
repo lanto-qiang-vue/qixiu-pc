@@ -298,7 +298,8 @@ export default {
               normal: {
                 show: true,
                 // position: 'inside',
-                offset: [25,-2]
+                position: 'top',
+                // offset: [0,-2]
               }
             },
             //配置样式
@@ -322,6 +323,7 @@ export default {
               normal: {
                 show: true,
                 position: 'top',
+                offset: [0,-10]
               }
             },
             itemStyle: {
