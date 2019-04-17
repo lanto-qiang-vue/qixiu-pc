@@ -107,8 +107,11 @@
     methods: {
 		  del(){
         this.$axios.delete('/monitoring/config/company-group?id='+ this.ids).then((res) => {
-           this.$Message.success("删除成功");
-           this.getList();
+            // console.log(res)
+            if(res.data.code=='0'){
+              this.$Message.success("删除成功");
+              this.getList();
+            }
         })
       },
       getList() {
