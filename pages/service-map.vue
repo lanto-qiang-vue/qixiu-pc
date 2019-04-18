@@ -36,7 +36,7 @@
           <Option v-for="(item, key) in area" :value="item.code" :key="key">{{item.name}}</Option>
         </Select>
         <area-select v-else :change-on-select="true" placeholder="所在区域" class="area-select"  :value-cascader="areaCascader"
-                     @changeSelect="search.area= $event, changeSelectAll()"
+                     @changeCascader="changeOtherArea"
         ></area-select>
         <Select v-model="search.hot" placeholder="热门搜索"  clearable class="brand" @on-change='selectHot' ref="hot">
           <Option v-for="(item, index) in hot" :value="item.value" :key="index">{{item.name}}</Option>
@@ -226,7 +226,7 @@ export default {
         }
       }
     }
-    
+
   },
   computed:{
     isShanghai(){
@@ -314,7 +314,7 @@ export default {
         }else{
           this.search[key]= this.$route.query[key]
         }
-        
+
       }
       // console.log(this.search)
       this.getArea()
@@ -948,6 +948,15 @@ export default {
         }
       }
       return text
+    },
+    changeOtherArea(value){
+      console.log(value)
+      if(value.length==1){
+        this.search.area= value[0].substring(0,4)+ '**'
+      }else{
+        this.search.area= value[1]
+      }
+      this.changeSelectAll()
     }
   }
 }
