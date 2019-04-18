@@ -418,7 +418,7 @@
         var Url2 = document.getElementById('biao1')
         Url2.select() // 选择对象
         document.execCommand('Copy') // 执行浏览器复制命令
-        this.$Message.info('对接密钥已复制好，可贴粘。')
+        this.$Message.info('对接密钥已复制好，可粘贴。')
       },
       //密钥接口关闭时触发--------
       visibleChangeKey(status) {

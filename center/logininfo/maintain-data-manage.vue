@@ -54,7 +54,9 @@
               <div style="float:left;"><b>上传无误企业: {{successUpdateNum}}家</b></div>
             </div>
           </div>
-          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区维修记录上传情况</b>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="isShanghai" v-show="apiShow">各区维修记录上传情况</b>
+          </div>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="!isShanghai" v-show="apiShow">各区一二类企业维修记录上传情况</b>
           </div>
           <div style="position:absolute;top:30px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key1">
@@ -100,6 +102,7 @@
 
 <script>
 import funMixin from '~/components/fun-auth-mixim.js'
+import { deepClone} from '~/static/util.js'
   export default {
     name: 'maintain-data-manage',
     mixins: [funMixin],
@@ -585,8 +588,8 @@ import funMixin from '~/components/fun-auth-mixim.js'
           success,
           error,
           noUpdate
-        ]).then(([res, data,data1]) => {
-          if (res.status == 404 && data.status == 404 && data1.status == 404) {
+        ]).then(([resTem, dataTem,data1]) => {
+          if (resTem.status == 404 && dataTem.status == 404 && data1.status == 404) {
             return false
           }
 
@@ -597,6 +600,35 @@ import funMixin from '~/components/fun-auth-mixim.js'
           let error1 = 0
           let successUpdate={};
           let successUpdateNum=0;
+          // console.log('res, data,data1',res, data,data1);
+
+          for(let i in data1){
+            if(data1[i]['deptName']==null){
+              data1[i]['deptName']='其他';
+              data1[i]['deptCode']=''
+            }
+          }
+
+          let res=deepClone(data1);
+          let data=deepClone(data1);
+          for(let i in res){
+            res[i]['companyCount']=0;
+            for(let j in resTem){
+              if(resTem[j]['deptName']==res[i]['deptName']){
+                res[i]['companyCount']=resTem[j]['companyCount'];
+              }
+            }
+          }
+          for(let i in data){
+            data[i]['companyCount']=0;
+            for(let j in dataTem){
+              if(dataTem[j]['deptName']==data[i]['deptName']){
+                data[i]['companyCount']=dataTem[j]['companyCount'];
+              }
+            }
+          }
+
+
           for (let i in data) {
             errorData[data[i].deptName] = data[i].companyCount
             error1 += parseInt(data[i].companyCount)
@@ -645,14 +677,17 @@ import funMixin from '~/components/fun-auth-mixim.js'
             trigger: 'axis',
             formatter: function(params) {
               let company = params[0].axisValue
+              // console.log('dataObj',dataObj);
 
+
+              
               let noUpload=0;
               let noUpload1=0;
               noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
               if(noUpload>0){
                 noUpload1=((parseInt(dataObj[company].success)*10000/noUpload)/100).toFixed(2)+'%'
               }
-
+              
               let errorUpload=0;
               let errorUpload1=0;
               errorUpload+=parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
@@ -788,7 +823,6 @@ import funMixin from '~/components/fun-auth-mixim.js'
         this.bar2.on('click', (params) => {
           let name = params.name || params.value
 
-
           let deptCode
           let url
           if (this.dataObj.hasOwnProperty(name)) {
@@ -796,6 +830,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
           } else {
             deptCode = this.secondArea[name].code
           }
+
           if (that.stage == 1 && params.componentType == 'xAxis') {
             that.key1 = name
             return false
@@ -803,9 +838,9 @@ import funMixin from '~/components/fun-auth-mixim.js'
           if(that.stage ==2 && params.componentType == 'xAxis'){
             return false;
           }
-          if (params.seriesName == '未上传') {
+          if (params.seriesName == '未上传'&&params.name!='其他') {
             url = '/center/repair-upload'
-          } else if (params.seriesName == '存在错误'){
+          } else if (params.seriesName == '存在错误'&&params.name!='其他'){
             url = '/center/repair-upload-error'
           }else{
             return;

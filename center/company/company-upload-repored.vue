@@ -22,7 +22,7 @@
         </Form>
       </div>
       <div slot="operate">
-        <Button type="primary" v-if="" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
+        <Button type="primary" v-if="accessBtn('detail')" @click="showDetail=Math.random();" :disabled="!detailData">查看详情</Button>
         
       </div>
     </common-table>

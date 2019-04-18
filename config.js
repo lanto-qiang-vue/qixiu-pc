@@ -19,7 +19,7 @@ const shanghai={
 const shandong={
   zhName: '山东省',
   areaName:'shandong',
-  areaKey:'37',
+  areaKey:'370000',
   lnglat:{
     lng: 117.120098,
     lat: 36.6512,
@@ -78,7 +78,7 @@ const conf={
   dev_shandong: {
     port: '3700',
     apiUrl: 'http://192.168.169.208:8888/',
-    // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
+    // apiUrl: 'https://www.shandongqixiu.com/proxy/',
 
     // repairUrl: 'http://192.168.169.211:7210/',
     repairUrl: 'https://search.shandongqixiu.com/',
