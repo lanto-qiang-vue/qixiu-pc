@@ -598,7 +598,7 @@ import { deepClone} from '~/static/util.js'
           let error1 = 0
           let successUpdate={};
           let successUpdateNum=0;
-          console.log('res, data,data1',res, data,data1);
+          // console.log('res, data,data1',res, data,data1);
 
           let res=deepClone(data1);
           let data=deepClone(data1);
@@ -668,7 +668,7 @@ import { deepClone} from '~/static/util.js'
             trigger: 'axis',
             formatter: function(params) {
               let company = params[0].axisValue
-              console.log('dataObj',dataObj);
+              // console.log('dataObj',dataObj);
 
 
               
