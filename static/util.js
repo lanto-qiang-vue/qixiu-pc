@@ -104,29 +104,30 @@ export const getIcon = (item, access) => {
  * @param {Array} list 通过路由列表得到菜单列表
  * @returns {Array}
  */
-export const getMenuByRouter = (router, accessMenu) => {
-  let res = []
-  forEach(router, item => {
-    if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
-      let obj = {
-        icon: (item.meta && item.meta.icon) || '',
-        name: item.name,
-        meta: item.meta
-      }
-      let accessShow= showThisMenuEle(item, accessMenu)
-      if ((hasChild(item) || (item.meta && item.meta.showAlways)) && accessShow) {
-        obj.children = getMenuByRouter(item.children, accessMenu)
-      }
-      if (item.meta && item.meta.href) obj.href = item.meta.href
-      if (accessShow) {
-        obj.custom= getIcon(item, accessMenu)
-        // console.log('custom',obj.custom)
-        res.push(obj)
-      }
-    }
-  })
-  return res
-}
+// export const getMenuByRouter = (router, accessMenu) => {
+//   let res = []
+//   forEach(router, item => {
+//     if (!item.meta || (item.meta && !item.meta.hideInMenu)) {
+//       let obj = {
+//         icon: (item.meta && item.meta.icon) || '',
+//         name: item.name,
+//         meta: item.meta
+//       }
+//       let accessShow= showThisMenuEle(item, accessMenu)
+//       if ((hasChild(item) || (item.meta && item.meta.showAlways)) && accessShow) {
+//         obj.children = getMenuByRouter(item.children, accessMenu)
+//       }
+//       if (item.meta && item.meta.href) obj.href = item.meta.href
+//       if (accessShow) {
+//         obj.custom= getIcon(item, accessMenu)
+//         // console.log('custom',obj.custom)
+//         res.push(obj)
+//       }
+//     }
+//   })
+//   return res
+// }
+
 export const getMenuByRouter2 = (  routers, accessMenu) => {
   let res = []
   for(let i in accessMenu)  {
