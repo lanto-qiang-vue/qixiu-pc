@@ -101,7 +101,7 @@ const conf={
     socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
 
-    articlePath: 'http://filedownload.shandongqixiu.com/',
+    articlePath: 'https://filedownload.shandongqixiu.com/',
     ...prod,
     ...shandong,
 
