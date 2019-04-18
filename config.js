@@ -80,8 +80,8 @@ const conf={
     apiUrl: 'http://192.168.169.208:8888/',
     // apiUrl: 'https://www.shandongqixiu.com/proxy/',
 
-    // repairUrl: 'http://192.168.169.211:7210/',
-    repairUrl: 'https://search.shandongqixiu.com/',
+    repairUrl: 'http://192.168.169.211:7210/',
+    // repairUrl: 'https://search.shandongqixiu.com/',
 
     socketUrl: 'https://www.shandongqixiu.com/heatmap/socket',
     shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',
