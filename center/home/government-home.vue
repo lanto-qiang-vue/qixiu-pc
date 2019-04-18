@@ -21,7 +21,8 @@
 
   </div>
   <div class="dblock">
-    <h1 class="dtitle">区域对接状况</h1>
+    <h1 class="dtitle" v-if="isShanghai">区域对接状况</h1>
+    <h1 class="dtitle" v-if="!isShanghai">区域一二类企业对接情况及完成率</h1>
     <div class="center">
       <div class="inline-box" style="width: 100%">
         <div id="bar1" style="width: 100%;height: 400px"></div>

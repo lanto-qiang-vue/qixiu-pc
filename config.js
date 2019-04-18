@@ -19,7 +19,7 @@ const shanghai={
 const shandong={
   zhName: '山东省',
   areaName:'shandong',
-  areaKey:'37',
+  areaKey:'370000',
   lnglat:{
     lng: 117.120098,
     lat: 36.6512,

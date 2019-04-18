@@ -1059,7 +1059,7 @@ export default {
       // this.getType()
       $.getScript('https://webapi.amap.com/maps?v=1.4.10&key=21918a99a2f296a222b19106b8d4daa2&plugin=AMap.Geocoder',()=>{
         this.geocoder = new AMap.Geocoder({
-          city: process.env.config.areaKey,
+          city: process.env.config.areaKey.substring(0,3),
         });
       });
 
@@ -1563,7 +1563,7 @@ export default {
       geoCode(value){
           if(!this.geocoder){
               this.geocoder = new AMap.Geocoder({
-                  city: process.env.config.areaKey,
+                  city: process.env.config.areaKey.substring(0,3),
               });
           }
           this.geocoder.getLocation(value, (status, result)=> {
