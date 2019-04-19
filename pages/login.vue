@@ -339,17 +339,41 @@ export default {
         this.$axios.post('/user/useraccount/login', param).then( (res) => {
           if(res.data.code==='0'){
             this.showBind=false
+            let menu= this.hidemonit(res.data.item.roles,res.data.item.menus)
             localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            localStorage.setItem('ACCESSMENU', JSON.stringify(menu))
             localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
             this.$store.commit('user/setToken', res.data.item.accessToken)
-            this.$store.commit('user/setMenu', res.data.item.menus)
+            this.$store.commit('user/setMenu', menu)
             this.$store.commit('user/setUser', res.data.item)
             this.redirect()
           }else if(res.data.code==='141010'){
             this.showBind= true
           }
         })
+      },
+      hidemonit(roles, menu){
+        let hide= JSON.stringify(roles).indexOf('qdrz')>=0
+        if(hide){
+          for(let i in menu){
+            if(menu[i].uri=='/menu21'){
+              let children= menu[i].children, index=-1
+              for(let j in children){
+                if(children[j].uri=='/center/maintain-data-manage'){
+                  index=j
+                  break
+                }
+              }
+              if(index>=0){
+                children.splice(index, 1)
+                menu[i].children= children
+                break
+              }
+
+            }
+          }
+        }
+        return menu
       },
       redirect(){
         if(this.$route.query.redirect){
