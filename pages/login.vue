@@ -154,6 +154,8 @@
 <script>
 import BasicContainer from '~/components/basic-container.vue'
 
+import router from '@/static/router'
+import {  getMenuByRouter } from '@/static/util'
 // import config from '~~/config.js'
 export default {
 		name: "login",
@@ -339,17 +341,28 @@ export default {
         this.$axios.post('/user/useraccount/login', param).then( (res) => {
           if(res.data.code==='0'){
             this.showBind=false
+
             localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-            localStorage.setItem('ACCESSMENU', JSON.stringify(res.data.item.menus))
+            localStorage.setItem('ACCESSMENU', JSON.stringify(this.getLeftMenu(res.data.item.menus)))
             localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
             this.$store.commit('user/setToken', res.data.item.accessToken)
-            this.$store.commit('user/setMenu', res.data.item.menus)
+            this.$store.commit('user/setMenu', this.getLeftMenu(res.data.item.menus))
             this.$store.commit('user/setUser', res.data.item)
             this.redirect()
           }else if(res.data.code==='141010'){
             this.showBind= true
           }
         })
+      },
+      getLeftMenu(menu){
+			  // console.log(JSON.stringify(menu) )
+			  let route= []
+			  for(let i in router){
+			    if(router[i].path=='/main') route=router[i].children
+        }
+        let list= getMenuByRouter(route, menu)
+        // console.log(list)
+        return list
       },
       redirect(){
         if(this.$route.query.redirect){

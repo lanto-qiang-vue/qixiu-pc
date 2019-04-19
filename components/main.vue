@@ -2,11 +2,11 @@
 <basic-container>
   <Layout style="flex-direction: row;">
     <Sider hide-trigger class="common-sider">
-      <side-menu v-show="showMenu" :accordion="false" ref="sideMenu" :active-name="$route.path" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList" :openNames="setOpenedNames">
+      <main-menu v-show="showMenu" :accordion="true" ref="mainMenu" :active-name="$route.path" :menu-list="menuList">
         <div class="logo-con">
           <p>{{pageName || roleName+'中心'}}</p>
         </div>
-      </side-menu>
+      </main-menu>
     </Sider>
     <Content class="common-content">
       <div class="sub-title">
@@ -23,79 +23,58 @@
 
 <script>
 import BasicContainer from '~/components/basic-container.vue'
-import SideMenu from './menu/side-menu.vue'
+import MainMenu from './menu/main-menu.vue'
 import MyBreadCrumb from '~/components/bread-crumb.vue'
 import Extra from '~/components/extra/extra.vue'
-import {  getMenuByRouter2 } from '@/static/util'
 import mixin from '~/components/home-path-mixin.js'
-import router from '@/static/router'
 
 export default {
   name: "common-main",
   layout: "layout-root",
-  // layout: 'common',
   components: {
     BasicContainer,
-    SideMenu,
+    MainMenu,
     MyBreadCrumb,
     Extra,
   },
   mixins: [mixin],
   props: ['paraMenu', 'pageName'],
-  fetch ({ store ,isClient}) {
-
-  },
   data () {
     return {
-      collapsed: false,
-      showMenu: true
+
     }
   },
   computed: {
+    showMenu(){
+      return true
+    },
     menuList () {
-      // console.log('router', router)
-      // console.log('getMenuByRouter2', getMenuByRouter2(router, this.$store.state.user.accessMenu))
-      let list= getMenuByRouter2(router, this.$store.state.user.accessMenu)
-      // console.log('this.$store.state.user.accessMenu', this.$store.state.user.accessMenu )
-      // console.log('menuList111', list )
-      return this.paraMenu|| list
+      let list= this.$store.state.user.accessMenu
+      return this.paraMenu|| list || []
     },
     setOpenedNames(){
-      let list= this.menuList
-      let arr=[]
-      for (let i in list){
-        if(list[i].children){
-          arr.push(list[i].meta.accessId.toString())
-        }
-      }
-      // this.openedNames= arr
-      return arr
+      // let list= this.menuList
+      // let arr=[]
+      // for (let i in list){
+      //   if(list[i].children){
+      //     arr.push(list[i].meta.accessId.toString())
+      //   }
+      // }
+
+      return []
+    },
+    route(){
+      return this.$route
     },
     keepAlive(){
       return this.$route.meta.keepAlive
     }
   },
   mounted(){
-
+    console.log(this.$route)
   },
   methods: {
-    turnToPage (name, meta) {
-      console.log('click', name, meta)
-      if (name.indexOf('isTurnByHref_') > -1) {
-        window.open(name.split('_')[1])
-        return
-      }
 
-      if(meta && (meta.href || meta.extInfo=='target=_blank')){
-        // window.location.href= name
-        window.open(meta.href)
-      }else{
-        this.$router.push({
-          path: name
-        })
-      }
-
-    },
   }
 }
 </script>

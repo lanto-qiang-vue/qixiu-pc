@@ -1,18 +1,34 @@
-// import CommonIcon from '_c/common-icon'
 export default {
-  // components: {
-  //   CommonIcon
-  // },
   methods: {
     showTitle (item) {
-      return ((item.meta && item.meta.title) || item.meta.accessId)
+      return item.name || (item.meta && item.meta.title)
     },
-    showChildren (item) {
-      // return item.children && (item.children.length > 1 || (item.meta && item.meta.showAlways))
-      return item.children && (item.children.length > 0 || (item.meta && item.meta.showAlways))
+    showSubmenu (item) {
+      return item.children && item.children.length > 0
     },
-    getNameOrHref (item, children0) {
-      return item.href ? `isTurnByHref_${item.href}` : (children0 ? item.children[0].path : item.path)
+    clickMenu(item){
+      let url= item.uri
+      if(url.indexOf('http')>=0){
+        if(item.extInfo.indexOf('_blank')>=0){
+          window.open(url)
+        }else{
+          window.location.href= url
+        }
+      }else{
+        this.$router.push({path: '/center/'+ item.meta.path})
+      }
     }
-  }
+  },
+  components: {
+    'MenuIcon':{
+      template: '<Icon :type="meta.icon || \'\'" :custom="meta.custom||\'\'" v-if="meta.custom ||meta.icon"/>',
+      props: ['item'],
+      computed:{
+        meta(){
+          return this.item.meta || {}
+        }
+      },
+      directives: {if: {name: 'if'}},
+    }
+  },
 }

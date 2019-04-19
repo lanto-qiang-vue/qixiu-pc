@@ -127,6 +127,25 @@ export const getIcon = (item, access) => {
 //   })
 //   return res
 // }
+export const getMenuByRouter = (router, accessMenu) => {
+  let list= []
+  for(let i in accessMenu){
+    let item= accessMenu[i]
+    if(item.children && item.children.length){
+      item.children= getMenuByRouter(router, item.children)
+    }else{
+      for(let j in router){
+        if(item.uri== router[j].meta.accessId){
+          item.meta= router[j].meta
+          item.meta.path= router[j].path
+          break
+        }
+      }
+    }
+    list.push(item)
+  }
+  return list
+}
 
 export const getMenuByRouter2 = (  routers, accessMenu) => {
   let res = []
@@ -668,24 +687,24 @@ export const  haveRight = (menuList, id) =>{
 
 export const checkAuth = ({ route, store},redirect, error) =>{
   if (process.client) {
-    let meta= route.matched.length>0? route.matched[route.matched.length-1].meta: {}
-    if(store.state.user.token){
-      let list= getMenuByRouter2(router, store.state.user.accessMenu)
-      if(!haveRight(list, meta.accessId)){
-        error()
-      }else{
-        // console.log('有权限')
-      }
-    }else{
-      // console.log('not login')
-      if(meta && (meta.accessId || meta.needLogin)){
-        // redirect({
-        //   path: '/login',
-        //   query: { redirect: route.fullPath }
-        // })
-        redirect()
-      }
-    }
+    // let meta= route.matched.length>0? route.matched[route.matched.length-1].meta: {}
+    // if(store.state.user.token){
+    //   let list= getMenuByRouter2(router, store.state.user.accessMenu)
+    //   if(!haveRight(list, meta.accessId)){
+    //     error()
+    //   }else{
+    //     // console.log('有权限')
+    //   }
+    // }else{
+    //   // console.log('not login')
+    //   if(meta && (meta.accessId || meta.needLogin)){
+    //     // redirect({
+    //     //   path: '/login',
+    //     //   query: { redirect: route.fullPath }
+    //     // })
+    //     redirect()
+    //   }
+    // }
   }
 }
 
