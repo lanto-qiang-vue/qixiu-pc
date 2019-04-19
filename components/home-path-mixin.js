@@ -1,19 +1,17 @@
 export default {
   computed:{
     roleName(){
-      let sortRoles= this.sortRole(true), roleName= ''
+      let sortRoles= this.sortRole, roleName= ''
       for(let i in sortRoles){
         roleName= sortRoles[i].name
       }
       return roleName
     },
     centerHref(){
-      let sortRoles= this.sortRole(false)
+      let sortRoles= this.sortRole
       return sortRoles.length? sortRoles[sortRoles.length-1].path: ''
-    }
-  },
-  methods:{
-    sortRole(flag){
+    },
+    sortRole(){
       let roles= this.$store.state.user.userInfo.roles, sortRoles=[]
       let order=[
         {code:'chezhu', path: '/center/my-car-record'},
@@ -28,27 +26,29 @@ export default {
       for (let i in order){
         for (let j in roles){
           if(order[i].code.indexOf(roles[j].code)>=0){
-            flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
+            sortRoles.push({
+              ...roles[j],
+              path: order[i].path
+            })
           }
         }
       }
       if(!sortRoles.length){
-        if(flag){
-          for(let i in roles){
-            sortRoles.push(roles[i])
-          }
-        }else{
-          let menu= this.$store.state.user.accessMenu
-          if(menu.length){
-            if(menu[0].leaf){
-              sortRoles.push({path: menu[0].uri})
-            }else{
-              sortRoles.push({path: menu[0].children[0].uri})
-            }
-          }
+        let menu= this.$store.state.user.accessMenu, path=""
+        if(menu.length){
+          path= menu[0].meta? menu[0].meta.path: menu[0].children[0].meta.path
+        }
+        for(let i in roles){
+          sortRoles.push({
+            ...roles[i],
+            path
+          })
         }
       }
       return sortRoles
     },
+  },
+  methods:{
+
   }
 }

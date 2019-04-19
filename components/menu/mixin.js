@@ -15,7 +15,7 @@ export default {
           window.location.href= url
         }
       }else{
-        this.$router.push({path: '/center/'+ item.meta.path})
+        this.$router.push({path: item.meta.path})
       }
     }
   },

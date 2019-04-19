@@ -2,7 +2,7 @@
 <basic-container>
   <Layout style="flex-direction: row;">
     <Sider hide-trigger class="common-sider">
-      <main-menu v-show="showMenu" :accordion="true" ref="mainMenu" :active-name="$route.path" :menu-list="menuList">
+      <main-menu :accordion="true" :active-name="$route.path" :para-menu="paraMenu">
         <div class="logo-con">
           <p>{{pageName || roleName+'中心'}}</p>
         </div>
@@ -45,27 +45,6 @@ export default {
     }
   },
   computed: {
-    showMenu(){
-      return true
-    },
-    menuList () {
-      let list= this.$store.state.user.accessMenu
-      return this.paraMenu|| list || []
-    },
-    setOpenedNames(){
-      // let list= this.menuList
-      // let arr=[]
-      // for (let i in list){
-      //   if(list[i].children){
-      //     arr.push(list[i].meta.accessId.toString())
-      //   }
-      // }
-
-      return []
-    },
-    route(){
-      return this.$route
-    },
     keepAlive(){
       return this.$route.meta.keepAlive
     }

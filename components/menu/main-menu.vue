@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-wrapper">
     <slot></slot>
-    <Menu ref="menu" :active-name="activeName" :open-names="openNames" :accordion="accordion" :theme="theme" width="200">
+    <Menu ref="menu" :active-name="meta.accessId|| $route.path" :open-names="openNames" :accordion="true" theme="light" width="200">
       <template v-for="(item, key) in menuList">
           <main-submenu v-if="showSubmenu(item)" :key="key" :item="item"></main-submenu>
           <MenuItem v-else-if="item.meta && !item.meta.hideMenu" :name="item.uri" :key="key" @click.native="clickMenu(item)">
@@ -26,28 +26,25 @@ export default {
     MainSubmenu,
   },
   props: {
-    menuList: {
+    paraMenu: {
       type: Array,
       default: () => []
     },
-    theme: {
-      type: String,
-      default: 'light'
-    },
-    accordion: Boolean,
-    activeName: {
-      type: String,
-      default: ''
-    },
-    openNames: {
-      type: Array,
-      default: () => []
-    }
   },
   data () {
     return {
-
+      openNames: [],
     }
+  },
+  computed:{
+    meta(){
+      return this.$route.meta ||{}
+    },
+    menuList () {
+      let list= this.$store.state.user.accessMenu
+      let l1= this.paraMenu.length, l2=list.length
+      return l1? this.paraMenu : (l2? list: [])
+    },
   },
   mounted () {
 

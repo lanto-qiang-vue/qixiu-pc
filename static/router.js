@@ -64,7 +64,7 @@ export default [
         {
           path: 'gov-home',
           meta: {
-            icon: 'phone',
+            icon: '',
             title: '管理中心首页',
             accessId: '/center/gov-home',
 

@@ -1,17 +1,17 @@
 <template>
 <div :class="['login-status', {'is-index': isIndex}]">
   <div class="login unLogin" v-show="!isLogin">
-    <!--<span class="nick-name">您好，欢迎光临本站！</span>-->
-    <nuxt-link tag="a" to="/login">
-      <!--<img src="../assets/img/index/login.png" v-show="isIndex">-->
-      <Icon type="md-power" size="20"  style="vertical-align: text-top"/>
-      登录</nuxt-link>|
+    <nuxt-link tag="a" to="/login"><Icon type="md-power" size="20"  style="vertical-align: text-top"/>登录</nuxt-link>|
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
   </div>
   <div class="login isLogin" v-show="isLogin">
-    <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link> </span>
-    <!--<nuxt-link tag="a" to="/center/my-notes" ><Icon type="md-notifications" style="color: black;"/></nuxt-link>-->
-    <nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>
+    <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
+    <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
+
+    <Select v-model="rule" class="rule-select" transfer size="small">
+      <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
+    </Select>
+
     |<a @click="logout" class="logout">注销</a>
   </div>
 </div>
@@ -23,6 +23,11 @@ export default {
   name: "login-status",
   props: ['isIndex'],
   mixins: [mixin],
+  data(){
+    return {
+      rule: ''
+    }
+  },
   computed:{
     isLogin(){
       return this.$store.state.user.token? true: false
@@ -30,39 +35,13 @@ export default {
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
-    // roleName(){
-    //   let sortRoles= this.sortRole(true), roleName= ''
-    //   for(let i in sortRoles){
-    //     roleName= sortRoles[i].name
-    //   }
-    //   return roleName
-    // },
-    // centerHref(){
-    //   let sortRoles= this.sortRole(false)
-    //   return sortRoles.length? sortRoles[sortRoles.length-1].path: ''
-    // }
+  },
+  watch:{
+    sortRole(val){
+      this.rule= val[0].code
+    }
   },
   methods:{
-    // sortRole(flag){
-    //   let roles= this.$store.state.user.userInfo.roles, sortRoles=[]
-    //   let order=[
-    //     {code:'chezhu', path: '/center/my-car-record'},
-    //     {code:'weixiuqiye', path: '/center/company-home'},
-    //     {code:'zhuanjia', path: '/center/answer-questions'},
-    //     {code:'xiehui', path: '/center/account-info'},
-    //     {code:'guanlibumen', path: '/center/gov-home'},
-    //     {code:'yunying', path: '/center'},
-    //     {code:'admin', path: '/center'},
-    //   ]
-    //   for (let i in order){
-    //     for (let j in roles){
-    //       if(order[i].code== roles[j].code){
-    //         flag? sortRoles.push(roles[j]) :sortRoles.push(order[i])
-    //       }
-    //     }
-    //   }
-    //   return sortRoles
-    // },
     logout(){
       this.$Modal.confirm({
         title: '确定退出登录吗？',
@@ -119,6 +98,7 @@ export default {
       background-color: #0c6dbe;
     }
   }
+
 }
 .login-status.is-index{
   .login {
@@ -132,4 +112,17 @@ export default {
   }
 }
 
+</style>
+<style lang="less">
+.login-status{
+  .rule-select{
+    display: inline-block;
+    width: 100px;
+    .ivu-select-selection{
+      display: inline-block;
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+}
 </style>
