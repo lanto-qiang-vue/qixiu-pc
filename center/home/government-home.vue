@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <div class="dblock" v-if="!hidemonit">
+  <div class="dblock" v-if="isMounted &&!hidemonit">
     <h1 class="dtitle">维修记录上传监控</h1>
     <div class="center">
       <maintain-data-manage></maintain-data-manage>
@@ -64,8 +64,9 @@ export default {
   },
   computed:{
     hidemonit(){
-      console.log('this.$store.state.user', this.$store.state.user)
-      return this.$store.state.user.userInfo ? JSON.stringify(this.$store.state.user.userInfo.roles).indexOf('qdrz')>=0  : ''
+      // console.log('this.$store.state.user', this.$store.state.user)
+      let info=this.$store.state.user.userInfo
+      return info.roles  ? JSON.stringify(info.roles).indexOf('qdrz')>=0  : true
     },
     isShanghai(){
         return process.env.config.areaName=='shanghai'
