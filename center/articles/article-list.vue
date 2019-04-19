@@ -21,16 +21,17 @@
         </FormItem>
         <FormItem :label-width="0">
           
-            <Button type="primary" @click="page=1;getList()">搜索</Button>
+            <Button v-if="accessBtn('query')" type="primary" @click="page=1;getList()">搜索</Button>
             
           
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if=""  @click="goDetail(true)">新增</Button>
-      <Button type="primary" v-if="" :disabled="!selectRow.id" @click="goDetail(false)">修改</Button>
-      <Button :type="rowStatus?'error': 'success'" v-if="" :disabled="!selectRow.id"
+      <Button type="info" v-if="accessBtn('add')"  @click="goDetail(true)">新增</Button>
+      <Button type="primary" v-if="accessBtn('edit')" :disabled="!selectRow.id" @click="goDetail(false)">修改</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="!selectRow.id" @click="del">删除</Button>
+      <Button :type="rowStatus?'error': 'success'" v-if="accessBtn('updateStatus')" :disabled="!selectRow.id"
               @click="changeStatus">{{rowStatus?'取消发布': '发布'}}</Button>
     </div>
   </common-table>
@@ -40,10 +41,12 @@
 </template>
 
 <script>
+  import funMixin from '~/components/fun-auth-mixim.js'
   import CommonTable from '~/components/common-table.vue'
   // import SystemManageDetail from './system-type-manage-detail'
 	export default {
 		name: "article-manage-list",
+    mixins: [funMixin],
     components: {
       CommonTable,
       // SystemManageDetail
@@ -102,6 +105,20 @@
       getType(){
         this.$axios.$get('/infopublic/public/info/category').then( (res) => {
           this.typeList= res.items
+        })
+      },
+      del() {
+        this.$Modal.confirm({
+          title: '确定要删除吗？',
+          onOk: () => {
+            this.$axios.post('/infopublic/delete/' + this.selectRow.id).then((res) => {
+              if (res.data.code == '0') {
+                this.$Message.success('删除成功')
+                this.getList()
+                this.selectRow={}
+              }
+            })
+          }
         })
       },
         getList(){
