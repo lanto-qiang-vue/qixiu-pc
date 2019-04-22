@@ -1,5 +1,5 @@
 <template>
-  <Submenu :name="item.uri">
+  <Submenu :name="item.uri" v-show="showByRole(item.roleCodes)">
     <template slot="title">
       <menu-icon :item="item"></menu-icon>
       <span>{{ showTitle(item) }}</span>

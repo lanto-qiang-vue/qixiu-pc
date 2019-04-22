@@ -687,7 +687,7 @@ export const  haveRight = (menuList, id) =>{
 
 export const checkAuth = ({ route, store},redirect, error) =>{
   if (process.client) {
-    console.log('checkAuth', route)
+    // console.log('checkAuth', route)
     let meta= route.matched.length>0? route.matched[route.matched.length-1].meta: {}
     if(store.state.user.token){
       let list=  store.state.user.accessMenu

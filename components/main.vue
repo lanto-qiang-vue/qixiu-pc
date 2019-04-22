@@ -2,9 +2,10 @@
 <basic-container>
   <Layout style="flex-direction: row;">
     <Sider hide-trigger class="common-sider">
-      <main-menu :accordion="true" :active-name="$route.path" :para-menu="paraMenu">
+      <main-menu :para-menu="paraMenu">
         <div class="logo-con">
-          <p>{{pageName || roleName+'中心'}}</p>
+          <p v-if="pageName">{{pageName}}</p>
+          <p v-else>{{ showNowRole}}中心</p>
         </div>
       </main-menu>
     </Sider>
@@ -39,19 +40,19 @@ export default {
   },
   mixins: [mixin],
   props: ['paraMenu', 'pageName'],
-  data () {
-    return {
-
-    }
-  },
+  // data () {
+  //   return {
+  //
+  //   }
+  // },
   computed: {
     keepAlive(){
       return this.$route.meta.keepAlive
     }
   },
-  mounted(){
-    console.log(this.$route)
-  },
+  // mounted(){
+  //   console.log(this.$route)
+  // },
   methods: {
 
   }

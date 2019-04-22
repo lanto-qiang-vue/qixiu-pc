@@ -2,9 +2,11 @@
   <div class="side-menu-wrapper">
     <slot></slot>
     <Menu ref="menu" :active-name="meta.accessId|| $route.path" :open-names="openNames" :accordion="true" theme="light" width="200">
-      <template v-for="(item, key) in menuList">
-          <main-submenu v-if="showSubmenu(item)" :key="key" :item="item"></main-submenu>
-          <MenuItem v-else-if="item.meta && !item.meta.hideMenu" :name="item.uri" :key="key" @click.native="clickMenu(item)">
+      <template v-for="(item, key) in menuList" >
+          <main-submenu v-if="showSubmenu(item)" :key="key" :item="item"
+                        v-show="showByRole(item.roleCodes)"></main-submenu>
+          <MenuItem v-else-if="item.meta && !item.meta.hideMenu" :name="item.uri" :key="key"
+                    v-show="showByRole(item.roleCodes)" @click.native="clickMenu(item)">
             <!--<Icon v-if="item.icon" :type="item.icon || ''" />-->
             <menu-icon :item="item"></menu-icon>
             <span>{{ showTitle(item) }}</span>

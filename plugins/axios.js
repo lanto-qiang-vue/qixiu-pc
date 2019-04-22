@@ -17,7 +17,10 @@ export default function ({ $axios, redirect, store, route, app }) {
     // console.log('store.state.user.token:', token)
   })
   $axios.onResponse(response => {
-    if (process.client) Spin.hide()
+    if (process.client) {
+      Message.destroy()
+      Spin.hide()
+    }
     if(response.status== 200){
       let code= response.data.code
       switch (code){

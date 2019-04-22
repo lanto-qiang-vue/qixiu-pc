@@ -5,6 +5,7 @@ export const state = () => ({
   token:  '',
   accessMenu:  '',
   userInfo:  '',
+  nowRule: ''
 })
 
 // export const getters = {
@@ -26,5 +27,8 @@ export const mutations = {
   setMenu (state, info) {
     state.accessMenu = info
     // setMenu(info)
+  },
+  setNowRule (state, name) {
+    state.nowRule = name
   }
 }

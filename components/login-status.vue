@@ -6,9 +6,10 @@
   </div>
   <div class="login isLogin" v-show="isLogin">
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
-    <!--<nuxt-link tag="a" :to="centerHref" class="center">{{roleName}}中心</nuxt-link>-->
+    <nuxt-link tag="a" :to="centerHref" class="center" v-if="isIndex">{{roleName}}中心</nuxt-link>
 
-    <Select v-model="rule" class="rule-select" transfer size="small">
+    <Select v-model="rule" class="rule-select" transfer size="small" placeholder="菜单" v-else
+            @on-change="selectRule">
       <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
     </Select>
 
@@ -23,11 +24,7 @@ export default {
   name: "login-status",
   props: ['isIndex'],
   mixins: [mixin],
-  data(){
-    return {
-      rule: ''
-    }
-  },
+
   computed:{
     isLogin(){
       return this.$store.state.user.token? true: false
@@ -35,13 +32,25 @@ export default {
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
+
+
   },
   watch:{
-    sortRole(val){
-      this.rule= val[0].code
-    }
+    '$route'(val){
+      // this.rule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+    },
   },
   methods:{
+    selectRule(val){
+      let path= ''
+      for(let i in this.sortRole){
+        if(val==  this.sortRole[i].code){
+          path= this.sortRole[i].path
+        }
+      }
+      this.$router.push({path: path})
+
+    },
     logout(){
       this.$Modal.confirm({
         title: '确定退出登录吗？',
