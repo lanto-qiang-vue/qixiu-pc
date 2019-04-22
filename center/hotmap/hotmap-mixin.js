@@ -106,9 +106,13 @@ export default {
         false;
     }
   },
-  beforeRouteLeave (to, from, next) {
-    $('body').removeClass('hot-map')
+  // beforeRouteLeave (to, from, next) {
+  //   $('body').removeClass('hot-map')
+  //   if(this.stompClient) this.stompClient.disconnect()
+  //   next()
+  // },
+  beforeDestroy(){
+    console.log('hotmap.beforeDestroy')
     if(this.stompClient) this.stompClient.disconnect()
-    next()
   }
 }

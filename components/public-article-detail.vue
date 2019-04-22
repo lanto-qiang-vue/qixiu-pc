@@ -2,14 +2,18 @@
 <div class="article-detail">
   <p class="title">{{title}}</p>
   <div v-html="detail"></div>
-  <BackTop v-if="$route.fullPath.indexOf('center')<0 "></BackTop>
+  <BackTop v-if="$route.fullPath.indexOf('center')<0" v-show="showBackTop"></BackTop>
 </div>
 </template>
 
 <script>
 export default {
   name: "open-article-detail",
-  props: ['title', 'detail'],
+  props: {
+    'title':{}, 'detail':{},
+    'showBackTop':{
+      default: true
+    }},
   data(){
     return{
     }

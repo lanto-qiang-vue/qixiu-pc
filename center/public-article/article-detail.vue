@@ -1,5 +1,6 @@
 <template>
-  <public-article-detail :title="title" :detail="detail"></public-article-detail>
+  <public-article-detail :title="title" :detail="detail"
+                         :show-back-top="$route.name!='m-article'"></public-article-detail>
   <!--<div class="open-article-detail">-->
     <!--&lt;!&ndash;<iframe :src="config.articlePath+ $route.params.id"></iframe>&ndash;&gt;-->
     <!--<BackTop></BackTop>-->
@@ -8,16 +9,19 @@
 
 <script>
   import PublicArticleDetail from '~/components/public-article-detail.vue'
-  import config from '~~/config.js'
   export default {
     name: "open-article-detail",
     components: {
       PublicArticleDetail,
     },
     head () {
+      let viewport= {}
+      if(this.$route.name=='m-article') {
+        viewport= { hid: 'viewport', name: 'viewport', content: 'width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no' }
+      }
       return {
         title: this.title,
-        meta: [{ hid: 'description', name: 'description', content: this.title }]
+        meta: [{ hid: 'description', name: 'description', content: this.title }, viewport]
       }
     },
     asyncData ({ app, params, query, error }) {

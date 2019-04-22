@@ -1,9 +1,4 @@
 export default {
-  data(){
-    return {
-      rule: ''
-    }
-  },
   computed:{
     roleName(){
       let rules= this.sortRole
@@ -36,7 +31,7 @@ export default {
       ]
       for (let i in order){
         for (let j in roles){
-          if(order[i].code.indexOf(roles[j].code)>=0){
+          if(roles[j].code.indexOf(order[i].code)>=0){
             sortRoles.push({
               ...roles[j],
               path: order[i].path
@@ -64,14 +59,19 @@ export default {
     nowAccessId(){
       return this.$route.meta.accessId
     },
+    rule(){
+      return this.$store.state.user.nowRule
+    }
   },
   watch:{
-    rule(val){
-      this.$store.commit('user/setNowRule', val)
+    nowAccessId(val){
+      let nowRule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+      this.$store.commit('user/setNowRule', nowRule)
     }
   },
   mounted(){
-    this.rule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+    let nowRule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+    this.$store.commit('user/setNowRule', nowRule)
   },
   methods:{
     getRoleCodes(list){

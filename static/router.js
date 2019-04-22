@@ -42,6 +42,10 @@ export default [
       },
     ]
   },{
+    path: '/m-article/:id',
+    name: 'm-article',
+    component: resolve('center/public-article/article-detail.vue'),
+  },{
     path: '/appointment',
     component: resolve('center/public-service/appointment.vue'),
     meta: {

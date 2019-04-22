@@ -8,7 +8,7 @@
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
     <nuxt-link tag="a" :to="centerHref" class="center" v-if="isIndex">{{roleName}}中心</nuxt-link>
 
-    <Select v-model="rule" class="rule-select" transfer size="small" placeholder="菜单" v-else
+    <Select :value="rule" class="rule-select" transfer size="small" placeholder="菜单" v-else
             @on-change="selectRule">
       <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
     </Select>
@@ -33,12 +33,9 @@ export default {
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
 
-
   },
   watch:{
-    '$route'(val){
-      // this.rule= this.getNowRole(this.getRoleCodes(this.accessMenu))
-    },
+
   },
   methods:{
     selectRule(val){
@@ -48,8 +45,8 @@ export default {
           path= this.sortRole[i].path
         }
       }
-      this.$router.push({path: path})
 
+      this.$router.push({path: path})
     },
     logout(){
       this.$Modal.confirm({
