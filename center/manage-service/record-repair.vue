@@ -21,7 +21,8 @@
 
         <FormItem label="车牌正确:">
             <Select v-model="searchList.byVehicleNumberStandard" clearable @on-change="onChangeVehicle">
-                <Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>
+                <!--<Option v-for="item in typeList" :value="item.code" :key="item.code">{{ item.name }}</Option>-->
+                <Option value="no" >错误</Option>
             </Select>
         </FormItem>
         <FormItem label="VIN正确:">
@@ -124,7 +125,7 @@ if(!thisData) {
                       style:{
                         color:colorStr
                       },
-                  }, params.row.checkVn)
+                  }, params.row.checkVn=='是'? '是': '')
               ]);
         }
       },
