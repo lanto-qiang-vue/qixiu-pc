@@ -25,7 +25,7 @@
       }
     },
     asyncData ({ app, params, query, error }) {
-      console.log('asyncData', params)
+      // console.log('asyncData', params)
       if(query &&query.type=='school'){
         return app.$axios.$get('/training/driving/school/'+ params.id).then((res) => {
           let img='',arr= res.pic? res.pic.split(','): []
