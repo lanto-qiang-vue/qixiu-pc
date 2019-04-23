@@ -125,7 +125,7 @@ if(!thisData) {
                       style:{
                         color:colorStr
                       },
-                  }, params.row.checkVn=='是'? '是': '')
+                  }, params.row.checkVn=='否'? '否': '')
               ]);
         }
       },
