@@ -23,7 +23,7 @@ export default {
         {code:'admin', path: '/center/menu-manage'},
         {code:'guanlibumen', path: '/center/gov-home'},
         {code:'yunying', path: '/center/operator-home'},
-        {code:'xiehui', path: '/center/account-info'},
+        {code:'xiehui', path: '/center/note-manage'},
         {code:'zhuanjia', path: '/center/answer-questions'},
         {code:'weixiuqiye', path: '/center/company-home'},
         {code:'jiaxiao', path: '/center/school-home'},
