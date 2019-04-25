@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <div class="dblock">
+  <div class="dblock" v-if="isMounted &&!hidemonit">
     <h1 class="dtitle">维修记录上传监控</h1>
     <div class="center">
       <maintain-data-manage></maintain-data-manage>
@@ -63,6 +63,11 @@ export default {
       maintainDataManage
   },
   computed:{
+    hidemonit(){
+      // console.log('this.$store.state.user', this.$store.state.user)
+      let info=this.$store.state.user.userInfo
+      return info.roles  ? JSON.stringify(info.roles).indexOf('qdrz')>=0  : true
+    },
     isShanghai(){
         return process.env.config.areaName=='shanghai'
       },
@@ -372,14 +377,14 @@ export default {
           num.push(datas[i].nzdzcount)
           num2.push(datas[i].zdzcount)
           sum.push(datas[i].nzdzcount+ datas[i].zdzcount)
-          if(!this.isShangHai) total.push(datas[i].total)
+          if(!this.isShanghai) total.push(datas[i].total)
       }
 
       optionBar.xAxis[0].data= area;
       optionBar.series[0].data=num;
       optionBar.series[1].data=num2;
       optionBar.series[2].data=sum;
-      if(!this.isShangHai){
+      if(!this.isShanghai){
         optionBar.tooltip.formatter= function (params) {
           // console.log(params)
           let tooltip= params[0].name+ '<br/>'+

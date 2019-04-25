@@ -54,9 +54,9 @@
               <div style="float:left;"><b>上传无误企业: {{successUpdateNum}}家</b></div>
             </div>
           </div>
-          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="isShanghai" v-show="apiShow">各区维修记录上传情况</b>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="isShanghai" v-show="apiShow">各区域维修记录上传情况</b>
           </div>
-          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="!isShanghai" v-show="apiShow">各区一二类企业维修记录上传情况</b>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-if="!isShanghai" v-show="apiShow">各区域一二类企业维修记录上传情况</b>
           </div>
           <div style="position:absolute;top:30px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key1">
@@ -80,7 +80,7 @@
               <div style="float:left;padding-left:10px;"><b>错误记录未读企业: {{count2}}家</b></div>
             </div>
           </div>
-          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区推送未读情况</b>
+          <div style="position:absolute;left:8%;top:-20px;"><b style="font-size:18px;" v-show="apiShow">各区域推送未读情况</b>
           </div>
           <div style="position:absolute;top:10px;right:10%;" v-show="apiShow">
             <Select style="width:150px;" v-model="key3">
@@ -188,9 +188,9 @@ import { deepClone} from '~/static/util.js'
         if(this.accessBtn('comment-count')){
           this.getComment()
         }
-        
-        
-        
+
+
+
       },
       computedTime(day){
         let date = new Date()
@@ -680,14 +680,14 @@ import { deepClone} from '~/static/util.js'
               // console.log('dataObj',dataObj);
 
 
-              
+
               let noUpload=0;
               let noUpload1=0;
               noUpload+=parseInt(dataObj[company].success)+parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);
               if(noUpload>0){
                 noUpload1=((parseInt(dataObj[company].success)*10000/noUpload)/100).toFixed(2)+'%'
               }
-              
+
               let errorUpload=0;
               let errorUpload1=0;
               errorUpload+=parseInt(dataObj[company].successUpdate)+parseInt(dataObj[company].error);

@@ -23,13 +23,14 @@
           </Select>
         </FormItem>
         <FormItem :label-width="80" style="width: 100px;">
-          <Button type="primary" v-if="" @click="page=1,getList()">搜索</Button>
+          <Button type="primary" v-if="accessBtn('list')" @click="page=1,getList()">搜索</Button>
         </FormItem>
       </Form>
     </div>
     <div slot="operate">
-      <Button type="success" @click="add">新增</Button>
-      <Button type="primary" :disabled="canDo" @click="edit">修改</Button>
+      <Button type="success" v-if="accessBtn('add')" @click="add">新增</Button>
+      <Button type="error" v-if="accessBtn('delete')" :disabled="canDo" @click="del">删除</Button>
+      <Button type="primary" v-if="accessBtn('view')" :disabled="canDo" @click="edit">修改</Button>
     </div>
     <Modal
       v-model="showModal"
@@ -88,7 +89,7 @@
       </Form>
       <div slot="footer">
         <Button @click="showModal = false">取消</Button>
-        <Button @click="addPost('formData')" type="primary">保存</Button>
+        <Button @click="addPost('formData')" v-if="accessBtn('update')" type="primary">保存</Button>
       </div>
     </Modal>
   </common-table>
@@ -96,9 +97,10 @@
 <script>
   import CommonTable from '~/components/common-table.vue'
   import { deepClone } from '../../static/util'
-
+  import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'banner-manage',
+    mixins: [funMixin],
     components: { CommonTable },
     data() {
       const terminalRule = (rule, value, callback) => {
@@ -193,6 +195,20 @@
             })
           } else {
             this.$Message.error("请校对红框字段");
+          }
+        })
+      },
+      del() {
+        this.$Modal.confirm({
+          title: '确定要删除吗？',
+          onOk: () => {
+            this.$axios.post('/banner/delete/' + this.list.id).then((res) => {
+              if (res.data.code == '0') {
+                this.$Message.success('删除成功')
+                this.getList()
+                this.list=''
+              }
+            })
           }
         })
       },

@@ -952,7 +952,7 @@ export default {
     changeOtherArea(value){
       console.log(value)
       if(value.length==1){
-        this.search.area= value[0].substring(0,4)+ '**'
+        this.search.area= value[0].substring(0,4)+ '*'
       }else{
         this.search.area= value[1]
       }

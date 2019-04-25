@@ -342,11 +342,14 @@ export default {
           if(res.data.code==='0'){
             this.showBind=false
 
+            let menu= this.hidemonit(res.data.item.roles,res.data.item.menus)
+            let leftMenu= this.getLeftMenu(menu)
             localStorage.setItem('ACCESSTOKEN', res.data.item.accessToken)
-            localStorage.setItem('ACCESSMENU', JSON.stringify(this.getLeftMenu(res.data.item.menus)))
+            localStorage.setItem('ACCESSMENU', JSON.stringify(leftMenu))
             localStorage.setItem('USERINFO', JSON.stringify(res.data.item))
             this.$store.commit('user/setToken', res.data.item.accessToken)
-            this.$store.commit('user/setMenu', this.getLeftMenu(res.data.item.menus))
+            this.$store.commit('user/setMenu', leftMenu)
+
             this.$store.commit('user/setUser', res.data.item)
             this.redirect()
           }else if(res.data.code==='141010'){
@@ -363,6 +366,29 @@ export default {
         let list= getMenuByRouter(route, menu)
         // console.log(list)
         return list
+      },
+      hidemonit(roles, menu){
+        let hide= JSON.stringify(roles).indexOf('qdrz')>=0
+        if(hide){
+          for(let i in menu){
+            if(menu[i].uri=='/menu21'){
+              let children= menu[i].children, index=-1
+              for(let j in children){
+                if(children[j].uri=='/center/maintain-data-manage'){
+                  index=j
+                  break
+                }
+              }
+              if(index>=0){
+                children.splice(index, 1)
+                menu[i].children= children
+                break
+              }
+
+            }
+          }
+        }
+        return menu
       },
       redirect(){
         if(this.$route.query.redirect){
