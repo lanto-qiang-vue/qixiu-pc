@@ -301,17 +301,17 @@ export default {
         },
       compareHtml(original, later, field){
         let html=''
-        if(original[field]== later[field]){
+        if(original &&original[field]== later[field]){
           html=  original[field]
         }else{
-          html= ('<p><label>修改前：</label><span>'+original[field]+'</span></p><p><label>修改后：</label><span>'+
+          html= ('<p><label>修改前：</label><span>'+ (original&& original[field]? original[field]: "")+'</span></p><p><label>修改后：</label><span>'+
             this.compareLight(original, later, field)+'</span></p>')
         }
         return html
       },
       compareLight(original, later, field){
         let elRev=''
-        if(original[field].length== later[field].length){
+        if(original&& original[field] && later[field] && original[field].length== later[field].length){
           for(let i in original[field]){
             if(original[field][i]== later[field][i]){
               elRev+=later[field][i]
