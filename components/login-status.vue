@@ -6,7 +6,7 @@
   </div>
   <div class="login isLogin" v-show="isLogin">
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
-    <nuxt-link tag="a" :to="centerHref" class="center" v-if="isIndex">{{roleName}}中心</nuxt-link>
+    <a @click="goMainPath" class="center" v-if="isIndex">{{mainRole.name}}中心</a>
 
     <Select :value="rule" class="rule-select" transfer size="small" placeholder="菜单" v-else
             @on-change="selectRule">
@@ -24,7 +24,6 @@ export default {
   name: "login-status",
   props: ['isIndex'],
   mixins: [mixin],
-
   computed:{
     isLogin(){
       return this.$store.state.user.token? true: false
@@ -32,12 +31,18 @@ export default {
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
-
+    mainRole(){
+      return this.sortRole[0]
+    }
   },
   watch:{
 
   },
   methods:{
+    goMainPath(){
+      this.$store.commit('user/setNowRule',  this.mainRole.code)
+      this.$router.push({path: this.mainRole.path})
+    },
     selectRule(val){
       let path= ''
       for(let i in this.sortRole){

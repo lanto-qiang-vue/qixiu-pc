@@ -142,6 +142,7 @@ export const getMenuByRouter = (router, accessMenu) => {
         }
       }
     }
+
     list.push(item)
   }
   return list

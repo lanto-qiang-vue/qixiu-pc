@@ -1,13 +1,5 @@
 export default {
   computed:{
-    roleName(){
-      let rules= this.sortRole
-      return rules.length? rules[0].name: ''
-    },
-    centerHref(){
-      let rules= this.sortRole
-      return rules.length? rules[0].path: ''
-    },
     showNowRole(){
       let name= ''
       for(let i in this.sortRole){
@@ -75,6 +67,7 @@ export default {
   },
   methods:{
     getRoleCodes(list){
+      //匹配当前路径的菜单参数
       let menu= list|| [], rule=[]
       if(menu.length && this.nowAccessId){
         for(let i in menu){
@@ -92,17 +85,19 @@ export default {
       return rule
     },
     getNowRole(list){
-      let role= '', sortRole= this.sortRole
-      for(let i in sortRole){
-        let flag= false
-        for(let j in list){
-          if(list[j].indexOf(sortRole[i].code)>=0){
-            role= sortRole[i].code
-            flag= true
+      //判断菜单的角色
+      let role= '', sortRole= this.sortRole, nowRole= this.rule;
+      for(let i in list){
+        if(nowRole== list[i]) {
+          role= nowRole
+          break
+        }
+        for(let j in sortRole){
+          if(list[i].indexOf(sortRole[j].code)>=0){
+            role= sortRole[j].code
             break
           }
         }
-        if(flag) break
       }
       return role
     },
