@@ -1,7 +1,7 @@
 <template>
 <div class="bread-crumb">
   <Breadcrumb v-if="show">
-    <BreadcrumbItem :to="name? '/':centerHref">{{name? '主页': '首页'}}</BreadcrumbItem>
+    <BreadcrumbItem :to="name? '/': this.sortRole[0].path">{{name? '主页': '首页'}}</BreadcrumbItem>
     <BreadcrumbItem>{{name|| title}}</BreadcrumbItem>
   </Breadcrumb>
 </div>

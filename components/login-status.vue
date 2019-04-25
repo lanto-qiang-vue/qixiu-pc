@@ -8,7 +8,7 @@
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
     <a @click="goMainPath" class="center" v-if="isIndex">{{mainRole.name}}中心</a>
 
-    <Select :value="rule" class="rule-select" transfer size="small" placeholder="菜单" v-else
+    <Select :value="rule" class="rule-select" transfer size="small" placeholder="角色菜单" v-else
             @on-change="selectRule">
       <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
     </Select>

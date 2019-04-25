@@ -10,7 +10,8 @@ export default {
       return name
     },
     sortRole(){
-      let roles= this.$store.state.user.userInfo.roles, sortRoles=[]
+      let roles= this.$store.state.user.userInfo.roles, sortRoles=[],
+        menu= this.$store.state.user.accessMenu;
       let order=[
         {code:'admin', path: '/center/menu-manage'},
         {code:'guanlibumen', path: '/center/gov-home'},
@@ -21,28 +22,35 @@ export default {
         {code:'jiaxiao', path: '/center/school-home'},
         {code:'chezhu', path: '/center/my-car-record'},
       ]
-      for (let i in order){
-        for (let j in roles){
-          if(roles[j].code.indexOf(order[i].code)>=0){
+      for (let i in roles ){
+        let match= false
+        for (let j in order){
+          if(roles[i].code.indexOf(order[j].code)>=0){
+            match= true
             sortRoles.push({
-              ...roles[j],
-              path: order[i].path
+              ...roles[i],
+              path: order[j].path
             })
+            break
           }
         }
-      }
-      if(!sortRoles.length){
-        let menu= this.$store.state.user.accessMenu, path=""
-        if(menu.length){
-          path= menu[0].meta? menu[0].meta.path: menu[0].children[0].meta.path
+        if(!match){
+          console.log('roles[i]', roles[i])
+          for(let j in menu){
+            let roleCodes= menu[j].roleCodes? JSON.stringify(menu[j].roleCodes): ''
+            if(roleCodes &&roleCodes.indexOf(roles[i].code)>=0){
+              // console.log('roleCodes,roles[i].code,menu[j]', roleCodes, roles[i].code, menu[j])
+              sortRoles.push({
+                ...roles[i],
+                path: menu[j].children && menu[j].children.length ? menu[j].children[0].meta.path : menu[j].meta.path
+              })
+              break
+            }
+          }
+          console.log('sortRoles', sortRoles)
         }
-        for(let i in roles){
-          sortRoles.push({
-            ...roles[i],
-            path
-          })
-        }
       }
+
       return sortRoles
     },
     accessMenu(){
