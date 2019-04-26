@@ -48,7 +48,16 @@ export default {
   computed: {
     keepAlive(){
       return this.$route.meta.keepAlive
-    }
+    },
+    showNowRole(){
+      let name= ''
+      for(let i in this.sortRole){
+        if(this.rule==  this.sortRole[i].code){
+          name= this.sortRole[i].name
+        }
+      }
+      return name
+    },
   },
   // mounted(){
   //   console.log(this.$route)

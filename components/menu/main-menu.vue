@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu-wrapper">
     <slot></slot>
-    <Menu ref="menu" :active-name="meta.accessId|| $route.path" :open-names="openNames" :accordion="true" theme="light" width="200">
+    <Menu v-if="show" ref="menu" :active-name="meta.accessId|| $route.path" :open-names="openNames" :accordion="true" theme="light" width="200">
       <template v-for="(item, key) in menuList" >
           <main-submenu v-if="showSubmenu(item)" :key="key" :item="item"
                         v-show="showByRole(item.roleCodes)"></main-submenu>
@@ -36,6 +36,7 @@ export default {
   data () {
     return {
       openNames: [],
+      show: false
     }
   },
   computed:{
@@ -47,12 +48,38 @@ export default {
       let l1= this.paraMenu.length, l2=list.length
       return l1? this.paraMenu : (l2? list: [])
     },
+    accessMenu(){
+      return this.$store.state.user.accessMenu
+    },
+    nowAccessId(){
+      return this.$route.meta.accessId
+    },
   },
   mounted () {
-
+    if(this.$store.state.user.token){
+      let openName= this.calcOpenNames(this.nowAccessId, this.accessMenu)
+      this.openNames=[openName]
+      this.show= true
+    }else{
+      this.show= true
+    }
   },
   methods: {
-
+    calcOpenNames(id, menu){
+      let name= ''
+      for(let i in menu){
+        if(id ==menu[i].uri){
+          name= menu[i].uri
+          break
+        }else if(menu[i].children && menu[i].children.length){
+          if(this.calcOpenNames(id, menu[i].children)){
+            name= menu[i].uri
+            break
+          }
+        }
+      }
+      return name
+    }
   },
 }
 </script>

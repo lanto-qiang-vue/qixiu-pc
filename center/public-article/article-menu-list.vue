@@ -53,56 +53,68 @@
             // if(process.env.config.areaName=='shanghai'){
 
             this.menuList =[{
-              meta: {title: '政务公开', accessId:'政务公开'},
+              name:'政务公开',
+              uri:'/gov-article1',
               children: [{
-                meta: {title: '法律法规', accessId: 10281001},
-                path: "/gov-article/10281001"
-              },{
-                meta: {title: '管理规范', accessId: 10281002},
-                path: "/gov-article/10281002"
-              },{
-                meta: {title: '行业政策', accessId: 10281003},
-                path: "/gov-article/10281003"
-              },{
-                meta: {title: '技术标准', accessId: 10281004},
-                path: "/gov-article/10281004"
-              }]
-            },{
-              meta: {title: '办事指南', accessId: 10281005},
-              path: "/gov-article/10281005"
-            },{
-              meta: {title: '管理职责', accessId: 10281006},
-              path: "/gov-article/10281006"
-            },{
-              meta: {title: '行业概况', accessId: 10281007},
-              path: "/gov-article/10281007"
-            },{
-              meta: {title: '管理动态', accessId:'管理动态'},
-              children: [
-              //   {
-              //   meta: {title: '电子维修档案', accessId: '电子维修档案'},
-              //   path: "/"
-              // },{
-              //   meta: {title: '企业合格证使用信息管理', accessId: '企业合格证使用信息管理'},
-              //   path: "/"
-              // },
-                {
-                meta: {title: '质量信誉考核信息', accessId: 10281016},
-                path: "/gov-article/10281016"
-              },{
-                meta: {title: '违法违规公告', accessId: 10281017},
-                path: "/gov-article/10281017"
-              }]
-            },{
-              meta: {title: '创先争优', accessId:'创先争优'},
-              children: [{
-                meta: {title: '优质企业', accessId: 10281009},
-                path: "/gov-article/10281009"
-              }]
-            },{
-              meta: {title: '行业文明创建', accessId: 10281010},
-              path: "/gov-article/10281010"
-            }];
+                  name: '法律法规',
+                  meta: {path: "/gov-article/10281001",},
+                  uri:'/gov-article/10281001',
+                },{
+                  name: '管理规范',
+                  meta: {path: "/gov-article/10281002",},
+                  uri: "/gov-article/10281002",
+                },{
+                  name: '行业政策',
+                  meta: {path: "/gov-article/10281003",},
+                  uri: "/gov-article/10281003",
+                },{
+                  name: '技术标准',
+                  meta: {path: "/gov-article/10281004",},
+                  uri: "/gov-article/10281004",
+                }]
+              },
+              {
+                name: '办事指南',
+                meta: {path: "/gov-article/10281005",},
+                uri: "/gov-article/10281005",
+              },
+              {
+                name: '管理职责',
+                meta: {path: "/gov-article/10281006",},
+                uri: "/gov-article/10281006",
+              },
+              {
+                name: '行业概况',
+                meta: {path: "/gov-article/10281007",},
+                uri: "/gov-article/10281007",
+              },
+              {
+                name:'管理动态',
+                uri:'/gov-article2',
+                children: [{
+                  name: '质量信誉考核信息',
+                  meta: {path: "/gov-article/10281016",},
+                  uri:'/gov-article/10281016',
+                },{
+                  name: '违法违规公告',
+                  meta: {path: "/gov-article/10281017",},
+                  uri: "/gov-article/10281017",
+                },]
+              },
+              {
+                name:'创先争优',
+                uri:'/gov-article3',
+                children: [{
+                  name: '优质企业',
+                  meta: {path: "/gov-article/10281009",},
+                  uri:'/gov-article/10281009',
+                },{
+                  name: '行业文明创建',
+                  meta: {path: "/gov-article/10281010",},
+                  uri: "/gov-article/10281010",
+                },]
+              },
+            ]
             // } else{
             //   this.menuList = [
             //     // {
@@ -128,27 +140,40 @@
           case 2:{
             this.menuList =[
               {
-                meta: {title: '协会简介', accessId: 10281022},
-                path: "/guild-article/10281022"
-              },{
-                meta: {title: '协会职能', accessId: 10281023},
-                path: "/guild-article/10281023"
-              },{
-                meta: {title: '工作动态', accessId: 10281013},
-                path: "/guild-article/10281013"
-              },{
-                meta: {title: '行业风采', accessId: 10281014},
-                path: "/guild-article/10281014"
-              },{
-                meta: {title: '行业党建', accessId: 10281015},
-                path: "/guild-article/10281015"
-              },{
-                meta: {title: '行业能手', accessId: 10281008},
-                path: "/guild-article/10281008"
-              },{
-                meta: {title: '专家组', accessId: 10281024},
-                path: "/guild-article/10281024"
-              }
+                name: '协会简介',
+                meta: {path: "/guild-article/10281022",},
+                uri: "/guild-article/10281022",
+              },
+              {
+                name: '协会职能',
+                meta: {path: "/guild-article/10281023",},
+                uri: "/guild-article/10281023",
+              },
+              {
+                name: '工作动态',
+                meta: {path: "/guild-article/10281013",},
+                uri: "/guild-article/10281013",
+              },
+              {
+                name: '行业风采',
+                meta: {path: "/guild-article/10281014",},
+                uri: "/guild-article/10281014",
+              },
+              {
+                name: '行业党建',
+                meta: {path: "/guild-article/10281015",},
+                uri: "/guild-article/10281015",
+              },
+              {
+                name: '行业能手',
+                meta: {path: "/guild-article/10281008",},
+                uri: "/guild-article/10281008",
+              },
+              {
+                name: '专家组',
+                meta: {path: "/guild-article/10281024",},
+                uri: "/guild-article/10281024",
+              },
             ]
           }
         }

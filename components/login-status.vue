@@ -4,7 +4,7 @@
     <nuxt-link tag="a" to="/login"><Icon type="md-power" size="20"  style="vertical-align: text-top"/>登录</nuxt-link>|
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
   </div>
-  <div class="login isLogin" v-show="isLogin">
+  <div class="login isLogin" v-if="isLogin">
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
     <a @click="goMainPath" class="center" v-if="isIndex">{{mainRole.name}}中心</a>
 
@@ -36,7 +36,16 @@ export default {
     }
   },
   watch:{
-
+    nowAccessId(val){
+      let nowRule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+      if(nowRule!= this.rule) this.$store.commit('user/setNowRule', nowRule)
+    }
+  },
+  mounted(){
+    if(this.isLogin){
+      let nowRule= this.getNowRole(this.getRoleCodes(this.accessMenu))
+      this.$store.commit('user/setNowRule', nowRule)
+    }
   },
   methods:{
     goMainPath(){
@@ -44,14 +53,49 @@ export default {
       this.$router.push({path: this.mainRole.path})
     },
     selectRule(val){
+      this.$store.commit('user/setNowRule',  val)
       let path= ''
       for(let i in this.sortRole){
         if(val==  this.sortRole[i].code){
           path= this.sortRole[i].path
         }
       }
-
       this.$router.push({path: path})
+    },
+    getRoleCodes(list){
+      //匹配当前路径的菜单参数
+      let menu= list|| [], rule=[]
+      if(menu.length && this.nowAccessId){
+        for(let i in menu){
+          if(menu[i].uri== this.nowAccessId){
+            if(menu[i].roleCodes && menu[i].roleCodes.length){
+              rule= menu[i].roleCodes
+            }
+            break
+          }else if(menu[i].children && menu[i].children.length ){
+            rule= this.getRoleCodes(menu[i].children)
+            if(rule.length) break
+          }
+        }
+      }
+      return rule
+    },
+    getNowRole(list){
+      //判断菜单的角色
+      let role= '', sortRole= this.sortRole, nowRole= this.rule;
+      for(let i in list){
+        if(nowRole== list[i]) {
+          role= nowRole
+          break
+        }
+        for(let j in sortRole){
+          if(list[i].indexOf(sortRole[j].code)>=0){
+            role= sortRole[j].code
+            break
+          }
+        }
+      }
+      return role
     },
     logout(){
       this.$Modal.confirm({

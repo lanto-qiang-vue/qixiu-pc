@@ -19,14 +19,8 @@ export default {
     }
   },
   computed:{
-    accessMenu(){
-      return this.$store.state.user.accessMenu
-    },
-    accessId(){
-      return  this.$route.meta.accessId
-    },
     title(){
-      return this.getName(this.accessId, this.accessMenu)
+      return this.getName(this.nowAccessId, this.accessMenu)
     }
   },
   mounted(){
@@ -34,13 +28,6 @@ export default {
     // console.log(this.$route)
   },
   methods:{
-    getTitle(accessId, accessMenu){
-      let title=''
-      if(accessMenu && accessMenu.length){
-        title= this.getName(accessId, accessMenu)
-      }
-      return title|| this.$route.meta.title
-    },
     getName(access, accessMenu){
       let name= ''
       for(let i in accessMenu){
