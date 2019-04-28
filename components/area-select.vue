@@ -148,7 +148,7 @@ export default {
     repObjAttr(orig, adds){
       let obj= {}
       for( let key in orig){
-        if(adds[key]){
+        if(adds[key]!= undefined && adds[key]!= null){
           if(typeof orig[key] == 'object'){
             obj[key]= this.repObjAttr(orig[key], adds[key])
           }else{

@@ -170,10 +170,9 @@ export default {
       color: white;
       background-color: #6091b7;
     }
-    /*.center:hover{*/
-      /*color: white;*/
-      /*background-color: #0c6dbe;*/
-    /*}*/
+    .center:hover{
+      background-color: #0c6dbe;
+    }
   }
 }
 
