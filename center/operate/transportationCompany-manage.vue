@@ -16,7 +16,7 @@
           <!--</Select>-->
 
           <area-select :change-on-select="true"
-                       :rules="{other: { useSelect: true, useRegion: true}}"
+                       :rules="{other: { useSelect: true, mode: 'region'}}"
                        @changeSelect="search.corp_area= $event"
           ></area-select>
         </FormItem>
@@ -63,7 +63,7 @@
           <!--</Select>-->
 
           <area-select :change-on-select="true" :value-select="formData.corpArea"
-                       :rules="{other: { useSelect: true, useRegion: true}}"
+                       :rules="{other: { useSelect: true, mode: 'region'}}"
                        @changeSelect="formData.corpArea= $event"
           ></area-select>
         </FormItem>

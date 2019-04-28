@@ -13,7 +13,7 @@
 
           <area-select :change-on-select="true"
                        @changeSelect="search.area= $event"
-                       :rules="{other: { useSelect: false, useRegion: false}}"
+                       :rules="{other: { useSelect: false, mode: 'login-areas'}}"
           ></area-select>
         </FormItem>
 

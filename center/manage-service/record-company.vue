@@ -17,7 +17,11 @@
             ></area-select>
         </FormItem>
         <FormItem label="管理部门:">
-            <Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>
+            <!--<Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>-->
+          <area-select :change-on-select="true"
+                       @changeCascader="manageArr= $event" :placeholder="'请选择'"
+                       :rules="{shanghai: { useSelect: false, mode: 'region' }, other: { mode: 'login-areas'}}"
+          ></area-select>
         </FormItem>
         <FormItem label="企业名称:">
             <Input type="text" v-model="searchList.companyName" placeholder="请输入企业名称"></Input>
@@ -164,7 +168,7 @@ if(!thisData) {
     // areaOption:[],//区域数据集合----
     companyType:[],//企业类型集合----
     businessType:[],//经营状态类型集合------
-    manageType:[],//管理部门数据集合--------
+    // manageType:[],//管理部门数据集合--------
 
     isFlagType:[
       {code:"是",name:'是'},
@@ -260,7 +264,7 @@ export default {
 	    // this.getAreaInfo();
         this.getType('1');
         this.getBusinessType();
-        this.getCompanyArea();
+        // this.getCompanyArea();
 
 
 },
@@ -462,17 +466,17 @@ computed:{
                 }
            })
         },
-        getCompanyArea(){
-
-            this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {
-            }).then( (res) => {
-                if(res.data.code=='0'){
-                    this.manageType= this.resetArea(res.data.items);
-                }else{
-                    // this.$Message.error(res.data.status);
-                }
-           })
-        },
+        // getCompanyArea(){
+        //
+        //     this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, {
+        //     }).then( (res) => {
+        //         if(res.data.code=='0'){
+        //             this.manageType= this.resetArea(res.data.items);
+        //         }else{
+        //             // this.$Message.error(res.data.status);
+        //         }
+        //    })
+        // },
       resetArea(list){
         for(let i in list){
           if(list[i].children){

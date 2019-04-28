@@ -1,5 +1,5 @@
 <template>
-<div :class="['login-status', {'is-index': isIndex}]">
+<div :class="['login-status', {'is-index': isIndex}, [theme||'']]">
   <div class="login unLogin" v-show="!isLogin">
     <nuxt-link tag="a" to="/login"><Icon type="md-power" size="20"  style="vertical-align: text-top"/>登录</nuxt-link>|
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
@@ -22,7 +22,7 @@
 import mixin from '~/components/home-path-mixin.js'
 export default {
   name: "login-status",
-  props: ['isIndex'],
+  props: ['isIndex', 'theme'],
   mixins: [mixin],
   computed:{
     isLogin(){
@@ -146,16 +146,17 @@ export default {
     }
     .center{
       padding: 0 10px;
-      color: white;
-      background-color: #6091b7;
+      /*color: white;*/
+      /*background-color: #6091b7;*/
     }
     .center:hover{
+      color: white;
       background-color: #0c6dbe;
     }
   }
 
 }
-.login-status.is-index{
+.login-status.is-index.white{
   .login {
     color: white;
     .nick-name{
@@ -164,6 +165,15 @@ export default {
     a{
       color: white;
     }
+    .center{
+      /*padding: 0 10px;*/
+      color: white;
+      background-color: #6091b7;
+    }
+    /*.center:hover{*/
+      /*color: white;*/
+      /*background-color: #0c6dbe;*/
+    /*}*/
   }
 }
 

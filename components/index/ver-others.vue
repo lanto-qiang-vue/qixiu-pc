@@ -23,7 +23,7 @@
         </div>-->
       </div>
 
-      <login-status ></login-status>
+      <login-status :isIndex="true"></login-status>
       <!--<nuxt-link tag="a" to="/article/guide">
         <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>-->
     </div>
@@ -203,7 +203,7 @@ export default {
     .login-status{
       position: absolute;
       bottom: 10px;
-      right: 40px;
+      right: 0;
     }
     .czzn{
       position: absolute;
