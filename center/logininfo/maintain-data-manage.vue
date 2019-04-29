@@ -6,22 +6,12 @@
       <div style="padding: 15px 0;">
         <Form :label-width="110" class="common-form">
           <FormItem label="统计维度:">
-            <Button style="width: 60px;" type="primary" shape="circle" v-if="buttonType == 1"
-                    @click="buttonType=1,minus(7)" :disabled="isManage">7天
+
+            <Button style="width: 60px;" :type="buttonType == 1?'primary':'default'" shape="circle"
+                    @click="buttonType=1,minus(7)" >7天
             </Button>
-            <Button style="width: 60px;" shape="circle" @click="buttonType=2,minus(30)" v-if="buttonType == 1" v-show="!isManage">1个月
+            <Button style="width: 60px;" shape="circle" :type="buttonType == 2?'primary':'default'" @click="buttonType=2,minus(30)">1个月
             </Button>
-            <Button style="width: 60px;" shape="circle" v-if="buttonType == 2" @click="buttonType=1,minus(7)" :disabled="isManage">7天
-            </Button>
-            <Button style="width: 60px;" shape="circle" type="primary" @click="buttonType=2,minus(30)"
-                    v-if="buttonType == 2" v-show="!isManage">1个月
-            </Button>
-            <Button style="width: 60px;"  shape="circle" v-if="buttonType == 3"
-                    @click="buttonType=1,minus(7)" :disabled="isManage">7天
-              </Button>
-              <Button style="width: 60px;" shape="circle"  @click="buttonType=2,minus(30)"
-                      v-if="buttonType == 3" v-show="!isManage">1个月
-              </Button>
           </FormItem>
           <FormItem label="" :label-width="0" style="width:320px;text-align: left;">
             <DatePicker type="daterange" v-model="searchTime" :options="options" format="yyyy-MM-dd" placeholder="开始日期  -  结束日期"
@@ -134,7 +124,7 @@ import { deepClone} from '~/static/util.js'
         bar3: null,
         optionBar1: null,
         optionBar3: null,
-        buttonType: 1,
+        buttonType: 2,
         apiShow: false,//api慢我就不显示
         searchTime: null,
         readList: [],//未读区域数据
@@ -173,7 +163,7 @@ import { deepClone} from '~/static/util.js'
       }
 
       $.getScript('/libs/echarts.common.min.js', () => {
-        this.minus(7)
+        this.minus(30)
         this.add1(new Date());
       })
     },
