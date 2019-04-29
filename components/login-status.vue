@@ -25,9 +25,7 @@ export default {
   props: ['isIndex', 'theme'],
   mixins: [mixin],
   computed:{
-    isLogin(){
-      return this.$store.state.user.token? true: false
-    },
+
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
