@@ -1,14 +1,14 @@
 <template>
-<div :class="['login-status', {'is-index': isIndex}, [theme||'']]">
+<div :class="['login-status', {'is-index': isIndex}, [theme||'']]" v-if="show">
   <div class="login unLogin" v-show="!isLogin">
     <nuxt-link tag="a" to="/login"><Icon type="md-power" size="20"  style="vertical-align: text-top"/>登录</nuxt-link>|
     <nuxt-link tag="a" to="/login">注册</nuxt-link>
   </div>
   <div class="login isLogin" v-if="isLogin">
     <span class="nick-name"><nuxt-link tag="a" to="/center/account-info">{{nickName}}</nuxt-link></span>
-    <a @click="goMainPath" class="center" v-if="isIndex">{{mainRole.name}}中心</a>
+    <a @click="goMainPath" class="center" v-show="isIndex">{{mainRole.name}}中心</a>
 
-    <Select :value="rule" class="rule-select" transfer size="small" placeholder="角色菜单" v-else
+    <Select :value="rule" class="rule-select" transfer size="small" placeholder="角色菜单" v-show="!isIndex"
             @on-change="selectRule">
       <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
     </Select>
@@ -24,8 +24,12 @@ export default {
   name: "login-status",
   props: ['isIndex', 'theme'],
   mixins: [mixin],
+  data(){
+    return {
+      show: false
+    }
+  },
   computed:{
-
     nickName(){
       return this.$store.state.user.userInfo?this.$store.state.user.userInfo.nickname:''
     },
@@ -44,6 +48,7 @@ export default {
       let nowRule= this.getNowRole(this.getRoleCodes(this.accessMenu))
       this.$store.commit('user/setNowRule', nowRule)
     }
+    this.show= true
   },
   methods:{
     goMainPath(){
