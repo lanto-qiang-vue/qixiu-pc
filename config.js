@@ -57,8 +57,8 @@ const devConfig={
 
   // apiUrl: 'https://www.shanghaiqixiu.org/proxy/',
 
-  repairUrl: 'https://www.shanghaiqixiu.org/repair/',
-  // repairUrl: 'http://192.168.169.230:7210/',
+  // repairUrl: 'https://www.shanghaiqixiu.org/repair/',
+  repairUrl: 'http://192.168.169.230:7210/',
 
   socketUrl: 'https://www.shanghaiqixiu.org/heatmap/socket',
   shandongSocket: 'https://www.shandongqixiu.com/heatmap/socket',

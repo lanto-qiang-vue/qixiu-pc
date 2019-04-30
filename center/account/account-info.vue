@@ -1,21 +1,21 @@
 <!--  修改用户信息   -->
 <template>
     <div>
-        <div style="margin-top: 40px;">
-            <Form ref="formData" :rules="ruleUser"  :model="formData" :label-width="120" class="common-form">
-                <FormItem label="用户账号:" style="width: 100%">
+        <div style="padding-top: 40px;">
+            <Form ref="formData" :rules="ruleUser"  :model="formData" :label-width="120">
+                <FormItem label="用户账号:" >
                     <Input type="text" v-model="formData.userAccount" placeholder="请输入用户账号" disabled style="width: 250px;"></Input>
                 </FormItem>
-                <FormItem label="用户昵称:" prop="userName" style="width: 100%">
+                <FormItem label="用户昵称:" prop="userName">
                     <Input type="text" v-model="formData.userName" placeholder="请输入昵称" style="width: 250px;"></Input>
                 </FormItem>
-                <FormItem label="电子邮箱:" prop="userEmail" style="width: 100%">
+                <FormItem label="电子邮箱:" prop="userEmail" >
                     <Input type="text" v-model="formData.userEmail" placeholder="请使用常用邮箱" style="width: 250px;"></Input>
                 </FormItem>
-                <FormItem :label-width="0" style="width: 100%">
+                <FormItem :label-width="0" >
                     <Button type="primary" long style="width: 100px; margin-left: 120px;" @click="handleSubmit('formData')" v-if="accessBtn('edit')">确认修改</Button>
                 </FormItem>
-                <FormItem label="头像:"   style="width: 100%">
+                <FormItem label="头像:"   >
                     <Card class="pic-card" >
                         <div class="pic-body">
                             <img  class="pic" :src="listSearch.photo"

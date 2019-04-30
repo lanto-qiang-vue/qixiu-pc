@@ -96,7 +96,7 @@
     <Modal
       v-model="showKey"
       title="对接密钥"
-      width="300"
+      width="400"
       @on-visible-change="visibleChangeKey"
       :scrollable="true"
       :transfer="true"
@@ -104,17 +104,19 @@
       :mask-closable="false"
       :transition-names="['', '']">
       <div>
-        <Form :label-width="80">
-          <FormItem label="企业名称:">
-            <div>{{keyList.name}}</div>
-          </FormItem>
-          <FormItem label="许可证号:">
-            <div>{{keyList.license}}</div>
-          </FormItem>
-          <FormItem label="对接密钥:">
-            <input type="text" value="" v-model="keyList.secretKey" readonly id="biao1"/>
-          </FormItem>
-        </Form>
+        <!--<Form :label-width="80" id="biao1">-->
+          <!--<FormItem label="企业名称：">-->
+            <!--<div>{{keyList.name}}</div>-->
+          <!--</FormItem>-->
+          <!--<FormItem label="许可证号：">-->
+            <!--<div>{{keyList.license}}</div>-->
+          <!--</FormItem>-->
+          <!--<FormItem label="对接密钥：">-->
+            <!--<input type="text" value="" v-model="keyList.secretKey" readonly />-->
+          <!--</FormItem>-->
+        <!--</Form>-->
+
+        <Input :value="`企业名称：${keyList.name}\n许可证号：${keyList.license}\n对接密钥：${keyList.secretKey}`" type="textarea" :rows="6" readonly id="key-info"/>
       </div>
       <div slot="footer">
         <Button size="large" type="primary" @click="copyUrl">复制到粘贴板</Button>
@@ -415,7 +417,8 @@
       },
       //复制到粘贴版-----
       copyUrl() {
-        var Url2 = document.getElementById('biao1')
+        // var Url2 = document.getElementById('biao1')
+        var Url2 = document.querySelector('#key-info textarea')
         Url2.select() // 选择对象
         document.execCommand('Copy') // 执行浏览器复制命令
         this.$Message.info('对接密钥已复制好，可粘贴。')

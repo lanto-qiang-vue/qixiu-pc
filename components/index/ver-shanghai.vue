@@ -35,10 +35,10 @@
           <img class="czzn" src="~@/assets/img/index/czzn.png" title="操作指南"></nuxt-link>
       </div>
 
-      <login-status :isIndex="true"></login-status>
+      <login-status :isIndex="true" theme="white"></login-status>
 
 
-      
+
     </div>
 
     <div class="service" slot="service">
@@ -174,7 +174,7 @@ export default {
     let self= this
 
 
-    
+
 
     // $('body').on('mouseover', ".service .left ul li, .service .left .icon-block")
     $(".service .left ul li, .service .left .icon-block").hover( function() {

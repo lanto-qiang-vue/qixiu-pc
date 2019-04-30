@@ -1,5 +1,5 @@
 <template>
-<div class="area-select">
+<div class="area-select" v-if="show">
   <Select :value="calcSelectValue" :transfer="transfer" v-if="useSelect" :label-in-value="labelInValue"
           :disabled="disabled" :clearable="clearable" @on-change="changeSelect" :placeholder="placeholder"
           :size="size">
@@ -14,15 +14,6 @@
 
 <script>
 import { deepClone } from '~/static/util.js'
-let rules= {
-  shanghai: { useSelect: true, useRegion: true },
-  other: { useSelect: false, useRegion: true}
-}
-/*
-* 默认情况下
-* 上海使用一级下拉区域，使用region接口
-* 其他使用二级下拉区域，使用region接口
-* */
 export default {
   name: "area-select",
   props: {
@@ -38,7 +29,7 @@ export default {
       default: 'default'
     },
     placeholder:{
-      default: ''
+      default: '请选择'
     },
     disabled:{
       default: false
@@ -57,14 +48,15 @@ export default {
     },
     rules:{
       default(){
-        return rules
+        return null
       }
     }
   },
   data(){
     return{
       selectValue: '',
-      cascaderValue: []
+      cascaderValue: [],
+      show: false,
     }
   },
   computed:{
@@ -78,11 +70,23 @@ export default {
       return process.env.config.areaName=='shanghai'
     },
     thisRule(){
-      let defaultRule= deepClone(rules)
-      for(let key in this.rules){
-        defaultRule[key]= this.rules[key]
+      /*
+      * 默认情况下
+      * 上海使用一级下拉区域，使用region接口
+      * 其他使用二级下拉区域，使用region接口
+      * mode可取值有 ‘region’，‘dept’，‘login-areas’
+      * */
+      let rules= {
+        shanghai: { useSelect: true, mode: 'region' },
+        other: { useSelect: false, mode: 'region'}
+      }, rule={};
+      if(this.rules){
+        rule= this.repObjAttr(rules, this.rules)
+      }else{
+        rule= rules
       }
-      return defaultRule
+      // console.log('rule', rule)
+      return rule
     },
     useSelect(){
       let select= true
@@ -93,18 +97,38 @@ export default {
       }
       return select
     },
-    useRegion(){
-      let region= true
-      if(this.isShanghai){
-        region= this.thisRule.shanghai.useRegion
-      }else{
-        region= this.thisRule.other.useRegion
-      }
-      return region
+    // useRegion(){
+    //   let region= true
+    //   if(this.isShanghai){
+    //     region= this.thisRule.shanghai.useRegion
+    //   }else{
+    //     region= this.thisRule.other.useRegion
+    //   }
+    //   return region
+    // },
+    mode(){
+      return this.thisRule[this.isShanghai? 'shanghai': 'other'].mode
     },
     areaList(){
-      let listName= this.useRegion?'regionList': 'deptList'
-      return this.$store.state.app.area[listName]
+      let list= []
+      switch (this.mode){
+        case 'region':{
+          list= this.$store.state.app.area.regionList
+          break
+        }
+        case 'dept':{
+          list= this.$store.state.app.area.deptList
+          break
+        }
+        case 'login-areas':{
+          list= this.$store.state.user.userInfo.areas
+          break
+        }
+      }
+      return list
+
+      // let listName= this.useRegion?'regionList': 'deptList'
+      // return this.$store.state.app.area[listName]
     },
     lock(){
       return this.$store.state.app.area.lock
@@ -117,7 +141,25 @@ export default {
       this.getArea()
     }
   },
+  mounted(){
+    this.show= true
+  },
   methods:{
+    repObjAttr(orig, adds){
+      let obj= {}
+      for( let key in orig){
+        if(adds[key]!= undefined && adds[key]!= null){
+          if(typeof orig[key] == 'object'){
+            obj[key]= this.repObjAttr(orig[key], adds[key])
+          }else{
+            obj[key]= adds[key]
+          }
+        }else{
+          obj[key]= orig[key]
+        }
+      }
+      return obj
+    },
     getArea() {
       this.$axios.post('/area/region/list', {
         areaName: process.env.config.areaName

@@ -1,8 +1,11 @@
 import {deepClone } from '@/static/util.js'
 export default {
   computed:{
-
+    isLogin(){
+      return this.$store.state.user.token? true: false
+    },
     sortRole(){
+      if(!this.isLogin) return []
       let roles= deepClone(this.$store.state.user.userInfo.roles), sortRoles=[],
         menu= this.$store.state.user.accessMenu;
       let order=[
