@@ -96,7 +96,7 @@
 </template>
 <script>
   import CommonTable from '~/components/common-table.vue'
-  import { deepClone } from '../../static/util'
+  import { deepClone } from '~/static/util'
   import funMixin from '~/components/fun-auth-mixim.js'
   export default {
     name: 'banner-manage',

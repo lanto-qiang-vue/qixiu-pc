@@ -77,8 +77,8 @@ const conf={
   shanghai: shanghaiConf,
   dev_shandong: {
     port: '3700',
-    // apiUrl: 'http://192.168.169.208:8888/',
-    apiUrl: 'https://www.shandongqixiu.com/proxy/',
+    apiUrl: 'http://192.168.169.208:8888/',
+    // apiUrl: 'https://www.shandongqixiu.com/proxy/',
 
     repairUrl: 'http://192.168.169.211:7210/',
     // repairUrl: 'https://search.shandongqixiu.com/',
