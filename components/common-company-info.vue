@@ -6,7 +6,7 @@
         <TabPane  :label="label" name="name1">
           <div style="padding-bottom: 100px;">
             <Alert type="error" v-show="requireList.status==3">审核不通过说明<span slot="desc">{{requireList.cruxAuditInfo}}</span></Alert>
-              <Form ref="requireList" :rules="ruleValidate1" :model="requireList" :label-width="140" class="common-form">
+              <Form ref="requireList" :rules="ruleRequire" :model="requireList" :label-width="140" class="common-form">
             <FormItem label="企业名称:" :class="[{'mark-change': markChange('name')}, 'width45']" prop="name">
               <Input type="text" v-model="requireList.name" placeholder="请输入企业名称"
                      :readonly="isGuanlibumen" :disabled="isCompany"></Input>
@@ -107,14 +107,20 @@
                   <Input type="text" v-model="requireList.economicTypeOther" :disabled="isCompany" :readonly="isGuanlibumen"></Input>
                 </FormItem>
 
+                <FormItem label="统一社会信用代码:" :class="[{'mark-change': markChange('unifiedSocialCreditIdentifier')}, 'width45']" prop="unifiedSocialCreditIdentifier">
+                  <Input type="text" v-model="requireList.unifiedSocialCreditIdentifier" :disabled="isCompany" :readonly="isGuanlibumen" placeholder="请上传营业执照后自动识别"></Input>
+                </FormItem>
+
             <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
-                    <common-info-upload :description="'上传图片'" :data="requireList.yyzz" :callback="'yyzzFun'" @yyzzFun="yyzzFun" :isDisable="isGuanlibumen"></common-info-upload>
+                  <common-info-upload :data="requireList.yyzz" :disabled="isGuanlibumen"
+                    @done="uploadyyzz" @remove="requireList.yyzz=''"></common-info-upload>
 
             </FormItem>
             <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('dlysxkz')}, 'width45']" prop="dlysxkz">
 
 
-              <common-info-upload :description="'上传图片'" :data="requireList.dlysxkz" :callback="'dlysxkzFun'" @dlysxkzFun="dlysxkzFun" :isDisable="isGuanlibumen"></common-info-upload>
+              <common-info-upload :data="requireList.dlysxkz" :disabled="isGuanlibumen"
+                    @done="requireList.dlysxkz=$event.url" @remove="requireList.dlysxkz=''"></common-info-upload>
             </FormItem>
 
           </Form>
@@ -167,7 +173,8 @@
               </Select>
             </FormItem>
             <FormItem label="门店门头照:" :class="[{'mark-change': markChange('mdmtz')}, 'width45']" prop="mdmtz">
-              <common-info-upload :description="'上传图片'" :data="listSearch.mdmtz" :callback="'mdmtzFun'" @mdmtzFun="mdmtzFun"></common-info-upload>
+              <common-info-upload :data="listSearch.mdmtz"
+                      @done="listSearch.mdmtz=$event.url" @remove="listSearch.mdmtz=''"></common-info-upload>
             </FormItem>
 
             <FormItem label="使用ERP软件:" :class="[{'mark-change': markChange('erpId')}, 'width45']">
@@ -462,7 +469,8 @@
               </i-switch>
             </FormItem>
             <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.iso" prop="isoPic">
-              <common-info-upload :description="'上传图片'" :data="listSearch.isoPic" :callback="'isoPicFun'" @isoPicFun="isoPicFun"></common-info-upload>
+              <common-info-upload  @done="isoPicFun" @remove="isoPicFun($event, true)"
+                :data="listSearch.isoPic"></common-info-upload>
             </FormItem>
             <div></div>
             <FormItem label="通过安全生产标准化达标认证:"  style="width: 230px;" :class="[{'mark-change': markChange('throughSafetyProductionStandardization,safePic')}, 'width45']">
@@ -474,7 +482,8 @@
             </FormItem>
             <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughSafetyProductionStandardization" prop="safePic">
 
-              <common-info-upload :description="'上传图片'" :data="listSearch.safePic" :callback="'safePicFun'" @safePicFun="safePicFun"></common-info-upload>
+              <common-info-upload @done="safePicFun" @remove="safePicFun($event, true)"
+                :data="listSearch.safePic"></common-info-upload>
             </FormItem>
             <div></div>
             <FormItem label="通过环保部门专项整治:"  style="width: 230px;" :class="[{'mark-change': markChange('throughEnvironmentalProtectionSpecialRenovation,greenPic')}, 'width45']">
@@ -486,7 +495,8 @@
             </FormItem>
             <FormItem label="" style="width: 60%;" :label-width="0" v-show="listSearch.throughEnvironmentalProtectionSpecialRenovation" prop="greenPic">
 
-              <common-info-upload :description="'上传图片'" :data="listSearch.greenPic" :callback="'greenPicFun'" @greenPicFun="greenPicFun"></common-info-upload>
+              <common-info-upload @done="greenPicFun" @remove="greenPicFun($event, true)"
+                                  :data="listSearch.greenPic"></common-info-upload>
             </FormItem>
             <div></div>
             <FormItem label="是否为全国诚信维修企业:" :class="[{'mark-change': markChange('sincerity')}, 'width90']">
@@ -502,7 +512,11 @@
                 <li v-for="(item, index) in listSearch.sincerityYears" :key="index" style="margin-bottom: 10px">
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'startYear')" :value="item.startYear" placeholder="开始日期" style="width: 100px;"></DatePicker>
                   <DatePicker type="year" @on-change="changeSincerityYears($event,index,'endYear')" :value="item.endYear" placeholder="结束日期" style="width: 100px;"></DatePicker>
-                  <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.honestPic" :index="index" :callback="'honestPicFun'" @honestPicFun="honestPicFun"></common-info-upload>
+                  <common-info-upload style="width: 170px;display: inline-block;"
+                                      @done="honestPicFun($event, false, index)"
+                                      @remove="honestPicFun($event, true, index)"
+                                      :data="item.honestPic"
+                                      ></common-info-upload>
                   <Button type="error" @click="deleteYear(index)" style="margin-left: 10px">删除</Button>
                 </li>
               <Button type="primary" @click="addYear">添加</Button>
@@ -550,7 +564,11 @@
               <ul class="ivu-input" style="height: auto">
                 <li v-for="(item,index) in listSearch.honerModels" :key="index" style="margin-bottom: 10px">
                   <Input type="text" style="width: 300px;" v-model="item.name" placeholder="请输入区级以上荣誉获得情况"></Input>
-                  <common-info-upload style="width: 170px;display: inline-block;" :description="'上传图片'" :data="item.url" :callback="'honerFun'" :index="index" @honerFun="honerFun"></common-info-upload>
+                  <common-info-upload style="width: 170px;display: inline-block;"
+                                      @done="honerFun($event, false, index)"
+                                      @remove="honerFun($event, true, index)"
+                                      :data="item.url"
+                                     ></common-info-upload>
                   <Button type="error" style="margin-left: 10px" @click="deleteHonerModels(index)">删除</Button>
                 </li>
                 <Button type="primary" @click="addHoner">添加</Button>
@@ -591,7 +609,7 @@
 <script>
 import { deepClone, imgToBase64,getName, deepTurn} from '~/static/util.js'
 import { formatDate } from '@/static/tools'
-import commonInfoUpload  from '~/components/common-info-upload.vue'
+import commonInfoUpload  from '~/components/img-group-upload.vue'
 import unitSearchInput from '~/components/unit-search-input.vue'
 import AreaSelect from '~/components/area-select.vue'
 let initList={
@@ -708,6 +726,7 @@ let initList1={
   "latitude": '',
   "economicType": 0,
   "economicTypeOther": "",
+  "unifiedSocialCreditIdentifier": "",
   fields:[]
 }
 export default {
@@ -850,54 +869,7 @@ export default {
               }],
               mdmtz: [],
             },//规则验证
-            ruleValidate1: {
-                name: [rulesObj],
-                license: [rulesObj],
-                licenceDate: [rulesObj,{
-                  validator: (rule, value, callback) => {
-                    // console.log('licenceDate', value)
-                    if (!value[0] || !value[1]) {
-                      callback(new Error('必填项不可为空'));
-                    }else{
-                      callback();
-                    }
-                  }
-                }],
-                businessAddress: [rulesObj, {
-                    validator: (rule, value, callback) => {
-                      let wrongAddress= this.$data.wrongAddress, flag=false
-                      for(let i in wrongAddress){
-                        if (value == wrongAddress[i]) flag= true
-                      }
-                      if (flag) {
-                        callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
-                      } else {
-                        callback();
-                      }
-                    }
-                }],
-              economicTypeOther:[{
-                validator: (rule, value, callback) => {
-                  if (this.$data.requireList.economicType == 900 && !value) {
-                    callback(new Error('请填写其他经济类型'));
-                  }else{
-                    callback();
-                  }
-                }
-              }],
-                businessRegion: [rulesObj],
-                longitude: [rulesObj],
-                latitude: [rulesObj],
-                registerAddress: [rulesObj],
-                registerRegion: [rulesObj],
-                registerDate: [rulesObj],
-                businessScope: [rulesObj],
-                businessScope2: [rulesObj],
-                legalName: [rulesObj],
-                businessStatus: [rulesObj],
-                yyzz: isYunying?[]:[rulesObj],
-                dlysxkz: isYunying?[]:[rulesObj],
-            },//规则验证
+
             sourceName: '',//对接渠道名称----
             //审核状态问题------
             statusArr: [
@@ -1038,7 +1010,64 @@ export default {
         let str2=this.uploadOtherData.fields?this.uploadOtherData.fields.join(','):''
         return str1+ str2
       },
+      ruleRequire(){
+        let rulesObj={ required: true, message: '必填项不可为空' };
+        if(this.isYunying){
+        return  {
+        name: [rulesObj],
+        license: [rulesObj],
+        licenceDate: [rulesObj,{
+          validator: (rule, value, callback) => {
+            // console.log('licenceDate', value)
+            if (!value[0] || !value[1]) {
+              callback(new Error('必填项不可为空'));
+            }else{
+              callback();
+            }
+          }
+        }],
+        businessAddress: [rulesObj, {
+          validator: (rule, value, callback) => {
+            let wrongAddress= this.$data.wrongAddress, flag=false
+            for(let i in wrongAddress){
+              if (value == wrongAddress[i]) flag= true
+            }
+            if (flag) {
+              callback(new Error('您输入的地址查不到对应坐标，请输入更详细地址'));
+            } else {
+              callback();
+            }
+          }
+        }],
+        economicTypeOther:[{
+          validator: (rule, value, callback) => {
+            if (this.$data.requireList.economicType == 900 && !value) {
+              callback(new Error('请填写其他经济类型'));
+            }else{
+              callback();
+            }
+          }
+        }],
+        businessRegion: [rulesObj],
+        longitude: [rulesObj],
+        latitude: [rulesObj],
+        registerAddress: [rulesObj],
+        registerRegion: [rulesObj],
+        registerDate: [rulesObj],
+        businessScope: [rulesObj],
+        businessScope2: [rulesObj],
+        legalName: [rulesObj],
+        businessStatus: [rulesObj],
 
+          }
+        }else{
+          return {
+            unifiedSocialCreditIdentifier: [rulesObj],
+            yyzz: [rulesObj],
+            dlysxkz: [rulesObj],
+          }
+        }
+      }
     },
     watch:{
 
@@ -1323,11 +1352,11 @@ export default {
         this.listSearch.sincerityYears[index][field]= val
         this.$refs.listSearch.validateField('sincerityYears')
       },
-      honestPicFun(val,index){
-        if(val[0]){
-          this.listSearch.sincerityYears[index]['honestPic']=val[0];
-        }else{
+      honestPicFun(data, remove, index){
+        if(remove){
           this.listSearch.sincerityYears[index]['honestPic']='';
+        }else{
+          this.listSearch.sincerityYears[index]['honestPic']= data.url;
         }
         this.$refs.listSearch.validateField('sincerityYears')
       },
@@ -1341,12 +1370,11 @@ export default {
         this.listSearch.honerModels.splice(index,1);
         this.$refs.listSearch.validateField('honerModels')
       },
-      honerFun(val,index){
-        // console.log('出来的荣誉',val,index);
-        if(val[0]){
-          this.listSearch.honerModels[index]['url']=val[0];
-        }else{
+      honerFun(data, remove, index){
+        if(remove){
           this.listSearch.honerModels[index]['url']='';
+        }else{
+          this.listSearch.honerModels[index]['url']=data.url;
         }
         this.$refs.listSearch.validateField('honerModels')
       },
@@ -1440,64 +1468,42 @@ export default {
         this.$emit('tabStatusFun',name);
       },
 
-            //营业执照函数执行-------
-            yyzzFun(val){
-              console.log(val);
-              // this.requireList.yyzz=val[0];
-              if(val[0]){
-                this.requireList.yyzz=val[0];
-              }else{
-                this.requireList.yyzz='';
-              }
-            },
-            dlysxkzFun(val){
-              console.log(val);
-              // this.requireList.dlysxkz=val[0];
-              if(val[0]){
-                this.requireList.dlysxkz=val[0];
-              }else{
-                this.requireList.dlysxkz='';
-              }
-            },
-            mdmtzFun(val){
-              console.log(val);
-              if(val[0]){
-                this.listSearch.mdmtz=val[0];
-              }else{
-                this.listSearch.mdmtz='';
-              }
-
-            },
-            //iso图片上传
-            isoPicFun(val){
-              console.log(val);
-              if(val[0]){
-                this.listSearch.isoPic=val[0];
-              }else{
+      uploadyyzz(data){
+        this.requireList.yyzz= data.url;
+        this.$axios.$post('/scan/business/license/base64', {base64: data.base64.split('base64,')[1]}).then((res) => {
+          if (res.code == '0' && res.item && res.item.socialCreditCode && res.item.socialCreditCode!="无") {
+            this.requireList.unifiedSocialCreditIdentifier= res.item.socialCreditCode
+          }else{
+            this.$Message.error(`营业执照识别失败，请重新上传`);
+          }
+        })
+      },
+            isoPicFun(data, remove){
+              if(remove){
                 this.listSearch.isoPic='';
+              }else{
+                this.listSearch.isoPic= data.url;
               }
               this.$refs.listSearch.validateField('isoPic')
 
             },
-            //iso图片上传
-            safePicFun(val){
-              console.log(val);
-              if(val[0]){
-                this.listSearch.safePic=val[0];
-              }else{
+
+            safePicFun(data, remove){
+              if(remove){
                 this.listSearch.safePic='';
-              }
-
-            },
-            //iso图片上传
-            greenPicFun(val){
-              console.log(val);
-              if(val[0]){
-                this.listSearch.greenPic=val[0];
               }else{
-                this.listSearch.greenPic='';
+                this.listSearch.safePic= data.url;
               }
+              this.$refs.listSearch.validateField('safePic')
+            },
 
+            greenPicFun(data, remove){
+              if(remove){
+                this.listSearch.greenPic='';
+              }else{
+                this.listSearch.greenPic= data.url;
+              }
+              this.$refs.listSearch.validateField('greenPic')
             },
 
       //4s店事件监听------

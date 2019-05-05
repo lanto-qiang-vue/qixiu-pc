@@ -112,7 +112,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
     data(){
 		  return{
         type:null,
-        loading:true,
+        loading: false,
 
         tableData: [],
 
@@ -197,7 +197,7 @@ import funMixin from '~/components/fun-auth-mixim.js'
 
       this.getBusinessType();
       this.getValuesByTypeFun(1);
-      this.getList();
+      // this.getList();
     },
     methods:{
         getList(){

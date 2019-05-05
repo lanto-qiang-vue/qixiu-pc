@@ -1,4 +1,3 @@
-//图片压缩上传按钮
 <template>
   <div class="compress-upload-button">
     <Button  :type="buttonType" >{{buttonText}}</Button>
