@@ -748,11 +748,11 @@ export default {
             listSearch:deepClone(initList),
 
             ruleValidate: {
-                manageArr: [rulesObj],
+                manageArr: isYunying? [rulesObj]: [],
                 businessSphereOther:[{
                   validator: (rule, value, callback) => {
 
-                    if (isYunying &&this.$data.listSearch.businessSphere&&this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
+                    if (this.$data.listSearch.businessSphere&&this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
                       callback(new Error('请填写其他主要业务范围'));
                     }else{
                       callback();
