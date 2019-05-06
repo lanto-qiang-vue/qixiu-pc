@@ -1474,6 +1474,7 @@ export default {
           if (res.code == '0' && res.item && res.item.unifiedSocialCreditIdentifier && res.item.unifiedSocialCreditIdentifier!="无") {
             this.requireList.unifiedSocialCreditIdentifier= res.item.unifiedSocialCreditIdentifier
           }else{
+            this.requireList.unifiedSocialCreditIdentifier= ''
             this.$Message.error(`营业执照识别失败，请重新上传`);
           }
         })
