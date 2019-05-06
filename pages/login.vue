@@ -546,6 +546,10 @@ export default {
 
         }
       }
+      .ivu-tabs-content-animated{
+        display: flex;
+        transition:transform .3s ease-in-out;
+      }
     }
   }
 }
