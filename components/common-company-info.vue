@@ -107,15 +107,16 @@
                   <Input type="text" v-model="requireList.economicTypeOther" :disabled="isCompany" :readonly="isGuanlibumen"></Input>
                 </FormItem>
 
+                <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
+                  <common-info-upload :data="requireList.yyzz" :disabled="isGuanlibumen"
+                                      @done="uploadyyzz" @remove="requireList.yyzz=''"></common-info-upload>
+                </FormItem>
+
                 <FormItem label="统一社会信用代码:" :class="[{'mark-change': markChange('unifiedSocialCreditIdentifier')}, 'width45']" prop="unifiedSocialCreditIdentifier">
                   <Input type="text" v-model="requireList.unifiedSocialCreditIdentifier" :readonly="isGuanlibumen" placeholder="请上传营业执照后自动识别"></Input>
                 </FormItem>
 
-            <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
-                  <common-info-upload :data="requireList.yyzz" :disabled="isGuanlibumen"
-                    @done="uploadyyzz" @remove="requireList.yyzz=''"></common-info-upload>
-
-            </FormItem>
+           
             <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('dlysxkz')}, 'width45']" prop="dlysxkz">
 
 
