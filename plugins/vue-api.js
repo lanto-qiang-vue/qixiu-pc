@@ -9,5 +9,6 @@ Vue.filter("FormatArticle", function (value, title) {
 })
 
 Vue.filter("FormatDate", function (value, format) {
+  
   return formatDate(value, format||'')
 })

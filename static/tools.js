@@ -140,8 +140,40 @@ export const getRelativeTime = timeStamp => {
  * @param {String} timeStamp 格式字符串,默认值 yyyy-MM-dd
  * @returns {String} 相对时间字符串
  */
+export const IEVersion=function() {
+            var userAgent = navigator.userAgent;   
+            var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;   
+            var isEdge = userAgent.indexOf("Edge") > -1 && !isIE;   
+            var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+            if(isIE) {
+                var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+                reIE.test(userAgent);
+                var fIEVersion = parseFloat(RegExp["$1"]);
+                if(fIEVersion == 7) {
+                    return 7;
+                } else if(fIEVersion == 8) {
+                    return 8;
+                } else if(fIEVersion == 9) {
+                    return 9;
+                } else if(fIEVersion == 10) {
+                    return 10;
+                } else {
+                    return 6;
+                }   
+            } else if(isEdge) {
+                return 'edge';
+            } else if(isIE11) {
+                return 11;   
+            }else{
+                return -1;
+            }
+
+}
 export const formatDate= (value, format) => {
   if (value) {
+    if(IEVersion()!=-1) {
+        value=value.replace(/-/g, "/")
+    }
     value = new Date(value);
     let o = {
       "M+": value.getMonth() + 1, //month
