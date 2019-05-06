@@ -116,7 +116,7 @@
                   <Input type="text" v-model="requireList.unifiedSocialCreditIdentifier" :readonly="isGuanlibumen" placeholder="请上传营业执照后自动识别"></Input>
                 </FormItem>
 
-           
+
             <FormItem label="道路运输经营许可证:" :class="[{'mark-change': markChange('dlysxkz')}, 'width45']" prop="dlysxkz">
 
 
