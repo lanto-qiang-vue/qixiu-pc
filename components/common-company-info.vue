@@ -108,7 +108,7 @@
                 </FormItem>
 
                 <FormItem label="统一社会信用代码:" :class="[{'mark-change': markChange('unifiedSocialCreditIdentifier')}, 'width45']" prop="unifiedSocialCreditIdentifier">
-                  <Input type="text" v-model="requireList.unifiedSocialCreditIdentifier" :disabled="isCompany" :readonly="isGuanlibumen" placeholder="请上传营业执照后自动识别"></Input>
+                  <Input type="text" v-model="requireList.unifiedSocialCreditIdentifier" :readonly="isGuanlibumen" placeholder="请上传营业执照后自动识别"></Input>
                 </FormItem>
 
             <FormItem label="营业执照:" :class="[{'mark-change': markChange('yyzz')}, 'width45']" prop="yyzz">
