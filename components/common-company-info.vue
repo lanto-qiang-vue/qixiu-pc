@@ -752,7 +752,7 @@ export default {
                 businessSphereOther:[{
                   validator: (rule, value, callback) => {
 
-                    if (this.$data.listSearch.businessSphere&&this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
+                    if (isYunying &&this.$data.listSearch.businessSphere&&this.$data.listSearch.businessSphere.indexOf(88) >=0 && !value) {
                       callback(new Error('请填写其他主要业务范围'));
                     }else{
                       callback();
