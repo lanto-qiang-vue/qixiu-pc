@@ -131,6 +131,7 @@ export const getMenuByRouter = (router, accessMenu) => {
   let list= []
   for(let i in accessMenu){
     let item= accessMenu[i]
+    item.meta= {}
     if(item.children && item.children.length){
       item.children= getMenuByRouter(router, item.children)
     }else{
@@ -142,7 +143,6 @@ export const getMenuByRouter = (router, accessMenu) => {
         }
       }
     }
-
     list.push(item)
   }
   return list
