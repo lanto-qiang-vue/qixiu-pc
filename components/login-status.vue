@@ -12,7 +12,6 @@
             @on-change="selectRule">
       <Option v-for="(item, key) in sortRole" :value="item.code" :key="key">{{ item.name+'中心' }}</Option>
     </Select>
-
     |<a @click="logout" class="logout">注销</a>
   </div>
 </div>
@@ -56,14 +55,16 @@ export default {
       this.$router.push({path: this.mainRole.path})
     },
     selectRule(val){
-      this.$store.commit('user/setNowRule',  val)
-      let path= ''
-      for(let i in this.sortRole){
-        if(val==  this.sortRole[i].code){
-          path= this.sortRole[i].path
+      if(val){
+        this.$store.commit('user/setNowRule',  val)
+        let path= ''
+        for(let i in this.sortRole){
+          if(val==  this.sortRole[i].code){
+            path= this.sortRole[i].path
+          }
         }
+        this.$router.push({path: path})
       }
-      this.$router.push({path: path})
     },
     getRoleCodes(list){
       //匹配当前路径的菜单参数
@@ -130,6 +131,7 @@ export default {
   .login {
     font-size: 16px;
     color: #2d8cf0;
+    white-space: nowrap;
     >*{
       height: 40px;
       line-height: 40px;

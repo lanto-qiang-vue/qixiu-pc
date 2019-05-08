@@ -95,6 +95,7 @@
         })
       })
 
+      console.log('route', this.$route)
 
     },
     methods:{

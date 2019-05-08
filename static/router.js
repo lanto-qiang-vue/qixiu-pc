@@ -739,10 +739,12 @@ export default [
           component: resolve('center/articles/article-list.vue'),
         },
         {
-          path: 'article-manage/detail',
+          path: 'article-detail',
           meta: {
             icon: '',
             title: '文章详情',
+            hideMenu: true,
+            accessId: '/center/article-detail',
           },
           component: resolve('center/articles/article-detail.vue'),
         },

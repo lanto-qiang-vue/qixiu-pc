@@ -20,10 +20,10 @@
           </Select>
         </FormItem>
         <FormItem :label-width="0">
-          
+
             <Button v-if="accessBtn('query')" type="primary" @click="page=1;getList()">搜索</Button>
-            
-          
+
+
         </FormItem>
       </Form>
     </div>
@@ -158,7 +158,8 @@
         },
       goDetail(isNew){
           // window.location.href= '/center/article-manage/detail' + (isNew ? '?id='+null : ('?id='+this.selectRow.id))
-        this.$router.push({path:'/center/article-manage/detail', query:{ id: isNew? undefined: this.selectRow.id}})
+        this.$router.push({path:'/center/article-detail', query:{ id: isNew? undefined: this.selectRow.id}})
+        // this.$router.push({path:'/center/article-detail', query:{ id: 133}})
         // this.$router.push({path:'/test', query:{ id: isNew}})
       },
       changeStatus(){
