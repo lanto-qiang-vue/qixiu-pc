@@ -644,7 +644,7 @@ export default {
     },
     methods:{
         getList(){
-          alert(1);
+          
           let page=this.page-1;
           let urlStr='';
           for(let i in this.search){
@@ -659,11 +659,11 @@ export default {
             urlStr += '&type='+this.typeName;
           }
           this.loading=true;
-          alert(1);
+          
           this.$axios.get(this.uploadUrl+'?size='+this.limit+'&page='+page+urlStr, {
 
           }).then( (res) => {
-            alert(1);
+            
             if(res.status == 200){
               if(this.role){
                 this.staticTotal = res.data.totalElements;
