@@ -163,7 +163,7 @@ import { deepClone} from '~/static/util.js'
       }
 
       $.getScript('/libs/echarts.common.min.js', () => {
-        this.minus(30)
+        this.minus(7)
         this.add1(new Date());
       })
     },
