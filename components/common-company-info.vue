@@ -185,15 +185,9 @@
             <FormItem label="其他erp软件:" :class="[{'mark-change': markChange('erpOther')}, 'width45']">
               <Input type="text" v-model="listSearch.erpOther" placeholder=""></Input>
             </FormItem>
-
+<div>
             <FormItem label="特约维修:" :class="[{'mark-change': markChange('special')}, 'width45']">
-              <i-switch size="large" v-model="listSearch.special">
-                <span slot="open">是</span>
-                <span slot="close">否</span>
-              </i-switch>
-            </FormItem>
-            <FormItem label="4s店:" :class="[{'mark-change': markChange('fours')}, 'width45']">
-              <i-switch size="large" v-model="listSearch.fours" @on-change="onChangeFours">
+              <i-switch size="large" v-model="listSearch.special" @on-change="changeSpecial">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
@@ -205,6 +199,14 @@
                 <Option v-for="(option, index) in listSearch.majorBrandNames" :value="option.id" :key="index">{{option.name}}</Option>
               </Select>
             </FormItem>
+</div>
+            <FormItem label="4s店:" :class="[{'mark-change': markChange('fours')}, 'width45']">
+              <i-switch size="large" v-model="listSearch.fours" @on-change="onChangeFours">
+                <span slot="open">是</span>
+                <span slot="close">否</span>
+              </i-switch>
+            </FormItem>
+
 
             <FormItem label="连锁经营企业:" :class="[{'mark-change': markChange('chainBusiness')}, 'width45']">
 
@@ -231,8 +233,7 @@
 
 
             <FormItem label="综合维修企业:" :class="[{'mark-change': markChange('comprehensive')}, 'width45']">
-
-              <i-switch size="large" v-model="listSearch.comprehensive">
+              <i-switch size="large" v-model="listSearch.comprehensive" @on-change="changeComprehensive">
                 <span slot="open">是</span>
                 <span slot="close">否</span>
               </i-switch>
@@ -1512,6 +1513,18 @@ export default {
       onChangeFours(flag){
         if(flag){
           this.listSearch.special=true;
+          this.listSearch.comprehensive= false
+        }
+      },
+      changeSpecial(flag){
+        if(flag){
+          this.listSearch.comprehensive= false
+        }
+      },
+      changeComprehensive(flag){
+        if(flag){
+          this.listSearch.special= false;
+          this.listSearch.fours= false;
         }
       },
       closeSelect(){
