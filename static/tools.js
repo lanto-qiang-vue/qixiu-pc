@@ -161,7 +161,7 @@ export const IEVersion=function() {
                     return 6;
                 }   
             } else if(isEdge) {
-                return 'edge';
+                return -1;
             } else if(isIE11) {
                 return 11;   
             }else{
