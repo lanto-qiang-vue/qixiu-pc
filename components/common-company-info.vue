@@ -1518,12 +1518,12 @@ export default {
       },
       changeSpecial(flag){
         if(flag){
-          this.listSearch.comprehensive= false
+          // this.listSearch.comprehensive= false
         }
       },
       changeComprehensive(flag){
         if(flag){
-          this.listSearch.special= false;
+          // this.listSearch.special= false;
           this.listSearch.fours= false;
         }
       },
