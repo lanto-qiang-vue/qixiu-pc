@@ -651,6 +651,35 @@ export default [
           },
           component: resolve('center/operate/transportationCompany-record.vue'),
         },
+      //合格证管理（运营）
+      {
+          path: 'certificate-operate',
+          meta: {
+            icon: '',
+            title: '合格证管理',
+            accessId: '',
+          },
+          component: resolve('center/certificate-approval/certificate-manage.vue'),
+        },
+        //安全检查管理（运营）
+        {
+          path: 'operate-safeList',
+          meta: {
+            icon: '',
+            title: '机动车维修行业安全检查表',
+            accessId: '',
+          },
+          component: resolve('center/safety-check/safeList-operate.vue'),
+        },
+      {
+          path: 'common-safe-table',
+          meta: {
+            icon: '',
+            title: '安全检查管理',
+            accessId: '',
+          },
+          component: resolve('center/safety-check/common-safe-table.vue'),
+        },
 
       //服务管理(运营)
         {
