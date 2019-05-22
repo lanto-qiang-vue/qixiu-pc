@@ -58,7 +58,6 @@ export default {
     },
     mounted () {
       this.getList();
-      this.getType();
     },
     methods:{
         getList(){
@@ -80,16 +79,6 @@ export default {
             }
           })
           this.detailData= null;
-        },
-        //获取区域信息
-        getType() {
-          this.$axios.post('/area/region/list', {
-            areaName: process.env.config.areaName
-          }).then((res) => {
-            if (res.data.code == '0') {
-              this.typeList = res.data.items
-            }
-          })
         },
         changeTime(val){
           this.search.applyDateStart=val[0];
