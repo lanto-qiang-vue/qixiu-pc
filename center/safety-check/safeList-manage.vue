@@ -4,22 +4,28 @@
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
                 :show="showTable" :page="page"  :loading="loading">
     <div  slot="search"  >
-        <Form :label-width="100" class="common-form z-common-form">
-              <FormItem label="企业:">
-                  <Input type="text" v-model="search.name" placeholder="请输入编号"></Input>
+        <Form :label-width="100" class="common-form">
+              <FormItem label="管理区域:">
+                  <!--<Select v-model="search.org" clearable>
+                    <Option v-for="item in areaList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
+                  </Select>-->
+                  <Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>
+              </FormItem>
+              <FormItem label="维修企业:">
+                  <Input type="text" v-model="search.corpInfo" placeholder="请输入维修企业"></Input>
               </FormItem>
               <FormItem label="检查年度:">
-                  <DatePicker v-model="search.professor" type="daterange" placement="bottom-end" placeholder="Select date"></DatePicker>
+                  <DatePicker type="year" placeholder="请选择" @on-change="changeTime"></DatePicker>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
-                  <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
+                  <Button type="primary" v-if="accessBtn('query')" @click="page=1,closeDetail()">搜索</Button>
               </FormItem>
         </Form>
     </div>
     <div slot="operate">
-      <Button type="info" v-if="" :disabled="!detailData" @click="showDetail=Math.random();">查看|编辑</Button>
+      <Button type="info" v-if="accessBtn('detail')" :disabled="!detailData" @click="showDetail=Math.random();">查看|编辑</Button>
     </div>
-    
+    <company-safe-detail :showDetail="showDetail" :detailData="detailData" :roleType="'guanlibumen'" @closeDetail="closeDetail"></company-safe-detail>
   </common-table>
 
 </template>
@@ -27,29 +33,45 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import companySafeDetail from './company-safe-detail.vue'
 export default {
-	name: "carDoctor-manage",
+	name: "safeList-manage",
     components: {
-      CommonTable
+      CommonTable,
+      companySafeDetail
     },
     mixins: [funMixin],
     data(){
 		  return{
         loading:false,
         columns: [
-          {title: '序号',  width: 80,
+          {title: '序号',  minWidth: 60,
             render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )
           },
-          {title: '维修企业', key: 'name', sortable: true, minWidth: 120,
+          {title: '管理区域', key: 'org',  minWidth: 120,
+            render: (h, params) => {
+              let temdata="";
+              if(params.row.dept){
+                temdata=params.row.org+'/'+params.row.dept;
+              }else{
+                temdata=params.row.org;
+              }
+              return h('div', [
+                  h('span', temdata)
+              ]);
+            }
           },
-          {title: '检查年度', key: 'professor', sortable: true, minWidth: 120}
+          {title: '维修企业名称', key: 'corpName',  minWidth: 120,},
+          {title: '年度', key: 'year',  minWidth: 120}
         ],
         tableData: [],
-        rescueArea:[],//救援区域----
         search:{
-          name:'',
-          professor: '',
-          empUnit: '',
+          "corpInfo": "",
+          "dept": "",
+          "org": "",
+          "year": "",
+          "pageNo": 0,
+          "pageSize": 0,
         },
         page: 1,
         limit: 10,
@@ -58,51 +80,34 @@ export default {
         showDetail: false,
         detailData: null,
         clearTableSelect: null,
-
+        areaList:[]
       }
     },
     mounted () {
-    //   this.getList();
+      this.getList();
+      this.getArea();
     },
     methods:{
         getList(){
           this.loading=true;
-          this.$axios.post('/expert/list', {
-              "professor": this.search.professor||'',
-              "empUnit": this.search.empUnit||'',
-              "name": this.search.name||'',
-              "pageNo": this.page,
-              "pageSize": this.limit,
-          }).then( (res) => {
+          this.search['pageNo']=this.page;
+          this.search['pageSize']=this.limit;
+          this.$axios.post('/security/check/list/manage', this.search).then( (res) => {
             if(res.data.code=='0'){
               this.tableData=res.data.items;
               this.total=res.data.total;
-              this.loading=false;
-            }else{
-              this.$Message.info(res.data.status);
             }
-            
+            this.loading=false;
           })
           this.detailData= null;
         },
-        //删除页面数据-------------
-        delFun(){
-          this.$Modal.confirm({
-              title:"系统提示!",
-              content:"确定要删除吗？",
-              onOk:this.delList,
+        //获取区域信息
+        getArea() {
+          this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, ).then((res) => {
+            if (res.data.code == '0'){
+              this.areaList = res.data.items;
+            }
           })
-        },
-        delList(){
-            this.$axios.delete('/expert/delete/'+this.detailData.id,{
-                        
-                }).then( (res) => {
-                    if(res.data.code=='0'){
-                        this.closeDetail();
-                    }else{
-                        this.$Message.error(res.data.status);
-                    }
-            })
         },
         changePage(page){
           this.page= page
@@ -122,19 +127,33 @@ export default {
           
           this.getList();
         },
-
+        changeTime(val){
+          this.search.year=val;
+        },
+        handleChange(val){
+          switch(val.length){
+            case 0:{
+              this.search.org='';
+              this.search.dept='';
+              break;
+            }
+            case 1:{
+              this.search.org=val[0];
+              this.search.dept='';
+              break;
+            }
+            case 2:{
+              this.search.org=val[0];
+              this.search.dept=val[1];
+              break;
+            }
+          }
+        }
 
     },
 	}
 </script>
 
 <style scoped lang="less">
-.z-common-form .ivu-form-item {
-    width: 280px;
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
+
 </style>

@@ -653,32 +653,86 @@ export default [
         },
       //合格证管理（运营）
       {
-          path: 'certificate-operate',
+          path: 'operate-certificate',
           meta: {
             icon: '',
-            title: '合格证管理',
-            accessId: '',
+            title: '合格证管理(运营)',
+            accessId: '/center/operate-certificate',
           },
           component: resolve('center/certificate-approval/certificate-manage.vue'),
+        },
+        {
+          path: 'manage-certificate',
+          meta: {
+            icon: '',
+            title: '合格证管理(管理)',
+            accessId: '/center/manage-certificate',
+          },
+          component: resolve('center/certificate-approval/certificate-manage.vue'),
+        },
+        {
+          path: 'com-certificate',
+          meta: {
+            icon: '',
+            title: '合格证管理(企业)',
+            accessId: '/center/com-certificate',
+          },
+          component: resolve('center/certificate-approval/certificate-manage.vue'),
+        },
+        {
+          path: 'certificate-apply',
+          meta: {
+            icon: '',
+            title: '合格证申领记录(管理)',
+            accessId: '/center/certificate-apply',
+          },
+          component: resolve('center/certificate-approval/certificate-apply-list.vue'),
+        },
+        {
+          path: 'com-certificate-apply',
+          meta: {
+            icon: '',
+            title: '合格证申领记录(企业)',
+            accessId: '/center/com-certificate-apply',
+          },
+          component: resolve('center/certificate-approval/certificate-apply-company.vue'),
+        },
+        {
+          path: 'certificate-statistics',
+          meta: {
+            icon: '',
+            title: '合格证使用统计(管理)',
+            accessId: '/center/certificate-statistics',
+          },
+          component: resolve('center/certificate-approval/certificate-use-list.vue'),
         },
         //安全检查管理（运营）
         {
           path: 'operate-safeList',
           meta: {
             icon: '',
-            title: '机动车维修行业安全检查表',
-            accessId: '',
+            title: '安全检查年度表',
+            accessId: '/center/operate-safeList',
           },
           component: resolve('center/safety-check/safeList-operate.vue'),
         },
-      {
-          path: 'common-safe-table',
+        {
+          path: 'company-safeList',
           meta: {
             icon: '',
-            title: '安全检查管理',
-            accessId: '',
+            title: '维修行业安全检查表',
+            accessId: '/center/company-safeList',
           },
-          component: resolve('center/safety-check/common-safe-table.vue'),
+          component: resolve('center/safety-check/company-safeList.vue'),
+        },
+        {
+          path: 'manage-safeList',
+          meta: {
+            icon: '',
+            title: '安全检查列表',
+            accessId: '/center/manage-safeList',
+          },
+          component: resolve('center/safety-check/safeList-manage.vue'),
         },
 
       //服务管理(运营)

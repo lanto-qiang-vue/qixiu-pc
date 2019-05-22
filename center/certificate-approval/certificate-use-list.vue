@@ -2,20 +2,22 @@
 <template>
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
-                :show="showTable" :page="page"  :loading="loading">
+                :show="showTable" :page="page"  :loading="loading" :showOperate=false>
     <div  slot="search"  >
         <Form :label-width="100" class="common-form z-common-form">
               <FormItem label="管理区域:">
-                  <Input type="text" v-model="search.name" placeholder="请输入编号"></Input>
+                  <Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>
               </FormItem>
               <FormItem label="维修企业:">
-                  <DatePicker v-model="search.professor" type="daterange" placement="bottom-end" placeholder="Select date"></DatePicker>
+                  <Input type="text" v-model="search.corpName" placeholder="请输入维修企业"></Input>
               </FormItem>
-              <FormItem label="统计年月:">
-                  <DatePicker v-model="search.professor" type="daterange" placement="bottom-end" placeholder="Select date"></DatePicker>
+              <FormItem label="统计日期:">
+                  <DatePicker type="daterange" placeholder="请选择" @on-change="changeTime"></DatePicker>
               </FormItem>
               <FormItem label="维修类型:">
-                  <DatePicker v-model="search.professor" type="daterange" placement="bottom-end" placeholder="Select date"></DatePicker>
+                  <Select v-model="search.repairType" clearable>
+                    <Option v-for="item in typeList" :value="item.key" :key="item.key">{{ item.name }}</Option>
+                  </Select>
               </FormItem>
               <FormItem :label-width="0" style="width: 80px;">
                   <Button type="primary" v-if="" @click="page=1,closeDetail()">搜索</Button>
@@ -37,21 +39,25 @@ export default {
     },
     mixins: [funMixin],
     data(){
-		  return{
+		return{
         loading:false,
         columns: [
-          {title: '管理区域', key: 'name', sortable: true, minWidth: 120,},
-          {title: '企业名称', key: 'professor', sortable: true, minWidth: 120},
-          {title: '申领次数', key: 'empUnit', sortable: true, minWidth: 135},
-          {title: '申领合格证数', key: 'goodAt', sortable: true, minWidth: 120,},
-          {title: '使用合格证数', key: 'honor', sortable: true, minWidth: 120,}
+          {title: '管理区域', key: 'areaName',  minWidth: 120,},
+          {title: '企业名称', key: 'corpName',  minWidth: 120},
+          {title: '申领次数', key: 'applyCount',  minWidth: 120},
+          {title: '申领合格证数', key: 'applyNum',  minWidth: 120,},
+          {title: '使用合格证数', key: 'useNum',  minWidth: 120,}
         ],
         tableData: [],
-        rescueArea:[],//救援区域----
         search:{
-          name:'',
-          professor: '',
-          empUnit: '',
+          "corpName": "",
+          "dateEnd": "",
+          "dateStart": "",
+          "dept": "",
+          "org": "",
+          "pageNo": 0,
+          "pageSize": 0,
+          "repairType": ""
         },
         page: 1,
         limit: 10,
@@ -60,56 +66,50 @@ export default {
         showDetail: false,
         detailData: null,
         clearTableSelect: null,
-        auditModal: false,
-        auditInfo:{
-          status:'',
-          auditInfo:'',
-        },
+        typeList:[],
+        areaList:[]
 
       }
     },
     mounted () {
-    //   this.getList();
+      this.getList();
+        this.getType();
+        this.getArea();
     },
     methods:{
         getList(){
           this.loading=true;
-          this.$axios.post('/expert/list', {
-              "professor": this.search.professor||'',
-              "empUnit": this.search.empUnit||'',
-              "name": this.search.name||'',
-              "pageNo": this.page,
-              "pageSize": this.limit,
-          }).then( (res) => {
+          this.search['pageNo']=this.page;
+          this.search['pageSize']=this.limit;
+          this.$axios.post('/certificate/apply/statistics', this.search).then( (res) => {
             if(res.data.code=='0'){
               this.tableData=res.data.items;
               this.total=res.data.total;
               this.loading=false;
-            }else{
-              this.$Message.info(res.data.status);
             }
-            
           })
           this.detailData= null;
         },
-        //删除页面数据-------------
-        delFun(){
-          this.$Modal.confirm({
-              title:"系统提示!",
-              content:"确定要删除吗？",
-              onOk:this.delList,
+        getType(){
+          this.$axios.get('/company/repair/quality/type', {
+          }).then( (res) => {
+            if(res.data.code=='0'){
+                this.typeList=res.data.items
+            }
+          })
+
+        },
+         //获取区域信息
+        getArea() {
+          this.$axios.get('/area/dept/list/all/'+process.env.config.areaName, ).then((res) => {
+            if (res.data.code == '0'){
+              this.areaList = res.data.items;
+            }
           })
         },
-        delList(){
-            this.$axios.delete('/expert/delete/'+this.detailData.id,{
-                        
-                }).then( (res) => {
-                    if(res.data.code=='0'){
-                        this.closeDetail();
-                    }else{
-                        this.$Message.error(res.data.status);
-                    }
-            })
+        changeTime(val){
+          this.search.dateStart=val[0];
+          this.search.dateEnd=val[1];
         },
         changePage(page){
           this.page= page
@@ -126,9 +126,27 @@ export default {
         closeDetail(){
           this.detailData= null;
           this.clearTableSelect= Math.random();
-          
           this.getList();
         },
+        handleChange(val){
+          switch(val.length){
+            case 0:{
+              this.search.org='';
+              this.search.dept='';
+              break;
+            }
+            case 1:{
+              this.search.org=val[0];
+              this.search.dept='';
+              break;
+            }
+            case 2:{
+              this.search.org=val[0];
+              this.search.dept=val[1];
+              break;
+            }
+          }
+        }
 
 
     },
@@ -138,10 +156,5 @@ export default {
 <style scoped lang="less">
 .z-common-form .ivu-form-item {
     width: 280px;
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
 }
 </style>

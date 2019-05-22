@@ -480,6 +480,12 @@ export const getName = (arr, code) => {
       return arr[i].name
   }
 }
+export const getIdByName = (arr, key) => {
+  for (let i in arr){
+    if(arr[i].key==key)
+      return arr[i].name
+  }
+}
 export const getCreate = (arr,code) =>{
 for(let i in arr){
 if(arr[i].USER_ID ==code){

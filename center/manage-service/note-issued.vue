@@ -59,6 +59,7 @@
                 :format="['txt','zip','doc','docx','xls','xlsx','pdf']"
                 accept=".txt, .zip, .doc,.docx,.xls,.xlsx,.pdf"
                 :on-format-error="handleFormatError"
+                :on-remove="handleRemove"
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
                 type="select"
@@ -448,6 +449,10 @@ export default {
                 content:"该文件格式不正确，仅支持txt、zip、doc、docx、xls、xlsx、pdf",
 
             })
+        },
+        handleRemove(file){
+            
+            this.search.docPath='';
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
