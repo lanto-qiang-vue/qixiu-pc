@@ -294,7 +294,7 @@ export default {
             let html=''
             if(this.isCompany){
                 if(this.listSearch.fields){
-                    if(field=='repairType'){
+                    if(field=='repairType'&&this.listSearch.fields.indexOf(field)!=-1){
                         html= ('<p><label style="color:red;">修改前：</label><span style="color:red;">'+ (original&& original[field]? getIdByName(this.typeList,original[field]): "")+'</span></p>')
                     }else{
                         if(this.listSearch.fields.indexOf(field)!=-1){
@@ -309,7 +309,7 @@ export default {
                     html=getIdByName(this.typeList,later[field])
                 }
                 if(this.listSearch.fields){
-                    if(field=='repairType'){
+                    if(field=='repairType'&&this.listSearch.fields.indexOf(field)!=-1){
                         html= ('<p><label>修改前：</label><span>'+ (original&& original[field]? getIdByName(this.typeList,original[field]): "")+'</span></p><p><label>修改后：</label><span>'+
                             (later&& later[field]? getIdByName(this.typeList,later[field]): "")+'</span></p>')
                     }else{
