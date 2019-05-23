@@ -16,7 +16,7 @@
             <FormItem label="审核状态:" style="width: 90%;" v-show="stateFlag">
                 <span style="color: red;">{{listSearch.state.name}}</span>
             </FormItem>
-            <FormItem label="审核不通过说明:" style="width: 90%;" v-show="listSearch.state.name=='审核不通过'">
+            <FormItem label="审核不通过说明:" style="width: 90%;" v-show="listSearch.state.id==3">
                 <span style="color: red;">{{listSearch.backup}}</span>
             </FormItem>
             <FormItem label="企业名称:" style="width: 45%;" >
@@ -115,7 +115,7 @@ let initList={
     "license": "",
     "repairEndDate": "",
     "repairType": "",
-    "state": {name:'待审核'},
+    "state": {id:0,name:'待审核'},
     "vehiclePlateNumber": ""
 }
 export default {

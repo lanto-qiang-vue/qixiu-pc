@@ -62,6 +62,7 @@
                 :on-remove="handleRemove"
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
+                multiple
                 type="select"
                 action="/proxy/file/add"
 
@@ -457,6 +458,7 @@ export default {
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
+                console.log('我进来了');
                 this.$refs.upload.fileList.splice(0, 1);
 
             }
