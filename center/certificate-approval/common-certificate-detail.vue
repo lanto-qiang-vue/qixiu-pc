@@ -50,12 +50,12 @@
                 <div class="field" v-html="showChangeCar('repairType')"></div>
             </FormItem>
             <FormItem label="进厂日期:" style="width: 45%;" prop="inPlantDate">
-                <DatePicker type="date" :value="listSearch.inPlantDate" placeholder="请选择" @on-change="changeInPlantDate" v-show="isCompany" style="width: 100%;"></DatePicker>
+                <DatePicker :options="options3" type="date" :value="listSearch.inPlantDate" placeholder="请选择" @on-change="changeInPlantDate" v-show="isCompany" style="width: 100%;"></DatePicker>
                 <div class="field" v-html="showChangeCar('inPlantDate')"></div>
             </FormItem>
             <FormItem label="竣工日期:" style="width: 45%;" prop="repairEndDate">
                 
-                <DatePicker type="date" :value="listSearch.repairEndDate" placeholder="请选择" @on-change="changeEndDate" v-show="isCompany" style="width: 100%;"></DatePicker>
+                <DatePicker :options="options3" type="date" :value="listSearch.repairEndDate" placeholder="请选择" @on-change="changeEndDate" v-show="isCompany" style="width: 100%;"></DatePicker>
                 <div class="field"  v-html="showChangeCar('repairEndDate')"></div>
             </FormItem>
             <FormItem label="发证日期:" style="width: 45%;" >
@@ -179,7 +179,12 @@ export default {
                 ],
             },//规则验证
             typeList:[],
-            stateFlag:false
+            stateFlag:false,
+            options3: {
+                disabledDate (date) {
+                    return date && date.valueOf() > Date.now();
+                }
+            },
         }
     },
     watch:{
@@ -193,8 +198,11 @@ export default {
                 this.stateFlag=true;
             }
             
-            this.getCompanyInfo();
+            
             this.getRepairType();
+            if(this.roleType=="weixiuqiye"&&!this.detailData){
+                this.getCompanyInfo();
+            }
         },
     },
     computed:{
@@ -295,7 +303,7 @@ export default {
             if(this.isCompany){
                 if(this.listSearch.fields){
                     if(field=='repairType'&&this.listSearch.fields.indexOf(field)!=-1){
-                        html= ('<p><label style="color:red;">修改前：</label><span style="color:red;">'+ (original&& original[field]? getIdByName(this.typeList,original[field]): "")+'</span></p>')
+                        html= ('<p><label style="color:red;">修改前：</label><span style="color:red;">'+ (original&& original[field]? original[field]: "")+'</span></p>')
                     }else{
                         if(this.listSearch.fields.indexOf(field)!=-1){
                             html= ('<p><label style="color:red;">修改前：</label><span style="color:red;">'+ (original&& original[field]? original[field]: "")+'</span></p>')
@@ -310,7 +318,7 @@ export default {
                 }
                 if(this.listSearch.fields){
                     if(field=='repairType'&&this.listSearch.fields.indexOf(field)!=-1){
-                        html= ('<p><label>修改前：</label><span>'+ (original&& original[field]? getIdByName(this.typeList,original[field]): "")+'</span></p><p><label>修改后：</label><span>'+
+                        html= ('<p><label>修改前：</label><span>'+ (original&& original[field]? original[field]: "")+'</span></p><p><label>修改后：</label><span>'+
                             (later&& later[field]? getIdByName(this.typeList,later[field]): "")+'</span></p>')
                     }else{
                         if(this.listSearch.fields.indexOf(field)!=-1){

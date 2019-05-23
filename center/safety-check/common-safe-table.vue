@@ -21,11 +21,11 @@
         <table id="customers">
             <thead>
             <tr>
-                <th>项目</th>
-                <th>分序号</th>
-                <th>交通行政现场检查内容</th>
-                <th>检查结果</th>
-                <th>情况说明</th>
+                <th width="15%">项目</th>
+                <th width="10%">分序号</th>
+                <th width="25%">交通行政现场检查内容</th>
+                <th width="20%">检查结果</th>
+                <th width="30%">情况说明</th>
             </tr>
             </thead>
             <tbody v-for="item in listData.results">
@@ -45,8 +45,11 @@
                             </Radio>
                         </RadioGroup>
                     </td>
-                    <td>
-                        <Input v-model="itemChr.backup" :disabled="!isCompany" placeholder=""/>
+                    <td v-show="isCompany">
+                        <Input v-model="itemChr.backup"   placeholder=""/>
+                    </td>
+                    <td v-show="!isCompany">
+                        <div class="ivu-table-cell"><span>{{itemChr.backup}}</span></div>
                     </td>
                 </tr>
             </tr>
@@ -148,11 +151,18 @@
 	border-collapse:collapse;
 }
 #customers td, #customers th 
-{   width: 20%;
+{   
 	font-size:1em;
 	border:1px solid #e8eaec;
     text-align: center;
 	padding:3px 7px 2px 7px;
+}
+.ivu-table-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    box-sizing: border-box;
 }
 #customers th 
 {
