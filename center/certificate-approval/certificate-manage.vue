@@ -158,7 +158,7 @@
         commonUrl:'',//公共参数属性
         roleType:'',
         typeList:[],
-        stateList:[{code:1,name:'待审核'},{code:2,name:'审核通过'},{code:3,name:'审核不通过'}],
+        stateList:[{code:1,name:'待审核'},{code:2,name:'审核成功'},{code:3,name:'审核不成功'}],
         availableNum:0,//可用合格证编号
         areaList:[]
       }

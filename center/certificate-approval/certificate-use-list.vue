@@ -11,8 +11,9 @@
               <FormItem label="维修企业:">
                   <Input type="text" v-model="search.corpName" placeholder="请输入维修企业"></Input>
               </FormItem>
-              <FormItem label="统计日期:">
-                  <DatePicker type="daterange" placeholder="请选择" @on-change="changeTime"></DatePicker>
+              <FormItem label="统计年月:">
+                  <DatePicker type="month" placeholder="开始年月" v-model="search.dateStart" style="width: 90px;float: left;"></DatePicker>
+                  <DatePicker type="month" placeholder="结束年月" v-model="search.dateEnd" style="width: 90px;float: left;"></DatePicker>
               </FormItem>
               <FormItem label="维修类型:">
                   <Select v-model="search.repairType" clearable>
@@ -32,6 +33,7 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import { formatDate } from '~/static/tools.js'
 export default {
 	name: "certificate-use-list",
     components: {
@@ -81,6 +83,8 @@ export default {
           this.loading=true;
           this.search['pageNo']=this.page;
           this.search['pageSize']=this.limit;
+          this.search['dateStart']=formatDate(this.search['dateStart']);
+          this.search['dateEnd']=formatDate(this.search['dateEnd']);
           this.$axios.post('/certificate/apply/statistics', this.search).then( (res) => {
             if(res.data.code=='0'){
               this.tableData=res.data.items;
