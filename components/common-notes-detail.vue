@@ -3,7 +3,6 @@
     v-model="showModal"
     :title=listData.title
     width="90"
-    @on-visible-change="visibleChange"
     :scrollable="true"
     :transfer= "true"
     :footer-hide="false"
@@ -23,11 +22,18 @@
         <div class="public-block">
             通知内容：
         </div>
-        <div style="padding: 0 15px;" v-html="testContent"></div>
+        <div style="padding: 0 15px;">{{listData.content}}</div>
+        <div class="public-block">
+        附件：
+        </div>
+        <div style="padding: 0 15px;">
+            <div class="fileList" v-if="listData.attachments&&listData.attachments.length>0" v-for="item in listData.attachments"><span class="file-left">{{item.info}}</span><a class="file-right" :href="item.path"><Icon type="md-download" /></a></div>
+            <div v-else>暂无附件下载</div>
+        </div>
+
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
-        <Button  @click="exportFun" size="large" type="success"  style="margin-right: 10px;">附件下载</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -46,85 +52,55 @@ export default {
                 title:"",
                 url:'',
                 roles:[],
-            },
-            testContent:'',
-
+                attachments:[],
+                content:''
+                
+            }
         }
     },
     watch:{
         showDetail(){
             this.showModal=true;
-
             this.getNotify();
-            // this.updateStatus();
         },
     },
     methods:{
         getNotify(){
             this.spinShow=true;
             this.$axios.get('/message/notify/getNotify/'+this.detailData.id, {
-
             }).then( (res) => {
-                  if(res.data.code=='0'){
-
-                    // let jsonData=JSON.parse(res.data.item.content);
-                    this.listData.title=res.data.item.title;
-                    this.listData.url=res.data.item.url;
-                    this.listData.roles=res.data.item.roles;
-                    // console.log(jsonData.content);
-                    this.testContent=res.data.item.content;
-                    // var obj = document.getElementById('content1') ;
-                    // obj.innerHTML=jsonData.content;
-
-                  }
-					this.spinShow=false;
+                if(res.data.code=='0'){
+                    this.listData=res.data.item;
+                }
+				this.spinShow=false;
 			})
-
-
-        },
-        // updateStatus(){
-        //     this.$axios.post('/message/notify/update', {
-        //             "notifyId ": this.detailData.id,
-        //         }).then( (res) => {
-        //           if(res.data.code=='0'){
-
-        //           }else{
-        //             this.$Message.error(res.data.status);
-        //           }
-
-		// 		  })
-        // },
-        exportFun(){
-            if(this.listData.url){
-                window.location.href = this.listData.url;
-            }else{
-                this.$Message.error('暂无附件下载');
-            }
-
-        },
-        visibleChange(status){
-          if(status === false){
-            this.$emit('closeDetail');
-
-          }
-        },
+        }
     },
 }
 </script>
 
 <style scoped lang="less">
-.menu-manage{
 
-}
 .search-block{
-  /*display: inline-block;
-  width: 180px;
-  margin-right: 10px;*/
   padding: 5px 0;
 }
 .public-block{
     padding: 15px 0;
     font-size: 14px;
     font-weight: bold;
+}
+.fileList{
+font-size: 16px;
+overflow: hidden;
+.file-left{
+display: inline-block;line-height: 30px;width: 250px;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap;
+float: left;
+padding-right:10px;
+}
+.file-right{
+line-height: 30px;
+float: left;
+}
 }
 </style>

@@ -33,25 +33,8 @@
                         <Checkbox v-for="(item2,index) in item.types" v-model="item2.checked" @on-change="newTestChildren" :label="item2.name" :key="index">{{item2.name}}</Checkbox>
                     </div>
                 </div>
-                
-
-                <!--<CheckboxGroup v-model="checkAllGroup"  @on-change="checkAllGroupChange" >
-                    <Checkbox v-for="item in checkList" :label="item.name" :key="item.name"></Checkbox>
-
-                </CheckboxGroup>-->
-
             </FormItem>
-            <!--<FormItem label="类别" style="width: 100%;">
-                <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;">
-                    <Checkbox :value="checkTypeAll" @on-change="handleCheckType">全选</Checkbox>
-                </div>
-                <CheckboxGroup v-model="checkRepairGroup"  @on-change="checkRepairGroupChange" >
-                    <Checkbox v-for="item in checkRepair" :label="item.name" :key="item.name"></Checkbox>
-                </CheckboxGroup>
-                <CheckboxGroup v-model="checkTypeGroup"  @on-change="checkTypeGroupChange" >
-                    <Checkbox v-for="item in checkmanage" :label="item.name" :key="item.name"></Checkbox>
-                </CheckboxGroup>
-            </FormItem>-->
+
             <FormItem label="发送对象" style="width: 450px;">
                 <Upload
                 ref="upload"
@@ -100,6 +83,7 @@ export default {
                 "title":"",
                 "docPath":'',
                 id:'',
+                fileIds:[]
             },
 
 
@@ -150,6 +134,7 @@ export default {
                 this.checkRepairGroup=[];
 
             this.getRole();
+            this.$refs.upload.fileList=[];
             if(this.detailData){
                 this.getNotify();
                 this.search.id=this.detailData.id;
@@ -273,13 +258,15 @@ export default {
         },
         //提交数据
         sendNotify(name){
-            let sendData={content:'',items:'',title:'',url:'',id:''};
+            let sendData={content:'',items:'',title:'',url:'',id:'',fileIds:[]};
             sendData["content"]=this.search["content"];
             sendData["title"]=this.search["title"];
             sendData["id"]=this.search["id"];
-            sendData["url"]=this.search["docPath"];
-
-
+            let fileArr=this.$refs.upload.fileList;
+            for(let i in fileArr){
+                sendData["fileIds"].push(fileArr[i].response.item.id);
+            }
+            
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     let num=0, data=[], list= deepClone(this.newCheckList);
@@ -444,34 +431,37 @@ export default {
         },
         //选择文件--------
         handleFormatError (file) {
-
             this.$Modal.confirm({
                 title:"系统提示!",
                 content:"该文件格式不正确，仅支持txt、zip、doc、docx、xls、xlsx、pdf",
 
             })
         },
-        handleRemove(file){
-            
-            this.search.docPath='';
+        handleRemove(file, fileList){
+            console.log(file, fileList);
+            this.deleteFile(file.response.item.id);
         },
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
                 console.log('我进来了');
-                this.$refs.upload.fileList.splice(0, 1);
+                // this.$refs.upload.fileList.splice(0, 1);
 
             }
             return true;
         },
         handleSuccess(res,file,fileList){
             console.log(res,file,fileList);
+            console.log(this.$refs.upload.fileList);
             if(res.code=="0"){
-                this.search.docPath=res.item.path;
+                // this.search.docPath=res.item.path;
                 this.$Message.info("上传成功");
             }else{
                 this.$Message.error(res.status);
             }
+        },
+        deleteFile(id){
+            this.$axios.delete('/file/'+id).then( (res) => {})
         }
 
     },

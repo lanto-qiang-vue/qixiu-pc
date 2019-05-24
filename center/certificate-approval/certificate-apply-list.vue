@@ -6,7 +6,11 @@
     <div  slot="search"  >
         <Form :label-width="100" class="common-form z-common-form">
               <FormItem label="管理区域:">
-                  <Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>
+                  <!--<Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>-->
+                  <area-select :change-on-select="true"
+                             @changeSelect="search.area= $event"
+                              :rules="{shanghai: { useSelect: false, mode: 'login-areas'}}"
+                ></area-select>
               </FormItem>
               <FormItem label="起讫号:">
                   <Input type="text" v-model="search.code" placeholder="请输入起讫号"></Input>
@@ -28,10 +32,12 @@
 <script>
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
+import AreaSelect from '~/components/area-select.vue'
 export default {
 	name: "certificate-apply-list",
     components: {
-      CommonTable
+      CommonTable,
+      AreaSelect
     },
     mixins: [funMixin],
     data(){
@@ -57,7 +63,8 @@ export default {
           "dept": "",
           "org": "",
           "pageNo": 0,
-          "pageSize": 0
+          "pageSize": 0,
+          area:''
         },
         typeList:[],
         page: 1,

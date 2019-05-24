@@ -301,9 +301,9 @@
         rules: {
           // certName: [{ required: true, message: '名称必填' }],
           trade: [{ required: true, message: '工种必填' }],
-          certCode: [{ required: true, message: '工种必填' }],
-          issueDate: [{ required: true, message: '工种必填' }],
-          issuingAuthority: [{ required: true, message: '工种必填' }],
+          certCode: [{ required: true, message: '证书编号必填' }],
+          issueDate: [{ required: true, message: '发证日期必填' }],
+          issuingAuthority: [{ required: true, message: '鉴定机构必填' }],
           url: [{ required: true, message: '图片为必填项' }]
         }
       }
