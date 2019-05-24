@@ -22,7 +22,7 @@
                   <!--</Select>-->
                 <area-select :change-on-select="true"
                              @changeSelect="searchList.areaKey= $event"
-                              :rules="{shanghai: { useSelect: false, mode: 'sign-areas'}}"
+                              :rules="{shanghai: { useSelect: false, mode: 'login-areas'}, other: { mode: 'login-areas'}}"
                 ></area-select>
               </FormItem>
             <FormItem :label-width="0" style="width: 70px;">

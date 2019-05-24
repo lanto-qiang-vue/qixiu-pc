@@ -125,7 +125,7 @@ export default {
           break
         }
         case 'sign-areas':{
-          list= this.$store.state.app.area.signList
+          list= this.$store.state.app.area.signAreas
           break
         }
       }
@@ -144,7 +144,7 @@ export default {
       this.$store.commit('app/setAreaLock')
       this.getArea()
     }
-    this.getAreaList();
+    // this.getAreaList();
   },
   mounted(){
     this.show= true
@@ -189,7 +189,7 @@ export default {
         if (res.data.code == '0') {
           this.resetArea(res.data.items)
           // console.log('res.data.items', res.data.items)
-          this.$store.commit('app/setSignList', res.data.items)
+          this.$store.commit('app/setSignAreasList', res.data.items)
         }
       })
     },

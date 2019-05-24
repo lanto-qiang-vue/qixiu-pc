@@ -12,8 +12,8 @@
                   <Input type="text" v-model="search.corpName" placeholder="请输入维修企业"></Input>
               </FormItem>
               <FormItem label="统计年月:">
-                  <DatePicker type="month" placeholder="开始年月" v-model="search.dateStart" style="width: 90px;float: left;"></DatePicker>
-                  <DatePicker type="month" placeholder="结束年月" v-model="search.dateEnd" style="width: 90px;float: left;"></DatePicker>
+                  <DatePicker type="month" placeholder="开始年月" :value="search.dateStart" @on-change="changeStart" style="width: 90px;float: left;"></DatePicker>
+                  <DatePicker type="month" placeholder="结束年月" :value="search.dateEnd" @on-change="changeEnd" style="width: 90px;float: left;"></DatePicker>
               </FormItem>
               <FormItem label="维修类型:">
                   <Select v-model="search.repairType" clearable>
@@ -83,8 +83,15 @@ export default {
           this.loading=true;
           this.search['pageNo']=this.page;
           this.search['pageSize']=this.limit;
+          
           this.search['dateStart']=formatDate(this.search['dateStart']);
           this.search['dateEnd']=formatDate(this.search['dateEnd']);
+          if(!this.search.dateEnd){
+            this.search.dateEnd=this.search.dateStart;
+          }
+          if(!this.search.dateStart){
+            this.search.dateStart=this.search.dateEnd;
+          }
           this.$axios.post('/certificate/apply/statistics', this.search).then( (res) => {
             if(res.data.code=='0'){
               this.tableData=res.data.items;
@@ -93,6 +100,12 @@ export default {
             }
           })
           this.detailData= null;
+        },
+        changeStart(val){
+          this.search.dateStart=val;
+        },
+        changeEnd(val){
+          this.search.dateEnd=val;
         },
         getType(){
           this.$axios.get('/company/repair/quality/type', {

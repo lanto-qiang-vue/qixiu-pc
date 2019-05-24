@@ -20,7 +20,7 @@
             <!--<Cascader :data="manageType" change-on-select v-model="manageArr"></Cascader>-->
           <area-select :change-on-select="true"
                        @changeCascader="manageArr= $event" :placeholder="'请选择'"
-                       :rules="{shanghai: { useSelect: false, mode: 'sign-areas' }, other: { mode: 'login-areas'}}"
+                       :rules="{shanghai: { useSelect: false, mode: 'login-areas' }, other: { mode: 'login-areas'}}"
           ></area-select>
         </FormItem>
         <FormItem label="企业名称:">

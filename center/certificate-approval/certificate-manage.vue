@@ -9,7 +9,11 @@
                   <Input type="text" v-model="search.certificateCode" placeholder="请输入合格证编号"></Input>
               </FormItem>
               <FormItem label="管理区域:" v-show="roleType=='guanlibumen'">
-                  <Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>
+                  <!--<Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>-->
+                  <area-select :change-on-select="true"
+                             @changeSelect="search.area= $event"
+                              :rules="{shanghai: { useSelect: false, mode: 'login-areas'}}"
+                ></area-select>
               </FormItem>
               <FormItem label="发证日期区间:">
                   <DatePicker type="daterange" placeholder="请选择" @on-change="changeIssueDate"></DatePicker>
@@ -55,11 +59,11 @@
     <Modal v-model="applyModel" title="申领合格证">
       <Form :label-width="120" ref="applyData" :rules="applyValidate" :model="applyData">
           <FormItem label="起讫号开始编号:" prop="codeStart">
-              <Input type="text" v-model="applyData.codeStart" placeholder="请输入编号"></Input>
+              <Input type="text" v-model="applyData.codeStart" placeholder="请输入编号的8位数字部分"></Input>
               
           </FormItem>
           <FormItem label="起讫号结束编号:" prop="codeEnd">
-              <Input type="text" v-model="applyData.codeEnd" placeholder="请输入编号"></Input>
+              <Input type="text" v-model="applyData.codeEnd" placeholder="请输入编号的8位数字部分"></Input>
               
           </FormItem>
           <FormItem label="申领日期:" prop="applyDate" >
@@ -80,12 +84,14 @@
   import CommonTable from '~/components/common-table.vue'
   import commonCertificateDetail from './common-certificate-detail.vue'
   import funMixin from '~/components/fun-auth-mixim.js'
+  import AreaSelect from '~/components/area-select.vue'
   import { getIdByName } from '~/static/util.js'
 	export default {
 		name: "certificate-manage",
     components: {
       CommonTable,
-      commonCertificateDetail
+      commonCertificateDetail,
+      AreaSelect
     },
     mixins: [funMixin],
     data(){
@@ -130,6 +136,7 @@
             "vehiclePlateNumber": "",
             "pageNo": 0,
             "pageSize": 0,
+            area:''
         },
         page: 1,
         limit: 10,

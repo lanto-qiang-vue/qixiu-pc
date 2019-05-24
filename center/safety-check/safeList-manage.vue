@@ -9,7 +9,11 @@
                   <!--<Select v-model="search.org" clearable>
                     <Option v-for="item in areaList" :value="item.regionCode" :key="item.regionCode">{{ item.shortName }}</Option>
                   </Select>-->
-                  <Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>
+                  <!--<Cascader :data="areaList" @on-change="handleChange" :change-on-select=true></Cascader>-->
+                  <area-select :change-on-select="true"
+                             @changeSelect="search.area= $event"
+                              :rules="{shanghai: { useSelect: false, mode: 'login-areas'}}"
+                ></area-select>
               </FormItem>
               <FormItem label="维修企业:">
                   <Input type="text" v-model="search.corpInfo" placeholder="请输入维修企业"></Input>
@@ -34,11 +38,13 @@
 import CommonTable from '~/components/common-table.vue'
 import funMixin from '~/components/fun-auth-mixim.js'
 import companySafeDetail from './company-safe-detail.vue'
+  import AreaSelect from '~/components/area-select.vue'
 export default {
 	name: "safeList-manage",
     components: {
       CommonTable,
-      companySafeDetail
+      companySafeDetail,
+      AreaSelect
     },
     mixins: [funMixin],
     data(){
@@ -72,6 +78,7 @@ export default {
           "year": "",
           "pageNo": 0,
           "pageSize": 0,
+          area:''
         },
         page: 1,
         limit: 10,
