@@ -141,7 +141,8 @@ export const getRelativeTime = timeStamp => {
  * @returns {String} 相对时间字符串
  */
 export const IEVersion=function() {
-            var userAgent = navigator.userAgent;   
+            var userAgent = window.navigator.userAgent;   
+            console.log(window.navigator.userAgent);
             var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1;   
             var isEdge = userAgent.indexOf("Edge") > -1 && !isIE;   
             var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
@@ -171,9 +172,10 @@ export const IEVersion=function() {
 }
 export const formatDate= (value, format) => {
   if (value) {
-    if(IEVersion()!=-1) {
-        value=value.replace(/-/g, "/")
-    }
+    // if(IEVersion()!=-1) {
+    //     
+    // }
+    value=value.replace(/-/g, "/")
     value = new Date(value);
     let o = {
       "M+": value.getMonth() + 1, //month
