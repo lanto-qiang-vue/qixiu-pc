@@ -115,14 +115,6 @@
 </script>
 
 <style scoped lang="less">
-.menu-manage{
-
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
 </style>
 
 

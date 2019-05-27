@@ -11,6 +11,7 @@ export const state = () => ({
     lock: 0,
     regionList: [],
     deptList: [],
+    signAreas:[]
   }
 })
 
@@ -35,6 +36,9 @@ export const mutations = {
   },
   setDeptList(state, list){
     state.area.deptList = list
+  },
+  setSignAreasList(state, list){
+    state.area.signAreas = list
   },
 }
 

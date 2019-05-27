@@ -24,13 +24,19 @@
         <div class="public-block">
             通知内容：
         </div>
-        <div style="padding: 0 15px;" v-html="listData.content"></div>
+        <div style="padding: 0 15px;">{{listData.content}}</div>
+        <div class="public-block">
+        附件：
+        </div>
+        <div style="padding: 0 15px;">
+            <div class="fileList" v-if="listData.attachments&&listData.attachments.length>0" v-for="item in listData.attachments"><span class="file-left">{{item.info}}</span><a class="file-right" :href="item.path"><Icon type="md-download" /></a></div>
+            <div v-else>暂无附件下载</div>
+        </div>
         <Spin size="large" fix v-if="spinShow"></Spin>
     </div>
     <div slot="footer">
         <Button v-if="accessBtn('audit')"  @click="updateStatus" size="large" type="primary"   v-show="listButton.audit">审核</Button>
         <Button v-if="accessBtn('audit')"   @click="updateStatus1" size="large" type="primary"   v-show="listButton.out">驳回</Button>
-        <Button  @click="exportFun" size="large" type="success"  >附件下载</Button>
         <Button  size="large" type="default" style="margin-right: 10px;" @click="showModal=false;">返回</Button>
     </div>
   </Modal>
@@ -48,10 +54,11 @@ export default {
             spinShow:false,
             showModal:false,
             listData:{
-                content:"",
                 title:"",
                 url:'',
                 roles:[],
+                attachments:[],
+                content:''
             },
             listButton:{
                 audit:true,
@@ -77,13 +84,7 @@ export default {
 
                 }).then( (res) => {
                   if(res.data.code=='0'){
-
-                    // let jsonData=JSON.parse(res.data.item.content);
-                    this.listData.title=res.data.item.title;
-                    this.listData.url=res.data.item.url;
-                    this.listData.roles=res.data.item.roles;
-                    this.listData.content=res.data.item.content;
-
+                    this.listData=res.data.item;
                   }
 					this.spinShow=false;
 				  })
@@ -143,9 +144,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.menu-manage{
 
-}
 .search-block{
   /*display: inline-block;
   width: 180px;
@@ -156,5 +155,19 @@ export default {
     padding: 15px 0;
     font-size: 14px;
     font-weight: bold;
+}
+.fileList{
+font-size: 16px;
+overflow: hidden;
+.file-left{
+display: inline-block;line-height: 30px;width: 250px;overflow:hidden;
+text-overflow:ellipsis;white-space:nowrap;
+float: left;
+padding-right:10px;
+}
+.file-right{
+line-height: 30px;
+float: left;
+}
 }
 </style>

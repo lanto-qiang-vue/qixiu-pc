@@ -1,5 +1,5 @@
 <template>
-<div class="menu-manage">
+<div>
 
 <common-table v-model="tableData" :columns="columns" :total="total" :clearSelect="clearTableSelect"
                 @changePage="changePage" @changePageSize="changePageSize" @onRowClick="onRowClick"
@@ -22,7 +22,7 @@
                   <!--</Select>-->
                 <area-select :change-on-select="true"
                              @changeSelect="searchList.areaKey= $event"
-                              :rules="{other: { useSelect: false, mode: 'login-areas'}}"
+                              :rules="{shanghai: { useSelect: false, mode: 'login-areas'}, other: { mode: 'login-areas'}}"
                 ></area-select>
               </FormItem>
             <FormItem :label-width="0" style="width: 70px;">
@@ -61,7 +61,23 @@ export default {
                 columns: [
                     {title: '名称', key: 'name', sortable: true, minWidth: 120,
                     },
-                    {title: '区域', key: 'areaName', sortable: true, minWidth: 120},
+                    {title: '区域', key: 'areaName', sortable: true, minWidth: 120,
+                        render: (h, params) => {
+                            let temdata="";
+                            if(process.env.config.areaName=='shanghai'){
+                                if(params.row.dept){
+                                    temdata=params.row.org+'/'+params.row.dept;
+                                }else{
+                                    temdata=params.row.org;
+                                }
+                            }else{
+                                temdata=params.row.areaName;
+                            }
+                            return h('div', [
+                                h('span', temdata)
+                            ]);
+                        }
+                    },
                     {title: '登录次数', key: 'todayCount', sortable: true, minWidth: 135},
                     {title: '最后登录时间', key: 'lastLogin', sortable: true, minWidth: 120,
                         render: (h, params) => h('span', params.row.lastLogin||'无')
@@ -70,7 +86,7 @@ export default {
                 tableData: [],
                 // searchSelectOption:[],
                 searchList:{
-                    areaKey:(process.env.config.areaName=='shanghai'?process.env.config.areaKey:''),
+                    areaKey:(process.env.config.areaName=='shanghai'?'':''),
                     companyName:"",
                     isLogin:"yes",
                     startDate:"",
@@ -163,12 +179,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-.menu-manage{
 
-}
-.search-block{
-  display: inline-block;
-  width: 200px;
-  margin-right: 10px;
-}
 </style>

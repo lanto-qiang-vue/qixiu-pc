@@ -124,6 +124,10 @@ export default {
           list= this.$store.state.user.userInfo.areas
           break
         }
+        case 'sign-areas':{
+          list= this.$store.state.app.area.signAreas
+          break
+        }
       }
       return list
 
@@ -140,6 +144,7 @@ export default {
       this.$store.commit('app/setAreaLock')
       this.getArea()
     }
+    // this.getAreaList();
   },
   mounted(){
     this.show= true
@@ -160,7 +165,7 @@ export default {
       }
       return obj
     },
-    getArea() {
+    getArea(){
       this.$axios.post('/area/region/list', {
         areaName: process.env.config.areaName
       }).then((res) => {
@@ -175,6 +180,16 @@ export default {
           this.resetArea(res.data.items)
           // console.log('res.data.items', res.data.items)
           this.$store.commit('app/setDeptList', res.data.items)
+        }
+      })
+      
+    },
+    getAreaList(){
+      this.$axios.get('/user/area/list').then((res) => {
+        if (res.data.code == '0') {
+          this.resetArea(res.data.items)
+          // console.log('res.data.items', res.data.items)
+          this.$store.commit('app/setSignAreasList', res.data.items)
         }
       })
     },
@@ -207,7 +222,7 @@ export default {
       // console.log(value);
       this.$emit('changeSelect', singleVal);
       this.$emit('changeCascader', value);
-    },
+    }
   }
 }
 </script>
