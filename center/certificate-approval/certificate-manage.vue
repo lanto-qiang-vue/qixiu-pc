@@ -187,7 +187,7 @@
           case '/center/manage-certificate':{
             this.commonUrl='/company/repair/quality/list/manage';
             this.roleType='guanlibumen';
-            this.getArea();
+            // this.getArea();
             this.columns=[
               {title: '序号',  width: 80,
                 render: (h, params) => h('span', (this.page-1)*this.limit+params.index+1 )

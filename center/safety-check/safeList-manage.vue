@@ -92,7 +92,7 @@ export default {
     },
     mounted () {
       this.getList();
-      this.getArea();
+      // this.getArea();
     },
     methods:{
         getList(){
