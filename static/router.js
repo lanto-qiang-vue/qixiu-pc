@@ -652,7 +652,6 @@ export default [
           component: resolve('center/operate/transportationCompany-record.vue'),
         },
       //合格证管理
-      
       {
           path: 'operate-certificate',
           meta: {

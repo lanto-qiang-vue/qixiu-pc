@@ -99,6 +99,7 @@ export default {
             token: {token: ''},
             checkAll: false,//发送人全选
             newCheckList:[],
+            temFile:[]
         }
     },
     watch:{
@@ -107,7 +108,7 @@ export default {
             this.showModal=true;
             this.token.token = this.$store.state.user.token,
             this.checkAll=false;
-
+            this.temFile=[];
             this.getRole();
             this.$refs.upload.fileList=[];
             if(this.detailData){
@@ -212,7 +213,10 @@ export default {
             sendData["id"]=this.search["id"];
             let fileArr=this.$refs.upload.fileList;
             for(let i in fileArr){
-                sendData["fileIds"].push(fileArr[i].response.item.id);
+                if(fileArr[i].response.code=='0'){
+                    sendData["fileIds"].push(fileArr[i].response.item.id);
+                }
+                
             }
             
             this.$refs[name].validate((valid) => {
@@ -322,17 +326,21 @@ export default {
             console.log(file, fileList);
             this.deleteFile(file.response.item.id);
         },
-        handleBeforeUpload () {
-            let fileList = this.$refs.upload.fileList;
-            if(fileList.length>0){
-            }
+        handleBeforeUpload (file, fileList) {
+            // let fileList = this.$refs.upload.fileList;
+
+            
+            
             return true;
         },
         handleSuccess(res,file,fileList){
+            
             if(res.code=="0"){
                 this.$Message.info("上传成功");
+                this.temFile.push(file)
             }else{
                 this.$Message.error(res.status);
+                this.$refs.upload.fileList=deepClone(this.temFile);
             }
         },
         deleteFile(id){
