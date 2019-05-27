@@ -46,7 +46,7 @@
         </Form>
     </div>
     <div slot="operate">
-      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">新增</Button>
+      <Button type="primary" v-if="accessBtn('add')" @click="showDetail=Math.random();detailData=null;">使用合格证</Button>
       <Button type="info" v-if="accessBtn('detail')" :disabled="!detailData"  @click="showDetail=Math.random();">查看|编辑</Button>
       <Button type="info" v-if="accessBtn('addApply')" @click="addApply">申领合格证</Button>
       <Button type="info" v-if="accessBtn('queryList')" @click="$router.push({path:'com-certificate-apply'})" >合格证申领记录</Button>

@@ -45,6 +45,8 @@
                 :on-remove="handleRemove"
                 :before-upload="handleBeforeUpload"
                 :on-success="handleSuccess"
+                :max-size="3072"
+                :on-exceeded-size="handleMaxSize"
                 multiple
                 type="select"
                 action="/proxy/file/add"
@@ -392,6 +394,7 @@ export default {
             console.log(this.checkAll);
 
         },
+        
 
         //选择发送类型--------------------
         handleCheckType (flag) {
@@ -437,6 +440,9 @@ export default {
 
             })
         },
+        handleMaxSize (file) {
+            this.$Message.error('上传文件过大,大小不超过3M!');
+        },
         handleRemove(file, fileList){
             console.log(file, fileList);
             this.deleteFile(file.response.item.id);
@@ -444,15 +450,15 @@ export default {
         handleBeforeUpload () {
             let fileList = this.$refs.upload.fileList;
             if(fileList.length>0){
-                console.log('我进来了');
+                // console.log('我进来了');
                 // this.$refs.upload.fileList.splice(0, 1);
 
             }
             return true;
         },
         handleSuccess(res,file,fileList){
-            console.log(res,file,fileList);
-            console.log(this.$refs.upload.fileList);
+            // console.log(res,file,fileList);
+            // console.log(this.$refs.upload.fileList);
             if(res.code=="0"){
                 // this.search.docPath=res.item.path;
                 this.$Message.info("上传成功");
