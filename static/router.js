@@ -651,7 +651,8 @@ export default [
           },
           component: resolve('center/operate/transportationCompany-record.vue'),
         },
-      //合格证管理（运营）
+      //合格证管理
+      
       {
           path: 'operate-certificate',
           meta: {
@@ -706,7 +707,7 @@ export default [
           },
           component: resolve('center/certificate-approval/certificate-use-list.vue'),
         },
-        //安全检查管理（运营）
+        //安全检查管理
         {
           path: 'operate-safeList',
           meta: {
