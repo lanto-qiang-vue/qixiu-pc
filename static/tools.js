@@ -175,7 +175,9 @@ export const formatDate= (value, format) => {
     // if(IEVersion()!=-1) {
     //     
     // }
-    value=value.replace(/-/g, "/")
+    if(typeof(value)=='string'){
+      value=value.replace(/-/g, "/");
+    }
     value = new Date(value);
     let o = {
       "M+": value.getMonth() + 1, //month

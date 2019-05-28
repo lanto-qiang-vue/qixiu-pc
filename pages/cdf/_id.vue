@@ -110,7 +110,6 @@ export default {
   },
   mounted(){
     // this.$axios.$get('/question/detail/'+ this.$route.params.id)
-    console.log('window',window);
   },
   methods:{
     toAdopt(id){

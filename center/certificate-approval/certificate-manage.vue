@@ -259,6 +259,7 @@
           this.clearTableSelect= Math.random();
           
           this.getList();
+          this.getApplyFun();
         },
         //选择日期--
         changeTime(val){
