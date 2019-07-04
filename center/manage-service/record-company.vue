@@ -144,7 +144,7 @@ if(!thisData) {
       {title: '经营范围', key: 'businessScope', sortable: 'custom', minWidth: 150},
       {title: '未上传天数', key: 'noUpdateDays', sortable: 'custom', minWidth: 120,
           render: (h, params) => {
-                if(params.row.noUpdateDays==0){
+                if(params.row.noUpdateDays==0&&params.row.count==0){
                     return h('div','从未上传');
                 }else{
                     return h('div',params.row.noUpdateDays);
