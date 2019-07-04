@@ -79,7 +79,7 @@ export default {
     }
   },
   asyncData ({ app, params, error }) {
-    // console.log('asyncData')
+    console.log('asyncData')
     return app.$axios.$get('/question/detail/'+ params.id).then((res) => {
       let list= res.item.answerDetailDtos, isAdopt= false
       for(let i in list){

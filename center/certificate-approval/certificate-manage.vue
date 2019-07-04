@@ -171,7 +171,6 @@
       }
     },
     mounted () {
-      console.log(this.$route.path);
       switch (this.$route.path){
           case '/center/operate-certificate':{
             this.commonUrl='/company/repair/quality/list/yy';
@@ -259,7 +258,10 @@
           this.clearTableSelect= Math.random();
           
           this.getList();
-          this.getApplyFun();
+          if(this.roleType=='weixiuqiye'){
+            this.getApplyFun();
+          }
+          
         },
         //选择日期--
         changeTime(val){

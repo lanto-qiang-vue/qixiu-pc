@@ -13,9 +13,9 @@
               <FormItem label="许可证号:" style="width: 40%;margin: 0 30px;">
                   <span>{{listData.license}}</span>
               </FormItem>
-              <FormItem label="被告知书编号:" style="width: 40%;margin: 0 30px;">
+              <!--<FormItem label="被告知书编号:" style="width: 40%;margin: 0 30px;">
                   <span>{{listData.no}}</span>
-              </FormItem>
+              </FormItem>-->
         </Form>
         <div>
         <table id="customers">

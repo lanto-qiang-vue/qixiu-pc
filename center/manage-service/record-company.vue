@@ -142,7 +142,16 @@ if(!thisData) {
       {title: '上传数量', key: 'count', sortable: 'custom', minWidth: 110},
       {title: '许可证', key: 'license', sortable: 'custom', minWidth: 120},
       {title: '经营范围', key: 'businessScope', sortable: 'custom', minWidth: 150},
-      {title: '未上传天数', key: 'noUpdateDays', sortable: 'custom', minWidth: 120},
+      {title: '未上传天数', key: 'noUpdateDays', sortable: 'custom', minWidth: 120,
+          render: (h, params) => {
+                if(params.row.noUpdateDays==0){
+                    return h('div','从未上传');
+                }else{
+                    return h('div',params.row.noUpdateDays);
+                }
+            }
+        
+      },
       {title: '总对总', key: 'minister', sortable: 'custom', minWidth: 100},
       {title: '特约维修', key: 'special', sortable: 'custom', minWidth: 110},
       {title: '经营状态', key: 'businessStatus', sortable: 'custom', minWidth: 110,
@@ -175,10 +184,10 @@ if(!thisData) {
       {code:"否",name:'否'},
     ],
     idaysType:[
-
+      {code:"-1",name:'从未上传'},
       {code:"7",name:'大于7天'},
       {code:"15",name:'大于15天'},
-      {code:"30",name:'大于30天'},
+      {code:"30",name:'大于30天'}
     ],
     typeArr:[
       {code:"shortName",name:0},

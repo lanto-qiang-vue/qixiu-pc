@@ -130,7 +130,7 @@ let conf= {
         }
         routes= arr
       }
-      // console.log(routes)
+      // console.log("routes",routes)
       routes.push(...router)
       return routes
     }
